@@ -1,0 +1,26 @@
+
+
+
+Component Libray Editor
+--------------------------------------------
+
+* Selection tool is not user frendly.
+* Missing action on group (e.g. rotate selected pins).
+* 
+
+
+Module editor
+--------------------------------------------
+
+* Missing measurement tool (usefull to check a footprint).
+* Missing copy/paste.
+* Selection tool is not user frendly.
+* Missing snap to object.
+* Missing interactive resize objects (e.g. drag the end of a line to extend it).
+* Missing double-clic to select text in textboxes.
+* Scroll should be vertical pan
+* Ctrl+Scroll should be zoom
+* Shift+Scroll should be horizontal pan
+* Missing change parameter of an object group (e.g. X position)
+* Y axis negative value is up, Y axis positive value is down !?!
+* 

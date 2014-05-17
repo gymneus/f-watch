@@ -1,0 +1,28 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LS013B7DH03
+D Sharp Memory LCD
+K LCD
+$ENDCMP
+#
+$CMP MAX17047
+D ModelGauge m3 Fuel Gauge
+K fuel gauge
+$ENDCMP
+#
+$CMP TPS780180300
+D 150mA, Low-Dropout Regulator, Ultralow-Power, IQ 500nA with Pin-Selectable, Dual-Level Output Voltage
+K LDO, low iq
+$ENDCMP
+#
+$CMP USB-MICRO-AB
+D Micro USB connector type AB
+K USB, connector
+$ENDCMP
+#
+$CMP bq24072
+D 1.5A USB-FRIENDLY Li-Ion BATTERY CHARGER AND POWER-PATH MANAGEMENT IC
+K battery charger, usb, li-ion, power-path
+$ENDCMP
+#
+#End Doc Library
