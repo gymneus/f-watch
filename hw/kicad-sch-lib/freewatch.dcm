@@ -1,5 +1,10 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP L70
+D GPS module
+K GPS
+$ENDCMP
+#
 $CMP LS013B7DH03
 D Sharp Memory LCD
 K LCD
@@ -10,6 +15,11 @@ D ModelGauge m3 Fuel Gauge
 K fuel gauge
 $ENDCMP
 #
+$CMP MICRO_SDCARD_SPI
+D Generic micro sdcard, SPI mode
+K micro sdcard, SPI
+$ENDCMP
+#
 $CMP TPS780180300
 D 150mA, Low-Dropout Regulator, Ultralow-Power, IQ 500nA with Pin-Selectable, Dual-Level Output Voltage
 K LDO, low iq
@@ -18,6 +28,11 @@ $ENDCMP
 $CMP USB-MICRO-AB
 D Micro USB connector type AB
 K USB, connector
+$ENDCMP
+#
+$CMP W3011A
+D 1.575 GHz GPS Ceramic Chip Antenna
+K GPS, antenna
 $ENDCMP
 #
 $CMP bq24072
