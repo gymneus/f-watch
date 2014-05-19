@@ -15,6 +15,11 @@ D ModelGauge m3 Fuel Gauge
 K fuel gauge
 $ENDCMP
 #
+$CMP MAX44009
+D Ambient light sensor
+K light sensor
+$ENDCMP
+#
 $CMP MICRO_SDCARD_SPI
 D Generic micro sdcard, SPI mode
 K micro sdcard, SPI
