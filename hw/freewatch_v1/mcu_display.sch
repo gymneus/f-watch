@@ -30,6 +30,7 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:freewatch
+LIBS:freewatch_v1-cache
 EELAYER 24 0
 EELAYER END
 $Descr A4 11693 8268

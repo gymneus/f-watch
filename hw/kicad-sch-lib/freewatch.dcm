@@ -1,5 +1,13 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP CAP
+D Capacitor
+$ENDCMP
+#
+$CMP CAP_POL
+D Capacitor
+$ENDCMP
+#
 $CMP EFM32GG330
 D Ultra-low power ARM Cortex-M3 microcontroller
 K MCU, microcontroller
@@ -25,6 +33,11 @@ D ModelGauge m3 Fuel Gauge
 K fuel gauge
 $ENDCMP
 #
+$CMP MAX2659
+D GPS/GNSS Low-Noise Amplifier
+K LNA
+$ENDCMP
+#
 $CMP MAX44009
 D Ambient light sensor
 K light sensor
@@ -38,6 +51,10 @@ $ENDCMP
 $CMP MPL3115A2
 D Precision altimeter & thermometer
 K pressure sensor, altimeter, thermometer
+$ENDCMP
+#
+$CMP RES
+D Resistor
 $ENDCMP
 #
 $CMP TPS780180300

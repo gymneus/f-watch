@@ -51,5 +51,7 @@ Eeschema
 * Some function are only available as icons (not in menus).
 * Zoom doesn't adjust when resizing the window (zoom=fit -> resize -> zoom!=fit).
 * When click "Place component" I was expecting a window to pop up to select a component, instead of have to click first somewhere on the sheet.
+* Bug, when placing a component that exists in another library (with the same name) it doesn't place the selected one (e.g. resistor).
+* Bug, double-click on a component, it asks for clarification, when clarified don't open pop-up window.
 * 
 
