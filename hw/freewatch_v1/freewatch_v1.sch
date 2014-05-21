@@ -46,21 +46,31 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 2000 1950 1300 750 
+S 2000 2900 1300 750 
 U 537A65FD
 F0 "USB_POWER" 50
 F1 "usb_power.sch" 50
 $EndSheet
 $Sheet
-S 5150 1950 1250 750 
+S 5150 2900 1250 750 
 U 537A663F
 F0 "PERIPHERALS_SENSORS" 50
 F1 "periph_sensors.sch" 50
 $EndSheet
 $Sheet
-S 3600 1950 1250 750 
+S 3600 2900 1250 750 
 U 537A662B
 F0 "MCU_DISPLAY" 50
 F1 "mcu_display.sch" 50
 $EndSheet
+Text Notes 600  1200 0    50   ~ 0
+Copyright CERN 2013.\nThis documentation describes Open Hardware and is licensed under the\nCERN OHL v. 1.2.\nYou may redistribute and modify this documentation under the terms of the\nCERN OHL v.1.2. (http://ohwr.org/cernohl). This documentation is distributed\nWITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY,\nSATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.\nPlease see the CERN OHL v.1.2 for applicable conditions\n
+Wire Notes Line
+	550  550  550  1250
+Wire Notes Line
+	550  1250 3700 1250
+Wire Notes Line
+	3700 1250 3700 550 
+Wire Notes Line
+	3700 550  550  550 
 $EndSCHEMATC

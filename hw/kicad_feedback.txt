@@ -15,6 +15,8 @@ Component Libray Editor
 
 * Selection tool is not user frendly.
 * Missing action on group (e.g. rotate selected pins).
+* Can't change lines color.
+* Block copy, copies the object at the same place. Not following the cursor (like in Eeschma).
 * 
 
 
@@ -53,5 +55,6 @@ Eeschema
 * When click "Place component" I was expecting a window to pop up to select a component, instead of have to click first somewhere on the sheet.
 * Bug, when placing a component that exists in another library (with the same name) it doesn't place the selected one (e.g. resistor).
 * Bug, double-click on a component, it asks for clarification, when clarified don't open pop-up window.
+* Drawing straight line when dragging wire, not exactly what we want.
 * 
 

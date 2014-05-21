@@ -53,6 +53,10 @@ D Precision altimeter & thermometer
 K pressure sensor, altimeter, thermometer
 $ENDCMP
 #
+$CMP PRTR5V0U2X
+D Ultra low capacitance double rail-to-rail ESD protection diode
+$ENDCMP
+#
 $CMP RES
 D Resistor
 $ENDCMP
