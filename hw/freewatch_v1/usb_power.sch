@@ -148,7 +148,7 @@ Text GLabel 4250 2550 2    50   BiDi ~ 0
 USB_DP
 Text GLabel 4250 2650 2    50   BiDi ~ 0
 USB_DM
-Text Notes 1950 5100 2    60   ~ 0
+Text Notes 1950 5100 2    40   ~ 0
 Battery connection
 $Comp
 L GND #PWR?

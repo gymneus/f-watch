@@ -191,7 +191,7 @@ F 3 "" H 8250 1650 60  0000 C CNN
 	1    8250 1650
 	1    0    0    -1  
 $EndComp
-Text Notes 9450 4100 0    50   ~ 0
+Text Notes 9500 3950 0    40   ~ 0
 VCOM inversion\nEXTMODE = VDD -> hardware (EXTCOMIN)\nEXTMODE = VSS -> software
 $Comp
 L CAP C?
@@ -295,7 +295,7 @@ Connection ~ 9850 3100
 Wire Wire Line
 	9850 3200 9950 3200
 Connection ~ 9350 3100
-Text Notes 8400 3200 0    50   ~ 0
+Text Notes 8450 3150 0    40   ~ 0
 Connect to VCC\nor MCU output?
 Wire Wire Line
 	9950 2900 9050 2900
@@ -740,6 +740,8 @@ Wire Wire Line
 	4950 4750 5950 4750
 Text Label 5000 4750 0    40   ~ 0
 MCU_RST_N
-Text Notes 5400 2400 0    50   ~ 0
+Text GLabel 7500 5300 2    40   Output ~ 0
+SD_EN
+Text Notes 5250 2400 0    40   ~ 0
 Mount for low-speed device
 $EndSCHEMATC

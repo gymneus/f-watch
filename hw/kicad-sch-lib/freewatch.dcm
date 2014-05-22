@@ -1,16 +1,29 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP ADP198
+D High-Side Load Switch
+$ENDCMP
+#
 $CMP CAP
 D Capacitor
 $ENDCMP
 #
 $CMP CAP_POL
-D Capacitor
+D Polarised capacitor
+$ENDCMP
+#
+$CMP DIODE_SKY
+D Schottky diode
 $ENDCMP
 #
 $CMP EFM32GG330
 D Ultra-low power ARM Cortex-M3 microcontroller
 K MCU, microcontroller
+$ENDCMP
+#
+$CMP GEN_MOSFET_N
+D Generic MOSFET channel N
+F transistors/mos/*.*
 $ENDCMP
 #
 $CMP L70
