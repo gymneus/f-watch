@@ -860,7 +860,7 @@ Wire Wire Line
 Wire Wire Line
 	4450 5350 4350 5350
 Text Notes 6800 2550 0    40   ~ 0
-GPS_RST pin must\nbe configured as\nopen-drain in the MCU
+GPS_RST and GPS_STDBY \nare pulled up internally,\npins must be configured as\nopen-drain in the MCU
 Text Notes 600  1200 0    50   ~ 0
 Copyright CERN 2013.\nThis documentation describes Open Hardware and is licensed under the\nCERN OHL v. 1.2.\nYou may redistribute and modify this documentation under the terms of the\nCERN OHL v.1.2. (http://ohwr.org/cernohl). This documentation is distributed\nWITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY,\nSATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.\nPlease see the CERN OHL v.1.2 for applicable conditions
 Wire Notes Line
