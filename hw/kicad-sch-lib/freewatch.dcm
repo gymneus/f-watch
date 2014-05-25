@@ -16,6 +16,10 @@ $CMP DIODE_SKY
 D Schottky diode
 $ENDCMP
 #
+$CMP DIODE_STD
+D Diode
+$ENDCMP
+#
 $CMP EFM32GG330
 D Ultra-low power ARM Cortex-M3 microcontroller
 K MCU, microcontroller
