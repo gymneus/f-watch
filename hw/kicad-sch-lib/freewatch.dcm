@@ -4,6 +4,10 @@ $CMP ADP198
 D High-Side Load Switch
 $ENDCMP
 #
+$CMP BUZZER
+D Transducer/speaker
+$ENDCMP
+#
 $CMP CAP
 D Capacitor
 $ENDCMP
@@ -33,6 +37,10 @@ $ENDCMP
 $CMP L70
 D GPS module
 K GPS
+$ENDCMP
+#
+$CMP LED_STD
+D Simple LED
 $ENDCMP
 #
 $CMP LS013B7DH03
