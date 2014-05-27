@@ -1,8 +1,8 @@
 (module GPS_L70 (layer F.Cu)
-  (fp_text reference GPS_L70 (at 10.8 -4.1) (layer F.SilkS) hide
+  (fp_text reference GPS_L70 (at 0 -6.6) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text value VAL** (at 0 -6.1) (layer F.SilkS)
+  (fp_text value VAL** (at 0 6.5) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start -6.205 -4.9) (end -6.2 -4.9) (layer F.SilkS) (width 0.17))

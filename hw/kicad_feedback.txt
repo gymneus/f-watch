@@ -58,3 +58,25 @@ Eeschema
 * Drawing straight line when dragging wire, not exactly what we want.
 * 
 
+
+CvPcb
+-------------------------------------------------
+
+* Missing multiple selection (to assign the same footprint to all selected components).
+* Can't undo association (only overwrite).
+* Can't re-load module library.
+* 
+
+
+Pcbnew
+----------------------------------------------------
+
+* Can't re-load module library?
+* Component search function not working? (e.g. can't search for "C10").
+* 
+
+OpenGL
+
+* Can't read net name inside pad on selected components.
+* Hidden test is displayed!
+* 

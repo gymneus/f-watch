@@ -1,8 +1,8 @@
 (module 78171-0002 (layer F.Cu)
-  (fp_text reference 78171-0002 (at 7.6 0) (layer F.SilkS) hide
+  (fp_text reference 78171-0002 (at 7.6 0) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text value VAL** (at 0 -1.9) (layer F.SilkS)
+  (fp_text value VAL** (at 0 -1.9) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start 2.1 -0.1) (end 1.2 -0.1) (layer F.SilkS) (width 0.17))

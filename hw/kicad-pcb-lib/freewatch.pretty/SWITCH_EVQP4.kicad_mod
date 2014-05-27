@@ -1,8 +1,8 @@
 (module SWITCH_EVQP4 (layer F.Cu)
-  (fp_text reference SWITCH_EVQP4 (at 14.2 -4.9) (layer F.SilkS) hide
+  (fp_text reference SWITCH_EVQP4 (at 0 -5.1) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text value VAL** (at 0.3 -4.5) (layer F.SilkS)
+  (fp_text value VAL** (at 0 2.7) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start -0.9 0) (end -0.9 0.85) (layer Eco2.User) (width 0.15))

@@ -1,8 +1,8 @@
 (module BUZZER_SMT-0540-S-R (layer F.Cu)
-  (fp_text reference BUZZER_SMT-0540-S-R (at 13.1 -1.7) (layer F.SilkS) hide
+  (fp_text reference BUZZER_SMT-0540-S-R (at 13.1 -1.7) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text value VAL** (at 0 -4.3) (layer F.SilkS)
+  (fp_text value VAL** (at 0 -4.3) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start -2.5 -1.5) (end -1.5 -2.5) (layer F.SilkS) (width 0.17))
