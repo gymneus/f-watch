@@ -1,0 +1,109 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ADP198
+D High-Side Load Switch
+$ENDCMP
+#
+$CMP BUZZER
+D Transducer/speaker
+$ENDCMP
+#
+$CMP CAP
+D Capacitor
+$ENDCMP
+#
+$CMP CAP_POL
+D Polarised capacitor
+$ENDCMP
+#
+$CMP DIODE_SKY
+D Schottky diode
+$ENDCMP
+#
+$CMP DIODE_STD
+D Diode
+$ENDCMP
+#
+$CMP EFM32GG330
+D Ultra-low power ARM Cortex-M3 microcontroller
+K MCU, microcontroller
+$ENDCMP
+#
+$CMP GEN_MOSFET_N
+D Generic MOSFET channel N
+F transistors/mos/*.*
+$ENDCMP
+#
+$CMP L70
+D GPS module
+K GPS
+$ENDCMP
+#
+$CMP LED_STD
+D Simple LED
+$ENDCMP
+#
+$CMP LS013B7DH03
+D Sharp Memory LCD
+K LCD
+$ENDCMP
+#
+$CMP LSM303C
+D 3D accelerometer and 3D magnetometer module
+K accelerometer, compass
+$ENDCMP
+#
+$CMP MAX17047
+D ModelGauge m3 Fuel Gauge
+K fuel gauge
+$ENDCMP
+#
+$CMP MAX2659
+D GPS/GNSS Low-Noise Amplifier
+K LNA
+$ENDCMP
+#
+$CMP MAX44009
+D Ambient light sensor
+K light sensor
+$ENDCMP
+#
+$CMP MICRO_SDCARD_SPI
+D Generic micro sdcard, SPI mode
+K micro sdcard, SPI
+$ENDCMP
+#
+$CMP MPL3115A2
+D Precision altimeter & thermometer
+K pressure sensor, altimeter, thermometer
+$ENDCMP
+#
+$CMP PRTR5V0U2X
+D Ultra low capacitance double rail-to-rail ESD protection diode
+$ENDCMP
+#
+$CMP RES
+D Resistor
+$ENDCMP
+#
+$CMP TPS780180300
+D 150mA, Low-Dropout Regulator, Ultralow-Power, IQ 500nA with Pin-Selectable, Dual-Level Output Voltage
+K LDO, low iq
+$ENDCMP
+#
+$CMP USB-MICRO-AB
+D Micro USB connector type AB
+K USB, connector
+$ENDCMP
+#
+$CMP W3011A
+D 1.575 GHz GPS Ceramic Chip Antenna
+K GPS, antenna
+$ENDCMP
+#
+$CMP bq24072
+D 1.5A USB-FRIENDLY Li-Ion BATTERY CHARGER AND POWER-PATH MANAGEMENT IC
+K battery charger, usb, li-ion, power-path
+$ENDCMP
+#
+#End Doc Library

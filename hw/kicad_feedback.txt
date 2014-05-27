@@ -1,0 +1,82 @@
+
+
+Kicad (project explorer)
+-------------------------------------------
+
+* Can't delete "sub-project" .pro files.
+* I was confused not to see hierachical schematic sheet here.
+* 
+
+
+
+
+Component Libray Editor
+--------------------------------------------
+
+* Selection tool is not user frendly.
+* Missing action on group (e.g. rotate selected pins).
+* Can't change lines color.
+* Block copy, copies the object at the same place. Not following the cursor (like in Eeschma).
+* 
+
+
+Module editor
+--------------------------------------------
+
+* Missing measurement tool (usefull to check a footprint).
+* Missing copy/paste.
+* Selection tool is not user frendly.
+* Missing snap to object + snap on all layers.
+* Missing interactive resize objects (e.g. drag the end of a line to extend it).
+* Missing double-clic to select text in textboxes.
+* Scroll should be vertical pan
+* Ctrl+Scroll should be zoom
+* Shift+Scroll should be horizontal pan
+* Missing change parameter of an object group (e.g. X position)
+* Y axis negative value is up, Y axis positive value is down !?!
+* It would be nicer to select the layer to work on instead of having to select the layer for every object.
+* Missing keepout area in modules.
+* Bug, doesn't redraw after placing an object (have to zoom in/out).
+* Solder mask drawing (if this is the red lines around the pad) is not updated when the value is change for a component or a pad.
+* Paste stencil isn't drawn.
+* Missing displayed layer selection.
+* 
+
+
+Eeschema
+----------------------------------------------
+
+* The way the schematic files are managed inside a project is far from being intuitive!
+* Libraries should be defined globaly, not per schematic file.
+* Doesn't ask for a file name when saving (very confusing).
+* Creates schematic project (.pro) from within Eeschema ?!?!
+* Some function are only available as icons (not in menus).
+* Zoom doesn't adjust when resizing the window (zoom=fit -> resize -> zoom!=fit).
+* When click "Place component" I was expecting a window to pop up to select a component, instead of have to click first somewhere on the sheet.
+* Bug, when placing a component that exists in another library (with the same name) it doesn't place the selected one (e.g. resistor).
+* Bug, double-click on a component, it asks for clarification, when clarified don't open pop-up window.
+* Drawing straight line when dragging wire, not exactly what we want.
+* 
+
+
+CvPcb
+-------------------------------------------------
+
+* Missing multiple selection (to assign the same footprint to all selected components).
+* Can't undo association (only overwrite).
+* Can't re-load module library.
+* 
+
+
+Pcbnew
+----------------------------------------------------
+
+* Can't re-load module library?
+* Component search function not working? (e.g. can't search for "C10").
+* 
+
+OpenGL
+
+* Can't read net name inside pad on selected components.
+* Hidden test is displayed!
+* 

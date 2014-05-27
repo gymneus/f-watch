@@ -1,0 +1,23 @@
+(module ANTENNA_W3011A (layer F.Cu)
+  (fp_text reference ANTENNA_W3011A (at 0 -2.1) (layer F.SilkS)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value VAL** (at 0 2.9) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_line (start -2 -3.05) (end 2 -3.05) (layer Eco1.User) (width 0.15))
+  (fp_line (start 2 -3.05) (end 2 1.2) (layer Eco1.User) (width 0.15))
+  (fp_line (start -2 1.2) (end -2 -3.05) (layer Eco1.User) (width 0.15))
+  (fp_text user "ECO1 = KEEPOUT ALL LAYERS" (at 16.2 -0.1) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text user "ECO2 = BOARD EDGE" (at 13 2) (layer F.SilkS) hide
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_line (start -3 1.2) (end 3 1.2) (layer Eco2.User) (width 0.15))
+  (fp_line (start -0.8 0.8) (end 0.8 0.8) (layer F.SilkS) (width 0.17))
+  (fp_line (start -0.8 -0.8) (end 0.8 -0.8) (layer F.SilkS) (width 0.17))
+  (pad 1 smd rect (at 1.6 -0.475) (size 0.8 0.65) (layers F.Cu F.Paste F.Mask))
+  (pad 2 smd rect (at 1.6 0.475) (size 0.8 0.65) (layers F.Cu F.Paste F.Mask))
+  (pad 3 smd rect (at -1.6 0) (size 0.8 1.6) (layers F.Cu F.Paste F.Mask))
+)
