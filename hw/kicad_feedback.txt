@@ -1,13 +1,18 @@
 
 
+General
+-------------------------------------------
+
+* Menus should contains ALL the options/features (someone learning, like me, will just browse the menu to look for something).
+* 
+
+
 Kicad (project explorer)
 -------------------------------------------
 
 * Can't delete "sub-project" .pro files.
 * I was confused not to see hierachical schematic sheet here.
 * 
-
-
 
 
 Component Libray Editor
@@ -72,11 +77,29 @@ Pcbnew
 ----------------------------------------------------
 
 * Can't re-load module library?
-* Component search function not working? (e.g. can't search for "C10").
+* Component search function not working? (first search says found, click second time says not found).
+  -> Should zoom to component.
+* Undo segfaults!!!
+* Can't change track width when routing is active.
+* Copy/paste is missing.
+* ALWAYS CRASHES !!! (segfault)
+* Missing easy change width of tracks.
+* Missing select entire track or connected copper.
+* Missing snap on all layers.
+* Precise component placement (manually enter position).
+* Can't place via freely (when bot routing).
+* Can't easily display top or bottom layers only.
+* KEEPS CRASHING !!! (segfault)
 * 
 
 OpenGL
 
 * Can't read net name inside pad on selected components.
-* Hidden test is displayed!
+* When moving component to bottom, some 'shadow' persists on the top.
+* Can't selectively remove ratsnest from component.
+* Double click on an object should open the property dialog.
+* Place origin doesn't work.
+* Grid isn't aligned with default canevas mode!!
+* Can route through keepout area!
+* Can't resize trace (drag the end).
 * 

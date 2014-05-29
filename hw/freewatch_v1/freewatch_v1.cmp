@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-05-16 BZR 4850)-product   date = Tue 27 May 2014 10:10:43 PM CEST
+Cmp-Mod V01 Created by Cvpcb (2014-05-28 BZR 4896)-product   date = Thu 29 May 2014 06:01:04 PM CEST
 
 BeginCmp
 TimeStamp = /537A663F/53821E01;
@@ -386,31 +386,10 @@ IdModule  = freewatch_footprints:USB_MICRO_AB;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A65FD/537BCCC5;
-Reference = P2;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
-EndCmp
-
-BeginCmp
 TimeStamp = /537A65FD/537A6E8C;
 Reference = P3;
 ValeurCmp = CONN_2;
 IdModule  = freewatch_footprints:78171-0002;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A65FD/537BCAC2;
-Reference = P4;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A65FD/538337C5;
-Reference = P5;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
 EndCmp
 
 BeginCmp
@@ -606,6 +585,20 @@ BeginCmp
 TimeStamp = /537A662B/53830126;
 Reference = R26;
 ValeurCmp = 100k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A65FD/53876EE2;
+Reference = R27;
+ValeurCmp = 10k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A65FD/538775F2;
+Reference = R28;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
