@@ -61,6 +61,7 @@ Eeschema
 * Bug, when placing a component that exists in another library (with the same name) it doesn't place the selected one (e.g. resistor).
 * Bug, double-click on a component, it asks for clarification, when clarified don't open pop-up window.
 * Drawing straight line when dragging wire, not exactly what we want.
+* Can't freely name power nets.
 * 
 
 
@@ -90,6 +91,8 @@ Pcbnew
 * Can't place via freely (when bot routing).
 * Can't easily display top or bottom layers only.
 * KEEPS CRASHING !!! (segfault)
+* Select "Dwgs.User" layer, select graphic line tool -> sometimes tool doesn't follow the mouse.
+* Missing snap via to trace end.
 * 
 
 OpenGL
@@ -102,4 +105,5 @@ OpenGL
 * Grid isn't aligned with default canevas mode!!
 * Can route through keepout area!
 * Can't resize trace (drag the end).
+* Bottom solder mask is under top copper and solder mask when bottom layer is selected.
 * 

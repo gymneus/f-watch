@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-05-28 BZR 4896)-product   date = Thu 29 May 2014 06:01:04 PM CEST
+Cmp-Mod V01 Created by Cvpcb (2014-05-28 BZR 4896)-product   date = Sat 31 May 2014 03:51:24 PM CEST
 
 BeginCmp
 TimeStamp = /537A663F/53821E01;
@@ -354,28 +354,28 @@ BeginCmp
 TimeStamp = /537A662B/5383CA02;
 Reference = D4;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CB1F;
 Reference = D5;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CB69;
 Reference = D6;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CBB0;
 Reference = D7;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
