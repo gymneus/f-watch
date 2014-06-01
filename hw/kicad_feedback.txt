@@ -88,11 +88,14 @@ Pcbnew
 * Missing select entire track or connected copper.
 * Missing snap on all layers.
 * Precise component placement (manually enter position).
-* Can't place via freely (when bot routing).
+* Can't place via freely (when not routing).
 * Can't easily display top or bottom layers only.
 * KEEPS CRASHING !!! (segfault)
 * Select "Dwgs.User" layer, select graphic line tool -> sometimes tool doesn't follow the mouse.
 * Missing snap via to trace end.
+* Missing round keepout area (basically the keepout should be a layer and we should be able to draw any graphics on it).
+* Missing lock graphic drawings.
+* Can't place a via inside a pad without a trace connected to it (e.g. thermal pads).
 * 
 
 OpenGL
@@ -106,4 +109,5 @@ OpenGL
 * Can route through keepout area!
 * Can't resize trace (drag the end).
 * Bottom solder mask is under top copper and solder mask when bottom layer is selected.
+* Ratsnest not refresh when re-loading the netlist.
 * 
