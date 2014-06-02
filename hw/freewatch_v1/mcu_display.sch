@@ -519,7 +519,7 @@ Text Label 4950 950  0    40   ~ 0
 USB_DM
 Text Label 5750 4750 0    40   ~ 0
 MCU_RST_N
-Text GLabel 5750 2650 2    40   Output ~ 0
+Text GLabel 2850 3750 0    40   Output ~ 0
 SD_EN
 Text Notes 4450 1100 0    40   ~ 0
 Mount for low-speed device
@@ -839,9 +839,9 @@ Wire Wire Line
 Wire Wire Line
 	3250 3250 1700 3250
 Wire Wire Line
-	1700 3100 1700 3250
+	1700 3250 1700 3100
 Wire Wire Line
-	1000 3100 1700 3100
+	1700 3100 1000 3100
 Wire Wire Line
 	1000 3500 1700 3500
 Wire Wire Line
@@ -1298,9 +1298,9 @@ Text Notes 6100 3650 0    40   ~ 0
 Timer 3 output 0 (PWM)
 Wire Wire Line
 	5750 3150 4950 3150
-Text Label 5750 3750 0    40   ~ 0
-LCD_BKL1
 Text Label 2850 3050 0    40   ~ 0
+LCD_BKL1
+Text Label 5750 3750 0    40   ~ 0
 LCD_BKL2
 Text Label 8350 3200 0    40   ~ 0
 LCD_BKL1
@@ -1565,14 +1565,14 @@ Wire Wire Line
 Text GLabel 2850 2950 0    40   Input ~ 0
 AC_INT_XL
 Wire Wire Line
-	4950 2650 5750 2650
-Wire Wire Line
 	4950 2750 5750 2750
 Wire Wire Line
 	4950 2850 5750 2850
 Wire Wire Line
 	2850 4550 3250 4550
-NoConn ~ 3250 3750
+NoConn ~ 4950 2650
 NoConn ~ 4950 3350
 NoConn ~ 4950 4250
+Wire Wire Line
+	2850 3750 3250 3750
 $EndSCHEMATC

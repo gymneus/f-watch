@@ -96,6 +96,12 @@ Pcbnew
 * Missing round keepout area (basically the keepout should be a layer and we should be able to draw any graphics on it).
 * Missing lock graphic drawings.
 * Can't place a via inside a pad without a trace connected to it (e.g. thermal pads).
+* Moving grid origin doesn't work (origin stays at top left corner of the page).
+* Missing feature to quickly show a single layer.
+* Missing fill zone manager.
+* Fill zone: - can't differenciate between baord edge and via/pads clearance.
+             - via/pad clearance is calculated from annular ring, not from hole.
+* Can't change layers color??
 * 
 
 OpenGL
