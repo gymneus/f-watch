@@ -649,7 +649,7 @@ Text Label 8500 1850 0    40   ~ 0
 LCD_VCC
 Text Label 2850 3950 0    40   ~ 0
 LCD_VCC
-Text Notes 6750 2200 0    40   ~ 0
+Text Notes 6150 2200 0    40   ~ 0
 Check that US1_RX (PD1) can be\nused as GPIO when using USART1
 $Comp
 L CONN_6 P7
@@ -1311,7 +1311,7 @@ L RES R17
 U 1 1 5383BD39
 P 9000 3500
 F 0 "R17" H 8970 3560 39  0000 C CNN
-F 1 "100k" H 9000 3500 30  0000 C CNN
+F 1 "91R" H 9000 3500 30  0000 C CNN
 F 2 "" H 9000 3500 60  0000 C CNN
 F 3 "" H 9000 3500 60  0000 C CNN
 	1    9000 3500
@@ -1322,7 +1322,7 @@ L RES R18
 U 1 1 5383BE91
 P 9250 3500
 F 0 "R18" H 9220 3560 39  0000 C CNN
-F 1 "100k" H 9250 3500 30  0000 C CNN
+F 1 "91R" H 9250 3500 30  0000 C CNN
 F 2 "" H 9250 3500 60  0000 C CNN
 F 3 "" H 9250 3500 60  0000 C CNN
 	1    9250 3500
@@ -1333,7 +1333,7 @@ L RES R19
 U 1 1 5383BECD
 P 9500 3500
 F 0 "R19" H 9470 3560 39  0000 C CNN
-F 1 "100k" H 9500 3500 30  0000 C CNN
+F 1 "91R" H 9500 3500 30  0000 C CNN
 F 2 "" H 9500 3500 60  0000 C CNN
 F 3 "" H 9500 3500 60  0000 C CNN
 	1    9500 3500
@@ -1344,7 +1344,7 @@ L RES R20
 U 1 1 5383BF0A
 P 9750 3500
 F 0 "R20" H 9720 3560 39  0000 C CNN
-F 1 "100k" H 9750 3500 30  0000 C CNN
+F 1 "91R" H 9750 3500 30  0000 C CNN
 F 2 "" H 9750 3500 60  0000 C CNN
 F 3 "" H 9750 3500 60  0000 C CNN
 	1    9750 3500
@@ -1502,36 +1502,6 @@ Wire Wire Line
 	9400 4650 9300 4650
 Wire Wire Line
 	9300 4650 9300 4700
-Wire Notes Line
-	1900 2100 2550 2100
-Wire Notes Line
-	2550 2100 2550 3800
-Wire Notes Line
-	2550 3800 1900 3800
-Wire Notes Line
-	1900 3800 1900 2100
-Wire Notes Line
-	2050 4500 2050 5150
-Wire Notes Line
-	2050 5150 1700 5150
-Wire Notes Line
-	1700 5150 1700 4500
-Wire Notes Line
-	1700 4500 2050 4500
-Text Notes 1700 4500 0    40   ~ 0
-swappable
-Text Notes 1900 2100 0    40   ~ 0
-swappable
-Wire Notes Line
-	6100 2000 6100 3450
-Wire Notes Line
-	6100 3450 6700 3450
-Wire Notes Line
-	6700 3450 6700 2000
-Wire Notes Line
-	6700 2000 6100 2000
-Text Notes 6100 2000 0    40   ~ 0
-swappable
 Text Notes 9950 3850 0    40   ~ 0
 Two LEDs for backlight are \nprobably enough, to be tested
 Wire Notes Line
@@ -1546,7 +1516,7 @@ Text Notes 4000 750  0    40   ~ 0
 Probably don't need this, TBC
 Text Notes 6100 3750 0    40   ~ 0
 Timer 3 output 1 (PWM)
-Text Notes 2600 3150 0    40   ~ 0
+Text Notes 2100 3050 0    40   ~ 0
 Timer 3 output 2 (PWM)
 Text Notes 2100 2850 0    40   ~ 0
 Timer 2 output 1 (PWM)
