@@ -34,6 +34,10 @@ D Generic MOSFET channel N
 F transistors/mos/*.*
 $ENDCMP
 #
+$CMP IND
+D Inductor
+$ENDCMP
+#
 $CMP L70
 D GPS module
 K GPS
@@ -51,6 +55,10 @@ $ENDCMP
 $CMP LSM303C
 D 3D accelerometer and 3D magnetometer module
 K accelerometer, compass
+$ENDCMP
+#
+$CMP M10478-A1
+D GPS RF Antenna Module
 $ENDCMP
 #
 $CMP MAX17047
