@@ -159,8 +159,8 @@ static const uint8_t configDesc[] __attribute__ ((aligned(4)))=
 };
 
 STATIC_CONST_STRING_DESC_LANGID( langID, 0x04, 0x09 );
-STATIC_CONST_STRING_DESC( iManufacturer, L"Energy Micro AS" );
-STATIC_CONST_STRING_DESC( iProduct     , L"EFM32 USB CDC serial port device" );
+STATIC_CONST_STRING_DESC( iManufacturer, 'E','n','e','r','g','y',' ','M','i','c','r','o',' ','A','S' );
+STATIC_CONST_STRING_DESC( iProduct     , 'E','F','M','3','2',' ','U','S','B',' ','C','D','C',' ','s','e','r','i','a','l',' ','p','o','r','t',' ','d','e','v','i','c','e' );
 
 static const void * const strings[] =
 {

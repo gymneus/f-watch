@@ -80,7 +80,7 @@ static void StartRTC( void );
 #pragma location=0x200000dc
 __no_init uint32_t bootloaderCRC;
 #else
-#error Undefined toolkit
+/* #error Undefined toolkit */
 #endif
 
 /**************************************************************************//**
@@ -119,8 +119,10 @@ int main(void)
   /* Calculate CRC16 for the bootloader itself and the Device Information page. */
   /* This is used for production testing and can safely be omitted in */
   /* your own code. */
+  /*
   bootloaderCRC  = CRC_calc((void *) 0x0, (void *) BOOTLOADER_SIZE);
-  bootloaderCRC |= CRC_calc((void *) 0x0FE081B2, (void *) 0x0FE08200) << 16;
+     bootloaderCRC |= CRC_calc((void *) 0x0FE081B2, (void *) 0x0FE08200) << 16; 
+  */
 
   StartRTC();
 
