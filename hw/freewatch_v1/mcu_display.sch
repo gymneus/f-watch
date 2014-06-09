@@ -92,10 +92,10 @@ GPS_TXD
 Text GLabel 5750 2450 2    40   Output ~ 0
 GPS_RXD
 Text GLabel 2850 4550 0    40   Output ~ 0
-GPS_STDBY
+GPS_ON_OFF
 Text GLabel 2850 4650 0    40   Output ~ 0
 GPS_RST
-Text GLabel 5750 2850 2    40   Input ~ 0
+Text GLabel 6300 2850 2    40   Input ~ 0
 GPS_PPS
 Text GLabel 2850 4250 0    40   Input ~ 0
 SD_MISO
@@ -105,8 +105,8 @@ Text GLabel 2850 4350 0    40   Output ~ 0
 SD_CLK
 Text GLabel 2850 4450 0    40   Output ~ 0
 SD_CS_N
-Text GLabel 2850 4750 0    40   Output ~ 0
-GPS_EN
+Text GLabel 2850 4750 0    40   Input ~ 0
+GPS_WAKUP
 Text GLabel 5750 4450 2    40   BiDi ~ 0
 USB_DP
 Text GLabel 5750 4350 2    40   BiDi ~ 0
