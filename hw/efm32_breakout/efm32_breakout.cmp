@@ -1,0 +1,283 @@
+Cmp-Mod V01 Created by Cvpcb (2014-jan-25)-product   date = wto, 3 cze 2014, 14:08:51
+
+BeginCmp
+TimeStamp = /537FCACE;
+Reference = C1;
+ValeurCmp = 18pF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537FCB4C;
+Reference = C2;
+ValeurCmp = 18pF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DD458;
+Reference = C3;
+ValeurCmp = 10uF;
+IdModule  = Capacitors_SMD:c_2220;
+EndCmp
+
+BeginCmp
+TimeStamp = /53830086;
+Reference = C4;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCC98;
+Reference = C5;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCC6D;
+Reference = C6;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCC3D;
+Reference = C7;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCC14;
+Reference = C8;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCB28;
+Reference = C9;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300B7;
+Reference = C10;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300E8;
+Reference = C11;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCCC0;
+Reference = C12;
+ValeurCmp = 1uF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537DCD31;
+Reference = C13;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537D2590;
+Reference = C14;
+ValeurCmp = 4.7uF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537D25C8;
+Reference = C15;
+ValeurCmp = 1uF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C8EA6;
+Reference = C16;
+ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C9E1B;
+Reference = C17;
+ValeurCmp = 4.7uF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C9FD4;
+Reference = C18;
+ValeurCmp = 4.7uF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383CA02;
+Reference = D1;
+ValeurCmp = LED_STD;
+IdModule  = freewatch:d_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383CB1F;
+Reference = D2;
+ValeurCmp = LED_STD;
+IdModule  = freewatch:d_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383CB69;
+Reference = D3;
+ValeurCmp = LED_STD;
+IdModule  = freewatch:d_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383CBB0;
+Reference = D4;
+ValeurCmp = LED_STD;
+IdModule  = freewatch:d_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538CB756;
+Reference = P1;
+ValeurCmp = CONN_4;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x04;
+EndCmp
+
+BeginCmp
+TimeStamp = /538CAF1C;
+Reference = P2;
+ValeurCmp = CONN_4;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x04;
+EndCmp
+
+BeginCmp
+TimeStamp = /5382C001;
+Reference = P3;
+ValeurCmp = CONN_6;
+IdModule  = Pin_Headers:Pin_Header_Straight_1x06;
+EndCmp
+
+BeginCmp
+TimeStamp = /53830093;
+Reference = R1;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300C4;
+Reference = R2;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300F5;
+Reference = R3;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /53830126;
+Reference = R4;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383BD39;
+Reference = R5;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383BE91;
+Reference = R6;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383BECD;
+Reference = R7;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383BF0A;
+Reference = R8;
+ValeurCmp = 100k;
+IdModule  = freewatch:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5383007F;
+Reference = SW1;
+ValeurCmp = SW_PUSH;
+IdModule  = Discret:SW_PUSH_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300B0;
+Reference = SW2;
+ValeurCmp = SW_PUSH;
+IdModule  = Discret:SW_PUSH_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /538300E1;
+Reference = SW3;
+ValeurCmp = SW_PUSH;
+IdModule  = Discret:SW_PUSH_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /53830112;
+Reference = SW4;
+ValeurCmp = SW_PUSH;
+IdModule  = Discret:SW_PUSH_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A82FC;
+Reference = U1;
+ValeurCmp = EFM32GG330;
+IdModule  = freewatch:QFN64;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C99D2;
+Reference = U2;
+ValeurCmp = NCP1117ST33T3G;
+IdModule  = SMD_Packages:SOT223;
+EndCmp
+
+BeginCmp
+TimeStamp = /537FC26F;
+Reference = X1;
+ValeurCmp = CRYSTAL_SMD;
+IdModule  = freewatch:AB26TRB;
+EndCmp
+
+EndListe
