@@ -1,0 +1,6 @@
+================ Revision history ============================================
+3.20.2:
+ - Added SLEEP driver.
+
+3.20.0:
+ - First version with NVM and GPIOINTERRUPT drivers.
