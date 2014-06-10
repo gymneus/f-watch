@@ -5,7 +5,7 @@
   (fp_text value VAL** (at 0 15.25) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (fp_text user "ECO1 = GND clearance" (at 15.35 0.9) (layer F.SilkS)
+  (fp_text user "ECO1 = GND clearance" (at 15.35 0.9) (layer F.SilkS) hide
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (fp_line (start -3 -0.6) (end -3 4.25) (layer Eco1.User) (width 0.17))

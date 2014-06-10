@@ -1,11 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-05-28 BZR 4896)-product   date = Sun 01 Jun 2014 04:25:04 PM CEST
-
-BeginCmp
-TimeStamp = /537A663F/53821E01;
-Reference = ANT1;
-ValeurCmp = W3011A;
-IdModule  = freewatch_footprints:ANTENNA_W3011A;
-EndCmp
+Cmp-Mod V01 Created by Cvpcb (2014-06-01 BZR 4909)-product   date = Tue 10 Jun 2014 11:01:30 PM CEST
 
 BeginCmp
 TimeStamp = /537A65FD/537BB217;
@@ -64,9 +57,9 @@ IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537C4A70;
+TimeStamp = /537A65FD/539156F2;
 Reference = C9;
-ValeurCmp = 56pF;
+ValeurCmp = 1uF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
@@ -74,27 +67,27 @@ BeginCmp
 TimeStamp = /537A663F/537C472A;
 Reference = C10;
 ValeurCmp = NM;
-IdModule  = Capacitors_SMD:c_0603;
+IdModule  = Capacitors_SMD:c_0402;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/537C4796;
 Reference = C11;
 ValeurCmp = NM;
-IdModule  = Capacitors_SMD:c_0603;
+IdModule  = Capacitors_SMD:c_0402;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/53820BAE;
 Reference = C12;
-ValeurCmp = 100pF;
+ValeurCmp = 22pF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/53820B46;
 Reference = C13;
-ValeurCmp = 33nF;
+ValeurCmp = 22pF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
@@ -108,28 +101,21 @@ EndCmp
 BeginCmp
 TimeStamp = /537A663F/537C5505;
 Reference = C15;
-ValeurCmp = 10uF;
+ValeurCmp = 2.2uF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/537C5493;
 Reference = C16;
-ValeurCmp = 100nF;
+ValeurCmp = 22pF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537C56B6;
+TimeStamp = /537A65FD/53915705;
 Reference = C17;
 ValeurCmp = 4.7uF;
-IdModule  = Capacitors_SMD:c_0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A663F/537C56DE;
-Reference = C18;
-ValeurCmp = 100nF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
@@ -316,20 +302,6 @@ IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537F02DF;
-Reference = D1;
-ValeurCmp = CDBU0130R;
-IdModule  = freewatch_footprints:d_0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A663F/537F01F9;
-Reference = D2;
-ValeurCmp = CDBU0130R;
-IdModule  = freewatch_footprints:d_0603;
-EndCmp
-
-BeginCmp
 TimeStamp = /537A663F/538345B8;
 Reference = D3;
 ValeurCmp = CDBU0130R;
@@ -365,6 +337,13 @@ IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
+TimeStamp = /537A663F/5390F7CE;
+Reference = L1;
+ValeurCmp = IND;
+IdModule  = Capacitors_SMD:c_0402;
+EndCmp
+
+BeginCmp
 TimeStamp = /537A65FD/537A6938;
 Reference = P1;
 ValeurCmp = USB-MICRO-AB;
@@ -393,6 +372,20 @@ IdModule  = freewatch_footprints:78171-5006;
 EndCmp
 
 BeginCmp
+TimeStamp = /537A663F/539134C1;
+Reference = Q1;
+ValeurCmp = BSS138;
+IdModule  = Transistors_SMD:sot23;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A663F/53914EE0;
+Reference = Q2;
+ValeurCmp = BSS138;
+IdModule  = Transistors_SMD:sot23;
+EndCmp
+
+BeginCmp
 TimeStamp = /537A65FD/537C0F32;
 Reference = R1;
 ValeurCmp = 100k;
@@ -403,6 +396,13 @@ BeginCmp
 TimeStamp = /537A65FD/537C12D1;
 Reference = R2;
 ValeurCmp = 100k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A663F/539168AA;
+Reference = R3;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
@@ -449,30 +449,30 @@ IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537C46E1;
+TimeStamp = /537A663F/539167ED;
 Reference = R10;
-ValeurCmp = 0;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/537C4AEB;
 Reference = R11;
-ValeurCmp = 100;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/537C4B8B;
 Reference = R12;
-ValeurCmp = 100;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A663F/537EA484;
 Reference = R13;
-ValeurCmp = 470k;
+ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
@@ -500,28 +500,28 @@ EndCmp
 BeginCmp
 TimeStamp = /537A662B/5383BD39;
 Reference = R17;
-ValeurCmp = 100k;
+ValeurCmp = 91R;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383BE91;
 Reference = R18;
-ValeurCmp = 100k;
+ValeurCmp = 91R;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383BECD;
 Reference = R19;
-ValeurCmp = 100k;
+ValeurCmp = 91R;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383BF0A;
 Reference = R20;
-ValeurCmp = 100k;
+ValeurCmp = 91R;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
@@ -529,14 +529,14 @@ BeginCmp
 TimeStamp = /537A662B/537D2D0A;
 Reference = R21;
 ValeurCmp = 15R;
-IdModule  = freewatch_footprints:r_0603;
+IdModule  = Capacitors_SMD:c_0402;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/537D2D6B;
 Reference = R22;
 ValeurCmp = 15R;
-IdModule  = freewatch_footprints:r_0603;
+IdModule  = Capacitors_SMD:c_0402;
 EndCmp
 
 BeginCmp
@@ -577,6 +577,20 @@ EndCmp
 BeginCmp
 TimeStamp = /537A65FD/538775F2;
 Reference = R28;
+ValeurCmp = 10k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A663F/53914EDA;
+Reference = R29;
+ValeurCmp = 10k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A663F/53914ED3;
+Reference = R30;
 ValeurCmp = 10k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
@@ -645,17 +659,17 @@ IdModule  = freewatch_footprints:TDFN-10;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537C45EB;
+TimeStamp = /537A65FD/539156EB;
 Reference = U5;
-ValeurCmp = MAX2659;
+ValeurCmp = TPS780180300;
 IdModule  = freewatch_footprints:UDFN6;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537A7ED7;
+TimeStamp = /537A663F/5390DC07;
 Reference = U6;
-ValeurCmp = L70;
-IdModule  = freewatch_footprints:GPS_L70;
+ValeurCmp = M10478-A1;
+IdModule  = freewatch_footprints:M10478-A1;
 EndCmp
 
 BeginCmp
@@ -668,13 +682,6 @@ EndCmp
 BeginCmp
 TimeStamp = /537A663F/537E740A;
 Reference = U8;
-ValeurCmp = ADP198;
-IdModule  = freewatch_footprints:LFCSP_8L;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A663F/537E7255;
-Reference = U9;
 ValeurCmp = ADP198;
 IdModule  = freewatch_footprints:LFCSP_8L;
 EndCmp
