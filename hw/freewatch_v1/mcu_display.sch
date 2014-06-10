@@ -73,35 +73,29 @@ Text GLabel 5750 2250 2    40   Output ~ 0
 AC_CLK
 Text GLabel 5750 2050 2    40   BiDi ~ 0
 AC_SDIO
-Text GLabel 6150 2150 2    40   Output ~ 0
+Text GLabel 5750 2150 2    40   Output ~ 0
 AC_CS_XL
-Text GLabel 6150 2350 2    40   Output ~ 0
+Text GLabel 5750 2350 2    40   Output ~ 0
 AC_CS_MAG
-Text GLabel 6150 2650 2    40   Input ~ 0
-AC_INT_XL
-Text GLabel 6150 2750 2    40   Input ~ 0
+Text GLabel 2850 3550 0    40   Input ~ 0
 AC_INT_MAG
-Text GLabel 6150 2850 2    40   Input ~ 0
+Text GLabel 2850 3450 0    40   Input ~ 0
 AC_DRDY_MAG
 Text GLabel 2850 2150 0    40   Output ~ 0
 SCL
 Text GLabel 2850 2050 0    40   BiDi ~ 0
 SDA
-Text GLabel 2450 2650 0    40   Input ~ 0
+Text GLabel 2850 5050 0    40   Input ~ 0
 LS_INT_N
-Text GLabel 2450 2750 0    40   Input ~ 0
-PS_INT1
-Text GLabel 2450 2850 0    40   Input ~ 0
-PS_INT2
 Text GLabel 5750 2550 2    40   Input ~ 0
 GPS_TXD
 Text GLabel 5750 2450 2    40   Output ~ 0
 GPS_RXD
-Text GLabel 2450 2350 0    40   Output ~ 0
+Text GLabel 2850 4550 0    40   Output ~ 0
 GPS_STDBY
-Text GLabel 2450 2450 0    40   Output ~ 0
+Text GLabel 2850 4650 0    40   Output ~ 0
 GPS_RST
-Text GLabel 2450 2250 0    40   Input ~ 0
+Text GLabel 5750 2850 2    40   Input ~ 0
 GPS_PPS
 Text GLabel 2850 4250 0    40   Input ~ 0
 SD_MISO
@@ -111,7 +105,7 @@ Text GLabel 2850 4350 0    40   Output ~ 0
 SD_CLK
 Text GLabel 2850 4450 0    40   Output ~ 0
 SD_CS_N
-Text GLabel 2450 2550 0    40   Output ~ 0
+Text GLabel 2850 4750 0    40   Output ~ 0
 GPS_EN
 Text GLabel 5750 4450 2    40   BiDi ~ 0
 USB_DP
@@ -119,14 +113,12 @@ Text GLabel 5750 4350 2    40   BiDi ~ 0
 USB_DM
 Text GLabel 5750 4550 2    40   Input ~ 0
 USB_ID
-Text GLabel 2450 3450 0    40   Input ~ 0
+Text GLabel 5750 3150 2    40   Input ~ 0
 BC_PGOOD_N
-Text GLabel 2450 3550 0    40   Input ~ 0
+Text GLabel 5750 3050 2    40   Input ~ 0
 BC_CHG_N
-Text GLabel 2450 3650 0    40   Input ~ 0
+Text GLabel 2850 2250 0    40   Input ~ 0
 FG_ALRT_N
-Text GLabel 2450 2950 0    40   Output ~ 0
-V_SET
 Text Notes 9200 2700 0    40   ~ 0
 VCOM inversion\nEXTMODE = VDD -> hardware (EXTCOMIN)\nEXTMODE = VSS -> software
 $Comp
@@ -527,7 +519,7 @@ Text Label 4950 950  0    40   ~ 0
 USB_DM
 Text Label 5750 4750 0    40   ~ 0
 MCU_RST_N
-Text GLabel 2850 4050 0    40   Output ~ 0
+Text GLabel 5750 2650 2    40   Output ~ 0
 SD_EN
 Text Notes 4450 1100 0    40   ~ 0
 Mount for low-speed device
@@ -649,13 +641,13 @@ Text Label 5750 3650 0    40   ~ 0
 LCD_INV
 Text Label 5750 3550 0    40   ~ 0
 LCD_CS
-Text Label 6150 3350 0    40   ~ 0
+Text Label 2850 4050 0    40   ~ 0
 LCD_EN
 Text Notes 4000 1000 0    40   ~ 0
 PD2
 Text Label 8500 1850 0    40   ~ 0
 LCD_VCC
-Text Label 6150 3150 0    40   ~ 0
+Text Label 2850 3950 0    40   ~ 0
 LCD_VCC
 Text Notes 6750 2200 0    40   ~ 0
 Check that US1_RX (PD1) can be\nused as GPIO when using USART1
@@ -784,7 +776,7 @@ Wire Wire Line
 Wire Wire Line
 	3050 5250 3050 5700
 Wire Wire Line
-	3250 5650 3050 5650
+	1800 5650 3250 5650
 Connection ~ 3050 5650
 Wire Wire Line
 	3250 5550 3050 5550
@@ -795,8 +787,6 @@ Connection ~ 3050 5450
 Wire Wire Line
 	3250 5350 3050 5350
 Connection ~ 3050 5350
-Wire Wire Line
-	1800 5650 3000 5650
 Wire Wire Line
 	1800 5600 1800 5700
 Wire Wire Line
@@ -849,9 +839,9 @@ Wire Wire Line
 Wire Wire Line
 	3250 3250 1700 3250
 Wire Wire Line
-	1700 3250 1700 3100
+	1700 3100 1700 3250
 Wire Wire Line
-	1700 3100 1000 3100
+	1000 3100 1700 3100
 Wire Wire Line
 	1000 3500 1700 3500
 Wire Wire Line
@@ -913,51 +903,31 @@ Wire Wire Line
 Wire Wire Line
 	4950 2250 5750 2250
 Wire Wire Line
-	3250 2250 2450 2250
+	3250 2250 2850 2250
 Wire Wire Line
-	2450 2350 3250 2350
+	2850 2350 3250 2350
 Wire Wire Line
-	3250 2450 2450 2450
+	4950 2150 5750 2150
 Wire Wire Line
-	2450 2550 3250 2550
-Wire Wire Line
-	2450 2650 3250 2650
-Wire Wire Line
-	2450 2750 3250 2750
-Wire Wire Line
-	3250 2850 2450 2850
-Wire Wire Line
-	4950 2150 6150 2150
-Wire Wire Line
-	6150 2350 4950 2350
-Wire Wire Line
-	4950 2650 6150 2650
-Wire Wire Line
-	4950 2750 6150 2750
-Wire Wire Line
-	4950 2850 6150 2850
-Wire Wire Line
-	4950 3350 6150 3350
+	5750 2350 4950 2350
 Wire Wire Line
 	4950 3650 5750 3650
 Wire Wire Line
 	4950 3750 5750 3750
 Wire Wire Line
-	2450 2950 3250 2950
-Wire Wire Line
 	3250 3050 2850 3050
 Wire Wire Line
-	2450 3450 3250 3450
+	2850 3450 3250 3450
 Wire Wire Line
-	2450 3550 3250 3550
+	2850 3550 3250 3550
 Wire Wire Line
 	2850 4050 3250 4050
 Wire Wire Line
-	1750 5050 3250 5050
+	2850 5050 3250 5050
 Wire Wire Line
-	3250 4950 1750 4950
+	3250 4950 2850 4950
 Wire Wire Line
-	1750 4850 3250 4850
+	2850 4850 3250 4850
 Wire Wire Line
 	3250 4750 2850 4750
 Wire Wire Line
@@ -977,7 +947,7 @@ Wire Wire Line
 Wire Wire Line
 	9200 6050 9200 6100
 Wire Wire Line
-	4950 3050 6150 3050
+	4950 3050 5750 3050
 $Comp
 L SW_PUSH SW1
 U 1 1 5383007F
@@ -1294,13 +1264,13 @@ Wire Wire Line
 	6100 6800 6100 6850
 Wire Wire Line
 	6100 7350 6100 7400
-Text Label 1750 4650 0    40   ~ 0
+Text Label 5750 2750 0    40   ~ 0
 SW_TL
-Text Label 1750 4850 0    40   ~ 0
+Text Label 2850 2750 0    40   ~ 0
 SW_TR
-Text Label 1750 4950 0    40   ~ 0
+Text Label 2850 4850 0    40   ~ 0
 SW_BL
-Text Label 1750 5050 0    40   ~ 0
+Text Label 2850 2350 0    40   ~ 0
 SW_BR
 Text Label 2100 7100 0    40   ~ 0
 SW_TL
@@ -1310,7 +1280,7 @@ Text Label 4900 7100 0    40   ~ 0
 SW_BL
 Text Label 6300 7100 0    40   ~ 0
 SW_BR
-Text GLabel 6150 3050 2    40   Output ~ 0
+Text GLabel 2850 4950 0    40   Output ~ 0
 VM_EN
 Text Notes 9250 950  0    60   ~ 12
 Memory LCD display
@@ -1324,12 +1294,10 @@ Text Notes 9100 3050 0    60   ~ 12
 LCD backlight
 Text Notes 9150 4350 0    60   ~ 12
 Buzzer
-Wire Wire Line
-	2450 3650 3250 3650
 Text Notes 6100 3650 0    40   ~ 0
 Timer 3 output 0 (PWM)
 Wire Wire Line
-	6150 3150 4950 3150
+	5750 3150 4950 3150
 Text Label 5750 3750 0    40   ~ 0
 LCD_BKL1
 Text Label 2850 3050 0    40   ~ 0
@@ -1514,8 +1482,8 @@ Connection ~ 9500 3200
 Wire Wire Line
 	9400 4550 8700 4550
 Wire Wire Line
-	1750 4650 3250 4650
-Text Label 2850 4750 0    40   ~ 0
+	2850 4650 3250 4650
+Text Label 2850 2850 0    40   ~ 0
 BUZ
 Text Label 8700 4550 0    40   ~ 0
 BUZ
@@ -1580,10 +1548,31 @@ Text Notes 6100 3750 0    40   ~ 0
 Timer 3 output 1 (PWM)
 Text Notes 2600 3150 0    40   ~ 0
 Timer 3 output 2 (PWM)
-Text Notes 2100 4750 0    40   ~ 0
-Timer 2 output 0 (PWM)
+Text Notes 2100 2850 0    40   ~ 0
+Timer 2 output 1 (PWM)
+NoConn ~ 3250 2650
+NoConn ~ 3250 2550
+NoConn ~ 3250 2450
+NoConn ~ 3250 3650
+Wire Wire Line
+	2850 2750 3250 2750
+Wire Wire Line
+	3250 2850 2850 2850
+Wire Wire Line
+	2850 2950 3250 2950
+Wire Wire Line
+	2850 3950 3250 3950
+Text GLabel 2850 2950 0    40   Input ~ 0
+AC_INT_XL
+Wire Wire Line
+	4950 2650 5750 2650
+Wire Wire Line
+	4950 2750 5750 2750
+Wire Wire Line
+	4950 2850 5750 2850
+Wire Wire Line
+	2850 4550 3250 4550
 NoConn ~ 3250 3750
-NoConn ~ 3250 3950
-NoConn ~ 3250 4550
+NoConn ~ 4950 3350
 NoConn ~ 4950 4250
 $EndSCHEMATC

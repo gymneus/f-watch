@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-05-16 BZR 4850)-product   date = Tue 27 May 2014 10:10:43 PM CEST
+Cmp-Mod V01 Created by Cvpcb (2014-05-28 BZR 4896)-product   date = Sun 01 Jun 2014 04:25:04 PM CEST
 
 BeginCmp
 TimeStamp = /537A663F/53821E01;
@@ -31,7 +31,7 @@ EndCmp
 BeginCmp
 TimeStamp = /537A65FD/537BE25D;
 Reference = C4;
-ValeurCmp = 1uF;
+ValeurCmp = 4.7uF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
@@ -169,22 +169,8 @@ IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537D04F1;
-Reference = C24;
-ValeurCmp = 10uF;
-IdModule  = Capacitors_SMD:c_0603;
-EndCmp
-
-BeginCmp
 TimeStamp = /537A663F/537CF915;
 Reference = C25;
-ValeurCmp = 100nF;
-IdModule  = Capacitors_SMD:c_0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A663F/537D047D;
-Reference = C26;
 ValeurCmp = 100nF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
@@ -354,28 +340,28 @@ BeginCmp
 TimeStamp = /537A662B/5383CA02;
 Reference = D4;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CB1F;
 Reference = D5;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CB69;
 Reference = D6;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /537A662B/5383CBB0;
 Reference = D7;
 ValeurCmp = LED_STD;
-IdModule  = LEDs:LED-0805;
+IdModule  = LEDs:LED-0603;
 EndCmp
 
 BeginCmp
@@ -386,31 +372,10 @@ IdModule  = freewatch_footprints:USB_MICRO_AB;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A65FD/537BCCC5;
-Reference = P2;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
-EndCmp
-
-BeginCmp
 TimeStamp = /537A65FD/537A6E8C;
 Reference = P3;
 ValeurCmp = CONN_2;
 IdModule  = freewatch_footprints:78171-0002;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A65FD/537BCAC2;
-Reference = P4;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A65FD/538337C5;
-Reference = P5;
-ValeurCmp = CONN_1;
-IdModule  = Measurement_Points:Measurement_Point_Round-SMD-Pad_Small;
 EndCmp
 
 BeginCmp
@@ -437,13 +402,6 @@ EndCmp
 BeginCmp
 TimeStamp = /537A65FD/537C12D1;
 Reference = R2;
-ValeurCmp = 100k;
-IdModule  = freewatch_footprints:r_0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /537A65FD/537BDFC4;
-Reference = R3;
 ValeurCmp = 100k;
 IdModule  = freewatch_footprints:r_0603;
 EndCmp
@@ -610,6 +568,20 @@ IdModule  = freewatch_footprints:r_0603;
 EndCmp
 
 BeginCmp
+TimeStamp = /537A65FD/53876EE2;
+Reference = R27;
+ValeurCmp = 10k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A65FD/538775F2;
+Reference = R28;
+ValeurCmp = 10k;
+IdModule  = freewatch_footprints:r_0603;
+EndCmp
+
+BeginCmp
 TimeStamp = /537A662B/5383CD4E;
 Reference = SP1;
 ValeurCmp = BUZZER;
@@ -722,10 +694,10 @@ IdModule  = freewatch_footprints:LGA12;
 EndCmp
 
 BeginCmp
-TimeStamp = /537A663F/537A8023;
+TimeStamp = /537A663F/538A4740;
 Reference = U12;
-ValeurCmp = MPL3115A2;
-IdModule  = freewatch_footprints:LGA8;
+ValeurCmp = MS5806-02BA;
+IdModule  = freewatch_footprints:MS5806-02BA;
 EndCmp
 
 BeginCmp

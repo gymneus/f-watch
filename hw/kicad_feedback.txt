@@ -1,13 +1,18 @@
 
 
+General
+-------------------------------------------
+
+* Menus should contains ALL the options/features (someone learning, like me, will just browse the menu to look for something).
+* 
+
+
 Kicad (project explorer)
 -------------------------------------------
 
 * Can't delete "sub-project" .pro files.
 * I was confused not to see hierachical schematic sheet here.
 * 
-
-
 
 
 Component Libray Editor
@@ -56,6 +61,7 @@ Eeschema
 * Bug, when placing a component that exists in another library (with the same name) it doesn't place the selected one (e.g. resistor).
 * Bug, double-click on a component, it asks for clarification, when clarified don't open pop-up window.
 * Drawing straight line when dragging wire, not exactly what we want.
+* Can't freely name power nets.
 * 
 
 
@@ -72,11 +78,36 @@ Pcbnew
 ----------------------------------------------------
 
 * Can't re-load module library?
-* Component search function not working? (e.g. can't search for "C10").
+* Component search function not working? (first search says found, click second time says not found).
+  -> Should zoom to component.
+* Undo segfaults!!!
+* Can't change track width when routing is active.
+* Copy/paste is missing.
+* ALWAYS CRASHES !!! (segfault)
+* Missing easy change width of tracks.
+* Missing select entire track or connected copper.
+* Missing snap on all layers.
+* Precise component placement (manually enter position).
+* Can't place via freely (when not routing).
+* Can't easily display top or bottom layers only.
+* KEEPS CRASHING !!! (segfault)
+* Select "Dwgs.User" layer, select graphic line tool -> sometimes tool doesn't follow the mouse.
+* Missing snap via to trace end.
+* Missing round keepout area (basically the keepout should be a layer and we should be able to draw any graphics on it).
+* Missing lock graphic drawings.
+* Can't place a via inside a pad without a trace connected to it (e.g. thermal pads).
 * 
 
 OpenGL
 
 * Can't read net name inside pad on selected components.
-* Hidden test is displayed!
+* When moving component to bottom, some 'shadow' persists on the top.
+* Can't selectively remove ratsnest from component.
+* Double click on an object should open the property dialog.
+* Place origin doesn't work.
+* Grid isn't aligned with default canevas mode!!
+* Can route through keepout area!
+* Can't resize trace (drag the end).
+* Bottom solder mask is under top copper and solder mask when bottom layer is selected.
+* Ratsnest not refresh when re-loading the netlist.
 * 
