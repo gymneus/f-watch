@@ -116,4 +116,5 @@ OpenGL
 * Can't resize trace (drag the end).
 * Bottom solder mask is under top copper and solder mask when bottom layer is selected.
 * Ratsnest not refresh when re-loading the netlist.
+* Component lock doesn't work (can still move locked components).
 * 
