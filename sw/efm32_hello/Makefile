@@ -103,33 +103,32 @@ override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=corte
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
 #
 override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -TDevice/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
+-mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
  -Wl,--gc-sections
 
 LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
 
 INCLUDEPATHS += \
--Isrc \
--ICMSIS/Include \
--IDevice/EnergyMicro/EFM32GG/Include \
--Iemlib/inc \
+-I../common/CMSIS/Include \
+-I../common/Device/EnergyMicro/EFM32GG/Include \
+-I../common/emlib/inc
 
 ####################################################################
 # Files                                                            #
 ####################################################################
 
-C_SRC +=  \
-Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
-emlib/src/em_system.c \
-emlib/src/em_cmu.c \
-emlib/src/em_assert.c \
-emlib/src/em_gpio.c \
-src/blink.c
+C_SRC += \
+../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../common/emlib/src/em_system.c \
+../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_assert.c \
+../common/emlib/src/em_gpio.c \
+blink.c
 
 s_SRC += 
 
-S_SRC +=  \
-Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
+S_SRC += \
+../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
 
 ####################################################################
 # Rules                                                            #
@@ -192,7 +191,7 @@ ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 endif
 
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ./openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+	openocd -s ../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))

@@ -94,7 +94,7 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 #
 override CFLAGS += -D$(DEVICE) -D__CORTEX_M3 -D__CMSIS_RTOS -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DDEBUG_EFM  \
+-fdata-sections -fomit-frame-pointer -DDEBUG_EFM \
 $(DEPFLAGS)
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
@@ -111,16 +111,16 @@ LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 INCLUDEPATHS += \
 -I../../INC \
 -I../../SRC \
--ICMSIS/Include \
--IDevice/EnergyMicro/EFM32GG/Include \
--Iemlib/inc
+-I../../../common/CMSIS/Include \
+-I../../../common/Device/EnergyMicro/EFM32GG/Include \
+-I../../../common/emlib/inc
 
 ####################################################################
 # Files                                                            #
 ####################################################################
 
 C_SRC +=  \
-Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../../../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 RTX_Conf_CM.c \
 RTX_ex2.c \
 ../../SRC/rt_CMSIS.c \
@@ -137,18 +137,17 @@ RTX_ex2.c \
 ../../SRC/rt_Timer.c \
 ../../SRC/HAL_CM.c \
 ../../SRC/rt_Task.c \
-emlib/src/em_system.c \
-emlib/src/em_cmu.c \
-emlib/src/em_assert.c \
-emlib/src/em_gpio.c
-#system_ARMCM3.c \
+../../../common/emlib/src/em_system.c \
+../../../common/emlib/src/em_cmu.c \
+../../../common/emlib/src/em_assert.c \
+../../../common/emlib/src/em_gpio.c
 
 s_SRC += \
 ../../SRC/GCC/HAL_CM3.s \
 ../../SRC/GCC/SVC_Table.s
 
 S_SRC += \
-Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
+../../../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
 
 ####################################################################
 # Rules                                                            #
@@ -213,7 +212,7 @@ ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 endif
 
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ./openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+	openocd -s ../../../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))
