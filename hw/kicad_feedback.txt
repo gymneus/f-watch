@@ -117,4 +117,5 @@ OpenGL
 * Bottom solder mask is under top copper and solder mask when bottom layer is selected.
 * Ratsnest not refresh when re-loading the netlist.
 * Component lock doesn't work (can still move locked components).
+* Dwgs.User layer is alway drawn on top of other layers (and it shouldn't).
 * 
