@@ -83,14 +83,12 @@ static void LedBlink(void *pParameters)
  *****************************************************************************/
 int main(void)
 {
-	int i;
+  int i;
 
   /* Chip errata */
   CHIP_Init();
 
-  /* Setup SysTick Timer for 1 msec interrupts  */
-  if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
-
+  /* Enable clocks */
   CMU_ClockEnable(cmuClock_HFPER, true);
   CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -106,12 +104,16 @@ int main(void)
 #endif
 
   /* Parameters value for taks*/
-  static TaskParams_t parametersToTask1 = { 1000 / portTICK_RATE_MS, 1 };
-  static TaskParams_t parametersToTask2 = { 500 / portTICK_RATE_MS, 2 };
+  static TaskParams_t parametersToTask1 = { 500 / portTICK_RATE_MS, 1 };
+  static TaskParams_t parametersToTask2 = { 250 / portTICK_RATE_MS, 2 };
+  static TaskParams_t parametersToTask3 = { 125 / portTICK_RATE_MS, 3 };
+  static TaskParams_t parametersToTask4 = {  62 / portTICK_RATE_MS, 4 };
 
   /*Create two task for blinking leds*/
   xTaskCreate( LedBlink, (const signed char *) "LedBlink1", STACK_SIZE_FOR_TASK, &parametersToTask1, TASK_PRIORITY, NULL);
   xTaskCreate( LedBlink, (const signed char *) "LedBlink2", STACK_SIZE_FOR_TASK, &parametersToTask2, TASK_PRIORITY, NULL);
+  xTaskCreate( LedBlink, (const signed char *) "LedBlink3", STACK_SIZE_FOR_TASK, &parametersToTask3, TASK_PRIORITY, NULL);
+  xTaskCreate( LedBlink, (const signed char *) "LedBlink4", STACK_SIZE_FOR_TASK, &parametersToTask4, TASK_PRIORITY, NULL);
 
   /*Start FreeRTOS Scheduler*/
   vTaskStartScheduler();
