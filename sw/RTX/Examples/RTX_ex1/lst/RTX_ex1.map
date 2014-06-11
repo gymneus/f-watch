@@ -1,0 +1,1189 @@
+Archive member included because of file (symbol)
+
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                              build/RTX_Conf_CM.o (atexit)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o (exit)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                              build/RTX_Conf_CM.o (__libc_fini_array)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (_global_impure_ptr)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o (__libc_init_array)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o (memset)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o) (__register_exitproc)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (__call_exitprocs)
+/opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+                              /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o) (_exit)
+
+Allocating common symbols
+Common symbol       size              file
+
+main_id             0x4               build/RTX_ex1.o
+os_robin            0x8               build/rt_Robin.o
+os_initialized      0x1               build/rt_CMSIS.o
+threadX_id          0x4               build/RTX_ex1.o
+mp_stk              0x4c0             build/RTX_Conf_CM.o
+os_active_TCB       0x18              build/RTX_Conf_CM.o
+os_stack_mem        0xe0              build/RTX_Conf_CM.o
+os_messageQ_q_osTimerMessageQ
+                    0x10              build/RTX_Conf_CM.o
+os_running          0x1               build/rt_CMSIS.o
+os_fifo             0x84              build/RTX_Conf_CM.o
+osMessageQId_osTimerMessageQ
+                    0x4               build/RTX_Conf_CM.o
+os_tsk              0x8               build/rt_Task.o
+os_idle_TCB         0x30              build/rt_Task.o
+os_timer_head       0x4               build/rt_CMSIS.o
+os_rdy              0x18              build/rt_List.o
+os_time             0x4               build/rt_Time.o
+os_dly              0x18              build/rt_List.o
+os_tick_irqn        0x4               build/rt_System.o
+mp_tcb              0x12c             build/RTX_Conf_CM.o
+osThreadId_osTimerThread
+                    0x4               build/RTX_Conf_CM.o
+
+Discarded input sections
+
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+ .data          0x00000000        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.extab     0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .text          0x00000000        0x0 build/system_ARMCM3.o
+ .data          0x00000000        0x0 build/system_ARMCM3.o
+ .bss           0x00000000        0x0 build/system_ARMCM3.o
+ .text.SystemCoreClockUpdate
+                0x00000000       0x10 build/system_ARMCM3.o
+ .text          0x00000000        0x0 build/RTX_Conf_CM.o
+ .data          0x00000000        0x0 build/RTX_Conf_CM.o
+ .bss           0x00000000        0x0 build/RTX_Conf_CM.o
+ .rodata.os_timernum
+                0x00000000        0x4 build/RTX_Conf_CM.o
+ .bss.os_tmr    0x00000000        0x4 build/RTX_Conf_CM.o
+ .text          0x00000000        0x0 build/RTX_ex1.o
+ .data          0x00000000        0x0 build/RTX_ex1.o
+ .bss           0x00000000        0x0 build/RTX_ex1.o
+ .text          0x00000000        0x0 build/rt_CMSIS.o
+ .data          0x00000000        0x0 build/rt_CMSIS.o
+ .bss           0x00000000        0x0 build/rt_CMSIS.o
+ .text.rt_id2obj
+                0x00000000       0x1c build/rt_CMSIS.o
+ .text.svcKernelRunning
+                0x00000000        0xc build/rt_CMSIS.o
+ .text.osKernelRunning
+                0x00000000       0x3c build/rt_CMSIS.o
+ .text.svcThreadYield
+                0x00000000        0xc build/rt_CMSIS.o
+ .text.svcThreadSetPriority
+                0x00000000       0x64 build/rt_CMSIS.o
+ .text.svcThreadGetPriority
+                0x00000000       0x2c build/rt_CMSIS.o
+ .text.osThreadTerminate
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osThreadYield
+                0x00000000       0x28 build/rt_CMSIS.o
+ .text.osThreadSetPriority
+                0x00000000       0x40 build/rt_CMSIS.o
+ .text.osThreadGetPriority
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osWait   0x00000000       0x1c build/rt_CMSIS.o
+ .text.rt_timer_remove
+                0x00000000       0x78 build/rt_CMSIS.o
+ .text.svcTimerCreate
+                0x00000000       0xa4 build/rt_CMSIS.o
+ .text.svcTimerStart
+                0x00000000       0x70 build/rt_CMSIS.o
+ .text.svcTimerStop
+                0x00000000       0x44 build/rt_CMSIS.o
+ .text.svcTimerDelete
+                0x00000000       0x44 build/rt_CMSIS.o
+ .text.svcTimerCall
+                0x00000000       0x60 build/rt_CMSIS.o
+ .text.osTimerCreate
+                0x00000000       0x78 build/rt_CMSIS.o
+ .text.osTimerStart
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osTimerStop
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osTimerDelete
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osTimerCall
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osTimerThread
+                0x00000000       0x40 build/rt_CMSIS.o
+ .text.svcSignalClear
+                0x00000000       0x4c build/rt_CMSIS.o
+ .text.svcSignalGet
+                0x00000000       0x28 build/rt_CMSIS.o
+ .text.osSignalClear
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osSignalGet
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.svcMutexCreate
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.svcMutexWait
+                0x00000000       0x58 build/rt_CMSIS.o
+ .text.svcMutexRelease
+                0x00000000       0x40 build/rt_CMSIS.o
+ .text.svcMutexDelete
+                0x00000000       0x34 build/rt_CMSIS.o
+ .text.osMutexCreate
+                0x00000000       0x58 build/rt_CMSIS.o
+ .text.osMutexWait
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osMutexRelease
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osMutexDelete
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.svcSemaphoreCreate
+                0x00000000       0x68 build/rt_CMSIS.o
+ .text.svcSemaphoreWait
+                0x00000000       0x58 build/rt_CMSIS.o
+ .text.svcSemaphoreRelease
+                0x00000000       0x44 build/rt_CMSIS.o
+ .text.svcSemaphoreDelete
+                0x00000000       0x34 build/rt_CMSIS.o
+ .text.isrSemaphoreRelease
+                0x00000000       0x44 build/rt_CMSIS.o
+ .text.osSemaphoreCreate
+                0x00000000       0x60 build/rt_CMSIS.o
+ .text.osSemaphoreWait
+                0x00000000       0x3c build/rt_CMSIS.o
+ .text.osSemaphoreRelease
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osSemaphoreDelete
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.rt_clr_box
+                0x00000000       0x34 build/rt_CMSIS.o
+ .text.svcPoolCreate
+                0x00000000       0x60 build/rt_CMSIS.o
+ .text.sysPoolAlloc
+                0x00000000       0x34 build/rt_CMSIS.o
+ .text.sysPoolFree
+                0x00000000       0x30 build/rt_CMSIS.o
+ .text.osPoolCreate
+                0x00000000       0x58 build/rt_CMSIS.o
+ .text.osPoolAlloc
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.osPoolCAlloc
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.osPoolFree
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.svcMessagePut
+                0x00000000       0x54 build/rt_CMSIS.o
+ .text.svcMessageGet
+                0x00000000       0xd8 build/rt_CMSIS.o
+ .text.isrMessageGet
+                0x00000000       0x78 build/rt_CMSIS.o
+ .text.osMessageCreate
+                0x00000000       0x60 build/rt_CMSIS.o
+ .text.osMessagePut
+                0x00000000       0x4c build/rt_CMSIS.o
+ .text.osMessageGet
+                0x00000000       0x58 build/rt_CMSIS.o
+ .text.svcMailCreate
+                0x00000000       0xa0 build/rt_CMSIS.o
+ .text.sysMailAlloc
+                0x00000000       0xb8 build/rt_CMSIS.o
+ .text.sysMailFree
+                0x00000000       0xa8 build/rt_CMSIS.o
+ .text.osMailCreate
+                0x00000000       0x60 build/rt_CMSIS.o
+ .text.osMailAlloc
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.osMailCAlloc
+                0x00000000       0x50 build/rt_CMSIS.o
+ .text.osMailFree
+                0x00000000       0x48 build/rt_CMSIS.o
+ .text.osMailPut
+                0x00000000       0x38 build/rt_CMSIS.o
+ .text.osMailGet
+                0x00000000       0x4c build/rt_CMSIS.o
+ .text          0x00000000        0x0 build/rt_Event.o
+ .data          0x00000000        0x0 build/rt_Event.o
+ .bss           0x00000000        0x0 build/rt_Event.o
+ .text.rt_evt_clr
+                0x00000000       0x40 build/rt_Event.o
+ .text.rt_evt_get
+                0x00000000       0x10 build/rt_Event.o
+ .text          0x00000000        0x0 build/rt_List.o
+ .data          0x00000000        0x0 build/rt_List.o
+ .bss           0x00000000        0x0 build/rt_List.o
+ .text.rt_get_same_rdy_prio
+                0x00000000       0x34 build/rt_List.o
+ .text          0x00000000        0x0 build/rt_Mailbox.o
+ .data          0x00000000        0x0 build/rt_Mailbox.o
+ .bss           0x00000000        0x0 build/rt_Mailbox.o
+ .text.rt_mbx_send
+                0x00000000       0xfc build/rt_Mailbox.o
+ .text.rt_mbx_wait
+                0x00000000      0x11c build/rt_Mailbox.o
+ .text.isr_mbx_receive
+                0x00000000       0x7c build/rt_Mailbox.o
+ .text          0x00000000        0x0 build/rt_MemBox.o
+ .data          0x00000000        0x0 build/rt_MemBox.o
+ .bss           0x00000000        0x0 build/rt_MemBox.o
+ .text._calloc_box
+                0x00000000       0x44 build/rt_MemBox.o
+ .text          0x00000000        0x0 build/rt_Memory.o
+ .data          0x00000000        0x0 build/rt_Memory.o
+ .bss           0x00000000        0x0 build/rt_Memory.o
+ .text          0x00000000        0x0 build/rt_Mutex.o
+ .data          0x00000000        0x0 build/rt_Mutex.o
+ .bss           0x00000000        0x0 build/rt_Mutex.o
+ .text.rt_mut_init
+                0x00000000       0x2c build/rt_Mutex.o
+ .text.rt_mut_delete
+                0x00000000       0xac build/rt_Mutex.o
+ .text.rt_mut_release
+                0x00000000       0xf4 build/rt_Mutex.o
+ .text.rt_mut_wait
+                0x00000000       0xc0 build/rt_Mutex.o
+ .debug_info    0x00000000      0x3d1 build/rt_Mutex.o
+ .debug_abbrev  0x00000000      0x101 build/rt_Mutex.o
+ .debug_aranges
+                0x00000000       0x38 build/rt_Mutex.o
+ .debug_ranges  0x00000000       0x28 build/rt_Mutex.o
+ .debug_line    0x00000000      0x10d build/rt_Mutex.o
+ .debug_str     0x00000000      0x2c7 build/rt_Mutex.o
+ .comment       0x00000000       0x71 build/rt_Mutex.o
+ .ARM.attributes
+                0x00000000       0x33 build/rt_Mutex.o
+ .debug_frame   0x00000000       0x6c build/rt_Mutex.o
+ .text          0x00000000        0x0 build/rt_Robin.o
+ .data          0x00000000        0x0 build/rt_Robin.o
+ .bss           0x00000000        0x0 build/rt_Robin.o
+ .text          0x00000000        0x0 build/rt_Semaphore.o
+ .data          0x00000000        0x0 build/rt_Semaphore.o
+ .bss           0x00000000        0x0 build/rt_Semaphore.o
+ .text.rt_sem_init
+                0x00000000       0x28 build/rt_Semaphore.o
+ .text.rt_sem_delete
+                0x00000000       0x84 build/rt_Semaphore.o
+ .text.rt_sem_send
+                0x00000000       0x48 build/rt_Semaphore.o
+ .text.rt_sem_wait
+                0x00000000       0x7c build/rt_Semaphore.o
+ .text.isr_sem_send
+                0x00000000       0x1c build/rt_Semaphore.o
+ .text          0x00000000        0x0 build/rt_System.o
+ .data          0x00000000        0x0 build/rt_System.o
+ .bss           0x00000000        0x0 build/rt_System.o
+ .bss.pend_flags
+                0x00000000        0x1 build/rt_System.o
+ .text.rt_suspend
+                0x00000000       0x2c build/rt_System.o
+ .text.rt_resume
+                0x00000000       0xd8 build/rt_System.o
+ .text.rt_tsk_lock
+                0x00000000       0x8c build/rt_System.o
+ .text.rt_tsk_unlock
+                0x00000000       0x8c build/rt_System.o
+ .text          0x00000000        0x0 build/rt_Time.o
+ .data          0x00000000        0x0 build/rt_Time.o
+ .bss           0x00000000        0x0 build/rt_Time.o
+ .text.rt_time_get
+                0x00000000        0xc build/rt_Time.o
+ .text.rt_itv_set
+                0x00000000       0x34 build/rt_Time.o
+ .text.rt_itv_wait
+                0x00000000       0x50 build/rt_Time.o
+ .text          0x00000000        0x0 build/rt_Timer.o
+ .data          0x00000000        0x0 build/rt_Timer.o
+ .bss           0x00000000        0x0 build/rt_Timer.o
+ .text.rt_tmr_tick
+                0x00000000       0x64 build/rt_Timer.o
+ .text.rt_tmr_create
+                0x00000000       0xb4 build/rt_Timer.o
+ .text.rt_tmr_kill
+                0x00000000       0x64 build/rt_Timer.o
+ .debug_info    0x00000000      0x1e6 build/rt_Timer.o
+ .debug_abbrev  0x00000000       0xfe build/rt_Timer.o
+ .debug_aranges
+                0x00000000       0x30 build/rt_Timer.o
+ .debug_ranges  0x00000000       0x20 build/rt_Timer.o
+ .debug_line    0x00000000       0xce build/rt_Timer.o
+ .debug_str     0x00000000      0x1f4 build/rt_Timer.o
+ .comment       0x00000000       0x71 build/rt_Timer.o
+ .ARM.attributes
+                0x00000000       0x33 build/rt_Timer.o
+ .debug_frame   0x00000000       0x58 build/rt_Timer.o
+ .text          0x00000000        0x0 build/HAL_CM.o
+ .data          0x00000000        0x0 build/HAL_CM.o
+ .bss           0x00000000        0x0 build/HAL_CM.o
+ .text          0x00000000        0x0 build/rt_Task.o
+ .data          0x00000000        0x0 build/rt_Task.o
+ .bss           0x00000000        0x0 build/rt_Task.o
+ .text.rt_tsk_pass
+                0x00000000       0x38 build/rt_Task.o
+ .data          0x00000000        0x0 build/startup_efm32gg.o
+ .bss           0x00000000        0x0 build/startup_efm32gg.o
+ .data          0x00000000        0x0 build/HAL_CM3.o
+ .bss           0x00000000        0x0 build/HAL_CM3.o
+ .ARM.extab     0x00000000        0x0 build/HAL_CM3.o
+ .text          0x00000000        0x0 build/SVC_Table.o
+ .data          0x00000000        0x0 build/SVC_Table.o
+ .bss           0x00000000        0x0 build/SVC_Table.o
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .data._impure_ptr
+                0x00000000        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text.startup.register_fini
+                0x00000000       0x14 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .init_array.00000
+                0x00000000        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+ .jcr           0x00000000        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+ .text          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+ .data          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+ .bss           0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00000000         0x00010000         xr
+RAM              0x20000000         0x00004000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+LOAD build/system_ARMCM3.o
+LOAD build/RTX_Conf_CM.o
+LOAD build/RTX_ex1.o
+LOAD build/rt_CMSIS.o
+LOAD build/rt_Event.o
+LOAD build/rt_List.o
+LOAD build/rt_Mailbox.o
+LOAD build/rt_MemBox.o
+LOAD build/rt_Memory.o
+LOAD build/rt_Mutex.o
+LOAD build/rt_Robin.o
+LOAD build/rt_Semaphore.o
+LOAD build/rt_System.o
+LOAD build/rt_Time.o
+LOAD build/rt_Timer.o
+LOAD build/HAL_CM.o
+LOAD build/rt_Task.o
+LOAD build/startup_efm32gg.o
+LOAD build/HAL_CM3.o
+LOAD build/SVC_Table.o
+START GROUP
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/libgcc.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a
+END GROUP
+START GROUP
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/libgcc.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a
+END GROUP
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+START GROUP
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/libgcc.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libm.a
+LOAD /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a
+END GROUP
+
+.text           0x00000000     0x2428
+ *(.isr_vector)
+ .isr_vector    0x00000000      0x100 build/startup_efm32gg.o
+                0x00000000                __isr_vector
+ *(.text*)
+ .text          0x00000100       0x54 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ .text          0x00000154       0x74 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+                0x00000154                _mainCRTStartup
+                0x00000154                _start
+ .text.SystemInit
+                0x000001c8       0x10 build/system_ARMCM3.o
+                0x000001c8                SystemInit
+ .text.os_idle_demon
+                0x000001d8        0x4 build/RTX_Conf_CM.o
+                0x000001d8                os_idle_demon
+ .text.os_error
+                0x000001dc        0x8 build/RTX_Conf_CM.o
+                0x000001dc                os_error
+ .text.software_init_hook
+                0x000001e4       0x34 build/RTX_Conf_CM.o
+                0x000001e4                software_init_hook
+ .text.threadX  0x00000218       0x2c build/RTX_ex1.o
+                0x00000218                threadX
+ .text.main     0x00000244       0x4c build/RTX_ex1.o
+                0x00000244                main
+ .text.rt_ms2tick
+                0x00000290       0x5c build/rt_CMSIS.o
+ .text.rt_tid2ptcb
+                0x000002ec       0x34 build/rt_CMSIS.o
+ .text.svcKernelInitialize
+                0x00000320       0x8c build/rt_CMSIS.o
+                0x00000320                svcKernelInitialize
+ .text.svcKernelStart
+                0x000003ac       0x4c build/rt_CMSIS.o
+                0x000003ac                svcKernelStart
+ .text.osKernelInitialize
+                0x000003f8       0x40 build/rt_CMSIS.o
+                0x000003f8                osKernelInitialize
+ .text.osKernelStart
+                0x00000438       0xc4 build/rt_CMSIS.o
+                0x00000438                osKernelStart
+ .text.sysThreadError
+                0x000004fc        0x8 build/rt_CMSIS.o
+ .text.svcThreadCreate
+                0x00000504       0xd0 build/rt_CMSIS.o
+                0x00000504                svcThreadCreate
+ .text.svcThreadGetId
+                0x000005d4       0x2c build/rt_CMSIS.o
+                0x000005d4                svcThreadGetId
+ .text.svcThreadTerminate
+                0x00000600       0x5c build/rt_CMSIS.o
+                0x00000600                svcThreadTerminate
+ .text.osThreadCreate
+                0x0000065c       0x60 build/rt_CMSIS.o
+                0x0000065c                osThreadCreate
+ .text.osThreadGetId
+                0x000006bc       0x28 build/rt_CMSIS.o
+                0x000006bc                osThreadGetId
+ .text.osThreadExit
+                0x000006e4       0x20 build/rt_CMSIS.o
+                0x000006e4                osThreadExit
+ .text.svcDelay
+                0x00000704       0x2c build/rt_CMSIS.o
+                0x00000704                svcDelay
+ .text.osDelay  0x00000730       0x30 build/rt_CMSIS.o
+                0x00000730                osDelay
+ .text.rt_timer_insert
+                0x00000760       0x7c build/rt_CMSIS.o
+ .text.sysTimerTick
+                0x000007dc       0x78 build/rt_CMSIS.o
+                0x000007dc                sysTimerTick
+ .text.svcSignalSet
+                0x00000854       0x4c build/rt_CMSIS.o
+                0x00000854                svcSignalSet
+ .text.svcSignalWait
+                0x000008a0       0xd4 build/rt_CMSIS.o
+                0x000008a0                svcSignalWait
+ .text.isrSignalSet
+                0x00000974       0x4c build/rt_CMSIS.o
+ .text.osSignalSet
+                0x000009c0       0x40 build/rt_CMSIS.o
+                0x000009c0                osSignalSet
+ .text.osSignalWait
+                0x00000a00       0x5c build/rt_CMSIS.o
+                0x00000a00                osSignalWait
+ .text.svcMessageCreate
+                0x00000a5c       0x60 build/rt_CMSIS.o
+                0x00000a5c                svcMessageCreate
+ .text.isrMessagePut
+                0x00000abc       0x4c build/rt_CMSIS.o
+ .text.rt_evt_wait
+                0x00000b08       0xc8 build/rt_Event.o
+                0x00000b08                rt_evt_wait
+ .text.rt_evt_set
+                0x00000bd0       0xc0 build/rt_Event.o
+                0x00000bd0                rt_evt_set
+ .text.isr_evt_set
+                0x00000c90       0x3c build/rt_Event.o
+                0x00000c90                isr_evt_set
+ .text.rt_evt_psh
+                0x00000ccc       0xb0 build/rt_Event.o
+                0x00000ccc                rt_evt_psh
+ .text.rt_inc_qi
+                0x00000d7c       0x54 build/rt_List.o
+ .text.rt_put_prio
+                0x00000dd0       0x80 build/rt_List.o
+                0x00000dd0                rt_put_prio
+ .text.rt_get_first
+                0x00000e50       0x58 build/rt_List.o
+                0x00000e50                rt_get_first
+ .text.rt_put_rdy_first
+                0x00000ea8       0x20 build/rt_List.o
+                0x00000ea8                rt_put_rdy_first
+ .text.rt_resort_prio
+                0x00000ec8       0x4c build/rt_List.o
+                0x00000ec8                rt_resort_prio
+ .text.rt_put_dly
+                0x00000f14       0xc0 build/rt_List.o
+                0x00000f14                rt_put_dly
+ .text.rt_dec_dly
+                0x00000fd4       0xc8 build/rt_List.o
+                0x00000fd4                rt_dec_dly
+ .text.rt_rmv_list
+                0x0000109c       0x5c build/rt_List.o
+                0x0000109c                rt_rmv_list
+ .text.rt_rmv_dly
+                0x000010f8       0x50 build/rt_List.o
+                0x000010f8                rt_rmv_dly
+ .text.rt_psq_enq
+                0x00001148       0x54 build/rt_List.o
+                0x00001148                rt_psq_enq
+ .text.rt_mbx_init
+                0x0000119c       0x4c build/rt_Mailbox.o
+                0x0000119c                rt_mbx_init
+ .text.rt_mbx_check
+                0x000011e8       0x1c build/rt_Mailbox.o
+                0x000011e8                rt_mbx_check
+ .text.isr_mbx_send
+                0x00001204       0x20 build/rt_Mailbox.o
+                0x00001204                isr_mbx_send
+ .text.rt_mbx_psh
+                0x00001224      0x154 build/rt_Mailbox.o
+                0x00001224                rt_mbx_psh
+ .text._init_box
+                0x00001378       0xa4 build/rt_MemBox.o
+                0x00001378                _init_box
+ .text.rt_alloc_box
+                0x0000141c       0x38 build/rt_MemBox.o
+                0x0000141c                rt_alloc_box
+ .text.rt_free_box
+                0x00001454       0x4c build/rt_MemBox.o
+                0x00001454                rt_free_box
+ .text.rt_init_mem
+                0x000014a0       0x40 build/rt_Memory.o
+                0x000014a0                rt_init_mem
+ .text.rt_alloc_mem
+                0x000014e0       0xa4 build/rt_Memory.o
+                0x000014e0                rt_alloc_mem
+ .text.rt_free_mem
+                0x00001584       0x60 build/rt_Memory.o
+                0x00001584                rt_free_mem
+ .text.rt_init_robin
+                0x000015e4       0x1c build/rt_Robin.o
+                0x000015e4                rt_init_robin
+ .text.rt_chk_robin
+                0x00001600       0x64 build/rt_Robin.o
+                0x00001600                rt_chk_robin
+ .text.rt_sem_psh
+                0x00001664       0x4c build/rt_Semaphore.o
+                0x00001664                rt_sem_psh
+ .text.rt_systick_init
+                0x000016b0       0x38 build/rt_System.o
+ .text.rt_psh_req
+                0x000016e8       0x28 build/rt_System.o
+                0x000016e8                rt_psh_req
+ .text.rt_pop_req
+                0x00001710       0xc8 build/rt_System.o
+                0x00001710                rt_pop_req
+ .text.os_tick_init
+                0x000017d8       0x10 build/rt_System.o
+                0x000017d8                os_tick_init
+ .text.os_tick_irqack
+                0x000017e8        0x4 build/rt_System.o
+                0x000017e8                os_tick_irqack
+ .text.rt_systick
+                0x000017ec       0x4c build/rt_System.o
+                0x000017ec                rt_systick
+ .text.rt_stk_check
+                0x00001838       0x30 build/rt_System.o
+                0x00001838                rt_stk_check
+ .text.rt_dly_wait
+                0x00001868       0x1c build/rt_Time.o
+                0x00001868                rt_dly_wait
+ .text.rt_init_stack
+                0x00001884       0xa0 build/HAL_CM.o
+                0x00001884                rt_init_stack
+ .text.rt_ret_regs
+                0x00001924       0x10 build/HAL_CM.o
+ .text.rt_ret_val
+                0x00001934       0x1c build/HAL_CM.o
+                0x00001934                rt_ret_val
+ .text.rt_ret_val2
+                0x00001950       0x28 build/HAL_CM.o
+                0x00001950                rt_ret_val2
+ .text.rt_svc_init
+                0x00001978       0x78 build/rt_Task.o
+ .text.rt_get_TID
+                0x000019f0       0x3c build/rt_Task.o
+ .text.rt_init_context
+                0x00001a2c       0x80 build/rt_Task.o
+ .text.rt_switch_req
+                0x00001aac       0x18 build/rt_Task.o
+                0x00001aac                rt_switch_req
+ .text.rt_dispatch
+                0x00001ac4       0x60 build/rt_Task.o
+                0x00001ac4                rt_dispatch
+ .text.rt_block
+                0x00001b24       0x5c build/rt_Task.o
+                0x00001b24                rt_block
+ .text.rt_tsk_self
+                0x00001b80       0x1c build/rt_Task.o
+                0x00001b80                rt_tsk_self
+ .text.rt_tsk_prio
+                0x00001b9c       0xbc build/rt_Task.o
+                0x00001b9c                rt_tsk_prio
+ .text.rt_tsk_create
+                0x00001c58       0x84 build/rt_Task.o
+                0x00001c58                rt_tsk_create
+ .text.rt_tsk_delete
+                0x00001cdc       0xec build/rt_Task.o
+                0x00001cdc                rt_tsk_delete
+ .text.rt_sys_init
+                0x00001dc8      0x108 build/rt_Task.o
+                0x00001dc8                rt_sys_init
+ .text.rt_sys_start
+                0x00001ed0       0x4c build/rt_Task.o
+                0x00001ed0                rt_sys_start
+ .text          0x00001f1c       0x98 build/startup_efm32gg.o
+                0x00001f1c                Reset_Handler
+                0x00001f50                Default_Handler
+                0x00001f52                NMI_Handler
+                0x00001f54                HardFault_Handler
+                0x00001f56                MemManage_Handler
+                0x00001f58                BusFault_Handler
+                0x00001f5a                UsageFault_Handler
+                0x00001f5e                DebugMon_Handler
+                0x00001f64                DMA_IRQHandler
+                0x00001f66                GPIO_EVEN_IRQHandler
+                0x00001f68                TIMER0_IRQHandler
+                0x00001f6a                USART0_RX_IRQHandler
+                0x00001f6c                USART0_TX_IRQHandler
+                0x00001f6e                USB_IRQHandler
+                0x00001f70                ACMP0_IRQHandler
+                0x00001f72                ADC0_IRQHandler
+                0x00001f74                DAC0_IRQHandler
+                0x00001f76                I2C0_IRQHandler
+                0x00001f78                I2C1_IRQHandler
+                0x00001f7a                GPIO_ODD_IRQHandler
+                0x00001f7c                TIMER1_IRQHandler
+                0x00001f7e                TIMER2_IRQHandler
+                0x00001f80                TIMER3_IRQHandler
+                0x00001f82                USART1_RX_IRQHandler
+                0x00001f84                USART1_TX_IRQHandler
+                0x00001f86                LESENSE_IRQHandler
+                0x00001f88                USART2_RX_IRQHandler
+                0x00001f8a                USART2_TX_IRQHandler
+                0x00001f8c                UART0_RX_IRQHandler
+                0x00001f8e                UART0_TX_IRQHandler
+                0x00001f90                UART1_RX_IRQHandler
+                0x00001f92                UART1_TX_IRQHandler
+                0x00001f94                LEUART0_IRQHandler
+                0x00001f96                LEUART1_IRQHandler
+                0x00001f98                LETIMER0_IRQHandler
+                0x00001f9a                PCNT0_IRQHandler
+                0x00001f9c                PCNT1_IRQHandler
+                0x00001f9e                PCNT2_IRQHandler
+                0x00001fa0                RTC_IRQHandler
+                0x00001fa2                BURTC_IRQHandler
+                0x00001fa4                CMU_IRQHandler
+                0x00001fa6                VCMP_IRQHandler
+                0x00001fa8                LCD_IRQHandler
+                0x00001faa                MSC_IRQHandler
+                0x00001fac                AES_IRQHandler
+                0x00001fae                EBI_IRQHandler
+                0x00001fb0                EMU_IRQHandler
+ .text          0x00001fb4      0x130 build/HAL_CM3.o
+                0x00001fb4                rt_set_PSP
+                0x00001fba                rt_get_PSP
+                0x00001fc0                os_set_env
+                0x00001fd8                _alloc_box
+                0x00001ff4                _free_box
+                0x00002010                SVC_Handler
+                0x0000207e                PendSV_Handler
+                0x00002082                Sys_Switch
+                0x000020b6                SysTick_Handler
+                0x000020be                OS_Tick_Handler
+ .text.atexit   0x000020e4        0xc /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+                0x000020e4                atexit
+ .text.exit     0x000020f0       0x20 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+                0x000020f0                exit
+ .text.__libc_fini_array
+                0x00002110       0x30 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+                0x00002110                __libc_fini_array
+ .text.__libc_init_array
+                0x00002140       0x50 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+                0x00002140                __libc_init_array
+ .text.memset   0x00002190       0x94 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+                0x00002190                memset
+ .text.__register_exitproc
+                0x00002224       0xa8 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+                0x00002224                __register_exitproc
+ .text.__call_exitprocs
+                0x000022cc       0xf0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+                0x000022cc                __call_exitprocs
+ .text._exit    0x000023bc        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+                0x000023bc                _exit
+ *(.init)
+ .init          0x000023c0        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+                0x000023c0                _init
+ .init          0x000023c4        0x8 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+ *(.fini)
+ .fini          0x000023cc        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+                0x000023cc                _fini
+ .fini          0x000023d0        0x8 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o *crtend?.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+ *(.rodata*)
+ .rodata.os_maxtaskrun
+                0x000023d8        0x2 build/RTX_Conf_CM.o
+                0x000023d8                os_maxtaskrun
+ *fill*         0x000023da        0x2 
+ .rodata.os_stackinfo
+                0x000023dc        0x4 build/RTX_Conf_CM.o
+                0x000023dc                os_stackinfo
+ .rodata.os_rrobin
+                0x000023e0        0x4 build/RTX_Conf_CM.o
+                0x000023e0                os_rrobin
+ .rodata.os_trv
+                0x000023e4        0x4 build/RTX_Conf_CM.o
+                0x000023e4                os_trv
+ .rodata.os_flags
+                0x000023e8        0x1 build/RTX_Conf_CM.o
+                0x000023e8                os_flags
+ *fill*         0x000023e9        0x3 
+ .rodata.os_clockrate
+                0x000023ec        0x4 build/RTX_Conf_CM.o
+                0x000023ec                os_clockrate
+ .rodata.mp_tcb_size
+                0x000023f0        0x2 build/RTX_Conf_CM.o
+                0x000023f0                mp_tcb_size
+ *fill*         0x000023f2        0x2 
+ .rodata.mp_stk_size
+                0x000023f4        0x4 build/RTX_Conf_CM.o
+                0x000023f4                mp_stk_size
+ .rodata.os_stack_sz
+                0x000023f8        0x4 build/RTX_Conf_CM.o
+                0x000023f8                os_stack_sz
+ .rodata.os_fifo_size
+                0x000023fc        0x1 build/RTX_Conf_CM.o
+                0x000023fc                os_fifo_size
+ *fill*         0x000023fd        0x3 
+ .rodata.os_messageQ_def_osTimerMessageQ
+                0x00002400        0x8 build/RTX_Conf_CM.o
+                0x00002400                os_messageQ_def_osTimerMessageQ
+ .rodata.mp_tmr_size
+                0x00002408        0x2 build/RTX_Conf_CM.o
+                0x00002408                mp_tmr_size
+ *fill*         0x0000240a        0x2 
+ .rodata.os_thread_def_threadX
+                0x0000240c       0x10 build/RTX_ex1.o
+                0x0000240c                os_thread_def_threadX
+ .rodata.str1.4
+                0x0000241c        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .rodata._global_impure_ptr
+                0x00002420        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x00002420                _global_impure_ptr
+ *(.eh_frame*)
+ .eh_frame      0x00002424        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ .eh_frame      0x00002424        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+
+.glue_7         0x00002428        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00002428        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00002428        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00002428        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00002428        0x0
+ .iplt          0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+
+.ARM.extab
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x00002428                __exidx_start = .
+
+.ARM.exidx      0x00002428        0x8
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+ .ARM.exidx     0x00002428        0x8 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.exidx     0x00002430        0x0 build/HAL_CM3.o
+                                 0x48 (size before relaxing)
+                0x00002430                __exidx_end = .
+                0x00002430                __etext = .
+
+.rel.dyn        0x00002430        0x0
+ .rel.iplt      0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+
+.data           0x20000000      0x448 load address 0x00002430
+                0x20000000                __data_start__ = .
+ *(vtable)
+ *(.data*)
+ .data.SystemCoreClock
+                0x20000000        0x4 build/system_ARMCM3.o
+                0x20000000                SystemCoreClock
+ .data.os_thread_def_main
+                0x20000004       0x10 build/RTX_Conf_CM.o
+                0x20000004                os_thread_def_main
+ *fill*         0x20000014        0x4 
+ .data.impure_data
+                0x20000018      0x428 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+                0x20000440                . = ALIGN (0x4)
+                0x20000440                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array)
+ *(.preinit_array)
+                0x20000440                PROVIDE (__preinit_array_end, .)
+                0x20000440                . = ALIGN (0x4)
+                0x20000440                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array)
+ .init_array    0x20000440        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ *(.init_array)
+                0x20000444                PROVIDE (__init_array_end, .)
+                0x20000444                . = ALIGN (0x4)
+                0x20000444                PROVIDE (__fini_array_start, .)
+ *(SORT(.fini_array.*))
+ *(.fini_array)
+ .fini_array    0x20000444        0x4 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ *(.fini_array)
+                0x20000448                PROVIDE (__fini_array_end, .)
+                0x20000448                . = ALIGN (0x4)
+                0x20000448                __data_end__ = .
+
+.jcr            0x20000448        0x0 load address 0x00002878
+ .jcr           0x20000448        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+
+.igot.plt       0x20000448        0x0 load address 0x00002878
+ .igot.plt      0x00000000        0x0 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+
+.bss            0x20000448      0x840 load address 0x00002878
+                0x20000448                __bss_start__ = .
+ *(.bss*)
+ .bss           0x20000448       0x1c /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ .bss.os_thread_def_osTimerThread
+                0x20000464       0x10 build/RTX_Conf_CM.o
+                0x20000464                os_thread_def_osTimerThread
+ .bss.m_tmr     0x20000474        0x4 build/RTX_Conf_CM.o
+                0x20000474                m_tmr
+ .bss.os_lock   0x20000478        0x1 build/rt_System.o
+ .bss.os_psh_flag
+                0x20000479        0x1 build/rt_System.o
+ *(COMMON)
+ *fill*         0x2000047a        0x6 
+ COMMON         0x20000480      0x780 build/RTX_Conf_CM.o
+                0x20000480                mp_stk
+                0x20000940                os_active_TCB
+                0x20000958                os_stack_mem
+                0x20000a38                os_messageQ_q_osTimerMessageQ
+                0x20000a48                os_fifo
+                0x20000acc                osMessageQId_osTimerMessageQ
+                0x20000ad0                mp_tcb
+                0x20000bfc                osThreadId_osTimerThread
+ COMMON         0x20000c00        0x8 build/RTX_ex1.o
+                0x20000c00                main_id
+                0x20000c04                threadX_id
+ COMMON         0x20000c08        0x8 build/rt_CMSIS.o
+                0x20000c08                os_initialized
+                0x20000c09                os_running
+                0x20000c0c                os_timer_head
+ COMMON         0x20000c10       0x30 build/rt_List.o
+                0x20000c10                os_rdy
+                0x20000c28                os_dly
+ COMMON         0x20000c40        0x8 build/rt_Robin.o
+                0x20000c40                os_robin
+ COMMON         0x20000c48        0x4 build/rt_System.o
+                0x20000c48                os_tick_irqn
+ COMMON         0x20000c4c        0x4 build/rt_Time.o
+                0x20000c4c                os_time
+ COMMON         0x20000c50       0x38 build/rt_Task.o
+                0x20000c50                os_tsk
+                0x20000c58                os_idle_TCB
+                0x20000c88                __bss_end__ = .
+
+.heap           0x20000c88      0xc00
+                0x20000c88                __end__ = .
+                0x20000c88                end = __end__
+ *(.heap*)
+ .heap          0x20000c88      0xc00 build/startup_efm32gg.o
+                0x20000c88                __HeapBase
+                0x20001888                __HeapLimit = .
+
+.stack_dummy    0x20000c88      0x400
+ *(.stack)
+ .stack         0x20000c88      0x400 build/startup_efm32gg.o
+                0x20004000                __StackTop = (ORIGIN (RAM) + 0x4000)
+                0x20003c00                __StackLimit = (__StackTop - SIZEOF (.stack_dummy))
+                0x20004000                PROVIDE (__stack, __StackTop)
+                0x00000001                ASSERT ((__StackLimit >= __HeapLimit), region RAM overflowed with stack)
+OUTPUT(exe/RTX_ex1.out elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x1d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crti.o
+ .ARM.attributes
+                0x0000001d       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtbegin.o
+ .ARM.attributes
+                0x0000004a       0x1b /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
+ .ARM.attributes
+                0x00000065       0x33 build/system_ARMCM3.o
+ .ARM.attributes
+                0x00000098       0x33 build/RTX_Conf_CM.o
+ .ARM.attributes
+                0x000000cb       0x33 build/RTX_ex1.o
+ .ARM.attributes
+                0x000000fe       0x33 build/rt_CMSIS.o
+ .ARM.attributes
+                0x00000131       0x33 build/rt_Event.o
+ .ARM.attributes
+                0x00000164       0x33 build/rt_List.o
+ .ARM.attributes
+                0x00000197       0x33 build/rt_Mailbox.o
+ .ARM.attributes
+                0x000001ca       0x33 build/rt_MemBox.o
+ .ARM.attributes
+                0x000001fd       0x33 build/rt_Memory.o
+ .ARM.attributes
+                0x00000230       0x33 build/rt_Robin.o
+ .ARM.attributes
+                0x00000263       0x33 build/rt_Semaphore.o
+ .ARM.attributes
+                0x00000296       0x33 build/rt_System.o
+ .ARM.attributes
+                0x000002c9       0x33 build/rt_Time.o
+ .ARM.attributes
+                0x000002fc       0x33 build/HAL_CM.o
+ .ARM.attributes
+                0x0000032f       0x33 build/rt_Task.o
+ .ARM.attributes
+                0x00000362       0x1b build/startup_efm32gg.o
+ .ARM.attributes
+                0x0000037d       0x21 build/HAL_CM3.o
+ .ARM.attributes
+                0x0000039e       0x21 build/SVC_Table.o
+ .ARM.attributes
+                0x000003bf       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .ARM.attributes
+                0x000003ec       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .ARM.attributes
+                0x00000419       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .ARM.attributes
+                0x00000446       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-impure.o)
+ .ARM.attributes
+                0x00000473       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .ARM.attributes
+                0x000004a0       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .ARM.attributes
+                0x000004cd       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x000004fa       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .ARM.attributes
+                0x00000527       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
+ .ARM.attributes
+                0x00000554       0x2d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtend.o
+ .ARM.attributes
+                0x00000581       0x1d /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/armv7-m/crtn.o
+
+.comment        0x00000000       0x70
+ .comment       0x00000000       0x70 build/system_ARMCM3.o
+                                 0x71 (size before relaxing)
+ .comment       0x00000000       0x71 build/RTX_Conf_CM.o
+ .comment       0x00000000       0x71 build/RTX_ex1.o
+ .comment       0x00000000       0x71 build/rt_CMSIS.o
+ .comment       0x00000000       0x71 build/rt_Event.o
+ .comment       0x00000000       0x71 build/rt_List.o
+ .comment       0x00000000       0x71 build/rt_Mailbox.o
+ .comment       0x00000000       0x71 build/rt_MemBox.o
+ .comment       0x00000000       0x71 build/rt_Memory.o
+ .comment       0x00000000       0x71 build/rt_Robin.o
+ .comment       0x00000000       0x71 build/rt_Semaphore.o
+ .comment       0x00000000       0x71 build/rt_System.o
+ .comment       0x00000000       0x71 build/rt_Time.o
+ .comment       0x00000000       0x71 build/HAL_CM.o
+ .comment       0x00000000       0x71 build/rt_Task.o
+
+.svc_table      0x00000000        0x4
+ .svc_table     0x00000000        0x4 build/SVC_Table.o
+                0x00000000                SVC_Count
+                0x00000000                SVC_Table
+
+.debug_info     0x00000000     0x7337
+ .debug_info    0x00000000       0xe3 build/system_ARMCM3.o
+ .debug_info    0x000000e3      0x447 build/RTX_Conf_CM.o
+ .debug_info    0x0000052a      0x1b9 build/RTX_ex1.o
+ .debug_info    0x000006e3     0x3e80 build/rt_CMSIS.o
+ .debug_info    0x00004563      0x3fb build/rt_Event.o
+ .debug_info    0x0000495e      0x63f build/rt_List.o
+ .debug_info    0x00004f9d      0x63f build/rt_Mailbox.o
+ .debug_info    0x000055dc      0x2ba build/rt_MemBox.o
+ .debug_info    0x00005896      0x1ba build/rt_Memory.o
+ .debug_info    0x00005a50      0x2b5 build/rt_Robin.o
+ .debug_info    0x00005d05      0x42c build/rt_Semaphore.o
+ .debug_info    0x00006131      0x620 build/rt_System.o
+ .debug_info    0x00006751      0x269 build/rt_Time.o
+ .debug_info    0x000069ba      0x2cf build/HAL_CM.o
+ .debug_info    0x00006c89      0x6ae build/rt_Task.o
+
+.debug_abbrev   0x00000000     0x1677
+ .debug_abbrev  0x00000000       0x78 build/system_ARMCM3.o
+ .debug_abbrev  0x00000078      0x147 build/RTX_Conf_CM.o
+ .debug_abbrev  0x000001bf       0xed build/RTX_ex1.o
+ .debug_abbrev  0x000002ac      0x35a build/rt_CMSIS.o
+ .debug_abbrev  0x00000606      0x150 build/rt_Event.o
+ .debug_abbrev  0x00000756      0x23b build/rt_List.o
+ .debug_abbrev  0x00000991      0x1cc build/rt_Mailbox.o
+ .debug_abbrev  0x00000b5d      0x16e build/rt_MemBox.o
+ .debug_abbrev  0x00000ccb       0xf3 build/rt_Memory.o
+ .debug_abbrev  0x00000dbe       0xf2 build/rt_Robin.o
+ .debug_abbrev  0x00000eb0      0x10e build/rt_Semaphore.o
+ .debug_abbrev  0x00000fbe      0x21c build/rt_System.o
+ .debug_abbrev  0x000011da      0x116 build/rt_Time.o
+ .debug_abbrev  0x000012f0      0x12a build/HAL_CM.o
+ .debug_abbrev  0x0000141a      0x25d build/rt_Task.o
+
+.debug_aranges  0x00000000      0x6b0
+ .debug_aranges
+                0x00000000       0x28 build/system_ARMCM3.o
+ .debug_aranges
+                0x00000028       0x30 build/RTX_Conf_CM.o
+ .debug_aranges
+                0x00000058       0x28 build/RTX_ex1.o
+ .debug_aranges
+                0x00000080      0x2f0 build/rt_CMSIS.o
+ .debug_aranges
+                0x00000370       0x48 build/rt_Event.o
+ .debug_aranges
+                0x000003b8       0x70 build/rt_List.o
+ .debug_aranges
+                0x00000428       0x50 build/rt_Mailbox.o
+ .debug_aranges
+                0x00000478       0x38 build/rt_MemBox.o
+ .debug_aranges
+                0x000004b0       0x30 build/rt_Memory.o
+ .debug_aranges
+                0x000004e0       0x28 build/rt_Robin.o
+ .debug_aranges
+                0x00000508       0x48 build/rt_Semaphore.o
+ .debug_aranges
+                0x00000550       0x70 build/rt_System.o
+ .debug_aranges
+                0x000005c0       0x38 build/rt_Time.o
+ .debug_aranges
+                0x000005f8       0x38 build/HAL_CM.o
+ .debug_aranges
+                0x00000630       0x80 build/rt_Task.o
+
+.debug_ranges   0x00000000      0x5c0
+ .debug_ranges  0x00000000       0x18 build/system_ARMCM3.o
+ .debug_ranges  0x00000018       0x20 build/RTX_Conf_CM.o
+ .debug_ranges  0x00000038       0x18 build/RTX_ex1.o
+ .debug_ranges  0x00000050      0x2e0 build/rt_CMSIS.o
+ .debug_ranges  0x00000330       0x38 build/rt_Event.o
+ .debug_ranges  0x00000368       0x60 build/rt_List.o
+ .debug_ranges  0x000003c8       0x40 build/rt_Mailbox.o
+ .debug_ranges  0x00000408       0x28 build/rt_MemBox.o
+ .debug_ranges  0x00000430       0x20 build/rt_Memory.o
+ .debug_ranges  0x00000450       0x18 build/rt_Robin.o
+ .debug_ranges  0x00000468       0x38 build/rt_Semaphore.o
+ .debug_ranges  0x000004a0       0x60 build/rt_System.o
+ .debug_ranges  0x00000500       0x28 build/rt_Time.o
+ .debug_ranges  0x00000528       0x28 build/HAL_CM.o
+ .debug_ranges  0x00000550       0x70 build/rt_Task.o
+
+.debug_line     0x00000000     0x2267
+ .debug_line    0x00000000      0x108 build/system_ARMCM3.o
+ .debug_line    0x00000108      0x12b build/RTX_Conf_CM.o
+ .debug_line    0x00000233      0x122 build/RTX_ex1.o
+ .debug_line    0x00000355     0x10d3 build/rt_CMSIS.o
+ .debug_line    0x00001428      0x108 build/rt_Event.o
+ .debug_line    0x00001530      0x214 build/rt_List.o
+ .debug_line    0x00001744      0x1e9 build/rt_Mailbox.o
+ .debug_line    0x0000192d      0x130 build/rt_MemBox.o
+ .debug_line    0x00001a5d       0xe6 build/rt_Memory.o
+ .debug_line    0x00001b43       0x98 build/rt_Robin.o
+ .debug_line    0x00001bdb      0x117 build/rt_Semaphore.o
+ .debug_line    0x00001cf2      0x1f1 build/rt_System.o
+ .debug_line    0x00001ee3       0x9b build/rt_Time.o
+ .debug_line    0x00001f7e       0xbd build/HAL_CM.o
+ .debug_line    0x0000203b      0x22c build/rt_Task.o
+
+.debug_str      0x00000000     0x158e
+ .debug_str     0x00000000      0x1bb build/system_ARMCM3.o
+                                0x200 (size before relaxing)
+ .debug_str     0x000001bb      0x30b build/RTX_Conf_CM.o
+                                0x4cd (size before relaxing)
+ .debug_str     0x000004c6       0x3c build/RTX_ex1.o
+                                0x2dc (size before relaxing)
+ .debug_str     0x00000502      0xa27 build/rt_CMSIS.o
+                               0x10da (size before relaxing)
+ .debug_str     0x00000f29       0xb9 build/rt_Event.o
+                                0x30e (size before relaxing)
+ .debug_str     0x00000fe2      0x119 build/rt_List.o
+                                0x38c (size before relaxing)
+ .debug_str     0x000010fb       0x9b build/rt_Mailbox.o
+                                0x33c (size before relaxing)
+ .debug_str     0x00001196       0x60 build/rt_MemBox.o
+                                0x219 (size before relaxing)
+ .debug_str     0x000011f6       0x69 build/rt_Memory.o
+                                0x1e2 (size before relaxing)
+ .debug_str     0x0000125f       0x47 build/rt_Robin.o
+                                0x293 (size before relaxing)
+ .debug_str     0x000012a6       0x75 build/rt_Semaphore.o
+                                0x2f3 (size before relaxing)
+ .debug_str     0x0000131b       0xd6 build/rt_System.o
+                                0x3ca (size before relaxing)
+ .debug_str     0x000013f1       0x4e build/rt_Time.o
+                                0x279 (size before relaxing)
+ .debug_str     0x0000143f       0x4e build/HAL_CM.o
+                                0x27c (size before relaxing)
+ .debug_str     0x0000148d      0x101 build/rt_Task.o
+                                0x44b (size before relaxing)
+
+.debug_frame    0x00000000     0x116c
+ .debug_frame   0x00000000       0x30 build/system_ARMCM3.o
+ .debug_frame   0x00000030       0x44 build/RTX_Conf_CM.o
+ .debug_frame   0x00000074       0x40 build/RTX_ex1.o
+ .debug_frame   0x000000b4      0x8a0 build/rt_CMSIS.o
+ .debug_frame   0x00000954       0x94 build/rt_Event.o
+ .debug_frame   0x000009e8       0xf8 build/rt_List.o
+ .debug_frame   0x00000ae0       0xb0 build/rt_Mailbox.o
+ .debug_frame   0x00000b90       0x64 build/rt_MemBox.o
+ .debug_frame   0x00000bf4       0x4c build/rt_Memory.o
+ .debug_frame   0x00000c40       0x38 build/rt_Robin.o
+ .debug_frame   0x00000c78       0x9c build/rt_Semaphore.o
+ .debug_frame   0x00000d14       0xf0 build/rt_System.o
+ .debug_frame   0x00000e04       0x64 build/rt_Time.o
+ .debug_frame   0x00000e68       0x68 build/HAL_CM.o
+ .debug_frame   0x00000ed0      0x138 build/rt_Task.o
+ .debug_frame   0x00001008       0x20 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-atexit.o)
+ .debug_frame   0x00001028       0x28 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-exit.o)
+ .debug_frame   0x00001050       0x2c /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-fini.o)
+ .debug_frame   0x0000107c       0x2c /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-init.o)
+ .debug_frame   0x000010a8       0x2c /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-memset.o)
+ .debug_frame   0x000010d4       0x30 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__atexit.o)
+ .debug_frame   0x00001104       0x48 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x0000114c       0x20 /opt/gcc-arm-none-eabi-4_8-2014q1/bin/../lib/gcc/arm-none-eabi/4.8.3/../../../../arm-none-eabi/lib/armv7-m/libnosys.a(_exit.o)
