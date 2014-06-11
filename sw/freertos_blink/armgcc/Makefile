@@ -11,6 +11,8 @@
 
 DEVICE = EFM32GG330F1024
 PROJECTNAME = freertos_blink
+# Name of interface configuration file used by OpenOCD
+OOCD_IFACE ?= stlink-v2-1
 
 OBJ_DIR = build
 EXE_DIR = exe
@@ -210,7 +212,7 @@ ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 endif
 
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ./openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+	openocd -s ../openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))
