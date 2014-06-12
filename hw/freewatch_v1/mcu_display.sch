@@ -69,43 +69,43 @@ F 3 "" H 9650 1350 60  0000 C CNN
 $EndComp
 Text Notes 600  1200 0    50   ~ 0
 Copyright Julian Lewis 2014.\nThis documentation describes Open Hardware and is licensed under the\nCERN OHL v. 1.2.\nYou may redistribute and modify this documentation under the terms of the\nCERN OHL v.1.2. (http://ohwr.org/cernohl). This documentation is distributed\nWITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY,\nSATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.\nPlease see the CERN OHL v.1.2 for applicable conditions
-Text GLabel 5750 2250 2    40   Output ~ 0
+Text GLabel 2850 4850 0    40   Output ~ 0
 AC_CLK
-Text GLabel 5750 2050 2    40   BiDi ~ 0
+Text GLabel 2850 5050 0    40   BiDi ~ 0
 AC_SDIO
-Text GLabel 5750 2150 2    40   Output ~ 0
+Text GLabel 2850 4750 0    40   Output ~ 0
 AC_CS_XL
-Text GLabel 5750 2350 2    40   Output ~ 0
+Text GLabel 2850 4950 0    40   Output ~ 0
 AC_CS_MAG
-Text GLabel 2850 3550 0    40   Input ~ 0
-AC_INT_MAG
-Text GLabel 2850 3450 0    40   Input ~ 0
-AC_DRDY_MAG
-Text GLabel 2850 2150 0    40   Output ~ 0
-SCL
-Text GLabel 2850 2050 0    40   BiDi ~ 0
-SDA
-Text GLabel 2850 5050 0    40   Input ~ 0
-LS_INT_N
 Text GLabel 5750 2550 2    40   Input ~ 0
+AC_INT_MAG
+Text GLabel 5750 2450 2    40   Input ~ 0
+AC_DRDY_MAG
+Text GLabel 1150 4400 0    40   Output ~ 0
+SCL
+Text GLabel 1150 4300 0    40   BiDi ~ 0
+SDA
+Text GLabel 2850 3650 0    40   Input ~ 0
+LS_INT_N
+Text GLabel 5750 3750 2    40   Input ~ 0
 GPS_TXD
-Text GLabel 5750 2450 2    40   Output ~ 0
+Text GLabel 5750 3650 2    40   Output ~ 0
 GPS_RXD
-Text GLabel 2850 4550 0    40   Output ~ 0
+Text GLabel 5750 3550 2    40   Output ~ 0
 GPS_ON_OFF
-Text GLabel 2850 4650 0    40   Output ~ 0
+Text GLabel 5750 4250 2    40   Output ~ 0
 GPS_RST
-Text GLabel 6300 2850 2    40   Input ~ 0
+Text GLabel 7700 5950 2    40   Input ~ 0
 GPS_PPS
-Text GLabel 2850 4250 0    40   Input ~ 0
+Text GLabel 5750 2150 2    40   Input ~ 0
 SD_MISO
-Text GLabel 2850 4150 0    40   Output ~ 0
+Text GLabel 5750 2050 2    40   Output ~ 0
 SD_MOSI
-Text GLabel 2850 4350 0    40   Output ~ 0
+Text GLabel 5750 2250 2    40   Output ~ 0
 SD_CLK
-Text GLabel 2850 4450 0    40   Output ~ 0
+Text GLabel 5750 2350 2    40   Output ~ 0
 SD_CS_N
-Text GLabel 2850 4750 0    40   Input ~ 0
+Text GLabel 2850 2150 0    40   Input ~ 0
 GPS_WAKUP
 Text GLabel 5750 4450 2    40   BiDi ~ 0
 USB_DP
@@ -113,11 +113,11 @@ Text GLabel 5750 4350 2    40   BiDi ~ 0
 USB_DM
 Text GLabel 5750 4550 2    40   Input ~ 0
 USB_ID
-Text GLabel 5750 3150 2    40   Input ~ 0
+Text GLabel 5750 2750 2    40   Input ~ 0
 BC_PGOOD_N
-Text GLabel 5750 3050 2    40   Input ~ 0
+Text GLabel 5750 2850 2    40   Input ~ 0
 BC_CHG_N
-Text GLabel 2850 2250 0    40   Input ~ 0
+Text GLabel 2850 4550 0    40   Input ~ 0
 FG_ALRT_N
 Text Notes 9200 2700 0    40   ~ 0
 VCOM inversion\nEXTMODE = VDD -> hardware (EXTCOMIN)\nEXTMODE = VSS -> software
@@ -584,48 +584,48 @@ NoConn ~ 1100 3300
 $Comp
 L RES R15
 U 1 1 53824411
-P 2950 1850
-F 0 "R15" H 2920 1910 39  0000 C CNN
-F 1 "3k3" H 2950 1850 30  0000 C CNN
-F 2 "" H 2950 1850 60  0000 C CNN
-F 3 "" H 2950 1850 60  0000 C CNN
-	1    2950 1850
+P 1250 4150
+F 0 "R15" H 1220 4210 39  0000 C CNN
+F 1 "3k3" H 1250 4150 30  0000 C CNN
+F 2 "" H 1250 4150 60  0000 C CNN
+F 3 "" H 1250 4150 60  0000 C CNN
+	1    1250 4150
 	0    1    1    0   
 $EndComp
 $Comp
 L RES R16
 U 1 1 5382452D
-P 3150 1850
-F 0 "R16" H 3120 1910 39  0000 C CNN
-F 1 "3k3" H 3150 1850 30  0000 C CNN
-F 2 "" H 3150 1850 60  0000 C CNN
-F 3 "" H 3150 1850 60  0000 C CNN
-	1    3150 1850
+P 1450 4150
+F 0 "R16" H 1420 4210 39  0000 C CNN
+F 1 "3k3" H 1450 4150 30  0000 C CNN
+F 2 "" H 1450 4150 60  0000 C CNN
+F 3 "" H 1450 4150 60  0000 C CNN
+	1    1450 4150
 	0    1    1    0   
 $EndComp
 $Comp
 L VCC #PWR086
 U 1 1 538245F4
-P 2950 1700
-F 0 "#PWR086" H 2950 1800 30  0001 C CNN
-F 1 "VCC" H 2950 1800 30  0000 C CNN
-F 2 "" H 2950 1700 60  0000 C CNN
-F 3 "" H 2950 1700 60  0000 C CNN
-	1    2950 1700
+P 1250 4000
+F 0 "#PWR086" H 1250 4100 30  0001 C CNN
+F 1 "VCC" H 1250 4100 30  0000 C CNN
+F 2 "" H 1250 4000 60  0000 C CNN
+F 3 "" H 1250 4000 60  0000 C CNN
+	1    1250 4000
 	1    0    0    -1  
 $EndComp
 $Comp
 L VCC #PWR087
 U 1 1 53824663
-P 3150 1700
-F 0 "#PWR087" H 3150 1800 30  0001 C CNN
-F 1 "VCC" H 3150 1800 30  0000 C CNN
-F 2 "" H 3150 1700 60  0000 C CNN
-F 3 "" H 3150 1700 60  0000 C CNN
-	1    3150 1700
+P 1450 4000
+F 0 "#PWR087" H 1450 4100 30  0001 C CNN
+F 1 "VCC" H 1450 4100 30  0000 C CNN
+F 2 "" H 1450 4000 60  0000 C CNN
+F 3 "" H 1450 4000 60  0000 C CNN
+	1    1450 4000
 	1    0    0    -1  
 $EndComp
-Text Notes 2700 1550 0    40   ~ 0
+Text Notes 1000 3850 0    40   ~ 0
 Check pull-ups value !!
 Text Label 5750 3950 0    40   ~ 0
 SWCLK
@@ -633,24 +633,24 @@ Text Label 5750 4050 0    40   ~ 0
 SWDIO
 Text Label 5750 4150 0    40   ~ 0
 SWDO
-Text Label 5750 3450 0    40   ~ 0
+Text Label 2850 4350 0    40   ~ 0
 LCD_CLK
-Text Label 5750 3250 0    40   ~ 0
+Text Label 2850 4150 0    40   ~ 0
 LCD_DI
-Text Label 5750 3650 0    40   ~ 0
+Text Label 2850 2250 0    40   ~ 0
 LCD_INV
-Text Label 5750 3550 0    40   ~ 0
+Text Label 2850 4450 0    40   ~ 0
 LCD_CS
-Text Label 2850 4050 0    40   ~ 0
+Text Label 2850 3950 0    40   ~ 0
 LCD_EN
 Text Notes 4000 1000 0    40   ~ 0
 PD2
 Text Label 8500 1850 0    40   ~ 0
 LCD_VCC
-Text Label 2850 3950 0    40   ~ 0
+Text Label 2850 4050 0    40   ~ 0
 LCD_VCC
-Text Notes 6150 2200 0    40   ~ 0
-Check that US1_RX (PD1) can be\nused as GPIO when using USART1
+Text Notes 1350 5000 0    40   ~ 0
+Check that US0_RX (PC10) can be\nused as GPIO when using USART0
 $Comp
 L CONN_6 P7
 U 1 1 5382C001
@@ -869,15 +869,9 @@ Wire Wire Line
 Wire Wire Line
 	2850 2150 3250 2150
 Wire Wire Line
-	2950 1700 2950 1750
+	1250 4000 1250 4050
 Wire Wire Line
-	3150 1700 3150 1750
-Wire Wire Line
-	2950 1950 2950 2050
-Connection ~ 2950 2050
-Wire Wire Line
-	3150 1950 3150 2150
-Connection ~ 3150 2150
+	1450 4000 1450 4050
 Wire Wire Line
 	4950 3950 5750 3950
 Wire Wire Line
@@ -885,15 +879,9 @@ Wire Wire Line
 Wire Wire Line
 	4950 4150 5750 4150
 Wire Wire Line
-	4950 3250 5750 3250
-Wire Wire Line
 	4950 3450 5750 3450
 Wire Wire Line
-	4950 3550 5750 3550
-Wire Wire Line
 	2850 4150 3250 4150
-Wire Wire Line
-	3250 4250 2850 4250
 Wire Wire Line
 	2850 4350 3250 4350
 Wire Wire Line
@@ -915,11 +903,9 @@ Wire Wire Line
 Wire Wire Line
 	4950 3750 5750 3750
 Wire Wire Line
-	3250 3050 2850 3050
+	1800 3450 3250 3450
 Wire Wire Line
-	2850 3450 3250 3450
-Wire Wire Line
-	2850 3550 3250 3550
+	1900 3550 3250 3550
 Wire Wire Line
 	2850 4050 3250 4050
 Wire Wire Line
@@ -946,8 +932,6 @@ Wire Wire Line
 	9300 6050 9200 6050
 Wire Wire Line
 	9200 6050 9200 6100
-Wire Wire Line
-	4950 3050 5750 3050
 $Comp
 L SW_PUSH SW1
 U 1 1 5383007F
@@ -1264,13 +1248,13 @@ Wire Wire Line
 	6100 6800 6100 6850
 Wire Wire Line
 	6100 7350 6100 7400
-Text Label 5750 2750 0    40   ~ 0
+Text Label 2850 4650 0    40   ~ 0
 SW_TL
-Text Label 2850 2750 0    40   ~ 0
+Text Label 2850 2050 0    40   ~ 0
 SW_TR
-Text Label 2850 4850 0    40   ~ 0
+Text Label 5750 2650 0    40   ~ 0
 SW_BL
-Text Label 2850 2350 0    40   ~ 0
+Text Label 2850 2750 0    40   ~ 0
 SW_BR
 Text Label 2100 7100 0    40   ~ 0
 SW_TL
@@ -1280,7 +1264,7 @@ Text Label 4900 7100 0    40   ~ 0
 SW_BL
 Text Label 6300 7100 0    40   ~ 0
 SW_BR
-Text GLabel 2850 4950 0    40   Output ~ 0
+Text GLabel 2850 2350 0    40   Output ~ 0
 VM_EN
 Text Notes 9250 950  0    60   ~ 12
 Memory LCD display
@@ -1294,13 +1278,11 @@ Text Notes 9100 3050 0    60   ~ 12
 LCD backlight
 Text Notes 9150 4350 0    60   ~ 12
 Buzzer
-Text Notes 6100 3650 0    40   ~ 0
-Timer 3 output 0 (PWM)
-Wire Wire Line
-	5750 3150 4950 3150
-Text Label 2850 3050 0    40   ~ 0
+Text Notes 2100 2250 0    40   ~ 0
+Timer 0 output 2 (PWM)
+Text Label 5750 3450 0    40   ~ 0
 LCD_BKL1
-Text Label 5750 3750 0    40   ~ 0
+Text Label 5750 3350 0    40   ~ 0
 LCD_BKL2
 Text Label 8350 3200 0    40   ~ 0
 LCD_BKL1
@@ -1514,16 +1496,12 @@ Wire Notes Line
 	5500 750  3950 750 
 Text Notes 4000 750  0    40   ~ 0
 Probably don't need this, TBC
-Text Notes 6100 3750 0    40   ~ 0
-Timer 3 output 1 (PWM)
-Text Notes 2100 3050 0    40   ~ 0
-Timer 3 output 2 (PWM)
+Text Notes 6100 3350 0    40   ~ 0
+Timer 1 output 1 (PWM)
+Text Notes 6100 3450 0    40   ~ 0
+Timer 1 output 2 (PWM)
 Text Notes 2100 2850 0    40   ~ 0
 Timer 2 output 1 (PWM)
-NoConn ~ 3250 2650
-NoConn ~ 3250 2550
-NoConn ~ 3250 2450
-NoConn ~ 3250 3650
 Wire Wire Line
 	2850 2750 3250 2750
 Wire Wire Line
@@ -1538,10 +1516,32 @@ Wire Wire Line
 	4950 2750 5750 2750
 Wire Wire Line
 	2850 4550 3250 4550
-NoConn ~ 4950 2650
-NoConn ~ 4950 3350
-NoConn ~ 4950 4250
 Wire Wire Line
 	2850 3750 3250 3750
-NoConn ~ 4950 2850
+Wire Wire Line
+	1800 3450 1800 4300
+Wire Wire Line
+	1800 4300 1150 4300
+Wire Wire Line
+	1900 3550 1900 4400
+Wire Wire Line
+	1900 4400 1150 4400
+Wire Wire Line
+	1250 4250 1250 4300
+Connection ~ 1250 4300
+Wire Wire Line
+	1450 4250 1450 4400
+Connection ~ 1450 4400
+Wire Wire Line
+	4950 3350 5750 3350
+Wire Wire Line
+	5750 4250 4950 4250
+Wire Wire Line
+	4950 2650 5750 2650
+Wire Wire Line
+	4950 2850 5750 2850
+Wire Wire Line
+	2850 3650 3250 3650
+Wire Wire Line
+	4950 3550 5750 3550
 $EndSCHEMATC
