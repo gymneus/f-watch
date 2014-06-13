@@ -118,4 +118,6 @@ OpenGL
 * Ratsnest not refresh when re-loading the netlist.
 * Component lock doesn't work (can still move locked components).
 * Dwgs.User layer is alway drawn on top of other layers (and it shouldn't).
+* Missing display net name in vias.
+* When placing via, router isn't swaping to other layer.
 * 

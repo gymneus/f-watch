@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2014-06-01 BZR 4909)-product   date = Wed 11 Jun 2014 09:39:22 PM CEST
+Cmp-Mod V01 Created by Cvpcb (2014-06-01 BZR 4909)-product   date = Fri 13 Jun 2014 11:15:13 PM CEST
 
 BeginCmp
 TimeStamp = /537A65FD/537BB217;
@@ -120,6 +120,13 @@ IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
 BeginCmp
+TimeStamp = /537A662B/539B77D9;
+Reference = C18;
+ValeurCmp = 10pF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
 TimeStamp = /537A663F/537CF6B1;
 Reference = C19;
 ValeurCmp = 1uF;
@@ -151,6 +158,13 @@ BeginCmp
 TimeStamp = /537A663F/537D27F3;
 Reference = C23;
 ValeurCmp = 100nF;
+IdModule  = Capacitors_SMD:c_0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A662B/539B7866;
+Reference = C24;
+ValeurCmp = 10pF;
 IdModule  = Capacitors_SMD:c_0603;
 EndCmp
 
@@ -731,8 +745,15 @@ EndCmp
 BeginCmp
 TimeStamp = /537A662B/537FC26F;
 Reference = X1;
-ValeurCmp = CRYSTAL_SMD;
+ValeurCmp = 32.768kHz;
 IdModule  = freewatch_footprints:AB26TRB;
+EndCmp
+
+BeginCmp
+TimeStamp = /537A662B/539B6F18;
+Reference = X2;
+ValeurCmp = 48MHz;
+IdModule  = freewatch_footprints:ABM11_CRYSTAL;
 EndCmp
 
 EndListe
