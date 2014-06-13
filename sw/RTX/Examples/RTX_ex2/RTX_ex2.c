@@ -62,9 +62,8 @@ osThreadDef(job3, osPriorityNormal, 1, 0);
  *---------------------------------------------------------------------------*/
 void job1 (void const *argument) {    /* higher priority to preempt job2     */
   while (1) {                         /* endless loop                        */
-    counter1++;                       /* increment counter 1                 */
-    osDelay(10);                      /* wait for timeout: 10ms              */
     GPIO_PinOutToggle(gpioPortD, 3);
+    osDelay(125);                      /* wait for timeout: 10ms              */
   }
 }
 
@@ -73,12 +72,8 @@ void job1 (void const *argument) {    /* higher priority to preempt job2     */
  *---------------------------------------------------------------------------*/
 void job2 (void const *argument) {
   while (1)  {                        /* endless loop                        */
-    counter2++;                       /* increment counter 2                 */
-    if (counter2 == 0) {              /* signal overflow of counter 2        */
-      osSignalSet(thread3_id, 0x0001);/* to thread 3                         */
-      osThreadYield();
       GPIO_PinOutToggle(gpioPortD, 2);
-    }
+      osDelay(250);
   }
 }
 
@@ -87,9 +82,8 @@ void job2 (void const *argument) {
  *---------------------------------------------------------------------------*/
 void job3 (void const *argument) {
   while (1) {                         /* endless loop                        */
-    osSignalWait(0x0001, osWaitForever);  /* wait for signal event           */
-    counter3++;                       /* process overflow from counter 2     */
     GPIO_PinOutToggle(gpioPortD, 1);
+    osDelay(500);
   }
 }
 
@@ -115,7 +109,7 @@ int main (void) {                     /* program execution starts here       */
 
   while (1) {                         /* endless loop                        */
     counter++;                        /* increment counter                   */
-    osDelay(50);                      /* wait for timeout: 50m               */
+    osDelay(62);                      /* wait for timeout: 50m               */
     GPIO_PinOutToggle(gpioPortD, 4);
   }
 }
