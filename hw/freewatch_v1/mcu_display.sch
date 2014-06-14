@@ -77,7 +77,7 @@ Text GLabel 2850 4750 0    40   Output ~ 0
 AC_CS_XL
 Text GLabel 2850 4950 0    40   Output ~ 0
 AC_CS_MAG
-Text GLabel 5750 2550 2    40   Input ~ 0
+Text GLabel 2850 2950 0    40   Input ~ 0
 AC_INT_MAG
 Text GLabel 5750 2450 2    40   Input ~ 0
 AC_DRDY_MAG
@@ -1510,7 +1510,7 @@ Wire Wire Line
 	2850 2950 3250 2950
 Wire Wire Line
 	2850 3950 3250 3950
-Text GLabel 2850 2950 0    40   Input ~ 0
+Text GLabel 5750 2550 2    40   Input ~ 0
 AC_INT_XL
 Wire Wire Line
 	4950 2750 5750 2750
