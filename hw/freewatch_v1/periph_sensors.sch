@@ -242,8 +242,6 @@ Text GLabel 6950 2400 2    40   Output ~ 0
 GPS_WAKUP
 Text GLabel 5150 2600 2    40   Input ~ 0
 GPS_RST
-Text GLabel 6000 2700 2    40   Output ~ 0
-GPS_PPS
 Text Notes 8100 4650 0    40   ~ 0
 I2C address = b'1001010
 $Comp
@@ -778,7 +776,7 @@ F 3 "" H 3450 6800 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Text Notes 3300 6400 0    60   ~ 12
-Optional vibrating motor
+Vibrating motor
 $Comp
 L CONN_2 P6
 U 1 1 53831BA5
@@ -1198,8 +1196,6 @@ Wire Wire Line
 Wire Wire Line
 	6500 2050 6500 2250
 Connection ~ 6250 2050
-Text Notes 6350 2700 0    60   ~ 0
-Do we need the PPS ?
 $Comp
 L RES R10
 U 1 1 539167ED
@@ -1255,7 +1251,7 @@ Wire Wire Line
 Wire Wire Line
 	5650 3000 5650 3050
 Text Notes 1100 1750 0    40   ~ 0
-External antenna matching filter
+External antenna matching filter.\nSee GPS__gigaNOVA-10MD-0029-3-AN\napp. note for matching filter design.
 NoConn ~ 4300 2700
 Wire Wire Line
 	10150 2800 10050 2800

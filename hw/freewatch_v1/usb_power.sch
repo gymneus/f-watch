@@ -813,8 +813,8 @@ Wire Wire Line
 Wire Wire Line
 	9350 3650 9450 3650
 Connection ~ 9450 3650
-Text Notes 8350 4100 0    60   ~ 0
-TPS73430 is pin compatible and 250mA
+Text Notes 7900 4100 0    60   ~ 0
+Alternative: TPS73430 (pin compatible, 250mA)
 $Comp
 L TPS780180300 U5
 U 1 1 539156EB
