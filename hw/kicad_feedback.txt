@@ -102,6 +102,8 @@ Pcbnew
 * Fill zone: - can't differenciate between baord edge and via/pads clearance.
              - via/pad clearance is calculated from annular ring, not from hole.
 * Can't change layers color??
+* Can't place (non-plated) holes, have to place a module.
+* DRC option not taking the unit selection (mm, inches) into account.
 * 
 
 OpenGL
