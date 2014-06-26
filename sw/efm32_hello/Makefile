@@ -111,7 +111,10 @@ LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
 INCLUDEPATHS += \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
--I../common/emlib/inc
+-I../common/emlib/inc \
+-I../common/drivers \
+-I../common/glib \
+-I../common
 
 ####################################################################
 # Files                                                            #
@@ -119,10 +122,18 @@ INCLUDEPATHS += \
 
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
-../common/emlib/src/em_system.c \
-../common/emlib/src/em_cmu.c \
+../common/drivers/display.c \
+../common/drivers/displayls013b7dh03.c \
+../common/drivers/displaypalemlib.c \
 ../common/emlib/src/em_assert.c \
+../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
+../common/emlib/src/em_int.c \
+../common/emlib/src/em_system.c \
+../common/emlib/src/em_rtc.c \
+../common/emlib/src/em_usart.c \
+../common/udelay.c \
 blink.c
 
 s_SRC += 
