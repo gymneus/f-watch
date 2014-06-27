@@ -46,16 +46,21 @@ volatile uint16_t counter3;           /* counter for thread 3                */
 osThreadId thread1_id;
 osThreadId thread2_id;
 osThreadId thread3_id;
+osThreadId thread4_id;
 
 /* Forward reference */
 void job1 (void const *argument);
 void job2 (void const *argument);
 void job3 (void const *argument);
+void job4 (void const *argument);
+
+#define STKSIZE 150
 
 /* Thread definitions */
-osThreadDef(job1, osPriorityAboveNormal, 1, 0);
-osThreadDef(job2, osPriorityNormal, 1, 0);
-osThreadDef(job3, osPriorityNormal, 1, 0);
+osThreadDef(job1, osPriorityAboveNormal, 1, STKSIZE);
+osThreadDef(job2, osPriorityNormal, 1, STKSIZE);
+osThreadDef(job3, osPriorityNormal, 1, STKSIZE);
+osThreadDef(job4, osPriorityNormal, 1, STKSIZE);
 
 /*----------------------------------------------------------------------------
  *   Thread 1: 'job1'
@@ -87,6 +92,13 @@ void job3 (void const *argument) {
   }
 }
 
+void job4(void const *argument) {
+  while (1) {                         /* endless loop                        */
+    osDelay(62);                      /* wait for timeout: 50m               */
+    GPIO_PinOutToggle(gpioPortD, 4);
+  }
+}
+
 /*----------------------------------------------------------------------------
  *   Main Thread
  *---------------------------------------------------------------------------*/
@@ -106,12 +118,7 @@ int main (void) {                     /* program execution starts here       */
   thread1_id = osThreadCreate(osThread(job1),NULL);  /* create thread1       */
   thread2_id = osThreadCreate(osThread(job2),NULL);  /* create thread2       */
   thread3_id = osThreadCreate(osThread(job3),NULL);  /* create thread3       */
-
-  while (1) {                         /* endless loop                        */
-    counter++;                        /* increment counter                   */
-    osDelay(62);                      /* wait for timeout: 50m               */
-    GPIO_PinOutToggle(gpioPortD, 4);
-  }
+  thread4_id = osThreadCreate(osThread(job4),NULL);  /* create thread3       */
 }
 
 /*----------------------------------------------------------------------------
