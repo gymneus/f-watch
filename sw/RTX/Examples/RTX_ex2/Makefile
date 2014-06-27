@@ -3,14 +3,14 @@
 ####################################################################
 
 .SUFFIXES:				# ignore builtin rules
-.PHONY: all debug release clean
+.PHONY: all debug release clean flash
 
 ####################################################################
 # Definitions                                                      #
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = freertos_blink
+PROJECTNAME = RTX_ex2
 # Name of interface configuration file used by OpenOCD
 OOCD_IFACE ?= stlink-v2-1
 
@@ -93,9 +93,9 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 #
 # Add -Wa,-ahld=$(LST_DIR)/$(@F:.o=.lst) to CFLAGS to produce assembly list files
 #
-override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
+override CFLAGS += -D$(DEVICE) -D__CORTEX_M3 -D__CMSIS_RTOS -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 -DDEBUG_EFM  \
+-fdata-sections -fomit-frame-pointer -DDEBUG_EFM \
 $(DEPFLAGS)
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
@@ -104,72 +104,72 @@ override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=corte
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
 #
 override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -T../Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
- -Wl,--gc-sections
+-mthumb -TGCC/ARMCMx.ld \
+-Wl,--gc-sections
 
-LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
+LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 
 INCLUDEPATHS += \
--I../src \
--I../CMSIS/Include \
--I../Device/EnergyMicro/EFM32GG/Include \
--I../emlib/inc \
--I../emdrv/sleep/inc \
--I../kits/common/bsp \
--I../src \
--I../reptile/FreeRTOS/Source/include \
--I../reptile/FreeRTOS/Source/portable/GCC/ARM_CM3 \
--I../kits/EFM32GG_STK3700/config
+-I../../INC \
+-I../../SRC \
+-I../../../common/CMSIS/Include \
+-I../../../common/Device/EnergyMicro/EFM32GG/Include \
+-I../../../common/emlib/inc
 
 ####################################################################
 # Files                                                            #
 ####################################################################
 
 C_SRC +=  \
-../Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
-../emlib/src/em_assert.c \
-../emlib/src/em_burtc.c \
-../emlib/src/em_cmu.c \
-../emlib/src/em_emu.c \
-../emlib/src/em_gpio.c \
-../emlib/src/em_int.c \
-../emlib/src/em_rmu.c \
-../emlib/src/em_rtc.c \
-../emlib/src/em_system.c \
-../emdrv/sleep/src/sleep.c \
-../reptile/FreeRTOS/Source/timers.c \
-../reptile/FreeRTOS/Source/tasks.c \
-../reptile/FreeRTOS/Source/queue.c \
-../reptile/FreeRTOS/Source/list.c \
-../reptile/FreeRTOS/Source/croutine.c \
-../reptile/FreeRTOS/Source/portable/MemMang/heap_1.c \
-../reptile/FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
-../src/main.c \
-../src/low_power_tick_management.c
+../../../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+RTX_Conf_CM.c \
+RTX_ex2.c \
+../../SRC/rt_CMSIS.c \
+../../SRC/rt_Event.c \
+../../SRC/rt_List.c \
+../../SRC/rt_Mailbox.c \
+../../SRC/rt_MemBox.c \
+../../SRC/rt_Memory.c \
+../../SRC/rt_Mutex.c \
+../../SRC/rt_Robin.c \
+../../SRC/rt_Semaphore.c \
+../../SRC/rt_System.c \
+../../SRC/rt_Time.c \
+../../SRC/rt_Timer.c \
+../../SRC/HAL_CM.c \
+../../SRC/rt_Task.c \
+../../../common/emlib/src/em_system.c \
+../../../common/emlib/src/em_cmu.c \
+../../../common/emlib/src/em_assert.c \
+../../../common/emlib/src/em_gpio.c
 
-s_SRC += 
+s_SRC += \
+../../SRC/GCC/HAL_CM3.s \
+../../SRC/GCC/SVC_Table.s
 
-S_SRC +=  \
-../Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
+S_SRC += \
+../../../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
 
 ####################################################################
 # Rules                                                            #
 ####################################################################
 
 C_FILES = $(notdir $(C_SRC) )
-S_FILES = $(notdir $(S_SRC) $(s_SRC) )
+S_FILES = $(notdir $(S_SRC) )
+s_FILES = $(notdir $(s_SRC) )
 #make list of source paths, sort also removes duplicates
 C_PATHS = $(sort $(dir $(C_SRC) ) )
-S_PATHS = $(sort $(dir $(S_SRC) $(s_SRC) ) )
+S_PATHS = $(sort $(dir $(S_SRC) ) )
+s_PATHS = $(sort $(dir $(s_SRC) ) )
 
 C_OBJS = $(addprefix $(OBJ_DIR)/, $(C_FILES:.c=.o))
 S_OBJS = $(if $(S_SRC), $(addprefix $(OBJ_DIR)/, $(S_FILES:.S=.o)))
-s_OBJS = $(if $(s_SRC), $(addprefix $(OBJ_DIR)/, $(S_FILES:.s=.o)))
+s_OBJS = $(if $(s_SRC), $(addprefix $(OBJ_DIR)/, $(s_FILES:.s=.o)))
 C_DEPS = $(addprefix $(OBJ_DIR)/, $(C_FILES:.c=.d))
 OBJS = $(C_OBJS) $(S_OBJS) $(s_OBJS)
 
 vpath %.c $(C_PATHS)
-vpath %.s $(S_PATHS)
+vpath %.s $(s_PATHS)
 vpath %.S $(S_PATHS)
 
 # Default build is debug build
@@ -178,7 +178,7 @@ all:      debug
 debug:    CFLAGS += -DDEBUG -O0 -g
 debug:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release:  CFLAGS += -DNDEBUG -O3 
+release:  CFLAGS += -DNDEBUG -O0 -g 
 release:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files
@@ -215,7 +215,7 @@ ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 endif
 
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ../openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+	openocd -s ../../../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))
