@@ -38,11 +38,15 @@
 const
 #include "bootld.h"
 
+#include <freewatch/freewatch_utils.h>
+
 /**************************************************************************//**
  * The main entry point.
  *****************************************************************************/
 int main(void)
 {
+  supercar_blink(200, 4);
+
   __set_MSP( ( 0x20000000 + sizeof( bootloader ) + 0x400 ) & 0xFFFFFFF0 );
 
   /* Load the entire bootloader into SRAM. */

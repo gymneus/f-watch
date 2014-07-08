@@ -44,6 +44,8 @@
 #include "bootldio.h"
 #include "retargetdebug.h"
 
+#include <freewatch/freewatch_utils.h>
+
 /*** Typedef's and defines. ***/
 
 #define BULK_EP_SIZE    64      /* This is the max. ep size.              */
@@ -99,6 +101,8 @@ static const uint8_t unknownString[] = "\r\n?\r\n";
 int main(void)
 {
   int msElapsed, i;
+
+  supercar_blink(50, 4);
 
   /* Set new vector table pointer */
   SCB->VTOR = 0x20000000;

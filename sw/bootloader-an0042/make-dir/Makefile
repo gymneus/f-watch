@@ -137,17 +137,19 @@ INCLUDEPATHS += \
 # Files                                                            #
 ####################################################################
 
-
-
-C_SRC_MAIN +=  \
-$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+C_SRC_COMMON =  \
 $(COMMONSW)/emlib/src/em_system.c \
 $(COMMONSW)/emlib/src/em_cmu.c \
+$(COMMONSW)/emlib/src/em_assert.c \
+$(COMMONSW)/emlib/src/em_gpio.c \
+$(COMMONSW)/freewatch/freewatch_utils.c
+
+
+C_SRC_MAIN += $(C_SRC_COMMON) \
+$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 $(COMMONSW)/emlib/src/em_emu.c \
 $(COMMONSW)/emlib/src/em_dma.c \
 $(COMMONSW)/emlib/src/em_rtc.c \
-$(COMMONSW)/emlib/src/em_assert.c \
-$(COMMONSW)/emlib/src/em_gpio.c \
 $(COMMONSW)/emlib/src/em_prs.c \
 $(COMMONSW)/emlib/src/em_int.c \
 $(COMMONSW)/emlib/src/em_timer.c \
@@ -169,10 +171,11 @@ $(COMMONSW)/usb/src/em_usbtimer.c \
 ../retargetdebug.c \
 ../xmodem.c
 
-C_SRC_LOADER +=  \
+C_SRC +=  $(C_SRC_COMMON) \
 $(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 ../boot.c \
-../loader.c
+../loader.c \
+
 
 
 
