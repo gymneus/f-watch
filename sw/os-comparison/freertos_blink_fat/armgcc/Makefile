@@ -170,11 +170,13 @@ C_SRC +=  \
 ../reptile/FreeRTOS-Plus-FAT-SL/psp/target/rtc/psp_rtc.c
 
 C_SRC +=  \
-../reptile/FreeRTOS-Plus-FAT-SL/media-drv/ram/ramdrv_f.c #TODO: use our implementation for the driver of SD card.
+../src/media-drv/sd/sd_driver_f.c
+#../reptile/FreeRTOS-Plus-FAT-SL/media-drv/ram/ramdrv_f.c #TODO: use our implementation for the driver of SD card.
 
 C_SRC +=  \
 ../reptile/FreeRTOS-Plus-FAT-SL/fat_sl/test/test.c \
-../reptile/FreeRTOS-Plus-FAT-SL/psp/target/fat_sl/psp_test_ramdrv.c #This file test FAT SL with a given driver : now it uses the RAM driver
+../src/psp/psp_test_sddriver.c
+#../reptile/FreeRTOS-Plus-FAT-SL/psp/target/fat_sl/psp_test.c #This file test FAT SL with a given driver : now it uses the RAM driver
 
 INCLUDEPATHS += \
 -I../reptile/FreeRTOS-Plus-FAT-SL/config/ \
