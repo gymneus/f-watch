@@ -39,17 +39,17 @@
  */
 
 #include <stdio.h>
-#include "psp_test.h"
+#include "../../reptile/FreeRTOS-Plus-FAT-SL/psp/target/fat_sl/psp_test.h"
 #include "config_fat_sl.h"
-#include "config_mdriver_ram.h"
-#include "../../../api/fat_sl.h"
-#include "../../../api/api_mdriver_ram.h"
+#include "../media-drv/sd/config_mdriver_sd.h"
+#include "../../reptile/FreeRTOS-Plus-FAT-SL/api/fat_sl.h"
+#include "../api/api_mdriver_sd.h"
 
-#include "../../../version/ver_fat_sl.h"
+#include "../../reptile/FreeRTOS-Plus-FAT-SL/version/ver_fat_sl.h"
 #if VER_FAT_SL_MAJOR != 5
  #error Incompatible FAT_SL version number!
 #endif
-#include "../../../version/ver_psp_fat_sl.h"
+#include "../../reptile/FreeRTOS-Plus-FAT-SL/version/ver_psp_fat_sl.h"
 #if VER_PSP_FAT_FAT_SL_MAJOR != 1 || VER_PSP_FAT_FAT_SL_MINOR != 2
  #error Incompatible PSP_FAT_FAT_SL version number!
 #endif
@@ -61,13 +61,13 @@ extern void __printbuf ( char * buf, int len );
 /* Use to display text (printf). */
 void _f_dump ( char * s )
 {
-//  printf( "%s\r\n", s );//(commented by xavier)
+  printf( "%s\r\n", s );
 }
 
 /* Use to display test result (printf). */
 uint8_t _f_result ( int linenum, uint32_t result )
 {
-//  printf( "Error:%d/%ld\r\n", linenum, result );//(commented by xavier)
+  printf( "Error:%d/%ld\r\n", linenum, result );
   return 0;
 }
 
@@ -75,5 +75,5 @@ uint8_t _f_result ( int linenum, uint32_t result )
 uint8_t _f_poweron ( void )
 {
   f_delvolume();
-  return f_initvolume( ram_initfunc );
+  return f_initvolume( sd_initfunc );
 }

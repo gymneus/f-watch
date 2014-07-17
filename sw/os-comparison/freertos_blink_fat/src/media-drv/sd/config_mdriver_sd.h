@@ -5,7 +5,7 @@
 #ifndef _CONFIG_MDRIVER_SD_H_
 #define _CONFIG_MDRIVER_SD_H_
 
-#include "../version/ver_mdriver_sd.h"
+#include "../../version/ver_mdriver_sd.h"
 #if VER_MDRIVER_SD_MAJOR != 1 || VER_MDRIVER_SD_MINOR != 0
  #error Incompatible MDRIVER_SD version number!
 #endif
