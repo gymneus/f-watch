@@ -5,12 +5,14 @@
 .SUFFIXES:				# ignore builtin rules
 .PHONY: all debug release clean
 
+-include Makefile.$(USER) #user specific rules
+
 ####################################################################
 # Definitions                                                      #
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = freertos_blink
+PROJECTNAME = freertos_blink_fat
 # Name of interface configuration file used by OpenOCD
 OOCD_IFACE ?= stlink-v2-1
 
@@ -26,7 +28,7 @@ LST_DIR = lst
 # Change path to the tools according to your system configuration
 # DO NOT add trailing whitespace chars, they do matter !
 WINDOWSCS  ?= GNU Tools ARM Embedded\4.7 2012q4
-LINUXCS    ?= /usr
+LINUXCS    ?= /opt/gcc-arm-none-eabi-4_8-2014q1
 
 RMDIRS     := rm -rf
 RMFILES    := rm -rf
@@ -172,7 +174,7 @@ C_SRC +=  \
 
 C_SRC +=  \
 ../reptile/FreeRTOS-Plus-FAT-SL/fat_sl/test/test.c \
-../reptile/FreeRTOS-Plus-FAT-SL/psp/target/fat_sl/psp_test_xavier.c #TODO: we should not use this psp_test.c because it use printf() to simulate
+../reptile/FreeRTOS-Plus-FAT-SL/psp/target/fat_sl/psp_test_ramdrv.c #This file test FAT SL with a given driver : now it uses the RAM driver
 
 INCLUDEPATHS += \
 -I../reptile/FreeRTOS-Plus-FAT-SL/config/ \
