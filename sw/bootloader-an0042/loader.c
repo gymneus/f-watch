@@ -47,7 +47,7 @@ int main(void)
 {
   supercar_blink(200, 4);
 
-  __set_MSP( ( 0x20000000 + sizeof( bootloader ) + 0x400 ) & 0xFFFFFFF0 );
+  __set_MSP( ( 0x20000000 + sizeof( bootloader ) + 0x8000 ) & 0xFFFFFFF0 );
 
   /* Load the entire bootloader into SRAM. */
   memcpy( (void*)0x20000000, bootloader, sizeof( bootloader ) );

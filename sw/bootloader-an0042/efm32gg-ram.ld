@@ -7,8 +7,8 @@
 /* Silicon Laboratories, Inc. 2014                                  */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x20000000, LENGTH = 0x4000
-  RAM (rwx)  : ORIGIN = 0x20004000, LENGTH = 131072
+  FLASH (rx) : ORIGIN = 0x20008000, LENGTH = 0x8000
+  RAM (rwx)  : ORIGIN = 0x20010000, LENGTH = 0x8000
 }
 
 /* Linker script to place sections and symbol values. Should be used together
