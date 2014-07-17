@@ -219,13 +219,13 @@ debug_bootloader:    CFLAGS += -DDEBUG -Os -g3
 debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 #debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN).bin
 
-release_bootloader:  CFLAGS += -DNDEBUG -Os
+release_bootloader:  CFLAGS += -DNDEBUG -Os -ggdb
 release_bootloader:  $(EXE_DIR)/$(PROJECTNAME_MAIN).bin
 
 debug_bootloader_loader:    CFLAGS += -DDEBUG -Os -g3
 debug_bootloader_loader:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release_bootloader_loader:  CFLAGS += -DNDEBUG -Os
+release_bootloader_loader:  CFLAGS += -DNDEBUG -Os -ggdb
 release_bootloader_loader:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files
@@ -284,7 +284,7 @@ $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
 	@echo "Deleting loader.o to ensure it does not exist yet"
 	$(RM) $(OBJ_DIR)\loader.o
 	$(RM) ..\bootld.h
-	@echo "Creating blob file needed by loader loader..."
+	@echo "DEBUGGING: Creating blob file needed by loader loader..."
 	@touch $(PWD)/../bootld.h
 	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
 	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
