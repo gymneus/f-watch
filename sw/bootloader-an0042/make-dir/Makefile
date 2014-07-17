@@ -271,7 +271,11 @@ $(EXE_DIR)/$(PROJECTNAME_MAIN).bin: $(EXE_DIR)/$(PROJECTNAME_MAIN).out
 	$(RM) $(OBJ_DIR)\loader.o
 	$(RM) ..\bootld.h
 	@echo "Creating blob file needed by loader loader..."
-	wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin $(PWD)/../bootld.h -v bootloader
+	@touch $(PWD)/../bootld.h
+	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
+	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
+	@echo "};" >> $(PWD)/../bootld.h
+#wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin $(PWD)/../bootld.h -v bootloader
 
 # HACK: Also allow for a non-relocated-to-RAM version of 'main' for debugging. But still use the RAM version of the loader main when building loader-loader.
 $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
@@ -281,7 +285,11 @@ $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
 	$(RM) $(OBJ_DIR)\loader.o
 	$(RM) ..\bootld.h
 	@echo "Creating blob file needed by loader loader..."
-	wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin $(PWD)/../bootld.h -v bootloader
+	@touch $(PWD)/../bootld.h
+	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
+	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
+	@echo "};" >> $(PWD)/../bootld.h
+#wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin $(PWD)/../bootld.h -v bootloader
 
 $(EXE_DIR)/$(PROJECTNAME).bin: $(EXE_DIR)/$(PROJECTNAME).out
 	@echo "Creating binary file"
