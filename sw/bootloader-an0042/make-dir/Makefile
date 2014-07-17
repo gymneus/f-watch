@@ -308,6 +308,9 @@ endif
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
 	openocd -s $(COMMONSW)/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
+flashmain: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
+	openocd -s $(COMMONSW)/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin 0 verify reset"
+
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))
