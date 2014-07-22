@@ -450,7 +450,7 @@ t_PRECHG = K_TMR * R_TMR\nt_MAXCHG = 10 * K_TMR * R_TMR\nK_TMR = 48 s/kohm
 Text Notes 3050 4200 0    40   ~ 0
 I_CHG = K_ISET / R_ISET\nK_ISET = 890 A*ohm
 Text Notes 10350 3250 0    50   ~ 10
-VCC = 3V
+VCC = 3V, 150mA
 Text Notes 600  1200 0    50   ~ 0
 Copyright Julian Lewis 2014.\nThis documentation describes Open Hardware and is licensed under the\nCERN OHL v. 1.2.\nYou may redistribute and modify this documentation under the terms of the\nCERN OHL v.1.2. (http://ohwr.org/cernohl). This documentation is distributed\nWITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY,\nSATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.\nPlease see the CERN OHL v.1.2 for applicable conditions
 $Comp
@@ -728,7 +728,7 @@ Wire Wire Line
 Text Notes 5200 2650 0    60   ~ 12
 Battery charger
 Text Notes 8350 3050 0    60   ~ 12
-LDO voltage regulator
+System LDO voltage regulator
 Text Notes 5250 4700 0    60   ~ 12
 Battery fuel gauge
 Text Notes 2200 2250 0    60   ~ 12
@@ -813,6 +813,141 @@ Wire Wire Line
 Wire Wire Line
 	9350 3650 9450 3650
 Connection ~ 9450 3650
-Text Notes 8350 4100 0    60   ~ 0
-TPS73430 is pin compatible and 250mA
+Text Notes 7900 4100 0    60   ~ 0
+Alternative: TPS73430 (pin compatible, 250mA)
+$Comp
+L TPS780180300 U5
+U 1 1 539156EB
+P 8250 2000
+F 0 "U5" H 8800 2150 60  0000 C CNN
+F 1 "TPS780180300" H 8800 1450 60  0000 C CNN
+F 2 "" H 8250 2000 60  0000 C CNN
+F 3 "" H 8250 2000 60  0000 C CNN
+	1    8250 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L CAP C9
+U 1 1 539156F2
+P 7950 2100
+F 0 "C9" V 7900 2150 39  0000 C CNN
+F 1 "1uF" V 8000 2200 39  0000 C CNN
+F 2 "" H 7950 2100 60  0000 C CNN
+F 3 "" H 7950 2100 60  0000 C CNN
+	1    7950 2100
+	0    1    1    0   
+$EndComp
+$Comp
+L GND #PWR020
+U 1 1 539156F9
+P 7950 2250
+F 0 "#PWR020" H 7950 2250 30  0001 C CNN
+F 1 "GND" H 7950 2180 30  0001 C CNN
+F 2 "" H 7950 2250 60  0000 C CNN
+F 3 "" H 7950 2250 60  0000 C CNN
+	1    7950 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR021
+U 1 1 539156FF
+P 8150 2450
+F 0 "#PWR021" H 8150 2450 30  0001 C CNN
+F 1 "GND" H 8150 2380 30  0001 C CNN
+F 2 "" H 8150 2450 60  0000 C CNN
+F 3 "" H 8150 2450 60  0000 C CNN
+	1    8150 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L CAP C17
+U 1 1 53915705
+P 9650 2150
+F 0 "C17" V 9600 2200 39  0000 C CNN
+F 1 "4.7uF" V 9700 2250 39  0000 C CNN
+F 2 "" H 9650 2150 60  0000 C CNN
+F 3 "" H 9650 2150 60  0000 C CNN
+	1    9650 2150
+	0    1    1    0   
+$EndComp
+$Comp
+L GND #PWR022
+U 1 1 5391570C
+P 9650 2300
+F 0 "#PWR022" H 9650 2300 30  0001 C CNN
+F 1 "GND" H 9650 2230 30  0001 C CNN
+F 2 "" H 9650 2300 60  0000 C CNN
+F 3 "" H 9650 2300 60  0000 C CNN
+	1    9650 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 2200 7950 2250
+Wire Wire Line
+	8250 2300 8150 2300
+Wire Wire Line
+	8150 2300 8150 2450
+Wire Wire Line
+	9350 2000 9650 2000
+Wire Wire Line
+	8250 2200 8150 2200
+Wire Wire Line
+	8150 2200 8150 2000
+Connection ~ 8150 2000
+Wire Wire Line
+	9650 1950 9650 2050
+Connection ~ 9650 2000
+Wire Wire Line
+	9650 2250 9650 2300
+Connection ~ 7950 2000
+Text Notes 8350 1700 0    60   ~ 12
+GPS module LDO voltage regulator
+Wire Wire Line
+	8250 2400 8150 2400
+Connection ~ 8150 2400
+Wire Wire Line
+	7650 2000 8250 2000
+$Comp
+L +1.8V #PWR023
+U 1 1 53915721
+P 9650 1950
+F 0 "#PWR023" H 9650 2090 20  0001 C CNN
+F 1 "+1.8V" H 9650 2060 30  0000 C CNN
+F 2 "" H 9650 1950 60  0000 C CNN
+F 3 "" H 9650 1950 60  0000 C CNN
+	1    9650 1950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9450 2150 9450 2200
+Wire Wire Line
+	9450 2200 9350 2200
+$Comp
+L +VIN #PWR024
+U 1 1 53A9EA44
+P 7400 3300
+F 0 "#PWR024" H 7400 3440 20  0001 C CNN
+F 1 "+VIN" H 7400 3410 30  0000 C CNN
+F 2 "" H 7400 3300 60  0000 C CNN
+F 3 "" H 7400 3300 60  0000 C CNN
+	1    7400 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7400 3300 7400 3350
+Connection ~ 7400 3350
+Wire Wire Line
+	7650 2000 7650 3350
+Connection ~ 7650 3350
+$Comp
+L +VIN #PWR025
+U 1 1 53AC8248
+P 9450 2150
+F 0 "#PWR025" H 9450 2290 20  0001 C CNN
+F 1 "+VIN" H 9450 2260 30  0000 C CNN
+F 2 "" H 9450 2150 60  0000 C CNN
+F 3 "" H 9450 2150 60  0000 C CNN
+	1    9450 2150
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
