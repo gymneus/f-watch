@@ -10,7 +10,7 @@
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = freertos_blink
+PROJECTNAME = uart_test
 # Name of interface configuration file used by OpenOCD
 OOCD_IFACE ?= stlink-v2-1
 
@@ -131,7 +131,8 @@ C_SRC +=  \
 ../../common/emlib/src/em_rmu.c \
 ../../common/emlib/src/em_rtc.c \
 ../../common/emlib/src/em_system.c \
-../.../common/emlib/src/em_usart.c \
+../../common/emlib/src/em_usart.c \
+../../common/emlib/src/em_leuart.c \
 ../../common/emdrv/sleep/src/sleep.c \
 ../uart/uart.c \
 ../main.c
