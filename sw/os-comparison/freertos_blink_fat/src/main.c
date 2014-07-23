@@ -115,6 +115,14 @@ int main(void)
   xTaskCreate( LedBlink, (const signed char *) "LedBlink3", STACK_SIZE_FOR_TASK, &parametersToTask3, TASK_PRIORITY, NULL);
   xTaskCreate( LedBlink, (const signed char *) "LedBlink4", STACK_SIZE_FOR_TASK, &parametersToTask4, TASK_PRIORITY, NULL);
 
+  SPI_setup(1, 1, 1);//init SD SPI
+
+
+  {
+    //try to send data to SD
+    char bufferSent[4] = { 0x01, 0xFF, 0x2, 0xFF};
+    USART1_sendBuffer(bufferSent, 4);
+  }
   f_dotest( 0 ); /* test of using FAT32 */
 
   /*Start FreeRTOS Scheduler*/
