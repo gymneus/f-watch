@@ -50,7 +50,7 @@
 #define GPIO_POS2                2
 
 
-void USART0_sendBuffer(char*, int);
+void USART1_sendBuffer(char*, int);
 
 
 #endif
