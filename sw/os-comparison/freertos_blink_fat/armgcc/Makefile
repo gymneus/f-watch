@@ -170,7 +170,9 @@ C_SRC +=  \
 ../reptile/FreeRTOS-Plus-FAT-SL/psp/target/rtc/psp_rtc.c
 
 C_SRC +=  \
-../src/media-drv/sd/sd_driver_f.c
+../src/media-drv/sd/sd_driver_f.c \
+../src/media-drv/sd/spi.c \
+../src/media-drv/sd/usart.c
 #../reptile/FreeRTOS-Plus-FAT-SL/media-drv/ram/ramdrv_f.c #TODO: use our implementation for the driver of SD card.
 
 C_SRC +=  \
