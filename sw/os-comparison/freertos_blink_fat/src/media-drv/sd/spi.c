@@ -47,12 +47,14 @@ int slaveRxBufferSize;
 volatile int slaveRxBufferIndex;
 
 
-
 /**************************************************************************//**
  * @brief Setup a USART as SPI
  * @param spiNumber is the number of the USART to use (e.g. 1 USART1)
  * @param location is the GPIO location to use for the device
  * @param master set if the SPI is to be master
+ *
+ * For the freewatch, init of SD =>  SPI_setup(1, 1, 1);
+ * For the freewatch, init of LCD => SPI_setup(2, 0, 1);
  *****************************************************************************/
 void SPI_setup(uint8_t spiNumber, uint8_t location, bool master)
 {
@@ -161,7 +163,7 @@ void SPI_setup(uint8_t spiNumber, uint8_t location, bool master)
             {
               case 0: /* IO configuration (USART 2, Location #0) */
                       GPIO_PinModeSet(gpioPortC, 2, gpioModeMosi, 0);  /* MOSI */
-                      GPIO_PinModeSet(gpioPortC, 3, gpioModeMiso, 0);  /* MISO */
+                      //GPIO_PinModeSet(gpioPortC, 3, gpioModeMiso, 0);  /* MISO */ //LCD doesn't have any output
                       GPIO_PinModeSet(gpioPortC, 5, gpioModeCs,   0);  /* CS */
                       GPIO_PinModeSet(gpioPortC, 4, gpioModeClk,  0);  /* Clock */
                       break;
@@ -297,5 +299,12 @@ void USART0_TX_IRQHandler(void)
     }
   }
 }
+
+#if 0
+void USART0_Wait_TX_finished(void) {
+  USART_TypeDef *spi = USART0;
+  while(!(spi->STATUS & USART_STATUS_TXC));
+}
+#endif
 
 
