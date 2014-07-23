@@ -41,9 +41,9 @@
  * @param txBuffer points to data to transmit
  * @param bytesToSend bytes will be sent
  *****************************************************************************/
-void USART0_sendBuffer(char* txBuffer, int bytesToSend)
+void USART1_sendBuffer(char* txBuffer, int bytesToSend)
 {
-  USART_TypeDef *uart = USART0;
+  USART_TypeDef *uart = USART1;
   int           ii;
 
   /* Sending the data */
