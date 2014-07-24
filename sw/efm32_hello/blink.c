@@ -35,7 +35,6 @@
 #include "em_device.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
-#include "display.h"
 
 /* Counts 1ms timeTicks */
 volatile uint32_t msTicks;
@@ -80,8 +79,6 @@ int main(void)
     for (i = 1; i < 5; ++i) {
         GPIO_PinModeSet(gpioPortD, i, gpioModePushPull, 0);
     }
-
-    DISPLAY_Init();
 
     /* Infinite blink loop */
     while (1) {

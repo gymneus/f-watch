@@ -122,9 +122,6 @@ INCLUDEPATHS += \
 
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
-../common/drivers/display.c \
-../common/drivers/displayls013b7dh03.c \
-../common/drivers/displaypalemlib.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
 ../common/emlib/src/em_emu.c \
