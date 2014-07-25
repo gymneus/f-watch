@@ -1,3 +1,23 @@
+# Copyright (C) 2014 Julian Lewis
+# @author Maciej Suminski <maciej.suminski@cern.ch>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, you may find one here:
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+# or you may search the http://www.gnu.org website for the version 2 license,
+# or you may write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
 ####################################################################
 # Makefile                                                         #
 ####################################################################
@@ -10,7 +30,7 @@
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = blink
+PROJECTNAME = freewatch
 # Name of interface configuration file used by OpenOCD
 OOCD_IFACE ?= stlink-v2-1
 
@@ -62,7 +82,7 @@ else
   endif
 endif
 
-# Create directories and do a clean which is compatible with parallell make
+# Create directories and do a clean which is compatible with parallel make
 $(shell mkdir $(OBJ_DIR)>$(NULLDEVICE) 2>&1)
 $(shell mkdir $(EXE_DIR)>$(NULLDEVICE) 2>&1)
 $(shell mkdir $(LST_DIR)>$(NULLDEVICE) 2>&1)
@@ -122,13 +142,23 @@ INCLUDEPATHS += \
 
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../common/drivers/lcd.c \
+../common/drivers/i2cdrv.c \
+../common/drivers/max17047_battery.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
+../common/emlib/src/em_i2c.c \
+../common/emlib/src/em_int.c \
 ../common/emlib/src/em_system.c \
+../common/emlib/src/em_rtc.c \
+../common/emlib/src/em_usart.c \
 ../common/udelay.c \
-blink.c
+main.c
+#../common/drivers/display.c \
+#../common/drivers/displayls013b7dh03.c \
+#../common/drivers/displaypalemlib.c \
 
 s_SRC += 
 
