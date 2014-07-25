@@ -20,6 +20,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
+/**
+ * @brief LS013B7DH03 LCD driver
+ */
+
 #ifndef LCD_H
 #define LCD_H
 

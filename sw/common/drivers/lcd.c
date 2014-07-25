@@ -20,6 +20,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
+/**
+ * @brief LS013B7DH03 LCD driver
+ */
+
 #include "lcd.h"
 #include <em_cmu.h>
 #include <em_usart.h>
@@ -27,7 +31,7 @@
 #include <udelay.h>
 
 // Framebuffer - pixels are stored as consecutive rows
-static uint8_t buffer[LCD_WIDTH / 8* LCD_HEIGHT];
+static uint8_t buffer[LCD_WIDTH / 8 * LCD_HEIGHT];
 
 static void spi_init(void)
 {
@@ -40,7 +44,7 @@ static void spi_init(void)
     LCD_SPI_UNIT->ROUTE = (USART_ROUTE_CLKPEN | USART_ROUTE_TXPEN | LCD_SPI_LOCATION);
 }
 
-static void spi_transmit(uint8_t* data, uint8_t length)
+static void spi_transmit(uint8_t *data, uint8_t length)
 {
     while(length > 0)
     {
@@ -178,7 +182,7 @@ void lcd_update(void)
     // TODO use DMA
     uint16_t cmd;
     uint8_t i;
-    uint8_t* p = (uint8_t*) buffer;
+    uint8_t *p = (uint8_t*) buffer;
 
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
     timer_delay(6);
@@ -206,7 +210,7 @@ void lcd_update(void)
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 }
 
-void lcd_set_pixel(uint16_t x, uint16_t y, uint8_t value)
+void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 {
     uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
     uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
@@ -220,7 +224,7 @@ void lcd_set_pixel(uint16_t x, uint16_t y, uint8_t value)
 void lcd_toggle_pixel(uint8_t x, uint8_t y)
 {
     uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_WIDTH >> 3) + x >> 3;    // == (y * LCD_WIDTH / 8) + x / 8
+    uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
 
     buffer[offset] ^= mask;
 }
@@ -228,7 +232,7 @@ void lcd_toggle_pixel(uint8_t x, uint8_t y)
 uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
 {
     uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_WIDTH >> 3) + x >> 3;    // == (y * LCD_WIDTH / 8) + x / 8
+    uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
 
     return buffer[offset] & mask;
 }
