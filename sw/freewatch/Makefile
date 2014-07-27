@@ -154,6 +154,12 @@ C_SRC += \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_usart.c \
+../common/gfx/graphics.c \
+../common/gfx/font_helv11.c \
+../common/gfx/font_helv17.c \
+../common/gfx/font_helv17b.c \
+../common/gfx/font_xm4x5.c \
+../common/gfx/font_xm4x6.c \
 ../common/udelay.c \
 main.c
 #../common/drivers/display.c \
