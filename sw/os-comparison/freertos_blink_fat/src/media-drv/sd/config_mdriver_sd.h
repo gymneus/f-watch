@@ -29,6 +29,6 @@
 
 #define MDRIVER_SD_SECTOR_SIZE   512       /* Sector size */
 
-#define MDRIVER_SD_VOLUME0_SIZE  (32 * 1024) /* definition for size of sddrive0 */
+#define MDRIVER_SD_VOLUME0_SIZE  (2 * 1024 * 1024) /* definition for size of sddrive0 : we assume working with a 2GB micro SD card */
 
 #endif /* _CONFIG_MDRIVER_SD_H_ */
