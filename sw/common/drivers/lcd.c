@@ -133,9 +133,8 @@ void lcd_init(void)
     rtc_setup(LCD_POL_INV_FREQ);
 
     lcd_power(1);
-    lcd_enable(1);
-
     lcd_clear();
+    lcd_enable(1);
 }
 
 void lcd_enable(uint8_t enable)
