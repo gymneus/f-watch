@@ -143,8 +143,6 @@ INCLUDEPATHS += \
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 ../common/drivers/lcd.c \
-../common/drivers/i2cdrv.c \
-../common/drivers/max17047_battery.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
 ../common/emlib/src/em_emu.c \
