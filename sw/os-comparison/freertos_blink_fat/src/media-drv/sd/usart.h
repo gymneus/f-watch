@@ -51,6 +51,7 @@
 
 
 void USART1_sendBuffer(char*, int);
+void USART1_sendreceiveBuffer(char*, char*, int);
 
 
 #endif
