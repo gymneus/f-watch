@@ -64,7 +64,7 @@ void SPI_setup(uint8_t spiNumber, uint8_t location, bool master)
   switch (spiNumber)
   {
   case 0:
-    spi = USART0;
+    spi = USART1;
     break;
   case 1:
     spi = USART1;
@@ -183,13 +183,13 @@ void SPI_setup(uint8_t spiNumber, uint8_t location, bool master)
 
 
 /**************************************************************************//**
- * @brief USART0 RX IRQ Handler Setup
+ * @brief USART1 RX IRQ Handler Setup
  * @param receiveBuffer points to where to place recieved data
  * @param receiveBufferSize indicates the number of bytes to receive
  *****************************************************************************/
-void SPI0_setupRXInt(char* receiveBuffer, int receiveBufferSize)
+void SPI1_setupRXInt(char* receiveBuffer, int receiveBufferSize)
 {
-  USART_TypeDef *spi = USART0;
+  USART_TypeDef *spi = USART1;
 
   /* Setting up pointer and indexes */
   slaveRxBuffer      = receiveBuffer;
@@ -200,21 +200,21 @@ void SPI0_setupRXInt(char* receiveBuffer, int receiveBufferSize)
   spi->CMD = USART_CMD_CLEARRX;
 
   /* Enable interrupts */
-  NVIC_ClearPendingIRQ(USART0_RX_IRQn);
-  NVIC_EnableIRQ(USART0_RX_IRQn);
+  NVIC_ClearPendingIRQ(USART1_RX_IRQn);
+  NVIC_EnableIRQ(USART1_RX_IRQn);
   spi->IEN |= USART_IEN_RXDATAV;
 }
 
 
 
 /**************************************************************************//**
- * @brief USART0 TX IRQ Handler Setup
+ * @brief USART1 TX IRQ Handler Setup
  * @param transmitBuffer points to the data to send
  * @param transmitBufferSize indicates the number of bytes to send
  *****************************************************************************/
-void SPI0_setupTXInt(char* transmitBuffer, int transmitBufferSize)
+void SPI1_setupTXInt(char* transmitBuffer, int transmitBufferSize)
 {
-  USART_TypeDef *spi = USART0;
+  USART_TypeDef *spi = USART1;
 
   /* Setting up pointer and indexes */
   slaveTxBuffer      = transmitBuffer;
@@ -225,34 +225,34 @@ void SPI0_setupTXInt(char* transmitBuffer, int transmitBufferSize)
   spi->CMD = USART_CMD_CLEARTX;
 
   /* Enable interrupts */
-  NVIC_ClearPendingIRQ(USART0_TX_IRQn);
-  NVIC_EnableIRQ(USART0_TX_IRQn);
+  NVIC_ClearPendingIRQ(USART1_TX_IRQn);
+  NVIC_EnableIRQ(USART1_TX_IRQn);
   spi->IEN |= USART_IEN_TXBL;
 }
 
 
 
 /**************************************************************************//**
- * @brief USART0 IRQ Handler Setup
+ * @brief USART1 IRQ Handler Setup
  * @param receiveBuffer points to where received data is to be stored
  * @param receiveBufferSize indicates the number of bytes to receive
  * @param transmitBuffer points to the data to send
  * @param transmitBufferSize indicates the number of bytes to send
  *****************************************************************************/
-void SPI0_setupSlaveInt(char* receiveBuffer, int receiveBufferSize, char* transmitBuffer, int transmitBufferSize)
+void SPI1_setupSlaveInt(char* receiveBuffer, int receiveBufferSize, char* transmitBuffer, int transmitBufferSize)
 {
-  SPI0_setupRXInt(receiveBuffer, receiveBufferSize);
-  SPI0_setupTXInt(transmitBuffer, transmitBufferSize);
+  SPI1_setupRXInt(receiveBuffer, receiveBufferSize);
+  SPI1_setupTXInt(transmitBuffer, transmitBufferSize);
 }
 
 
 
 /**************************************************************************//**
- * @brief USART0 RX IRQ Handler
+ * @brief USART1 RX IRQ Handler
  *****************************************************************************/
-void USART0_RX_IRQHandler(void)
+void USART1_RX_IRQHandler(void)
 {
-  USART_TypeDef *spi = USART0;
+  USART_TypeDef *spi = USART1;
   uint8_t       rxdata;
 
   if (spi->STATUS & USART_STATUS_RXDATAV)
@@ -272,11 +272,11 @@ void USART0_RX_IRQHandler(void)
 
 
 /**************************************************************************//**
- * @brief USART0 TX IRQ Handler
+ * @brief USART1 TX IRQ Handler
  *****************************************************************************/
-void USART0_TX_IRQHandler(void)
+void USART1_TX_IRQHandler(void)
 {
-  USART_TypeDef *spi = USART0;
+  USART_TypeDef *spi = USART1;
 
   if (spi->STATUS & USART_STATUS_TXBL)
   {
@@ -300,11 +300,14 @@ void USART0_TX_IRQHandler(void)
   }
 }
 
-#if 0
-void USART0_Wait_TX_finished(void) {
-  USART_TypeDef *spi = USART0;
+void USART1_Wait_TX_finished(void) {
+  USART_TypeDef *spi = USART1;
   while(!(spi->STATUS & USART_STATUS_TXC));
 }
-#endif
+
+void USART1_Wait_RX_finished(void) {
+  USART_TypeDef *spi = USART1;
+  while(!(spi->STATUS & USART_STATUS_RXDATAV));
+}
 
 

@@ -40,8 +40,11 @@
 
 
 void SPI_setup(uint8_t spiNumber, uint8_t location, bool master);
-void SPI0_setupRXInt(char* receiveBuffer, int bytesToReceive);
-void SPI0_setupSlaveInt(char* receiveBuffer, int receiveBufferSize, char* transmitBuffer, int transmitBufferSize);
+void SPI1_setupRXInt(char* receiveBuffer, int bytesToReceive);
+void SPI1_setupTXInt(char* transmitBuffer, int transmitBufferSize);
+void SPI1_setupSlaveInt(char* receiveBuffer, int receiveBufferSize, char* transmitBuffer, int transmitBufferSize);
 
+void USART1_Wait_TX_finished(void);
+void USART1_Wait_RX_finished(void);
 
 #endif

@@ -37,7 +37,7 @@
 #include "em_gpio.h"
 
 /******************************************************************************
- * @brief sends data using USART0
+ * @brief sends data using USART1
  * @param txBuffer points to data to transmit
  * @param bytesToSend bytes will be sent
  *****************************************************************************/
@@ -68,5 +68,53 @@ void USART1_sendBuffer(char* txBuffer, int bytesToSend)
   while (!(uart->STATUS & USART_STATUS_TXC)) ;
 }
 
+//TODO:this function is implemented by Xavier and might not be correct, to be tested
+/******************************************************************************
+ * @brief sends and receives data using USART1
+ * @param txBuffer points to data to transmit
+ * @param rxBuffer points to data to receive
+ * @param bytesToSend bytes will be sent and receive
+ *****************************************************************************/
+void USART1_sendreceiveBuffer(char* txBuffer, char* rxBuffer, int bytesToSend)
+{
+  USART_TypeDef *uart = USART1;
+  int           ii;
+  char          dummyRx;
+
+  /* Sending and receiving the data */
+  for (ii = 0; ii <= bytesToSend;  ii++)
+  {
+    /* Waiting for the usart to be ready */
+    while (!(uart->STATUS & USART_STATUS_TXBL)) ;
+
+    if (txBuffer == 0 || ii >= bytesToSend)
+    //don't write last byte of data to send, it's only for reception
+    {
+      uart->TXDATA = 0;
+    }
+    else
+    {
+      /* Writing next byte to USART */
+      uart->TXDATA = *txBuffer;
+      txBuffer++;
+    }
+
+    if (rxBuffer == 0 || ii == 0)
+    //don't read first bit of reception: it's only for transmission
+    {
+      dummyRx = uart->RXDATA;
+    }
+    else
+    {
+      /* wait byte to read being available */
+      while (!(uart->STATUS & USART_STATUS_RXDATAV)) ;
+      *rxBuffer = uart->RXDATA;
+      rxBuffer++;
+    }
+  }
+
+  /*Waiting for transmission of last byte */
+  while (!(uart->STATUS & USART_STATUS_TXC)) ;
+}
 
 
