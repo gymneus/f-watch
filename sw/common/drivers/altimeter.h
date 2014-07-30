@@ -27,6 +27,8 @@
 #ifndef ALTIMETER_H
 #define ALTIMETER_H
 
+#include <stdint.h>
+
 // I2C address
 #define MS5806_ADDRESS 0x77
 
@@ -37,8 +39,8 @@
 #define MS5806_CMD_CONV_TEMP     0x50
 #define MS5806_CMD_READ_PROM     0xA0
 
-#define MS5906_PROM_SIZE     0x08
-#define MS5906_PROM_ADR_MASK 0x0E
+#define MS5806_PROM_SIZE     0x08
+#define MS5806_PROM_ADR_MASK 0x0E
 
 // Oversampling ratio
 #define MS5806_OSR_256  0x00
@@ -49,6 +51,9 @@
 #define MS5806_OSR_MASK 0x0E
 
 
+uint8_t ms5806_write_cmd(uint8_t cmd);
+uint8_t ms5806_read_reg(uint8_t cmd, uint8_t length, uint8_t* buffer);
+
 /**
  * @brief Resets and reads the calibration data from the altimeter.
  */
@@ -58,13 +63,13 @@ void alti_init(void);
  * @brief Reads and compensate pressure value.
  * @return Pressure in hundredth of millibars (e.g. 110002 = 1100.02mbar).
  */
-sint32_t alti_get_pressure(void);
+int32_t alti_get_pressure(void);
 
 /**
  * @brief Reads temperature value.
  * @return Temperature in hundredth of celsuis degrees (e.g. 2000 = 20.00 °C).
  */
-sint32_t alti_get_temperature(void);
+int32_t alti_get_temperature(void);
 
 
 #endif /* ALTIMETER_H */
