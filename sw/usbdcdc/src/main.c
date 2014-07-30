@@ -146,29 +146,32 @@ int main(void)
 //  /* If first word of user data page is non-zero, enable eA Profiler trace */
 //  BSP_TraceProfilerSetup();
 
+  CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+  CMU_ClockEnable(cmuClock_HFPER, true);
+  CMU_ClockEnable(cmuClock_GPIO, true);
+
   /* Setup SysTick Timer for 1 msec interrupts  */
   if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
-  CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+  GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
+  GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 1);;
 
   SerialPortInit();
   DmaSetup();
   USBD_Init(&initstruct);
 
-  GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
-  GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);;
-
   /*
    * When using a debugger it is practical to uncomment the following three
    * lines to force host to re-enumerate the device.
    */
-  USBD_Disconnect();
-  USBTIMER_DelayMs(1000);
-  USBD_Connect();
+//  USBD_Disconnect();
+//  USBTIMER_DelayMs(1000);
+//  USBD_Connect();
 
   for (;;)
   {
         GPIO_PinOutToggle(gpioPortE, 11);
+        GPIO_PinOutToggle(gpioPortE, 12);
         delay(1000);
   }
 }
@@ -687,9 +690,6 @@ static void SerialPortInit(void)
 {
   LEUART_TypeDef      *leuart = LEUART0;
   LEUART_Init_TypeDef init    = LEUART_INIT_DEFAULT;
-
-  /* Configure GPIO pins */
-  CMU_ClockEnable(cmuClock_GPIO, true);
 
   /* To avoid false start, configure output as high */
   GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 1);
