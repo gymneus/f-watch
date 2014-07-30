@@ -30,8 +30,20 @@
 #include <em_rtc.h>
 #include <udelay.h>
 
+#define LCD_NODMA
+
+// Additional bytes to control the LCD; required for DMA transfers
+#ifdef LCD_NODMA
+#define CONTROL_BYTES       0
+#else
+#define CONTROL_BYTES       2
+#endif
+
+// Number of bytes to store one line
+#define LCD_STRIDE          (LCD_WIDTH / 8 + CONTROL_BYTES)
+
 // Framebuffer - pixels are stored as consecutive rows
-static uint8_t buffer[LCD_WIDTH / 8 * LCD_HEIGHT];
+static uint8_t buffer[LCD_STRIDE * LCD_HEIGHT];
 
 static void spi_init(void)
 {
@@ -44,7 +56,7 @@ static void spi_init(void)
     LCD_SPI_UNIT->ROUTE = (USART_ROUTE_CLKPEN | USART_ROUTE_TXPEN | LCD_SPI_LOCATION);
 }
 
-static void spi_transmit(uint8_t *data, uint8_t length)
+static void spi_transmit(uint8_t *data, uint16_t length)
 {
     while(length > 0)
     {
@@ -133,9 +145,8 @@ void lcd_init(void)
     rtc_setup(LCD_POL_INV_FREQ);
 
     lcd_power(1);
-    lcd_enable(1);
-
     lcd_clear();
+    lcd_enable(1);
 }
 
 void lcd_enable(uint8_t enable)
@@ -156,11 +167,29 @@ void lcd_power(uint8_t enable)
 
 void lcd_clear(void)
 {
-    uint16_t cmd, i;
+    uint16_t cmd;
+    uint8_t *p = buffer;
+
+#ifdef LCD_NODMA
+    uint16_t i;
 
     // Clear pixel buffer
     for(i = 0; i < sizeof(buffer); ++i)
-        buffer[i] = 0x00;
+        *p++ = 0x00;
+#else
+    uint8_t x, y;
+
+    for(y = 0; y < LCD_HEIGHT; ++y)
+    {
+        // Clear framebuffer
+        for(x = 0; x < LCD_WIDTH / 8; ++x)
+            *p++ = 0x00;
+
+        // Add control codes
+        *p++ = 0xff;        // Dummy
+        *p++ = (y + 2);     // Address of next line
+    }
+#endif
 
     // Send command to clear the display
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
@@ -181,7 +210,7 @@ void lcd_update(void)
 
     // TODO use DMA
     uint16_t cmd;
-    uint8_t i;
+    uint16_t i;
     uint8_t *p = (uint8_t*) buffer;
 
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
@@ -191,6 +220,7 @@ void lcd_update(void)
     cmd = LCD_CMD_UPDATE | (START_ROW << 8);
     spi_transmit((uint8_t*) &cmd, 2);
 
+#ifdef LCD_NODMA
     for(i = 0; i < LCD_HEIGHT; ++i)
     {
         // Send pixels for this line
@@ -205,6 +235,14 @@ void lcd_update(void)
 
         spi_transmit((uint8_t*) &cmd, 2);
     }
+#else
+    spi_transmit(p, LCD_STRIDE * LCD_HEIGHT);
+    /*for(i = 0; i < LCD_STRIDE * LCD_HEIGHT / 2; i += 2)
+    {
+       spi_transmit(p, 2);
+       p += 2;
+    }*/
+#endif
 
     timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
@@ -212,8 +250,11 @@ void lcd_update(void)
 
 void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 {
-    uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
+    x %= LCD_WIDTH;
+    y %= LCD_HEIGHT;
+
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
 
     if(value)
         buffer[offset] |= mask;
@@ -223,16 +264,22 @@ void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 
 void lcd_toggle_pixel(uint8_t x, uint8_t y)
 {
-    uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
+    x %= LCD_WIDTH;
+    y %= LCD_HEIGHT;
+
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
 
     buffer[offset] ^= mask;
 }
 
 uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
 {
-    uint8_t mask = 1 << (x & 0x07);                     // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_WIDTH >> 3) + (x >> 3);  // == (y * LCD_WIDTH / 8) + x / 8
+    x %= LCD_WIDTH;
+    y %= LCD_HEIGHT;
+
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
 
     return buffer[offset] & mask;
 }

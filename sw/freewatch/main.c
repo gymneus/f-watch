@@ -24,10 +24,11 @@
  * @brief Main file.
  */
 
-#include "em_device.h"
-#include "em_cmu.h"
-#include "em_gpio.h"
-#include "lcd.h"
+#include <em_device.h>
+#include <em_cmu.h>
+#include <em_gpio.h>
+#include <drivers/lcd.h>
+#include <gfx/graphics.h>
 
 /* Counts 1ms timeTicks */
 volatile uint32_t msTicks;
@@ -71,9 +72,24 @@ int main(void)
     GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
     lcd_init();
-    for(x = 0; x < LCD_WIDTH; ++x)
-        for(y = 0; y < LCD_HEIGHT; ++y)
+
+    for(x = 0; x < LCD_WIDTH / 2; ++x)
+    {
+        for(y = 0; y < LCD_HEIGHT / 2; ++y)
+        {
             lcd_set_pixel(x, y, (x >> 4 ^ y >> 4) % 2);
+        }
+    }
+
+    text(&font_helv11, 5, 65, "helv11");
+    text(&font_helv17, 5, 75, "helv17");
+    text(&font_helv17b, 5, 90, "helv17b");
+    text(&font_xm4x5, 5, 110, "xm4x5");
+    text(&font_xm4x6, 5, 120, "xm4x6");
+
+    box(100, 100, 120, 120, 1);
+    line(100, 40, 120, 70, 1);
+
     lcd_update();
 
     /* Infinite blink loop */
