@@ -67,10 +67,14 @@ static void sd_spi_init(void) {
     GPIO_Mode_TypeDef gpioModeCs   = gpioModePushPull;
     GPIO_Mode_TypeDef gpioModeClk  = gpioModePushPull;
 
+    //enable clocks for pins and for associated USART
     CMU_ClockEnable(SD_SPI_CLOCK, true);
-    usartInit.baudrate = SD_SPI_BAUDRATE;
+    CMU_ClockEnable(cmuClock_GPIO, true);
 
+    usartInit.baudrate = SD_SPI_LO_FREQ;
+    usartInit.msbf = true;
     USART_InitSync(SD_SPI_UNIT, &usartInit);
+
     SD_SPI_UNIT->ROUTE = (USART_ROUTE_CLKPEN | USART_ROUTE_TXPEN | USART_ROUTE_RXPEN | USART_ROUTE_CSPEN | (SD_SPI_LOCATION << 8));
 
     GPIO_PinModeSet(SD_PORT_MOSI,  SD_PIN_MOSI,  gpioModeMosi, 0);  /* MOSI */
@@ -80,9 +84,31 @@ static void sd_spi_init(void) {
 
     sd_power_init();
 }
-//this function writes and reads
+//TODO: supprimer cet appel externe (permet d'ignorer le static)
+void sd_spi_init_not_static(void) {
+    sd_spi_init();
+}
+/**************************************************************************//**
+* @brief Set SPI clock to a low frequency suitable for initial
+* card initialization.
+*****************************************************************************/
+static void sd_spi_clock_slow(void) {
+    USART_BaudrateSyncSet(SD_SPI_UNIT, 0, SD_SPI_LO_FREQ);
+}
+
+/**************************************************************************//**
+* @brief Set SPI clock to maximum frequency.
+*****************************************************************************/
+static void sd_spi_clock_fast(void) {
+    USART_BaudrateSyncSet(SD_SPI_UNIT, 0, SD_SPI_HI_FREQ);
+}
+//this function writes and reads on SPI
 static uint8_t sd_spi_transfer_byte(uint8_t txData) {
     return USART_SpiTransfer(SD_SPI_UNIT, txData);
+}
+//TODO: supprimer cet appel externe (permet d'ignorer le static)
+uint8_t sd_spi_transfer_byte_not_static(uint8_t txData) {
+    return sd_spi_transfer_byte(txData);
 }
 //this function writes and reads (buffers must have the same length)
 static void sd_spi_transfer(uint8_t* txData, uint8_t* rxData, int length) {
@@ -127,6 +153,8 @@ uint32_t sd_init(void) {
     int i = 0;
     sd_spi_init();
     sd_power(1);
+    //TODO: //set low speed for clock
+    //sd_spi_clock_slow();
    /* initializes the micro SD card */
     sd_send_command_r1(SD_CMD0, 0);
     do {
@@ -138,6 +166,8 @@ uint32_t sd_init(void) {
         return 0;
     }
     sd_send_block_length(SD_SECTOR_SIZE);
+    //TODO: //set high speed for clock
+    //sd_spi_clock_fast();
     return 1;
     //TODO: is the init finished?
 }
