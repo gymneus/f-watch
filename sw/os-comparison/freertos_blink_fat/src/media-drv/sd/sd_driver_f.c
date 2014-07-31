@@ -83,8 +83,14 @@ typedef enum {
 } sd_response_type;
 
 
-static int sd_vol0_card_present(void) {
-	return (GPIO_PortInGet(gpioPortC) & 0x8);//pin = PC3
+static void sd_vol0_set_electrical_power(int power) {
+  uint8_t pins_mask = 0x8;//pin = PC3
+  uint8_t values_mask = power ? 0x8 : 0;
+
+  GPIO_Mode_TypeDef gpioModeSD_EN = gpioModePushPull;
+  GPIO_PinModeSet(gpioPortC, 3, gpioModeSD_EN, 0); /* init pin SD_EN to set power on/off */
+
+  GPIO_PortOutSetVal(gpioPortC, pins_mask, values_mask);//power on/power off
 }
 /*
  * transform a 32 bit value into a 4 bytes array
@@ -103,7 +109,8 @@ typedef struct {
   struct {
     uint8_t spiNumber;
     uint8_t location;
-    int (*is_sd_card_present) (void);
+    CMU_Clock_TypeDef clock;
+    void (*set_electrical_power) (int power);
     void (*spi_setupRXInt) (char* receiveBuffer, int bytesToReceive);
     void (*spi_setupTXInt) (char* transmitBuffer, int transmitBufferSize);
     void (*usart_wait_TX_finished) (void);
@@ -117,11 +124,10 @@ static F_DRIVER  t_drivers[1];
 static t_SdDrv  SdDrv[1] =
 {
   { ( MDRIVER_SD_VOLUME0_SIZE / MDRIVER_SD_SECTOR_SIZE ), 0,
-           {1, 1, sd_vol0_card_present, SPI1_setupRXInt, SPI1_setupTXInt, USART1_Wait_TX_finished, USART1_Wait_RX_finished},
-           &t_drivers[0] }
+           {1, 1, cmuClock_USART1,
+                sd_vol0_set_electrical_power, SPI1_setupRXInt, SPI1_setupTXInt, USART1_Wait_TX_finished, USART1_Wait_RX_finished}, &t_drivers[0] }
 };
-static int sd_card_send_command(F_DRIVER * driver, unsigned char command, unsigned char response_type, unsigned char* argument, unsigned char* response) {
-  t_SdDrv* pSdDrv = (t_SdDrv*) driver->user_ptr;
+static int sd_card_send_command(t_SdDrv* pSdDrv, unsigned char command, unsigned char response_type, unsigned char* argument, unsigned char* response) {
   char txBuffer[5];
   char rxBuffer[5];
   int txSize;
@@ -159,14 +165,14 @@ static int sd_card_send_command(F_DRIVER * driver, unsigned char command, unsign
 static int sd_readsector ( F_DRIVER * driver, void * data, unsigned long sector ) {
   char arg_sector_adress[4];
   sd_packarg((unsigned char*) arg_sector_adress, sector);
-  return sd_card_send_command(driver, SD_CMD17, SD_RESPONSE_R3, (unsigned char*) arg_sector_adress, (unsigned char*) data);
+  return sd_card_send_command((t_SdDrv*) driver->user_ptr, SD_CMD17, SD_RESPONSE_R3, (unsigned char*) arg_sector_adress, (unsigned char*) data);
 }
 static int sd_writesector ( F_DRIVER * driver, void * data, unsigned long sector ) {
   t_SdDrv* pSdDrv = (t_SdDrv*) driver->user_ptr;
   char arg_sector_adress[4];
   //first, transmit the adress where to write
   sd_packarg((unsigned char*) arg_sector_adress, sector);
-  if (sd_card_send_command(driver, SD_CMD17, SD_RESPONSE_R3, (unsigned char*) arg_sector_adress, NULL) != 0) {
+  if (sd_card_send_command(pSdDrv, SD_CMD17, SD_RESPONSE_R3, (unsigned char*) arg_sector_adress, NULL) != 0) {
     return -1;
   }
   //now, transmit the data to write
@@ -176,10 +182,6 @@ static int sd_writesector ( F_DRIVER * driver, void * data, unsigned long sector
 }
 static int sd_getphy ( F_DRIVER * driver, F_PHY * phy ) {
   t_SdDrv * p = (t_SdDrv *)( driver->user_ptr );
-
-  if (p->usart_data.is_sd_card_present() != 0) {
-    return MDRIVER_SD_ERR_NOTAVAILABLE;
-  }
 
   phy->number_of_sectors = p->maxsector;
   phy->bytes_per_sector = MDRIVER_SD_SECTOR_SIZE;
@@ -193,6 +195,7 @@ static void sd_release ( F_DRIVER * driver ) {
     //TODO: check if SD protocol and disconnect properly the SD through SPI + SD protocol
     p->use = 0;
   }
+  p->usart_data.set_electrical_power(0);/* power-off the card */
 }
 F_DRIVER * sd_initfunc ( unsigned long driver_param ) {
 
@@ -207,20 +210,20 @@ F_DRIVER * sd_initfunc ( unsigned long driver_param ) {
   }
   {
     char commandCRC = 0x95;
-    char arg_block_length[4];
+    unsigned char arg_block_length[4];
     
-    GPIO_Mode_TypeDef gpioModeSD_EN = gpioModeInput;
-    GPIO_PinModeSet(gpioPortC, 3, gpioModeSD_EN, 0); /* init pin SD_EN to check if SD is plugged */
+    p->usart_data.set_electrical_power(1);/* power-on the card */
     
     //TODO: check specif of SPI protocol and init SD through SPI protocol
     /* Enabling clock to USART 1*/
-    CMU_ClockEnable(cmuClock_USART1, true);
-    SPI_setup(1, 1, 1);//init SD SPI
+    CMU_ClockEnable(p->usart_data.clock, true);
+    SPI_setup(p->usart_data.spiNumber, p->usart_data.location, 1);//init SD SPI
     //TODO: check specif of SD protocol and init SD through SD protocol
     //TODO: goto to IDLE state?
     SPI1_setupTXInt(&commandCRC, 1);//no reply to answer from the CRC command
     USART1_Wait_TX_finished();
-    sd_packarg((unsigned char*) arg_block_length, MDRIVER_SD_SECTOR_SIZE);//set sector size
+    //set sector size
+    sd_packarg(arg_block_length, MDRIVER_SD_SECTOR_SIZE);
     sd_card_send_command(p, SD_CMD16, SD_RESPONSE_R1, arg_block_length, NULL);
 
     (void)psp_memset( p->driver, 0, sizeof( F_DRIVER ) );
