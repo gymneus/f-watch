@@ -28,7 +28,10 @@
 #include <em_cmu.h>
 #include <em_gpio.h>
 #include <drivers/lcd.h>
+#include <drivers/i2cdrv.h>
+#include <drivers/max17047.h>
 #include <gfx/graphics.h>
+#include <stdio.h>
 
 /* Counts 1ms timeTicks */
 volatile uint32_t msTicks;
@@ -60,6 +63,10 @@ void Delay(uint32_t dlyTicks)
 int main(void)
 {
     int x, y;
+    char buf[16];
+    I2C_Init_TypeDef i2c_init = I2C_INIT_DEFAULT;
+    uint16_t version = 0;
+    uint8_t ret = 0;
 
     /* Setup SysTick Timer for 1 msec interrupts */
     if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -72,12 +79,13 @@ int main(void)
     GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
     lcd_init();
+    I2CDRV_Init(&i2c_init);
 
-    for(x = 0; x < LCD_WIDTH / 2; ++x)
+    for(x = 0; x < LCD_WIDTH / 4; ++x)
     {
-        for(y = 0; y < LCD_HEIGHT / 2; ++y)
+        for(y = 0; y < LCD_HEIGHT / 4; ++y)
         {
-            lcd_set_pixel(x, y, (x >> 4 ^ y >> 4) % 2);
+            lcd_set_pixel(x, y, (x >> 3 ^ y >> 3) % 2);
         }
     }
 
@@ -90,14 +98,20 @@ int main(void)
     box(100, 100, 120, 120, 1);
     line(100, 40, 120, 70, 1);
 
-    lcd_update();
-
     /* Infinite blink loop */
     while (1) {
         GPIO_PinOutToggle(gpioPortE, 11);
         Delay(200);
         GPIO_PinOutToggle(gpioPortE, 12);
         Delay(200);
+
+        // Print the version of the fuel gauge chip
+        ret = max17047_read_reg(MAX17047_REG_VERSION, 2, (uint8_t*)&version);
+        sprintf(buf, "ver %d", version);
+        text(&font_helv17, 64, 0, buf);
+        version = 0;    // be sure that it is read every time
+
+        lcd_update();
     }
 }
 
