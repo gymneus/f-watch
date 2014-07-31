@@ -117,7 +117,7 @@ static void sd_spi_transfer(uint8_t* txData, uint8_t* rxData, int length) {
         rxData[i] = sd_spi_transfer_byte(txData[i]);
     }
 }
-//this function writes only
+//this function writes only, but can be more efficient if bytes are aligned at 16 bits
 static void sd_spi_transmit(uint8_t *txBuffer, int length) {
     while (length > 0) {
         // Send only one byte if len==1 or data pointer is not aligned at a 16 bit
