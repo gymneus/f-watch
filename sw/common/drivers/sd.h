@@ -29,13 +29,10 @@
 
 #include "em_gpio.h"
 
-/* Defines */
-#define HFRCO_FREQUENCY            14000000
-#define SD_SPI_PERCLK_FREQUENCY    HFRCO_FREQUENCY
-
 /* Peripherals */
+#define SD_SPI_HI_FREQ     16000000
+#define SD_SPI_LO_FREQ     100000
 #define SD_SPI_CLOCK       cmuClock_USART1
-#define SD_SPI_BAUDRATE    1000000
 #define SD_SPI_UNIT        USART1
 #define SD_SPI_LOCATION    1
 
