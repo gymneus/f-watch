@@ -89,10 +89,6 @@ int main(void)
     CMU_ClockEnable(cmuClock_GPIO, true);
 
     //init SPI for microSD
-    //SPI_setup(1, 1, 1);
-    /* Enabling clock to USART 1*/
-    //CMU_ClockEnable(cmuClock_USART1, true);
-    //sd_vol0_set_electrical_power(1);
 	sd_spi_init_not_static();
     sd_power(1);
 
@@ -102,23 +98,18 @@ int main(void)
 
     /* Infinite blink loop */
     while (1) {
-        //GPIO_PinOutToggle(gpioPortD, 2);
-        //GPIO_PinOutToggle(gpioPortD, 0);
-        //GPIO_PinOutToggle(gpioPortD, 0);
-        //GPIO_PinOutToggle(gpioPortD, 3);
-        //GPIO_PinOutToggle(gpioPortD, 3);
-		//char c[2] = { 0b00001111 , 0b01010101 };
-		//USART1_sendBuffer(&c[0], 1);
-		//USART1_sendBuffer(&c[1], 1);
-		//sd_send_data_00001111();
-		//sd_send_data_01010101();
+        //this code is ok but not what we want (it only test spi protocol, we want now to test the SD)
+        //res = sd_spi_transfer_byte(0b00001111);
+        //res = sd_spi_transfer_byte(0b01010101);
+        //res = sd_spi_transfer_byte(0b00110011);
+        //send dummy stuff
+        res = sd_spi_transfer_byte(0xFF);
+        res++;
+        Delay(1);
         for (i = 11; i < 13; ++i) {
             GPIO_PinOutToggle(gpioPortE, i);
-            res = sd_spi_transfer_byte(0b00001111);
-            res = sd_spi_transfer_byte(0b01010101);
             res = sd_spi_transfer_byte(0b00110011);
-            res++;
-            Delay(2);
+            Delay(1);
         }
     }
 	return 0;
