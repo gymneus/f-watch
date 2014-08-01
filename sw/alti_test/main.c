@@ -67,7 +67,7 @@ int main(void)
 
         int x, y, i;
         char str[20];
-        uint8_t cmd;
+        uint8_t cmd, ret;
         uint8_t buf[16];
         uint16_t calib_data[8];
 
@@ -86,23 +86,35 @@ int main(void)
         UDELAY_Calibrate();
         I2CDRV_Init(&i2cInit);
 
-        ms5806_write_cmd(MS5806_CMD_RESET);
 
-        GPIO_PinOutSet(gpioPortE, 11);
+        while (1) {
 
-        for(i=0; i<MS5806_PROM_SIZE; i++)
-        {
-                cmd = MS5806_CMD_READ_PROM + (MS5806_PROM_ADR_MASK & (i << 1));
-                ms5806_read_reg(cmd, 2, &buf[2*i]);
-                //ms5806_read_reg(cmd, 2, (uint8_t*) calib_data);
-                //sprintf(str, "C%d:0x%x",i,calib_data[i]);
-                sprintf(str, "C%d:0x%x%x",i,buf[2*i],buf[2*i+1]);
-                text(&font_helv17, 5, 15*i, str);
-                lcd_update();
+                ms5806_write_cmd(MS5806_CMD_RESET);
+                Delay(1000);
+                ms5806_write_cmd(MS5806_CMD_READ_PROM);
+                Delay(2000);
+
+                //GPIO_PinOutSet(gpioPortE, 11);
+
+                for(i=0; i<MS5806_PROM_SIZE; i++)
+                {
+                        cmd = MS5806_CMD_READ_PROM + (MS5806_PROM_ADR_MASK & (i << 1));
+                        //ms5806_write_cmd(cmd);
+                        //ms5806_read_reg(cmd, 2, &buf[2*i]);
+                        ret = ms5806_read_reg(cmd, 2, (uint8_t*) calib_data);
+                        sprintf(str, "C%d:0x%04x %x",i,calib_data[i], ret);
+                        //sprintf(str, "C%d:0x%x%x",i,buf[2*i],buf[2*i+1]);
+                        text(&font_helv17, 5, 15*i, str);
+                        lcd_update();
+                        Delay(1000);
+                }
+
+
+                //GPIO_PinOutSet(gpioPortE, 12);
+
+                //Delay(200);
+
         }
-
-
-        GPIO_PinOutSet(gpioPortE, 12);
 
         /* Infinite blink loop */
         while (1) {

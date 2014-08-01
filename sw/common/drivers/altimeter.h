@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 // I2C address
-#define MS5806_ADDRESS 0x77
+#define MS5806_ADDRESS 0xEE // 0x77 << 1
 
 // Commands
 #define MS5806_CMD_READ_ADC      0x00

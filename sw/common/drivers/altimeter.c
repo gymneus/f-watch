@@ -64,12 +64,13 @@ uint8_t ms5806_read_reg(uint8_t cmd, uint8_t length, uint8_t* buffer)
 
         seq.addr  = MS5806_ADDRESS;
         seq.flags = I2C_FLAG_WRITE_READ;   // sequence: write command (1 byte), read (n bytes)
+        //seq.flags = I2C_FLAG_READ;   // sequence: read (n bytes)
 
         // Add command to sequence
-        seq.buf[0].data = cmd;
+        seq.buf[0].data = &cmd;
         seq.buf[0].len  = 1;
 
-        // 
+        // Read value in buffer
         seq.buf[1].data = buffer;
         seq.buf[1].len  = length;
 
@@ -81,6 +82,13 @@ uint8_t ms5806_read_reg(uint8_t cmd, uint8_t length, uint8_t* buffer)
         }
 
         return 0;
+}
+
+
+// Check PROM CRC
+uint8_t ms5806_crc_chk(void)
+{
+        
 }
 
 
@@ -97,12 +105,18 @@ void alti_init(void)
         // Reset
         ret = ms5806_write_cmd(MS5806_CMD_RESET); // TODO: do something with the return value
 
+        // Dummy command
+        ret = ms5806_write_cmd(MS5806_CMD_READ_PROM); // TODO: do something with the return value
+
         // Reads calibration data and store them in static variable
         for(i=0; i<MS5806_PROM_SIZE; i++)
         {
                 cmd = MS5806_CMD_READ_PROM + (MS5806_PROM_ADR_MASK & (i << 1));
                 ret = ms5806_read_reg(cmd, 2, (uint8_t*) calib_data); // TODO: do something with the return value
         }
+
+        // CRC check
+        
 }
 
 

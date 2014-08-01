@@ -60,7 +60,7 @@ void I2CDRV_Init(const I2C_Init_TypeDef *init)
 
 //  BSP_PeripheralAccess(BSP_I2C, true); TODO
   CMU_ClockEnable(cmuClock_HFPER, true);
-  CMU_ClockEnable(cmuClock_I2C0, true);
+  CMU_ClockEnable(cmuClock_I2C1, true);
 
   /* Use location #1: SDA - Pin B11, SCL - Pin B12 */
   /* Output value must be set to 1 to not drive lines low... We set */
