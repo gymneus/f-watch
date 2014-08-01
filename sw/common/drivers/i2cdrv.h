@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file
- * @brief I2C0 poll based driver for master mode operation on DK.
+ * @brief I2C1 poll based driver for master mode operation on FreeWatch.
  * @author Energy Micro AS
  * @version 3.20.0
  *******************************************************************************

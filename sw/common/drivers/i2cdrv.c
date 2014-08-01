@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file
- * @brief I2C0 poll based driver for master mode operation on FreeWatch.
+ * @brief I2C1 poll based driver for master mode operation on FreeWatch.
  * @author Energy Micro AS
  * @version 3.20.0
  *******************************************************************************
@@ -58,15 +58,14 @@ void I2CDRV_Init(const I2C_Init_TypeDef *init)
 {
   int i;
 
-//  BSP_PeripheralAccess(BSP_I2C, true); TODO
   CMU_ClockEnable(cmuClock_HFPER, true);
   CMU_ClockEnable(cmuClock_I2C1, true);
 
   /* Use location #1: SDA - Pin B11, SCL - Pin B12 */
   /* Output value must be set to 1 to not drive lines low... We set */
   /* SCL first, to ensure it is high before changing SDA. */
-  GPIO_PinModeSet(gpioPortB, 11, gpioModeWiredAnd, 1);
   GPIO_PinModeSet(gpioPortB, 12, gpioModeWiredAnd, 1);
+  GPIO_PinModeSet(gpioPortB, 11, gpioModeWiredAnd, 1);
 
   /* In some situations (after a reset during an I2C transfer), the slave */
   /* device may be left in an unknown state. Send 9 clock pulses just in case. */
@@ -78,8 +77,8 @@ void I2CDRV_Init(const I2C_Init_TypeDef *init)
      * but DK only has fast mode devices. Need however to add some time
      * measurement in order to not be dependable on frequency and code executed.
      */
-    GPIO_PinModeSet(gpioPortD, 12, gpioModeWiredAnd, 0);
-    GPIO_PinModeSet(gpioPortD, 12, gpioModeWiredAnd, 1);
+    GPIO_PinModeSet(gpioPortB, 12, gpioModeWiredAnd, 0);
+    GPIO_PinModeSet(gpioPortB, 12, gpioModeWiredAnd, 1);
   }
 
   /* Enable pins at location 1 */
