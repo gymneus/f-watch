@@ -126,6 +126,8 @@ void RTC_IRQHandler(void)
 
 void lcd_init(void)
 {
+    uint16_t cmd;
+
     timer_init();
     spi_init();
     // TODO I am pretty sure, it will be already initialized somewhere..
@@ -145,6 +147,17 @@ void lcd_init(void)
     rtc_setup(LCD_POL_INV_FREQ);
 
     lcd_power(1);
+
+    // Send command to clear the display
+    GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
+    timer_delay(6);
+
+    cmd = LCD_CMD_ALL_CLEAR;
+    spi_transmit((uint8_t*) &cmd, 2);
+
+    timer_delay(2);
+    GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
+
     lcd_clear();
     lcd_enable(1);
 }
@@ -167,39 +180,26 @@ void lcd_power(uint8_t enable)
 
 void lcd_clear(void)
 {
-    uint16_t cmd;
-    uint8_t *p = buffer;
-
-#ifdef LCD_NODMA
+    // Using uint32_t instead of uint8_t reduces the number of writes 4 times
+    uint32_t *p = (uint32_t*)buffer;
     uint16_t i;
 
     // Clear pixel buffer
-    for(i = 0; i < sizeof(buffer); ++i)
+    for(i = 0; i < sizeof(buffer) / sizeof(uint32_t); ++i)
         *p++ = 0x00;
-#else
-    uint8_t x, y;
 
-    for(y = 0; y < LCD_HEIGHT; ++y)
+#ifndef LCD_NODMA
+    // Clear pixel buffer
+    for(i = 0; i < sizeof(buffer) / sizeof(uint32_t); ++i)
+        *p++ = 0x00;
+
+    for(i = 0; i < LCD_HEIGHT; ++i)
     {
-        // Clear framebuffer
-        for(x = 0; x < LCD_WIDTH / 8; ++x)
-            *p++ = 0x00;
-
         // Add control codes
-        *p++ = 0xff;        // Dummy
-        *p++ = (y + 2);     // Address of next line
+        buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
+        buffer[i * LCD_STRIDE - 1] = (i + 2);   // Address of next line
     }
 #endif
-
-    // Send command to clear the display
-    GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
-    timer_delay(6);
-
-    cmd = LCD_CMD_ALL_CLEAR;
-    spi_transmit((uint8_t*) &cmd, 2);
-
-    timer_delay(2);
-    GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 }
 
 void lcd_update(void)
@@ -236,12 +236,8 @@ void lcd_update(void)
         spi_transmit((uint8_t*) &cmd, 2);
     }
 #else
+    // TODO here the DMA transfer should run in the end
     spi_transmit(p, LCD_STRIDE * LCD_HEIGHT);
-    /*for(i = 0; i < LCD_STRIDE * LCD_HEIGHT / 2; i += 2)
-    {
-       spi_transmit(p, 2);
-       p += 2;
-    }*/
 #endif
 
     timer_delay(2);
