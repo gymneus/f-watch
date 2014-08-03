@@ -200,9 +200,10 @@ uint8_t alti_init(void)
  * @brief Reads temperature value.
  * @param temp : Temperature in celsius degrees.
  * @param pressure : Pressure in millibars.
+ * @param filter : Enables pressure value filter if true.
  * @return i2c error code, 0 if no errors.
  */
-uint8_t alti_get_temp_pressure(double* temp, double* pressure, uint8_t filter)
+uint8_t alti_get_temp_pressure(double* temp, double* pressure, bool filter)
 {
         uint8_t err, cmd;
         uint8_t buf[3];
