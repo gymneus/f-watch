@@ -71,7 +71,7 @@ uint8_t alti_init(void);
  * @param pressure : Pressure in millibars.
  * @return i2c error code, 0 if no errors.
  */
-uint8_t alti_get_temp_pressure(double* temp, double* pressure);
+uint8_t alti_get_temp_pressure(double* temp, double* pressure, uint8_t filter);
 
 /**
  * @brief Helper function to convert from mbar to altitude.

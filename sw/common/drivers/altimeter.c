@@ -202,12 +202,14 @@ uint8_t alti_init(void)
  * @param pressure : Pressure in millibars.
  * @return i2c error code, 0 if no errors.
  */
-uint8_t alti_get_temp_pressure(double* temp, double* pressure)
+uint8_t alti_get_temp_pressure(double* temp, double* pressure, uint8_t filter)
 {
         uint8_t err, cmd;
         uint8_t buf[3];
         uint32_t d1, d2;
-        double dt, off, sens;
+        double dt, off, sens, p;
+        static double prev_p = 0;
+        float k = 0.125;
 
         // Initiate temperature conversion
         cmd = MS5806_CMD_CONV_TEMP + (MS5806_OSR_4096 & MS5806_OSR_MASK);
@@ -252,7 +254,19 @@ uint8_t alti_get_temp_pressure(double* temp, double* pressure)
         off = calib_data[2] * pow(2,17) + dt * calib_data[4]/pow(2,6);
         sens = calib_data[1] * pow(2,16) + dt * calib_data[3]/pow(2,7);
         *temp = (2000 + (dt * calib_data[6])/pow(2,23))/100;
-        *pressure = (((d1 * sens)/pow(2,21) - off)/pow(2,15))/100;
+        p = (((d1 * sens)/pow(2,21) - off)/pow(2,15))/100;
+        if(filter)
+        {
+                if(prev_p == 0)
+                {
+                        prev_p = p;
+                }
+                *pressure = prev_p * (1 - k) + p * k;
+        }
+        else
+        {
+                *pressure = p;
+        }
 
         return 0;
 }

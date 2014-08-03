@@ -36,19 +36,6 @@
 #include <drivers/altimeter.h>
 
 
-void print_err(uint8_t err)
-{
-        char str[20];
-
-        Delay(1000);
-        lcd_clear();
-        sprintf(str, "err: 0x%02x", err);
-        text(&font_helv17, 5, 10, str);
-        lcd_update();
-        Delay(1000);
-        lcd_clear();
-}
-
 
 /**
  * @brief  Main function
@@ -86,7 +73,7 @@ int main(void)
         while(1)
         {
 
-                err = alti_get_temp_pressure(&temp, &pressure);
+                err = alti_get_temp_pressure(&temp, &pressure, true);
                 sprintf(str, "temp: %f C", temp);
                 text(&font_helv11, 5, 20, str);
                 sprintf(str, "pressure: %f mbar", pressure);
