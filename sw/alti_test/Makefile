@@ -159,6 +159,7 @@ C_SRC += \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
 ../common/udelay.c \
+../common/delay.c \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/altimeter.c \
 main.c

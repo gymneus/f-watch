@@ -25,7 +25,8 @@
  */
 
 #include <stdio.h>
-#include <udelay.h>
+#include <math.h>
+#include <delay.h>
 #include <i2cdrv.h>
 #include <em_device.h>
 #include <em_cmu.h>
@@ -34,29 +35,20 @@
 #include <gfx/graphics.h>
 #include <drivers/altimeter.h>
 
-/* Counts 1ms timeTicks */
-volatile uint32_t msTicks;
 
-/*
- * @brief SysTick_Handler
- * Interrupt Service Routine for system tick counter
- */
-void SysTick_Handler(void)
+void print_err(uint8_t err)
 {
-    msTicks++; /* increment counter necessary in Delay()*/
+        char str[20];
+
+        Delay(1000);
+        lcd_clear();
+        sprintf(str, "err: 0x%02x", err);
+        text(&font_helv17, 5, 10, str);
+        lcd_update();
+        Delay(1000);
+        lcd_clear();
 }
 
-/*
- * @brief Delays number of msTick Systicks (typically 1 ms)
- * @param dlyTicks Number of ticks to delay
- */
-void Delay(uint32_t dlyTicks)
-{
-    uint32_t curTicks;
-
-    curTicks = msTicks;
-    while ((msTicks - curTicks) < dlyTicks);
-}
 
 /**
  * @brief  Main function
@@ -65,11 +57,12 @@ int main(void)
 {
         I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
 
-        int x, y, i;
+        //int x, y, i;
         char str[20];
-        uint8_t cmd, ret;
-        uint8_t buf[16];
-        uint16_t calib_data[8];
+        uint8_t err;
+        double temp = 0;
+        double pressure = 0;
+        double altitude = 0;
 
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -83,44 +76,36 @@ int main(void)
 
         lcd_init();
 
-        UDELAY_Calibrate();
         I2CDRV_Init(&i2cInit);
 
+        err = alti_init();
+        sprintf(str, "init: 0x%02x", err);
+        text(&font_helv11, 5, 10, str);
+        lcd_update();
 
-        while (1) {
+        while(1)
+        {
 
-                ms5806_write_cmd(MS5806_CMD_RESET);
-                Delay(1000);
-                ms5806_write_cmd(MS5806_CMD_READ_PROM);
-                Delay(2000);
+                err = alti_get_temp_pressure(&temp, &pressure);
+                sprintf(str, "temp: %f C", temp);
+                text(&font_helv11, 5, 20, str);
+                sprintf(str, "pressure: %f mbar", pressure);
+                text(&font_helv11, 5, 30, str);
 
-                //GPIO_PinOutSet(gpioPortE, 11);
+                err = alti_mbar2altitude(pressure, &altitude);
+                sprintf(str, "altitude: %f m", altitude);
+                text(&font_helv11, 5, 40, str);
 
-                for(i=0; i<MS5806_PROM_SIZE; i++)
-                {
-                        cmd = MS5806_CMD_READ_PROM + (MS5806_PROM_ADR_MASK & (i << 1));
-                        //ms5806_write_cmd(cmd);
-                        //ms5806_read_reg(cmd, 2, &buf[2*i]);
-                        ret = ms5806_read_reg(cmd, 2, (uint8_t*) calib_data);
-                        sprintf(str, "C%d:0x%04x %x",i,calib_data[i], ret);
-                        //sprintf(str, "C%d:0x%x%x",i,buf[2*i],buf[2*i+1]);
-                        text(&font_helv17, 5, 15*i, str);
-                        lcd_update();
-                        Delay(1000);
-                }
-
-
-                //GPIO_PinOutSet(gpioPortE, 12);
-
-                //Delay(200);
-
+                //sprintf(str, "err: 0x%02x", err);
+                //text(&font_helv11, 5, 50, str);
+                lcd_update();
+                //Delay(1000);
+                box(5, 10, 128, 50, 0);
+                //lcd_clear();
         }
 
-        /* Infinite blink loop */
-        while (1) {
-                Delay(200);
-                GPIO_PinOutClear(gpioPortE, 11);
-                GPIO_PinOutClear(gpioPortE, 12);
-        }
+
+
+
 }
 

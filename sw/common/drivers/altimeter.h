@@ -50,26 +50,41 @@
 #define MS5806_OSR_4096 0x08
 #define MS5806_OSR_MASK 0x0E
 
+// Pressure to altitude conversion coefficent table size
+#define P2A_COEFF_SIZE 23
+
 
 uint8_t ms5806_write_cmd(uint8_t cmd);
 uint8_t ms5806_read_reg(uint8_t cmd, uint8_t length, uint8_t* buffer);
+uint8_t ms5806_crc_chk(uint16_t* data);
+
 
 /**
  * @brief Resets and reads the calibration data from the altimeter.
+ * @return i2c error code or crc error (-1), 0 if no errors.
  */
-void alti_init(void);
-
-/**
- * @brief Reads and compensate pressure value.
- * @return Pressure in hundredth of millibars (e.g. 110002 = 1100.02mbar).
- */
-int32_t alti_get_pressure(void);
+uint8_t alti_init(void);
 
 /**
  * @brief Reads temperature value.
- * @return Temperature in hundredth of celsuis degrees (e.g. 2000 = 20.00 °C).
+ * @param temp : Temperature in celsius degrees.
+ * @param pressure : Pressure in millibars.
+ * @return i2c error code, 0 if no errors.
  */
-int32_t alti_get_temperature(void);
+uint8_t alti_get_temp_pressure(double* temp, double* pressure);
+
+/**
+ * @brief Helper function to convert from mbar to altitude.
+ *
+ * Uses piecewise interpolation of pressure to altitude conversion formula (troposhere model)
+ * h = 288.15/0.065 * (1 - (p/1013.25)^(0.065*287.052/9.81))
+ * source: Intersema (Meas-spec), AN501 - Using MS5534 for Altimeters and Barometers
+ *
+ * @param pressure : Pressure in millibars.
+ * @param altitude : Altitude in merters.
+ * @return i2c error code or crc error (-1), 0 if no errors.
+ */
+uint8_t alti_mbar2altitude(double pressure, double* altitude);
 
 
 #endif /* ALTIMETER_H */
