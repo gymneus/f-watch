@@ -134,6 +134,7 @@ INCLUDEPATHS += \
 -I../common/emlib/inc \
 -I../common/drivers \
 -I../common/glib \
+-I../common/pp_printf \
 -I../common
 
 ####################################################################
@@ -167,6 +168,7 @@ C_SRC += \
 ../common/gfx/font_helv17b.c \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
+../common/pp_printf/vsprintf-xint.c \
 ../common/udelay.c \
 main.c
 #../common/drivers/display.c \
