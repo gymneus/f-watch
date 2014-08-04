@@ -147,6 +147,9 @@ C_SRC += \
 ../common/drivers/lcd_dma.c \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/max17047.c \
+../common/drivers/LSM303C/LSM303C_ACC_driver.c \
+../common/drivers/LSM303C/LSM303C_MAG_driver.c \
+../common/drivers/LSM303C/lsm303c.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
 ../common/emlib/src/em_dma.c \
