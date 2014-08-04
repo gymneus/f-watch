@@ -24,6 +24,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "LSM303C_ACC_driver.h"
+#include "lsm303c.h"
 
 //EXAMPLE to fill LSM303C_ACC_ReadReg and LSM303C_ACC_WriteReg
 //#include "i2C_mems.h"
@@ -42,14 +43,10 @@
 * Output			: Data REad
 * Return			: None
 *******************************************************************************/
-u8_t LSM303C_ACC_ReadReg(u8_t Reg, u8_t* Data) {
-  
-  //To be completed with either I2c or SPI reading function
-  //i.e.: *Data = SPI_Mems_Read_Reg( Reg );
-  
-  //EXAMPLE
-  //if(!I2C_BufferRead(Data, LSM303C_ACC_MEMS_I2C_ADDRESS, Reg, 1)) return MEMS_ERROR;
-  //else return MEMS_SUCCESS; 
+u8_t LSM303C_ACC_ReadReg(u8_t Reg, u8_t* Data)
+{
+  *Data = spi_read(DEV_ACC, Reg);
+  return MEMS_SUCCESS;
 }
 
 /*******************************************************************************
@@ -60,14 +57,10 @@ u8_t LSM303C_ACC_ReadReg(u8_t Reg, u8_t* Data) {
 * Output			: None
 * Return			: None
 *******************************************************************************/
-u8_t LSM303C_ACC_WriteReg(u8_t Reg, u8_t Data) {
-    
-  //To be completed with either I2c or SPI writing function
-  //i.e.: SPI_Mems_Write_Reg(Reg, Data);
-  
-  //EXAMPLE
-  //I2C_ByteWrite(&Data,  LSM303C_ACC_MEMS_I2C_ADDRESS,  Reg); 
-  //return 1;
+u8_t LSM303C_ACC_WriteReg(u8_t Reg, u8_t Data)
+{
+  spi_send(DEV_ACC, Reg, Data);
+  return 1;
 }
 /* Private functions ---------------------------------------------------------*/
 
@@ -1120,13 +1113,13 @@ status_t LSM303C_ACC_SetFIFO_threshold(u8_t buff) {
   
   buff &= 0x1F; //coerce
 
-  if (!LSM303C_ACC_ReadReg(LSM303C_ACC_ACT_DUR, &value) )
+  if (!LSM303C_ACC_ReadReg(LSM303C_ACC_FIFO_CTRL, &value) )
     return MEMS_ERROR;
 
   value &= ~0x1F; //mask
   value |= buff;
 
-  if( !LSM303C_ACC_WriteReg(LSM303C_ACC_ACT_DUR, value) )
+  if( !LSM303C_ACC_WriteReg(LSM303C_ACC_FIFO_CTRL, value) )
     return MEMS_ERROR;
 
   return MEMS_SUCCESS;  
