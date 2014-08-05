@@ -90,37 +90,35 @@ uint16_t max17047_get_status(void)
 
 uint16_t max17047_get_voltage(void)
 {
-    uint16_t vcell;
+    uint16_t tmp;
 
-    max17047_read_reg(MAX17047_REG_VCELL, 2, (uint8_t*) &vcell);
+    max17047_read_reg(MAX17047_REG_VCELL, 2, (uint8_t*) &tmp);
 
     // convert to mV
-    vcell >>= 3;
-    vcell *= 5;
+    uint32_t volt = tmp * 80 >> 10;
 
-    return vcell;
+    return (uint16_t) volt;
 }
 
-uint16_t max17047_get_current(void)
+int16_t max17047_get_current(void)
 {
-    uint16_t current;
+    int16_t tmp;
 
-    max17047_read_reg(MAX17047_REG_CURRENT, 2, (uint8_t*) &current);
+    max17047_read_reg(MAX17047_REG_CURRENT, 2, (uint8_t*) &tmp);
 
     // convert to mA
-    // TODO
+    uint32_t curr = tmp * 160 >> 10;
 
-    return current;
+    return curr;
 }
 
 int8_t max17047_get_temperature(void)
 {
-    // TODO requires configuration of TOFF and TGAIN registers
     uint8_t temperature[2];
 
     max17047_read_reg(MAX17047_REG_TEMPERATURE, 2, temperature);
 
-    return temperature[0];
+    return temperature[1];
 }
 
 uint8_t max17047_get_charge(void)
@@ -129,12 +127,19 @@ uint8_t max17047_get_charge(void)
 
     max17047_read_reg(MAX17047_REG_SOC_REP, 2, charge);
 
-    return charge[0];
+    return charge[1];
 }
 
 uint16_t max17047_get_time_left(void)
 {
-    // TODO see what is missing?
-    return 0;
+    uint16_t time;
+
+    max17047_read_reg(MAX17047_REG_TIME_TO_EMPTY, 2, &time);
+
+    // convert to minutes
+    time >>= 5;
+    time *= 3;
+
+    return time;
 }
 

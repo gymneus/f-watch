@@ -32,9 +32,6 @@
 // Two-wire protocol address
 #define MAX17047_ADDRESS                0x6C
 
-// Sense resistor value (milliohm)
-#define MAX17047_SENS_RES               10
-
 // Register addresses
 #define MAX17047_REG_STATUS             0x00
 #define MAX17047_REG_VALRT_TH           0x01
@@ -141,7 +138,7 @@ uint8_t max17047_write_reg(uint8_t address, uint8_t length, uint8_t* buffer);
 
 /**
  * @brief Reads the status.
- * @return Status of max17047.
+ * @return Status of max17047. Check MAX170474_STS_xxx defines for details.
  */
 uint16_t max17047_get_status(void);
 
@@ -152,10 +149,11 @@ uint16_t max17047_get_status(void);
 uint16_t max17047_get_voltage(void);
 
 /**
- * @brief Reads current from the battery.
- * @return Current (in milliampers).
+ * @brief Reads current drawn from the battery.
+ * @return Current (in milliampers). Negative values represent discharging,
+ * positive values represent charging.
  */
-uint16_t max17047_get_current(void);
+int16_t max17047_get_current(void);
 
 /**
  * @brief Reads temperature sensor.
@@ -164,7 +162,7 @@ uint16_t max17047_get_current(void);
 int8_t max17047_get_temperature(void);
 
 /**
- * @brief Reads the current state of charge.
+ * @brief Reads state of charge.
  * @return State of charge (expressed as percentage: 0-100).
  */
 uint8_t max17047_get_charge(void);
