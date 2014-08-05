@@ -53,7 +53,6 @@
 #define SD_VOLUME_SIZE  (2 * 1024 * 1024) /* definition for size of sddrive0 : we assume working with a 2GB micro SD card */
 
 
-
 /**
  * @brief micro SD initialization routine.
  * @return > 0 means a success
@@ -62,15 +61,35 @@ uint32_t sd_init(void);
 
 /**
  * @brief Controls power for the micro SD.
- * @param uint8_t enable turns on the power if greater than 0.
+ * @param enable turns on the power if greater than 0.
  */
 void sd_power(uint8_t enable);
 /**
  * @brief Set the number of bytes in a sector of the micro SD
- * @param uint8_t bytes_per_sector number of bytes per sector
- * @return the reply from the card (0 = success)
+ * @param bytes_per_sector number of bytes per sector
+ * @return > 0 means a success
  */
 uint8_t sd_send_block_length(uint32_t bytes_per_sector);
+/**
+ * @brief read Operating Condition register
+ * @param buffer space for 4 bytes
+ * @return > 0 means a success
+ */
+uint8_t sd_read_ocr(uint8_t* buffer);
+/**
+ * @brief Write a block of byte to a given address of the SD card
+ * @param block_addr address of the block to write
+ * @param txBuffer block of data to write
+ * @return > 0 means a success
+ */
+int sd_write_block(uint32_t block_addr, const uint8_t *txBuffer);
+/**
+ * @brief Read a block of byte at a given address of the SD card
+ * @param block_addr address of the block to read
+ * @param rxBuffer buffer where to store data to read
+ * @return > 0 means a success
+ */
+int sd_read_block(uint32_t block_addr, uint8_t *rxBuffer);
 
 /**
  * @brief enumeration for the possible type of replies coming from the micro SD
