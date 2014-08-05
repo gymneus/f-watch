@@ -96,7 +96,7 @@ EFM32_ALIGN(4)
 EFM32_PACK_START(1)
 static cdcLineCoding_TypeDef __attribute__ ((aligned(4))) cdcLineCoding =
 {
-  115200, 0, 0, 8, 0
+  4800, 2, 0, 8, 0
 };
 EFM32_PACK_END()
 
@@ -695,10 +695,6 @@ static void SerialPortInit(void)
   GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 1);
   GPIO_PinModeSet(gpioPortE, 15, gpioModeInput, 0);
 
-  init.baudrate = 4800;
-  init.databits = leuartDatabits8;
-  init.stopbits = leuartStopbits2;
-
   /* Enable CORE LE clock in order to access LE modules */
   CMU_ClockEnable(cmuClock_CORELE, true);
 
@@ -708,16 +704,29 @@ static void SerialPortInit(void)
   /* Enable LEUART0 clock */
   CMU_ClockEnable(cmuClock_LEUART0, true);
 
-  /* Do not prescale clock */
   CMU_ClockDivSet(cmuClock_LEUART0, cmuClkDiv_1);
 
   /* Configure UART for basic async operation */
   init.enable = leuartDisable;
+  init.baudrate = 4800;
+  init.databits = leuartDatabits8;
+  init.stopbits = leuartStopbits2;
+
   LEUART_Init(leuart, &init);
+
+//  delay(1000);
 
   /* Enable pins at LEUART0 location #2 */
   leuart->ROUTE = LEUART_ROUTE_RXPEN | LEUART_ROUTE_TXPEN | LEUART_ROUTE_LOCATION_LOC2;
 
+//  /* Clear previous RX interrupts */
+//  LEUART_IntClear(leuart, LEUART_IF_RXDATAV);
+//  NVIC_ClearPendingIRQ(LEUART0_IRQn);
+//
+//  /* Enable RX interrupts */
+//  LEUART_IntEnable(leuart, LEUART_IF_RXDATAV);
+//  NVIC_EnableIRQ(LEUART0_IRQn);
+
   /* Finally enable it */
-  LEUART_IntEnable(leuart, leuartEnable);
+  LEUART_Enable(leuart, leuartEnable);
 }
