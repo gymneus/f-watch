@@ -126,8 +126,29 @@ C_SRC +=  \
 ../../common/emlib/src/em_usart.c \
 ../../common/emlib/src/em_assert.c \
 ../../common/emlib/src/em_gpio.c \
-../../common/drivers/sd.c \
 src/simple_spi_sd.c
+
+#sources for using LCD :
+INCLUDEPATHS += \
+-I../../common/
+
+C_SRC += \
+../../common/drivers/i2cdrv.c \
+../../common/drivers/light_sensor.c \
+../../common/drivers/lcd.c \
+../../common/drivers/sd.c \
+../../common/udelay.c \
+../../common/gfx/graphics.c \
+../../common/gfx/font_helv11.c \
+../../common/gfx/font_helv17.c \
+../../common/gfx/font_helv17b.c \
+../../common/gfx/font_xm4x5.c \
+../../common/gfx/font_xm4x6.c \
+../../common/emlib/src/em_burtc.c \
+../../common/emlib/src/em_emu.c \
+../../common/emlib/src/em_i2c.c \
+../../common/emlib/src/em_int.c \
+../../common/emlib/src/em_rtc.c \
 
 s_SRC += 
 
