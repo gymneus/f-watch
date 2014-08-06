@@ -32,16 +32,18 @@
  * last changes:
  *    2014-07-07   Theodor Stana     t.stana@cern.ch     File created
  *==============================================================================
- * TODO: - 
+ * TODO: -
  *==============================================================================
  */
-  
+
 #include "uart.h"
 
 #include "em_device.h"
 #include "em_cmu.h"
+#include "em_gpio.h"
 
 uint32_t msticks = 0;
+char str[32];
 
 void SysTick_Handler()
 {
@@ -58,16 +60,21 @@ void delay(uint32_t n)
 
 int main()
 {
-        uart_init();
-
         /* Setup SysTick Timer for 1 msec interrupts  */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
         CMU_ClockEnable(cmuClock_HFPER, true);
 
+        uart_init(4800, 8, "n", "2");
+        GPIO_PinModeSet(gpioPortD, 1, gpioModePushPull, 0);
+
         while (1)
         {
-                uart_puts("supercalifrageristic\n");
+                if (uart_gets(str))
+                        uart_puts(str);
+
+//                uart_puts("supercalifrageristic\r\n");
+                GPIO_PinOutToggle(gpioPortD, 1);
                 delay(500);
         }
 }

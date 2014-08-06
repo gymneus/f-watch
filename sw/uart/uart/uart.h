@@ -46,23 +46,48 @@
 /*============================================================================*/
 /* Defines                                                                    */
 /*============================================================================*/
-#define UART_IRQ_NAME       USART0_RX_IRQHandler
-#define UART_CLK            cmuClock_USART1
-#define UART_IRQN           USART0_RX_IRQn
-#define UART_PORT           USART0
-#define UART_TX             USART_Tx
-#define UART_RX             USART_Rx
-#define UART_LOC            USART_ROUTE_LOCATION_LOC0
-#define UART_TXPORT         gpioPortE
-#define UART_TXPIN          10
-#define UART_RXPORT         gpioPortE
-#define UART_RXPIN          11
+/* Use USART/LEUART definition; no UART for EFM32GG330, thus not supported    */
+/* Should be mutually exclusive, else compilation error                       */
+#define UART_USE_USART
+//#define UART_USE_LEUART
+
+/* Change the definition files below according to the port you use */
+#if defined(UART_USE_USART)
+        #define UART_PORT       USART0
+        #define UART_IRQ_NAME   USART0_RX_IRQHandler
+        #define UART_CLK        cmuClock_USART0
+        #define UART_IRQN       USART0_RX_IRQn
+        #define UART_TX         USART_Tx
+        #define UART_RX         USART_Rx
+        #define UART_TXPORT     gpioPortE
+        #define UART_TXPIN      10
+        #define UART_RXPORT     gpioPortE
+        #define UART_RXPIN      11
+        #define UART_LOC        USART_ROUTE_LOCATION_LOC0
+#endif
+
+#if defined(UART_USE_LEUART)
+        #define UART_PORT       LEUART1
+        #define UART_IRQ_NAME   LEUART1_IRQHandler
+        #define UART_CLK        cmuClock_LEUART1
+        #define UART_IRQN       LEUART1_IRQn
+        #define UART_UART       LEUART1
+        #define UART_TX         LEUART_Tx
+        #define UART_RX         LEUART_Rx
+        #define UART_TXPORT     gpioPortC
+        #define UART_TXPIN      6
+        #define UART_RXPORT     gpioPortC
+        #define UART_RXPIN      7
+        #define UART_LOC        LEUART_ROUTE_LOCATION_LOC0
+#endif
 
 /*============================================================================*/
 /* Function prototypes                                                        */
 /*============================================================================*/
-void    uart_init();
+void    uart_init(int baud, int databits, char *parity, char *stopbits);
 void    uart_putc(char c);
 int     uart_puts(char *s);
+char    uart_getc();
+int     uart_gets(char *s);
 
-#endif // __FRW_UART_H_
+#endif // __UART_H_
