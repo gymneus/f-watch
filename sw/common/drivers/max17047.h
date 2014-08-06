@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -137,6 +138,22 @@ uint8_t max17047_read_reg(uint8_t address, uint8_t length, uint8_t* buffer);
 uint8_t max17047_write_reg(uint8_t address, uint8_t length, uint8_t* buffer);
 
 /**
+ * @brief Initialises the max17047, restores the saved registers in case of a POR.
+ * @return 0 if no errors.
+ */
+uint8_t max17047_init(void);
+
+/**
+ * @brief Saves the leared-value and application register.
+ *
+ * This function should be called periodically (e.g. End-of-charge, End-of-discharge,
+ * prior to entering shutdown state).
+ *
+ + @return 0 if regiters saved successfully.
+ */
+uint8_t max17047_save_regs(void);
+
+/**
  * @brief Reads the status.
  * @return Status of max17047. Check MAX170474_STS_xxx defines for details.
  */
@@ -153,7 +170,7 @@ uint16_t max17047_get_voltage(void);
  * @return Current (in milliampers). Negative values represent discharging,
  * positive values represent charging.
  */
-int16_t max17047_get_current(void);
+int32_t max17047_get_current(void);
 
 /**
  * @brief Reads temperature sensor.

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +27,7 @@
 
 #include "max17047.h"
 #include "i2cdrv.h"
+#include "delay.h"
 
 uint8_t max17047_read_reg(uint8_t address, uint8_t length, uint8_t* buffer)
 {
@@ -79,6 +81,34 @@ uint8_t max17047_write_reg(uint8_t address, uint8_t length, uint8_t* buffer)
     // TODO ack polling to determine if the write operation is finished?
 }
 
+uint8_t max17047_init(void)
+{
+        uint16_t status;
+
+        // Check if POR bit is set
+        status = max17047_get_status();
+        if(status & MAX17047_STS_POR)
+        {
+                Delay(600); // 600ms
+
+                // restore saved register (learned-values, application registers)
+                // TODO: use the eeprom emulator from AN0019
+
+                // clear POR bit
+                status &= ~MAX17047_STS_POR;
+                max17047_write_reg(MAX17047_REG_STATUS, 2, (uint8_t*) &status);
+        }
+
+        return 0;
+}
+
+uint8_t max17047_save_regs(void)
+{
+        // TODO: use the eeprom emulator from AN0019
+
+        return 0;
+}
+
 uint16_t max17047_get_status(void)
 {
     uint16_t status;
@@ -100,14 +130,14 @@ uint16_t max17047_get_voltage(void)
     return (uint16_t) volt;
 }
 
-int16_t max17047_get_current(void)
+int32_t max17047_get_current(void)
 {
     int16_t tmp;
 
     max17047_read_reg(MAX17047_REG_CURRENT, 2, (uint8_t*) &tmp);
 
     // convert to mA
-    uint32_t curr = tmp * 160 >> 10;
+    int32_t curr = tmp * 160 >> 10;
 
     return curr;
 }
