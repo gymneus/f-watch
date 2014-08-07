@@ -107,16 +107,16 @@ int16_t max17047_get_current(void)
     max17047_read_reg(MAX17047_REG_CURRENT, 2, (uint8_t*) &tmp);
 
     // convert to mA
-    uint32_t curr = tmp * 160 >> 10;
+    int32_t curr = tmp * 160 >> 10;
 
-    return curr;
+    return (int16_t) curr;
 }
 
 int8_t max17047_get_temperature(void)
 {
-    uint8_t temperature[2];
+    int8_t temperature[2];
 
-    max17047_read_reg(MAX17047_REG_TEMPERATURE, 2, temperature);
+    max17047_read_reg(MAX17047_REG_TEMPERATURE, 2, (uint8_t*) temperature);
 
     return temperature[1];
 }
@@ -134,7 +134,7 @@ uint16_t max17047_get_time_left(void)
 {
     uint16_t time;
 
-    max17047_read_reg(MAX17047_REG_TIME_TO_EMPTY, 2, &time);
+    max17047_read_reg(MAX17047_REG_TIME_TO_EMPTY, 2, (uint8_t*) &time);
 
     // convert to minutes
     time >>= 5;
