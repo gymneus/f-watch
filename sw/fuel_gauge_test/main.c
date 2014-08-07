@@ -56,7 +56,7 @@ int main(void)
         uint16_t fg_var16;
         uint8_t fg_var8;
         int8_t fg_temp;
-        int32_t fg_i;
+        int16_t fg_i;
 
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -74,6 +74,8 @@ int main(void)
 
         err = alti_init();
 
+        err = max17047_set_config(0x2250);
+
         //GPIO_PinOutSet(gpioPortE, 11);
         //GPIO_PinOutSet(gpioPortE, 12);
 
@@ -86,16 +88,20 @@ int main(void)
 
                 err = alti_get_temp_pressure(&temp, &pressure, true);
                 sprintf(str, "temp: %f C", temp);
-                text(&font_helv11, 5, 30, str);
+                text(&font_helv11, 5, 20, str);
                 sprintf(str, "pressure: %f mbar", pressure);
-                text(&font_helv11, 5, 40, str);
+                text(&font_helv11, 5, 30, str);
 
                 err = alti_mbar2altitude(pressure, &altitude);
                 sprintf(str, "altitude: %f m", altitude);
-                text(&font_helv11, 5, 50, str);
+                text(&font_helv11, 5, 40, str);
 
                 fg_var16 =  max17047_get_status();
                 sprintf(str, "fg status: 0x%x", fg_var16);
+                text(&font_helv11, 5, 50, str);
+
+                fg_var16 =  max17047_get_config();
+                sprintf(str, "fg config: 0x%x", fg_var16);
                 text(&font_helv11, 5, 60, str);
 
                 fg_var16 =  max17047_get_voltage();
@@ -111,7 +117,7 @@ int main(void)
                 text(&font_helv11, 5, 90, str);
 
                 fg_var8 =  max17047_get_charge();
-                sprintf(str, "fg charge: %d %", fg_var8);
+                sprintf(str, "fg charge: %d", fg_var8);
                 text(&font_helv11, 5, 100, str);
 
                 fg_var16 =  max17047_get_time_left();

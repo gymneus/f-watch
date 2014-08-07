@@ -118,6 +118,24 @@ uint16_t max17047_get_status(void)
     return status;
 }
 
+uint16_t max17047_get_config(void)
+{
+    uint16_t config;
+
+    max17047_read_reg(MAX17047_REG_CONFIG, 2, (uint8_t*) &config);
+
+    return config;
+}
+
+uint8_t max17047_set_config(uint16_t config)
+{
+    uint8_t err;
+
+    err = max17047_write_reg(MAX17047_REG_CONFIG, 2, (uint8_t*) &config);
+
+    return err;
+}
+
 uint16_t max17047_get_voltage(void)
 {
     uint16_t tmp;
@@ -130,7 +148,7 @@ uint16_t max17047_get_voltage(void)
     return (uint16_t) volt;
 }
 
-int32_t max17047_get_current(void)
+int16_t max17047_get_current(void)
 {
     int16_t tmp;
 

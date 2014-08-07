@@ -117,6 +117,39 @@
 // Battery Removal (1 == battery has been removed; has to be cleared manually)
 #define MAX17047_STS_BR                 0x8000
 
+// Configuration register bits
+// Enables battery removal alert (default 0)
+#define MAX17047_CFG_BER                0x0001
+// Enables battery insertion alert (default 0)
+#define MAX17047_CFG_BEI                0x0002
+// Enables alerts on outputs (default 0)
+#define MAX17047_CFG_AEN                0x0004
+// Forces thermistor bias switch (default 0)
+#define MAX17047_CFG_FTHRM              0x0008
+// Enables thermistor (default 1)
+#define MAX17047_CFG_ETHRM              0x0010
+// ALRT pin as shutdown input (default 0)
+#define MAX17047_CFG_ALSH               0x0020
+// I2C shutdown, if SDA and SCL are low for more than SHDNTIMER (default 1)
+#define MAX17047_CFG_I2CSH              0x0040
+// Shutdown (default 0)
+#define MAX17047_CFG_SHDN               0x0080
+// External temperature measurement written from host (default 1)
+#define MAX17047_CFG_TEX                0x0100
+// Enables temperature measurement (default 1)
+#define MAX17047_CFG_TEN                0x0200
+// Enables shutdown when battery is removed (default 0)
+#define MAX17047_CFG_AINSH              0x0400
+// ALRT pin polarity, 0=active low (default 0)
+#define MAX17047_CFG_ALRTP              0x0800
+// Voltage ALRT sticky, voltage alerts can only be cleared by sw if 1 (default 0)
+#define MAX17047_CFG_VS                 0x1000
+// Temperature ALRT sticky, temperature alerts can only be cleared by sw if 1 (default 1)
+#define MAX17047_CFG_TS                 0x2000
+// SOC ALRT sticky, SOC alerts can only be cleared by sw if 1 (default 0)
+#define MAX17047_CFG_SS                 0x4000
+
+
 /**
  * @brief Reads a register from max17047.
  * @param uint8_t reg Register number (the starting one, if you read more than one).
@@ -160,6 +193,19 @@ uint8_t max17047_save_regs(void);
 uint16_t max17047_get_status(void);
 
 /**
+ * @brief Reads the configuration.
+ * @return Configuration of max17047. Check MAX170474_CFG_xxx defines for details.
+ */
+uint16_t max17047_get_config(void);
+
+/**
+ * @brief Writes the configuration.
+ * @param Configuration of max17047. Check MAX170474_CFG_xxx defines for details.
+ * @return 0 if no error.
+ */
+uint8_t max17047_set_config(uint16_t config);
+
+/**
  * @brief Reads the battery voltage.
  * @return Battery voltage (in millivolts).
  */
@@ -170,7 +216,7 @@ uint16_t max17047_get_voltage(void);
  * @return Current (in milliampers). Negative values represent discharging,
  * positive values represent charging.
  */
-int32_t max17047_get_current(void);
+int16_t max17047_get_current(void);
 
 /**
  * @brief Reads temperature sensor.
