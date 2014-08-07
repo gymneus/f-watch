@@ -189,15 +189,11 @@ void lcd_clear(void)
         *p++ = 0x00;
 
 #ifndef LCD_NODMA
-    // Clear pixel buffer
-    for(i = 0; i < sizeof(buffer) / sizeof(uint32_t); ++i)
-        *p++ = 0x00;
-
+    // Add control codes
     for(i = 0; i < LCD_HEIGHT; ++i)
     {
-        // Add control codes
         buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
-        buffer[i * LCD_STRIDE - 1] = (i + 2);   // Address of next line
+        buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
     }
 #endif
 }
