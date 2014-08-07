@@ -74,8 +74,8 @@ int main(void)
 
         err = alti_init();
 
-        GPIO_PinOutSet(gpioPortE, 11);
-        GPIO_PinOutSet(gpioPortE, 12);
+        //GPIO_PinOutSet(gpioPortE, 11);
+        //GPIO_PinOutSet(gpioPortE, 12);
 
         while(1)
         {
