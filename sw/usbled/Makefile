@@ -1,8 +1,12 @@
 CC	= gcc
+CFLAGS  = -Wall
 INCLUDE =
 SOURCES = usbled.c
-LIB	= -L/usr/lib/i386-linux-gnu
+LIB	=
 LDFLAGS = -lusb
 
 all:
-	$(CC) $(INCLUDE) $(LIB) $(LDFLAGS) -o usbled $(SOURCES)
+	$(CC) -o usbled $(CFLAGS) $(INCLUDE) $(SOURCES) $(LIB) $(LDFLAGS)
+
+clean:
+	rm usbled

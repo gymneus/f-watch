@@ -28,7 +28,7 @@ static const USB_DeviceDescriptor_TypeDef deviceDesc __attribute__ ((aligned(4))
   .bDeviceProtocol    = 0,
   .bMaxPacketSize0    = USB_EP0_SIZE,
   .idVendor           = 0x10C4,
-  .idProduct          = 0x0003,
+  .idProduct          = 0x00ff,
   .bcdDevice          = 0x0000,
   .iManufacturer      = 1,
   .iProduct           = 2,
@@ -168,7 +168,7 @@ static const uint8_t bufferingMultiplier[ NUM_EP_USED + 1 ] = { 1, 1, 2, 2 };
 static const USBD_Callbacks_TypeDef callbacks =
 {
   .usbReset        = NULL,
-  .usbStateChange  = StateChange,
+  .usbStateChange  = NULL, //StateChange,
   .setupCmd        = SetupCmd,
   .isSelfPowered   = NULL,
   .sofInt          = NULL

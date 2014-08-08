@@ -9,7 +9,8 @@ int main()
   static struct usb_device *pDev;
   static struct usb_bus *pBus;
 
-  int led = 0;
+  int led = 12;
+  int val = 0;
 
   usb_init();
 
@@ -51,16 +52,19 @@ int main()
 
   while (1) {
 
-    led ^= 1;
+        if (led == 11) led = 12;
+        if (led == 12) led = 11;
+        val ^= 1;
 
     if ( pDevH )
     {
+      printf("led%d\n", led);
       usb_control_msg(
                     pDevH,            // Device handle
                     USB_ENDPOINT_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
                                       // bmRequestType
                     LED_SET,          // bRequest
-                    0,                // wValue
+                    val,              // wValue
                     led,              // wIndex
                     NULL,             // char *pBuffer
                     1,                // wLength

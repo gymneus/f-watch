@@ -53,6 +53,9 @@
 /* baudrate. Minimum timeout is set to 10 ms.                             */
 #define RX_TIMEOUT    EFM32_MAX(10U, 50000 / (cdcLineCoding.dwDTERate))
 
+#define LED_SET 0x11
+
+
 /* The serial port LINE CODING data structure, used to carry information  */
 /* about serial port baudrate, parity etc. between host and device.       */
 EFM32_PACK_START(1)
@@ -156,8 +159,8 @@ int main(void)
   GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
   GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 1);;
 
-  SerialPortInit();
-  DmaSetup();
+//  SerialPortInit();
+//  DmaSetup();
   USBD_Init(&initstruct);
 
   /*
@@ -170,9 +173,9 @@ int main(void)
 
   for (;;)
   {
-        GPIO_PinOutToggle(gpioPortE, 11);
-        GPIO_PinOutToggle(gpioPortE, 12);
-        delay(1000);
+//        GPIO_PinOutToggle(gpioPortE, 11);
+//        GPIO_PinOutToggle(gpioPortE, 12);
+//        delay(1000);
   }
 }
 
@@ -492,41 +495,45 @@ static int SetupCmd(const USB_Setup_TypeDef *setup)
   {
     switch (setup->bRequest)
     {
-    case USB_CDC_GETLINECODING:
-      /********************/
-      if ((setup->wValue == 0) &&
-          (setup->wIndex == 0) &&               /* Interface no.            */
-          (setup->wLength == 7) &&              /* Length of cdcLineCoding  */
-          (setup->Direction == USB_SETUP_DIR_IN))
-      {
-        /* Send current settings to USB host. */
-        USBD_Write(0, (void*) &cdcLineCoding, 7, NULL);
-        retVal = USB_STATUS_OK;
-      }
-      break;
-
-    case USB_CDC_SETLINECODING:
-      /********************/
-      if ((setup->wValue == 0) &&
-          (setup->wIndex == 0) &&               /* Interface no.            */
-          (setup->wLength == 7) &&              /* Length of cdcLineCoding  */
-          (setup->Direction != USB_SETUP_DIR_IN))
-      {
-        /* Get new settings from USB host. */
-        USBD_Read(0, (void*) &cdcLineCoding, 7, LineCodingReceived);
-        retVal = USB_STATUS_OK;
-      }
-      break;
-
-    case USB_CDC_SETCTRLLINESTATE:
-      /********************/
-      if ((setup->wIndex == 0) &&               /* Interface no.  */
-          (setup->wLength == 0))                /* No data        */
-      {
-        /* Do nothing ( Non compliant behaviour !! ) */
-        retVal = USB_STATUS_OK;
-      }
-      break;
+        case LED_SET:
+                setup->wValue ? GPIO_PinOutSet(gpioPortE, setup->wIndex) :
+                                GPIO_PinOutClear(gpioPortE, setup->wIndex);
+                break;
+//    case USB_CDC_GETLINECODING:
+//      /********************/
+//      if ((setup->wValue == 0) &&
+//          (setup->wIndex == 0) &&               /* Interface no.            */
+//          (setup->wLength == 7) &&              /* Length of cdcLineCoding  */
+//          (setup->Direction == USB_SETUP_DIR_IN))
+//      {
+//        /* Send current settings to USB host. */
+//        USBD_Write(0, (void*) &cdcLineCoding, 7, NULL);
+//        retVal = USB_STATUS_OK;
+//      }
+//      break;
+//
+//    case USB_CDC_SETLINECODING:
+//      /********************/
+//      if ((setup->wValue == 0) &&
+//          (setup->wIndex == 0) &&               /* Interface no.            */
+//          (setup->wLength == 7) &&              /* Length of cdcLineCoding  */
+//          (setup->Direction != USB_SETUP_DIR_IN))
+//      {
+//        /* Get new settings from USB host. */
+//        USBD_Read(0, (void*) &cdcLineCoding, 7, LineCodingReceived);
+//        retVal = USB_STATUS_OK;
+//      }
+//      break;
+//
+//    case USB_CDC_SETCTRLLINESTATE:
+//      /********************/
+//      if ((setup->wIndex == 0) &&               /* Interface no.  */
+//          (setup->wLength == 0))                /* No data        */
+//      {
+//        /* Do nothing ( Non compliant behaviour !! ) */
+//        retVal = USB_STATUS_OK;
+//      }
+//      break;
     }
   }
 
