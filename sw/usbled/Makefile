@@ -1,9 +1,9 @@
 CC	= gcc
 CFLAGS  = -Wall
-INCLUDE =
+INCLUDE = -I/usr/include/libusb-1.0
 SOURCES = usbled.c
 LIB	=
-LDFLAGS = -lusb
+LDFLAGS = -lusb-1.0
 
 all:
 	$(CC) -o usbled $(CFLAGS) $(INCLUDE) $(SOURCES) $(LIB) $(LDFLAGS)

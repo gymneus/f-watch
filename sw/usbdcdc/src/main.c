@@ -488,16 +488,17 @@ static void StateChange(USBD_State_TypeDef oldState,
  *****************************************************************************/
 static int SetupCmd(const USB_Setup_TypeDef *setup)
 {
-  int retVal = USB_STATUS_REQ_UNHANDLED;
+  int r = USB_STATUS_REQ_UNHANDLED;
 
-  if ((setup->Type == USB_SETUP_TYPE_CLASS) &&
-      (setup->Recipient == USB_SETUP_RECIPIENT_INTERFACE))
+  if (setup->Type == USB_SETUP_TYPE_VENDOR) //&&
+      //(setup->Recipient == USB_SETUP_RECIPIENT_DEVICE))
   {
     switch (setup->bRequest)
     {
         case LED_SET:
                 setup->wValue ? GPIO_PinOutSet(gpioPortE, setup->wIndex) :
                                 GPIO_PinOutClear(gpioPortE, setup->wIndex);
+                r = USB_STATUS_OK;
                 break;
 //    case USB_CDC_GETLINECODING:
 //      /********************/
@@ -508,7 +509,7 @@ static int SetupCmd(const USB_Setup_TypeDef *setup)
 //      {
 //        /* Send current settings to USB host. */
 //        USBD_Write(0, (void*) &cdcLineCoding, 7, NULL);
-//        retVal = USB_STATUS_OK;
+//        r = USB_STATUS_OK;
 //      }
 //      break;
 //
@@ -521,7 +522,7 @@ static int SetupCmd(const USB_Setup_TypeDef *setup)
 //      {
 //        /* Get new settings from USB host. */
 //        USBD_Read(0, (void*) &cdcLineCoding, 7, LineCodingReceived);
-//        retVal = USB_STATUS_OK;
+//        r = USB_STATUS_OK;
 //      }
 //      break;
 //
@@ -531,13 +532,13 @@ static int SetupCmd(const USB_Setup_TypeDef *setup)
 //          (setup->wLength == 0))                /* No data        */
 //      {
 //        /* Do nothing ( Non compliant behaviour !! ) */
-//        retVal = USB_STATUS_OK;
+//        r = USB_STATUS_OK;
 //      }
 //      break;
     }
   }
 
-  return retVal;
+  return r;
 }
 
 /**************************************************************************//**

@@ -27,14 +27,13 @@ extern "C" {
 ** Specify number of endpoints used (in addition to EP0).                  **
 **                                                                         **
 *****************************************************************************/
-#define NUM_EP_USED 3
+#define NUM_EP_USED 0
 
 /****************************************************************************
 **                                                                         **
-** Specify number of application timers you need.                          **
+** Configure serial port debug output.                                     **
 **                                                                         **
 *****************************************************************************/
-#define NUM_APP_TIMERS 1
 
 #ifdef __cplusplus
 }
