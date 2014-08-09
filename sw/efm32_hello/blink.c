@@ -73,20 +73,18 @@ int main(void)
     /* Setup SysTick Timer for 1 msec interrupts */
     if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
+    // Enable clocks and configure pins
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
-    // Enable clocks and configure pins
-    for (i = 1; i < 5; ++i) {
-        GPIO_PinModeSet(gpioPortD, i, gpioModePushPull, 0);
-    }
+    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
+    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
     /* Infinite blink loop */
     while (1) {
-        for (i = 1; i < 5; ++i) {
-            GPIO_PinOutToggle(gpioPortD, i);
+            GPIO_PinOutToggle(gpioPortE, 11);
+            GPIO_PinOutToggle(gpioPortE, 12);
             Delay(200);
-        }
     }
 }
 
