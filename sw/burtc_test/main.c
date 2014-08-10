@@ -95,7 +95,7 @@ void setupBurtc(void)
         burtcInit.enable       = true;                /* Enable BURTC after initialization  */
         burtcInit.mode         = burtcModeEM3;        /* BURTC is enabled in EM0-EM3 */
         burtcInit.debugRun     = false;               /* Counter shall keep running during debug halt. */
-        burtcInit.clkSel       = burtcClkSelLFRCO;    /* Select LFRCO as clock source */
+        burtcInit.clkSel       = burtcClkSelLFXO;     /* Select LFXO as clock source */
         burtcInit.clkDiv       = burtcClkDiv_1;       /* Clock prescaler             */
         burtcInit.lowPowerComp = 0;                   /* Number of least significantt clock bits to ignore in low power mode */
         burtcInit.timeStamp    = true;                /* Enable time stamp on entering backup power domain */
