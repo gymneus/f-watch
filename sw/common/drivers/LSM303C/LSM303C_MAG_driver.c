@@ -45,8 +45,7 @@ u8_t LSM303C_MAG_flags=0;
 *******************************************************************************/
 u8_t LSM303C_MAG_ReadReg(u8_t Reg, u8_t* Data)
 {
-  *Data = spi_read(DEV_MAG, Reg);
-  return MEMS_SUCCESS;
+  return spi_read(DEV_MAG, Reg, Data);
 }
 
 /*******************************************************************************
