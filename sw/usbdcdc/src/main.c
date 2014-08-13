@@ -159,8 +159,8 @@ int main(void)
   GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
   GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 1);;
 
-  //SerialPortInit();
-  //DmaSetup();
+  SerialPortInit();
+  DmaSetup();
   USBD_Init(&initstruct);
 
   /*
@@ -279,31 +279,34 @@ static int UsbDataTransmitted(USB_Status_TypeDef status,
 {
   (void) xferred;              /* Unused parameter */
   (void) remaining;            /* Unused parameter */
+  char tmp[7] = {'0', '1', '2', '3', '4', '5', '\n'};
 
   if (status == USB_STATUS_OK)
   {
-    if (!dmaRxActive)
-    {
-      /* dmaRxActive = false means that a new UART Rx DMA can be started. */
-
-      USBD_Write(EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
-                 uartRxCount, UsbDataTransmitted);
-      LastUsbTxCnt = uartRxCount;
-
-      dmaRxActive    = true;
-      dmaRxCompleted = true;
-      DMA_ActivateBasic(1, true, false,
-                        (void *) uartRxBuffer[ uartRxIndex ],
-                        (void *) &(LEUART0->RXDATA),
-                        USB_TX_BUF_SIZ - 1);
-      uartRxCount = 0;
-      USBTIMER_Start(0, RX_TIMEOUT, UartRxTimeout);
-    }
-    else
-    {
-      /* The UART receive DMA callback function will start a new DMA. */
-      usbTxActive = false;
-    }
+        delay(100);
+        USBD_Write(0, (void*) tmp, 7, UsbDataTransmitted);
+//    if (!dmaRxActive)
+//    {
+//      /* dmaRxActive = false means that a new UART Rx DMA can be started. */
+//
+//      USBD_Write(EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
+//                 uartRxCount, UsbDataTransmitted);
+//      LastUsbTxCnt = uartRxCount;
+//
+//      dmaRxActive    = true;
+//      dmaRxCompleted = true;
+//      DMA_ActivateBasic(1, true, false,
+//                        (void *) uartRxBuffer[ uartRxIndex ],
+//                        (void *) &(LEUART0->RXDATA),
+//                        USB_TX_BUF_SIZ - 1);
+//      uartRxCount = 0;
+//      USBTIMER_Start(0, RX_TIMEOUT, UartRxTimeout);
+//    }
+//    else
+//    {
+//      /* The UART receive DMA callback function will start a new DMA. */
+//      usbTxActive = false;
+//    }
   }
   return USB_STATUS_OK;
 }
