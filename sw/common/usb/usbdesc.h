@@ -17,9 +17,19 @@
 extern "C" {
 #endif
 
+#include "em_usb.h"
+
+/*=====================*/
+/* Function prototypes */
+/*=====================*/
+int usbdesc_cb_setup(const USB_Setup_TypeDef *setup);
+
+
+/*===============================*/
 /* Define USB endpoint addresses */
-#define USBDESC_EP_DATA_OUT     0x01  /* Endpoint for USB data reception.       */
-#define USBDESC_EP_DATA_IN      0x81  /* Endpoint for USB data transmission.    */
+/*===============================*/
+#define USBDESC_EP_DATA_IN      0x01  /* Endpoint for USB data reception.       */
+#define USBDESC_EP_DATA_OUT     0x81  /* Endpoint for USB data transmission.    */
 #define USBDESC_EP_NOTIFY       0x82  /* The notification endpoint (not used).  */
 
 #define USBDESC_BULK_EP_SIZE    USB_MAX_EP_SIZE  /* This is the max. ep size.    */
@@ -136,7 +146,7 @@ static const uint8_t configDesc[] __attribute__ ((aligned(4)))=
         /*** CDC Data interface endpoint descriptors ***/
         USB_ENDPOINT_DESCSIZE,  /* bLength               */
         USB_ENDPOINT_DESCRIPTOR,/* bDescriptorType       */
-        USBDESC_EP_DATA_OUT,    /* bEndpointAddress (IN) */
+        USBDESC_EP_DATA_IN,    /* bEndpointAddress (IN) */
         USB_EPTYPE_BULK,        /* bmAttributes          */
         USBDESC_BULK_EP_SIZE,   /* wMaxPacketSize (LSB)  */
         0,                      /* wMaxPacketSize (MSB)  */
@@ -144,7 +154,7 @@ static const uint8_t configDesc[] __attribute__ ((aligned(4)))=
 
         USB_ENDPOINT_DESCSIZE,  /* bLength               */
         USB_ENDPOINT_DESCRIPTOR,/* bDescriptorType       */
-        USBDESC_EP_DATA_IN,     /* bEndpointAddress (OUT)*/
+        USBDESC_EP_DATA_OUT,    /* bEndpointAddress (OUT)*/
         USB_EPTYPE_BULK,        /* bmAttributes          */
         USBDESC_BULK_EP_SIZE,   /* wMaxPacketSize (LSB)  */
         0,                      /* wMaxPacketSize (MSB)  */
@@ -176,7 +186,7 @@ static const USBD_Callbacks_TypeDef callbacks =
 {
   .usbReset        = NULL,
   .usbStateChange  = NULL,
-  .setupCmd        = SetupCmd,
+  .setupCmd        = usbdesc_cb_setup,
   .isSelfPowered   = NULL,
   .sofInt          = NULL
 };

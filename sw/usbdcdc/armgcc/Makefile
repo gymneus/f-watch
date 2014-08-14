@@ -101,7 +101,7 @@ override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -fdata-sections -fomit-frame-pointer -DDEBUG_EFM_USER  \
 $(DEPFLAGS)
 
-override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb -DDEBUG_EFM_USER 
+override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb -DDEBUG_EFM_USER
 
 #
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
@@ -119,7 +119,7 @@ INCLUDEPATHS += \
 -I../../common/Device/EnergyMicro/EFM32GG/Include \
 -I../../common/emlib/inc \
 -I../../common/usb \
--I../usb/inc \
+-I../../common/usb/inc \
 -I../kits/common/drivers \
 -I../kits/common/bsp \
 -I../kits/EFM32GG_DK3750/config
@@ -140,16 +140,17 @@ C_SRC +=  \
 ../../common/emlib/src/em_system.c \
 ../../common/emlib/src/em_timer.c \
 ../../common/emlib/src/em_leuart.c \
-../usb/src/em_usbd.c \
-../usb/src/em_usbdch9.c \
-../usb/src/em_usbhal.c \
-../usb/src/em_usbdep.c \
-../usb/src/em_usbdint.c \
-../usb/src/em_usbtimer.c \
+../../common/usb/src/em_usbd.c \
+../../common/usb/src/em_usbdch9.c \
+../../common/usb/src/em_usbhal.c \
+../../common/usb/src/em_usbdep.c \
+../../common/usb/src/em_usbdint.c \
+../../common/usb/src/em_usbtimer.c \
 ../kits/common/drivers/dmactrl.c \
+../../common/usb/usbdesc.c \
 ../src/main.c
 
-s_SRC += 
+s_SRC +=
 
 S_SRC +=  \
 ../../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
