@@ -114,6 +114,7 @@ INCLUDEPATHS += \
 -IFreeRTOS/Source/include \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
+-I../common \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
 
@@ -133,6 +134,8 @@ C_SRC +=  \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
 ../common/emdrv/sleep/src/sleep.c \
+../common/drivers/lcd.c \
+../common/drivers/buttons.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
