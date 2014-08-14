@@ -1,16 +1,34 @@
 #include "ui.h"
 
-static int dw_h, dw_min, dw_cycles;
+extern int64_t sys_get_tics();
+
+void sys_get_time(int *h, int *m, int *cycs)
+{
+	int64_t t = sys_get_tics() / 1200;
+	
+	if(cycs)
+		*cycs = t % 50;
+	t /= 50;
+	if(m)
+		*m = t % 60;
+	t /= 60;
+	if(h)
+		*h = t % 24;
+}
 
 static void digital_watch_redraw(struct ui_widget *w)
 {
+	int h,m,c;
+
+	sys_get_time(&h, &m, &c);
+
 	char buf[20];
-	sprintf(buf,"%02d:%02d", dw_h, dw_min);
+	sprintf(buf,"%02d:%02d", h, m);
 
 	gfx_clear(&w->dc, 0);
 	gfx_text(&w->dc, &font_helv38b, 0, 0, buf);
 
-	sprintf(buf,"%02d.%01d", dw_cycles * 12 / 10, (dw_cycles * 12) % 10);
+	sprintf(buf,"%02d.%01d", c * 12 / 10, (c * 12) % 10);
 	gfx_text(&w->dc, &font_helv22b, 84, 14, buf);
 
 
@@ -21,16 +39,8 @@ static void digital_watch_event(struct ui_widget *w, struct ui_event event)
 	switch(event.type)
 	{
 		case EVT_NEXT_CYCLE:
-		{
-			dw_cycles = event.data % 50;
-			event.data /= 50;
-			dw_min = event.data % 60;
-			event.data /= 60;
-			dw_h = event.data % 24;
-
 			w->flags |= WF_DIRTY;
 			break;
-		}
 		default:
 			break;
 	}
@@ -44,10 +54,6 @@ struct ui_widget digital_watch = {
 	WF_ACTIVE | WF_VISIBLE
 };
 
-void digtal_watch_create()
-{
-	ui_add_widget ( &digital_watch );
-}
 
 struct pls_cycle {
 	uint8_t current;
@@ -68,28 +74,18 @@ static  struct pls_cycle cycles[] = {
 	{ 15, 5, 2, 5, "ISOGPS" }
 };
 
-static int pls_current = 0, pls_total = 8;
+int pls_current = 0, pls_total = 8;
 
 static void pls_redraw(struct ui_widget *w)
 {
 	gfx_clear(&w->dc, 0);
 
-//	fprintf(stderr, "PLS_redraw!");
-
-	/*gfx_line(&w->dc, 64, 0, 127, 0, 1);
-	gfx_line(&w->dc, 64, 30, 127, 30, 1);
-	gfx_line(&w->dc, 64, 0, 64, 30, 1);
-	gfx_line(&w->dc, 127, 0, 127, 30, 1);*/
-
 #define PERIOD 30
 
-	int n = -((sys_get_tics() / UI_TICK_RATE ) / 2) % PERIOD;
+// crap!
+	int n = -((sys_get_tics() / UI_TICK_RATE )) % PERIOD;
 	int x = n, y = 0, yn, xn, x0;
 	int i;
-
-	//printf("x0 %d\n", x);
-
-	printf("pls_current %d\n", pls_current);
 
 	if(n == PERIOD - 1)
 		pls_current++;
@@ -164,6 +160,9 @@ static void pls_event(struct ui_widget *w, struct ui_event event)
 	}
 }
 
+
+
+
 struct ui_widget pls_viewer = {
 	pls_redraw,
 	pls_event,
@@ -172,9 +171,48 @@ struct ui_widget pls_viewer = {
 	WF_ACTIVE | WF_VISIBLE
 };
 
-void pls_viewer_create()
+
+struct ui_widget home_screen = {
+	NULL,
+	NULL,
+	{ 0, 0, 127, 127 },
+	0,
+	WF_ACTIVE | WF_VISIBLE
+};
+
+static void status_bar_event(struct ui_widget *w, struct ui_event event)
 {
-	ui_add_widget ( &pls_viewer );
+	
 }
 
+static void status_bar_redraw(struct ui_widget *w)
+{
+	//gfx_line(&w->dc, 0, w->pos.y1, 127, w->pos.y1, COLOR_BLACK);
+	gfx_round_box(&w->dc, 30, -10, 127-30, 10, 9, COLOR_BLACK);
+	gfx_centered_text(&w->dc, &font_helv11, 0, "Home");
+}
 
+struct ui_widget status_bar = {
+	status_bar_redraw,
+	status_bar_event,
+	{ 0, 0, 127, 15 },
+	0,
+	WF_ACTIVE | WF_VISIBLE
+};
+
+void home_screen_create()
+{
+	ui_init_widget (&home_screen);
+	ui_init_widget (&digital_watch);
+	ui_init_widget (&pls_viewer);
+
+	ui_add_widget(&digital_watch);
+	ui_add_widget(&pls_viewer);
+	
+	ui_add_child(&home_screen, &digital_watch);
+	ui_add_child(&home_screen, &pls_viewer);
+	ui_add_widget(&home_screen);
+
+	ui_init_widget (&status_bar);
+	ui_add_widget (&status_bar);
+}

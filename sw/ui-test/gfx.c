@@ -162,10 +162,49 @@ int gfx_text_width( const struct font *font, const char *str)
         w += font->width_table[c - font->min_char];
     }
 
-    printf("Width %d\n", w);
-
     return w;
 }
 
+void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value)
+{
+    int x = radius;
+    int y = 0;
+    int xChange = 1 - (radius << 1);
+    int yChange = 0;
+    int radiusError = 0;
 
+    while (x >= y)
+    {
+        int i;
+        for (i = x0 - x; i <= x0 + x; i++)
+        {
+            gfx_set_pixel(surf, i, y0 + y, value);
+            gfx_set_pixel(surf, i, y0 - y, value);
+        }
+        for (i = x0 - y; i <= x0 + y; i++)
+        {
+            gfx_set_pixel(surf, i, y0 + x, value);
+            gfx_set_pixel(surf, i, y0 - x, value);
+        }
 
+        y++;
+        radiusError += yChange;
+        yChange += 2;
+        if (((radiusError << 1) + xChange) > 0)
+        {
+            x--;
+            radiusError += xChange;
+            xChange += 2;
+        }
+    }
+}
+
+void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value)
+{
+    gfx_box(surf, x0, y0 + radius, x1, y1 - radius, value);
+    gfx_box(surf, x0 +radius , y0, x1 - radius, y1, value);
+    gfx_fill_circle(surf, x0+radius, y0+radius, radius, value);
+    gfx_fill_circle(surf, x1-radius, y0+radius, radius, value);
+    gfx_fill_circle(surf, x1-radius, y1-radius, radius, value);
+    gfx_fill_circle(surf, x0+radius, y1-radius, radius, value);   
+}
