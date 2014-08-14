@@ -118,6 +118,7 @@ INCLUDEPATHS += \
 -I../../common/CMSIS/Include \
 -I../../common/Device/EnergyMicro/EFM32GG/Include \
 -I../../common/emlib/inc \
+-I../../common/usb \
 -I../usb/inc \
 -I../kits/common/drivers \
 -I../kits/common/bsp \

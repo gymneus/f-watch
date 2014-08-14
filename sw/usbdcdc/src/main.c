@@ -25,6 +25,8 @@
 #include "bsp.h"
 #include "bsp_trace.h"
 
+//#include "usbdesc.h"
+
 /**************************************************************************//**
  *
  * This example shows how a CDC based USB to Serial port adapter can be
@@ -40,13 +42,7 @@
 
 /*** Typedef's and defines. ***/
 
-/* Define USB endpoint addresses */
-#define EP_DATA_OUT       0x01  /* Endpoint for USB data reception.       */
-#define EP_DATA_IN        0x81  /* Endpoint for USB data transmission.    */
-#define EP_NOTIFY         0x82  /* The notification endpoint (not used).  */
-
-#define BULK_EP_SIZE     USB_MAX_EP_SIZE  /* This is the max. ep size.    */
-#define USB_RX_BUF_SIZ   BULK_EP_SIZE /* Packet size when receiving on USB*/
+#define USB_RX_BUF_SIZ   USBDESC_BULK_EP_SIZE /* Packet size when receiving on USB*/
 #define USB_TX_BUF_SIZ   127    /* Packet size when transmitting on USB.  */
 
 /* Calculate a timeout in ms corresponding to 5 char times on current     */
@@ -84,10 +80,7 @@ static void StateChange(USBD_State_TypeDef oldState,
                         USBD_State_TypeDef newState);
 static void UartRxTimeout(void);
 
-/*** Include device descriptor definitions. ***/
-
-#include "descriptors.h"
-
+#include "usbdesc.h"
 
 /*** Variables ***/
 
@@ -159,8 +152,8 @@ int main(void)
   GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
   GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 1);;
 
-  SerialPortInit();
-  DmaSetup();
+//  SerialPortInit();
+//  DmaSetup();
   USBD_Init(&initstruct);
 
   /*
@@ -171,10 +164,12 @@ int main(void)
 //  USBTIMER_DelayMs(1000);
 //  USBD_Connect();
 
+  char tmp[7] = {'0', '1', '2', '3', '4', '5', '6'};
   for (;;)
   {
         GPIO_PinOutToggle(gpioPortE, 11);
         GPIO_PinOutToggle(gpioPortE, 12);
+        USBD_Write(USBDESC_EP_DATA_IN, (void *)tmp, 7, NULL);
         delay(1000);
   }
 }
@@ -209,7 +204,7 @@ static int UsbDataReceived(USB_Status_TypeDef status,
                         xferred - 1);
 
       /* Start a new USB receive transfer. */
-      USBD_Read(EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
+      USBD_Read(USBDESC_EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
                 USB_RX_BUF_SIZ, UsbDataReceived);
     }
     else
@@ -251,7 +246,7 @@ static void DmaTxComplete(unsigned int channel, bool primary, void *user)
 
     /* Start a new USB receive transfer. */
     usbRxActive = true;
-    USBD_Read(EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
+    USBD_Read(USBDESC_EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
               USB_RX_BUF_SIZ, UsbDataReceived);
   }
   else
@@ -279,34 +274,31 @@ static int UsbDataTransmitted(USB_Status_TypeDef status,
 {
   (void) xferred;              /* Unused parameter */
   (void) remaining;            /* Unused parameter */
-  char tmp[7] = {'0', '1', '2', '3', '4', '5', '\n'};
 
   if (status == USB_STATUS_OK)
   {
-        delay(100);
-        USBD_Write(0, (void*) tmp, 7, UsbDataTransmitted);
-//    if (!dmaRxActive)
-//    {
-//      /* dmaRxActive = false means that a new UART Rx DMA can be started. */
-//
-//      USBD_Write(EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
-//                 uartRxCount, UsbDataTransmitted);
-//      LastUsbTxCnt = uartRxCount;
-//
-//      dmaRxActive    = true;
-//      dmaRxCompleted = true;
-//      DMA_ActivateBasic(1, true, false,
-//                        (void *) uartRxBuffer[ uartRxIndex ],
-//                        (void *) &(LEUART0->RXDATA),
-//                        USB_TX_BUF_SIZ - 1);
-//      uartRxCount = 0;
-//      USBTIMER_Start(0, RX_TIMEOUT, UartRxTimeout);
-//    }
-//    else
-//    {
-//      /* The UART receive DMA callback function will start a new DMA. */
-//      usbTxActive = false;
-//    }
+    if (!dmaRxActive)
+    {
+      /* dmaRxActive = false means that a new UART Rx DMA can be started. */
+
+      USBD_Write(USBDESC_EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
+                 uartRxCount, UsbDataTransmitted);
+      LastUsbTxCnt = uartRxCount;
+
+      dmaRxActive    = true;
+      dmaRxCompleted = true;
+      DMA_ActivateBasic(1, true, false,
+                        (void *) uartRxBuffer[ uartRxIndex ],
+                        (void *) &(LEUART0->RXDATA),
+                        USB_TX_BUF_SIZ - 1);
+      uartRxCount = 0;
+      USBTIMER_Start(0, RX_TIMEOUT, UartRxTimeout);
+    }
+    else
+    {
+      /* The UART receive DMA callback function will start a new DMA. */
+      usbTxActive = false;
+    }
   }
   return USB_STATUS_OK;
 }
@@ -347,7 +339,7 @@ static void DmaRxComplete(unsigned int channel, bool primary, void *user)
   {
     /* usbTxActive = false means that a new USB packet can be transferred. */
     usbTxActive = true;
-    USBD_Write(EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
+    USBD_Write(USBDESC_EP_DATA_IN, (void*) uartRxBuffer[ uartRxIndex ^ 1],
                uartRxCount, UsbDataTransmitted);
     LastUsbTxCnt = uartRxCount;
 
@@ -393,7 +385,7 @@ static void UartRxTimeout(void)
   cnt = USB_TX_BUF_SIZ - 1 -
         ((dmaCtrl & _DMA_CTRL_N_MINUS_1_MASK) >> _DMA_CTRL_N_MINUS_1_SHIFT);
 
-  if ((cnt == 0) && (LastUsbTxCnt == BULK_EP_SIZE))
+  if ((cnt == 0) && (LastUsbTxCnt == USBDESC_BULK_EP_SIZE))
   {
     /*
      * No activity on UART Rx, send a ZERO length USB package if last USB
@@ -445,7 +437,7 @@ static void StateChange(USBD_State_TypeDef oldState,
     usbRxIndex  = 0;
     usbRxActive = true;
     dmaTxActive = false;
-    USBD_Read(EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
+    USBD_Read(USBDESC_EP_DATA_OUT, (void*) usbRxBuffer[ usbRxIndex ],
               USB_RX_BUF_SIZ, UsbDataReceived);
 
     /* Start receiving data on UART. */
@@ -519,7 +511,7 @@ static int SetupCmd(const USB_Setup_TypeDef *setup)
           (setup->Direction != USB_SETUP_DIR_IN))
       {
         /* Get new settings from USB host. */
-        USBD_Read(0, (void*) &cdcLineCoding, 7, LineCodingReceived);
+        USBD_Read(0, (void*) &cdcLineCoding, 7, NULL);
         r = USB_STATUS_OK;
       }
       break;
