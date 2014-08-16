@@ -32,6 +32,7 @@
 #include <apps/menu.h>
 #include <drivers/buttons.h>
 #include <drivers/lcd.h>
+#include <gfx/ui.h>
 
 int main(void)
 {
@@ -44,6 +45,7 @@ int main(void)
 
     buttons_init();
     lcd_init();
+    ui_init();
 
     GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
     GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);

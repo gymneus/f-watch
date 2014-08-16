@@ -149,6 +149,8 @@ C_SRC +=  \
 ../common/gfx/font_xm4x6.c \
 ../common/gfx/font_xm5x8.c \
 ../common/gfx/graphics.c \
+../common/gfx/gfx.c \
+../common/gfx/ui.c \
 ../common/udelay.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
