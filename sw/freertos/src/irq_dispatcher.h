@@ -21,45 +21,19 @@
  */
 
 /**
- * @brief Main file.
+ * Interrupt service routines dispatchers. An abstraction layer between
+ * hardware interrupts and operating system.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#ifndef IRQ_DISPATCHER_H
+#define IRQ_DISPATCHER_H
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
+#include <stdint.h>
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+/**
+ * @brief GPIO interrupt requests dispatcher.
+ */
+void gpio_irq_dispatcher(uint32_t flags);
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
-
-    buttons_init();
-    lcd_init();
-
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
-
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
-}
+#endif /* IRQ_DISPATCHER_H */
 

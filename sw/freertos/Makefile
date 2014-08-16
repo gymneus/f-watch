@@ -10,7 +10,7 @@
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = freertos_blink
+PROJECTNAME = freertos
 # Name of interface configuration file used by OpenOCD
 OOCD_IFACE ?= stlink-v2-1
 
@@ -133,9 +133,17 @@ C_SRC +=  \
 ../common/emlib/src/em_rmu.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
+../common/emlib/src/em_usart.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
 ../common/drivers/buttons.c \
+../common/gfx/font_helv11.c \
+../common/gfx/font_helv17.c \
+../common/gfx/font_helv17b.c \
+../common/gfx/font_xm4x5.c \
+../common/gfx/font_xm4x6.c \
+../common/gfx/graphics.c \
+../common/udelay.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
@@ -143,7 +151,11 @@ FreeRTOS/Source/list.c \
 FreeRTOS/Source/croutine.c \
 FreeRTOS/Source/portable/MemMang/heap_1.c \
 FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
+src/apps/application.c \
+src/apps/clock.c \
+src/apps/menu.c \
 src/main.c \
+src/irq_dispatcher.c \
 src/low_power_tick_management.c
 
 s_SRC += 

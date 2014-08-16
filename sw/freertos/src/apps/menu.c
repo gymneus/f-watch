@@ -21,45 +21,35 @@
  */
 
 /**
- * @brief Main file.
+ * Menu application.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#include "menu.h"
+#include "clock.h"
+#include "event.h"
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
+#include <gfx/graphics.h>
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+void menu_main(void* params) {
+    Event evt;
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+    while( 1 ) {
+        // Run the clock application as the default one
+        clock.main(NULL);
 
-    buttons_init();
-    lcd_init();
-
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
-
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
+        // Once it is deactivated - display the menu
+        // TODO
+        if(xQueueReceive(appQueue, &evt, 0)) {
+            switch(evt.type) {
+                default:    // suppress warnings
+                break;
+            }
+        }
+    }
 }
+
+Application menu = {
+    .name = "Menu",
+    .main = menu_main
+};
 

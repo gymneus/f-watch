@@ -21,45 +21,44 @@
  */
 
 /**
- * @brief Main file.
+ * User application data structures and routines.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
+#include <FreeRTOS.h>
+#include <task.h>
+#include <queue.h>
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+///> Shared application task handle
+extern xTaskHandle appTask;
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+///> Shared application event queue
+extern xQueueHandle appQueue;
 
-    buttons_init();
-    lcd_init();
+/**
+ * @brief An application entry, used by the menu application.
+ */
+typedef struct {
+    ///> Application name
+    const char* name;
 
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
+    // TODO const char* icon;
+    
+    /**
+     * @brief Main application routine.
+     * @params Optional parameters, dependendent on application.
+     */
+    void (*main)(void* params); 
+} Application;
 
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
+/**
+ * @brief Initializes the application task and event queue.
+ * After that runs one as the main application.
+ * @param app is the application to be run as the main one.
+ */
+void startMain(Application* app);
 
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
-}
+#endif /* APPLICATION_H */
 

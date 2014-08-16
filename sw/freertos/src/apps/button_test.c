@@ -21,45 +21,35 @@
  */
 
 /**
- * @brief Main file.
+ * Clock application.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#include "clock.h"
+#include "event.h"
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
+#include <gfx/graphics.h>
+#include <em_gpio.h>        // TODO remove in final version
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+void clock_main(void* params) {
+    Event evt;
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+    while( 1 ) {
+        if(xQueueReceive(appQueue, &evt, 0)) {
+            switch(evt.type) {
+                case BUTTON_PRESSED:
+                    if(evt.data.button == BUT_TL)
+                        GPIO_PinOutToggle(gpioPortE, 11);
+                break;
 
-    buttons_init();
-    lcd_init();
-
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
-
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
+                default:    // suppress warnings
+                break;
+            }
+        }
+    }
 }
+
+Application clock = {
+    .name = "Clock",
+    .main = clock_main
+};
 

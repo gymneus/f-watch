@@ -21,45 +21,35 @@
  */
 
 /**
- * @brief Main file.
+ * User application data structures and routines.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#include "application.h"
+#include "event.h"
+#include <FreeRTOSConfig.h>
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
+///> Capacity of event queue
+#define APP_QUEUE_LEN   16
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+///> Shared application stack size
+#define APP_STACK_SIZE  (configMINIMAL_STACK_SIZE)
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+///> Prioriuty of application task
+#define APP_PRIORITY    (tskIDLE_PRIORITY + 1)
 
-    buttons_init();
-    lcd_init();
+xTaskHandle appTask;
+xQueueHandle appQueue;
 
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
+void startMain(Application* app) {
+    appQueue = xQueueCreate(APP_QUEUE_LEN, sizeof(Event));
+    if(!appQueue) {
+        // TODO oops..
+    }
 
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
+    xTaskCreate(app->main, (const signed char*)app->name, APP_STACK_SIZE, NULL, 
+                APP_PRIORITY, &appTask);
+    if(!appTask) {
+        // TODO oops..
+    }
 }
 
