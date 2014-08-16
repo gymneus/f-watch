@@ -125,7 +125,7 @@ static const uint8_t _gd[] = { 0x00,0x00,0x00,0x00,0x00,
 0x00,0xc0,0x60,0x00,0x00
 };
 
-const font font_xm4x5 = {
+const struct font font_xm4x5 = {
     32, 126, 5,
     _gw, _go, _gd
 };

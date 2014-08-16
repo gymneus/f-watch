@@ -1,3 +1,29 @@
+/*
+ * Copyright (C) 2014 Julian Lewis
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, you may find one here:
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * or you may search the http://www.gnu.org website for the version 2 license,
+ * or you may write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
+
+/**
+ * @brief Font glyphs defintion.
+ */
+
 #include "font.h"
 
 static const uint8_t _gw[] = { 6,6,8,14,13,22,17,6,8,8,10,14,6,15,6,7,13,13,13,13,13,13,13,13,13,13,6,6,15,15,15,12,25,17,17,18,18,16,14,19,18,8,13,18,14,21,18,18,16,18,17,16,16,18,17,22,17,16,15,7,7,7,12,14,6,13,14,12,14,13,8,14,13,6,6,12,6,20,14,13,14,14,9,12,8,14,13,18,12,13,12,8,6,8,14};
@@ -98,5 +124,8 @@ static const uint8_t _gd[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 0x00,0x00,0x00,0x00,0x00,0x60,0x30,0x18,0x18,0x18,0x18,0x18,0x18,0x18,0x18,0x0c,0x06,0x06,0x0c,0x18,0x18,0x18,0x18,0x18,0x18,0x18,0x18,0x30,0x60,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x1c,0x30,0x3f,0x30,0x33,0xf0,0x30,0xe0,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
-const font font_helv29 = {
-32, 126, 29, _gw, _go, _gd };
+
+const struct font font_helv29 = {
+    32, 126, 29,
+    _gw, _go, _gd
+};

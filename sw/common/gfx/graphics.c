@@ -63,7 +63,7 @@ void box(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t value)
     }
 }
 
-uint8_t draw_glyph(const font *font, uint8_t x0, uint8_t y0, char c)
+uint8_t draw_glyph(const struct font *font, uint8_t x0, uint8_t y0, char c)
 {
     if(c < font->min_char || c > font->max_char)
         return 0;
@@ -84,7 +84,7 @@ uint8_t draw_glyph(const font *font, uint8_t x0, uint8_t y0, char c)
     return w;
 }
 
-void text(const font *font, uint8_t x, uint8_t y, const char *str)
+void text(const struct font *font, uint8_t x, uint8_t y, const char *str)
 {
     char c;
 

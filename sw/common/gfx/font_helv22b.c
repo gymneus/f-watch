@@ -1,3 +1,29 @@
+/*
+ * Copyright (C) 2014 Julian Lewis
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, you may find one here:
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * or you may search the http://www.gnu.org website for the version 2 license,
+ * or you may write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
+
+/**
+ * @brief Font glyphs defintion.
+ */
+
 #include "font.h"
 
 static const uint8_t _gw[] = { 5,5,7,11,11,16,14,5,7,7,9,11,5,11,4,5,10,10,10,10,10,10,10,10,10,10,5,5,11,10,11,10,18,13,13,14,14,12,12,14,13,5,10,14,11,16,14,16,12,16,13,12,11,13,13,17,12,13,11,6,5,6,10,10,5,10,12,10,12,11,7,12,11,5,6,10,5,15,11,12,12,12,7,10,6,11,9,13,9,9,10,8,5,8,11};
@@ -99,5 +125,7 @@ static const uint8_t _gd[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x3c,0xc0,0x7f,0xc0,0x67,0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 };
 
-const font font_helv22b = {
-32, 126, 22, _gw, _go, _gd };
+const struct font font_helv22b = {
+    32, 126, 22,
+    _gw, _go, _gd
+};
