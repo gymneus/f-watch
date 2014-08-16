@@ -30,6 +30,10 @@
 #include <em_rtc.h>
 #include <udelay.h>
 
+// Enable 90* rotation
+#define LCD_ROTATE
+
+// Do not use DMA for frame transfer
 #define LCD_NODMA
 
 // Additional bytes to control the LCD; required for DMA transfers
@@ -190,7 +194,7 @@ void lcd_clear(void)
 
 #ifndef LCD_NODMA
     // Add control codes
-    for(i = 0; i < LCD_HEIGHT; ++i)
+    for(i = 1; i < LCD_HEIGHT; ++i)
     {
         buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
         buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
@@ -245,8 +249,13 @@ void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
+#ifdef LCD_ROTATE
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+#else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif /* else LCD_ROTATE */
 
     if(value)
         buffer[offset] |= mask;
@@ -259,8 +268,13 @@ void lcd_toggle_pixel(uint8_t x, uint8_t y)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
+#ifdef LCD_ROTATE
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+#else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif /* else LCD_ROTATE */
 
     buffer[offset] ^= mask;
 }
@@ -270,8 +284,13 @@ uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
+#ifdef LCD_ROTATE
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+#else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif /* else LCD_ROTATE */
 
     return buffer[offset] & mask;
 }
