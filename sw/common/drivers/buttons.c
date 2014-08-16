@@ -25,6 +25,7 @@
  */
 
 #include "buttons.h"
+#include "irq_dispatcher.h"
 
 void GPIO_EVEN_IRQHandler(void)
 {
@@ -35,9 +36,8 @@ void GPIO_EVEN_IRQHandler(void)
 
     // Clean only even interrupts
     GPIO_IntClear(iflags);
-    GPIO_PinOutToggle(gpioPortE, 12);
 
-    //GPIOINT_IRQDispatcher(iflags);
+    gpio_irq_dispatcher(iflags);
 }
 
 void GPIO_ODD_IRQHandler(void)
@@ -47,16 +47,16 @@ void GPIO_ODD_IRQHandler(void)
     // Get all odd interrupts
     iflags = GPIO_IntGetEnabled() & 0x0000AAAA;
 
-    // Clean only even interrupts
+    // Clean only odd interrupts
     GPIO_IntClear(iflags);
-    GPIO_PinOutToggle(gpioPortE, 11);
 
-    //GPIOINT_IRQDispatcher(iflags);
+    gpio_irq_dispatcher(iflags);
 }
 
 void buttons_init(void)
 {
     // Configure interrupt pin as input with pull-up
+    // TODO there are external pull-ups - we should disable either int or ext
     GPIO_PinModeSet(BUT_TL_PORT, BUT_TL_PIN, gpioModeInputPull, 1);
     GPIO_PinModeSet(BUT_TR_PORT, BUT_TR_PIN, gpioModeInputPull, 1);
     GPIO_PinModeSet(BUT_BL_PORT, BUT_BL_PIN, gpioModeInputPull, 1);
