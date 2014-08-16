@@ -1,3 +1,29 @@
+/*
+ * Copyright (C) 2014 Julian Lewis
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, you may find one here:
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * or you may search the http://www.gnu.org website for the version 2 license,
+ * or you may write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
+
+/**
+ * @brief Font glyphs defintion.
+ */
+
 #include "font.h"
 
 static const uint8_t _gw[] = { 5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
@@ -98,5 +124,8 @@ static const uint8_t _gd[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x40,0x20,0x20,0x10,0x20,0x20,0x40,0x00,
 0x28,0x50,0x00,0x00,0x00,0x00,0x00,0x00
 };
-const font font_xm5x8 = {
-32, 126, 8, _gw, _go, _gd };
+
+const struct font font_xm5x8 = {
+    32, 126, 8,
+    _gw, _go, _gd
+};

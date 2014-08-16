@@ -42,11 +42,11 @@ void box(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t value);
 /**
  * @brief TODO
  */
-uint8_t draw_glyph(const font *font, uint8_t x0, uint8_t y0, char c);
+uint8_t draw_glyph(const struct font *font, uint8_t x0, uint8_t y0, char c);
 
 /**
  * @brief TODO
  */
-void text(const font *font, uint8_t x, uint8_t y, const char *str);
+void text(const struct font *font, uint8_t x, uint8_t y, const char *str);
 
 #endif /* GRAPHICS_H */
