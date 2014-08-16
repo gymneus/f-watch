@@ -54,6 +54,7 @@ int gfx_text_width( const struct font *font, const char *str );
 void gfx_clear(struct surface *surf, int value);
 void gfx_set_clip (struct surface *surf, int x0, int y0, int x1, int y1 );
 void gfx_reset_clip (struct surface *surf );
-
+void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value);
+void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value);
 
 #endif

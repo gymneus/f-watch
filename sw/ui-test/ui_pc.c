@@ -25,7 +25,7 @@ static int64_t last_tics = -1;
     
     gettimeofday(&tv, &tz);
     
-    return(tv.tv_sec*1000000LL+tv.tv_usec) / 1000LL;
+    return((int64_t)tv.tv_sec*1000000LL+tv.tv_usec) / 1000LL;
 }
 
 int sys_update()
@@ -167,6 +167,7 @@ main()
 	sys_init();
 
 	ui_init();
+	home_screen_create();
 
 	for(;;)
 	{

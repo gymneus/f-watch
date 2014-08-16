@@ -22,8 +22,9 @@ void ui_init()
 	event_queue.tail = 0;
 	event_queue.count = 0;
 
-	digtal_watch_create();
-	pls_viewer_create(); // move outsidem
+	//digtal_watch_create();
+	//pls_viewer_create(); // move outsidem
+
 }
 
 void ui_post_event( int type, int data )
@@ -72,7 +73,7 @@ void ui_add_widget(struct ui_widget *w)
 
 		for(wl = widget_list; wl->next; wl = wl->next);
 		wl->next = w;
-		
+
 	}
 
 
@@ -86,6 +87,28 @@ void ui_add_widget(struct ui_widget *w)
 
 }
 
+static int update_widget(struct ui_widget *w, struct ui_event evt)
+{
+	int i;
+	int rv = 0;
+
+	if((w->flags & WF_ACTIVE) && (w->event))
+	{
+		w->event(w, evt);
+	}
+
+	if((w->flags & WF_VISIBLE) && (w->flags & WF_DIRTY))
+	{
+		if(w->redraw) 
+		{
+			w->redraw(w);
+			w->flags &= ~WF_DIRTY;
+		}
+		return 1;
+	}
+	return 0;
+}
+
 void ui_update()
 {
 	struct ui_event evt;
@@ -97,21 +120,37 @@ void ui_update()
 		struct ui_widget *w;
 		for(w = widget_list; w; w = w->next)
 		{
-			//DBG("w %p flags %x\n", w, w->flags);
-			if((w->flags & WF_ACTIVE) && (w->event))
-			{
-				w->event(w, evt);
-			}
-
-			if((w->flags & WF_VISIBLE) && (w->flags & WF_DIRTY))
-			{
-				w->redraw(w);
-				w->flags &= ~WF_DIRTY;
-				screen_dirty = 1;
-			}
+			screen_dirty |= update_widget(w, evt);
 		}
 	}
 
 	if(screen_dirty)
 		lcd_update( &screen );
+}
+
+void ui_activate( struct ui_widget *w, int activate )
+{
+
+}
+
+void ui_show( struct ui_widget *w, int show )
+{
+
+}
+
+void ui_set_modal ( struct ui_widget *w, int modal )
+{
+
+}
+
+void ui_init_widget ( struct ui_widget *w )
+{
+	w->n_children = 0;
+}
+
+void ui_add_child ( struct ui_widget *w, struct ui_widget *child )
+{
+	w->children[ w->n_children ] = child;
+	w->flags |= WF_DIRTY;
+	w->n_children ++;
 }

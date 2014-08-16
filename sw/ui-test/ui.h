@@ -24,6 +24,8 @@
 #define UI_TICK_RATE 30 	/* UI refresh ticks = 30 milliseconds */
 #define UI_CYCLE_RATE 1200  /* The Machine Cycle */
 
+#define MAX_CHILD_WIDGETS 8
+
 struct ui_event {
     int type;
     int data;
@@ -38,7 +40,11 @@ struct ui_widget {
 
     struct surface dc;
     struct ui_widget *next;
+    struct ui_widget *children[MAX_CHILD_WIDGETS];
+    int n_children;
 };
+
+
 
 extern struct surface screen;
 
