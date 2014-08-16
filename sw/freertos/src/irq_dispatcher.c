@@ -28,7 +28,7 @@
 #include "irq_dispatcher.h"
 
 #include <apps/application.h>
-#include <apps/event.h>
+#include <event.h>
 
 void gpio_irq_dispatcher(uint32_t flags)
 {
@@ -36,7 +36,7 @@ void gpio_irq_dispatcher(uint32_t flags)
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE; 
 
     // Fill the event data
-    Event evt;
+    struct event evt;
     evt.type = BUTTON_PRESSED;
     switch(flags)
     {

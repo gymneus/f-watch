@@ -41,7 +41,7 @@ xTaskHandle appTask;
 xQueueHandle appQueue;
 
 void startMain(Application* app) {
-    appQueue = xQueueCreate(APP_QUEUE_LEN, sizeof(Event));
+    appQueue = xQueueCreate(APP_QUEUE_LEN, sizeof(struct event));
     if(!appQueue) {
         // TODO oops..
     }

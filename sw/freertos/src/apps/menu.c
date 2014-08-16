@@ -31,7 +31,8 @@
 #include <gfx/graphics.h>
 
 void menu_main(void* params) {
-    Event evt;
+    (void)(params);  // suppress unused parameter warning
+    struct event evt;
 
     while( 1 ) {
         // Run the clock application as the default one

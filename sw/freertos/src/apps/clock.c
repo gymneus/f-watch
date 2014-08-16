@@ -31,7 +31,8 @@
 #include <drivers/lcd.h>
 
 void clock_main(void* params) {
-    Event evt;
+    (void)(params); // suppress unused parameter warning
+    struct event evt;
 
     while( 1 ) {
         if(xQueueReceive(appQueue, &evt, 0)) {

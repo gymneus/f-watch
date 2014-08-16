@@ -21,10 +21,41 @@
  */
 
 /**
- * Clock application.
+ * @brief Application event definitions.
  */
 
-#include "application.h"
+#ifndef EVENT_H
+#define EVENT_H
 
-extern Application clock;
+/**
+ * Possible event types.
+ */
+enum event_type {
+    BUTTON_PRESSED,
+    SENSOR
+};
 
+/**
+ * Button markings.
+ */
+enum button_name {
+    BUT_TL,     // top left
+    BUT_TR,     // top right
+    BUT_BL,     // bottom left
+    BUT_BR      // bottom right
+};
+
+/**
+ * Structure describing events received by applications.
+ */
+struct event {
+    ///> Determines the source of event
+    enum event_type type;
+
+    ///> Data dependent on the event type
+    union {
+        enum button_name button;
+    } data;
+};
+
+#endif /* EVENT_H */
