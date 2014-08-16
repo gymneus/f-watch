@@ -1,1 +1,7 @@
 *.o
+.*.swp
+
+# Directories
+*exe/
+*lst/
+*build/
