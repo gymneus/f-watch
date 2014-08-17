@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,18 +26,69 @@
  */
 
 #include "clock.h"
-#include "event.h"
+#include "widgets/status_bar.h"
 
-#include <gfx/graphics.h>
-#include <drivers/lcd.h>
+#include <stdio.h>
+
+static void digital_watch_redraw(struct ui_widget *w)
+{
+    int h, m, c;
+
+    // TODO sys_get_time(&h, &m, &c);
+    h = 16;
+    m = 20;
+    c = 0;
+
+    char buf[20];
+    sprintf(buf,"%02d:%02d", h, m);
+
+    gfx_clear(&w->dc, 0);
+    gfx_text(&w->dc, &font_helv38b, 0, 0, buf);
+
+    sprintf(buf,"%02d.%01d", c * 12 / 10, (c * 12) % 10);
+    gfx_text(&w->dc, &font_helv22b, 84, 14, buf);
+}
+
+static void digital_watch_event(struct ui_widget *w, struct event evt)
+{
+    // TODO if hour has changed, mark widget as dirty
+    (void)(w);
+    (void)(evt);
+}
+
+struct ui_widget digital_watch = {
+    digital_watch_redraw,
+    digital_watch_event,
+    { 0, 20, 127, 59 },
+    0,
+    WF_ACTIVE | WF_VISIBLE
+};
+
+struct ui_widget clock_screen = {
+    NULL,
+    NULL,
+    { 0, 0, 127, 127 },
+    0,
+    WF_ACTIVE | WF_VISIBLE
+};
 
 void clock_main(void* params) {
     (void)(params); // suppress unused parameter warning
     struct event evt;
 
+    ui_init_widget(&clock_screen);
+    ui_init_widget(&digital_watch);
+
+    ui_add_widget(&digital_watch);
+    ui_add_child(&clock_screen, &digital_watch);
+    ui_add_widget(&clock_screen);
+
+    ui_init_widget(&status_bar);
+    ui_add_widget(&status_bar);
+
     while( 1 ) {
         if(xQueueReceive(appQueue, &evt, 0)) {
-            switch(evt.type) {
+/*            switch(evt.type) {
             case BUTTON_PRESSED:
                 lcd_clear();
 
@@ -64,7 +116,9 @@ void clock_main(void* params) {
 
             default:    // suppress warnings
             break;
-            }
+            }*/
+
+            ui_update(evt);
         }
     }
 }
