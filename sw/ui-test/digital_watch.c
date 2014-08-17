@@ -1,4 +1,11 @@
 #include "ui.h"
+#include "../bitmaps/battery_charging.h"
+#include "../bitmaps/battery.h"
+#include "../bitmaps/gps_disconnected.h"
+#include "../bitmaps/gps_searching.h"
+#include "../bitmaps/gps_receiving.h"
+
+
 
 extern int64_t sys_get_tics();
 
@@ -132,7 +139,7 @@ static void pls_redraw(struct ui_widget *w)
 	{
 		struct pls_cycle *cyc = &cycles[i];
 		char buf[10];
-		sprintf(buf,"%-02d %s", i + 1, cyc->name);
+		sprintf(buf,"%02d %s", i + 1, cyc->name);
 		gfx_text(&w->dc, &font_xm5x8, 0, n * 8, buf);
 		if(n == 3)
 			gfx_box(&w->dc, 0, n*8-1, 60, n*8+7, COLOR_TOGGLE);
@@ -182,7 +189,48 @@ struct ui_widget home_screen = {
 
 static void status_bar_event(struct ui_widget *w, struct ui_event event)
 {
-	
+        static int8_t level;
+
+	switch(event.type)
+        {
+        case EVT_UP:
+        {
+                level += 10;
+                if(level > 100)
+                        level = 100;
+                printf("UP  : level %3d\n",level);
+                gfx_box(&w->dc, 127-15, 1, 127-3, 11, COLOR_WHITE);
+                gfx_box(&w->dc, 127-15, 1, 127-15+((level * 12)/100), 11, COLOR_BLACK);
+                gfx_box(&w->dc, 0, 0, 15, 15, COLOR_WHITE);
+                gfx_draw_bitmap(&w->dc, 0, 0, &gps_disconnected);
+                w->flags |= WF_DIRTY;
+                break;
+        }
+        case EVT_DOWN:
+        {
+                level -= 10;
+                if(level < 0)
+                        level = 0;
+                printf("DOWN: level %3d\n",level);
+                gfx_box(&w->dc, 127-15, 1, 127-3, 11, COLOR_WHITE);
+                gfx_box(&w->dc, 127-15, 1, 127-15+((level * 12)/100), 11, COLOR_BLACK);
+                gfx_box(&w->dc, 0, 0, 15, 15, COLOR_WHITE);
+                gfx_draw_bitmap(&w->dc, 0, 0, &gps_receiving);
+                w->flags |= WF_DIRTY;
+                break;
+        }
+        case EVT_RIGHT:
+        {
+                gfx_box(&w->dc, 127-15, 1, 127-3, 11, COLOR_WHITE);
+                gfx_draw_bitmap(&w->dc, 127-15, 0, &battery_charging);
+                gfx_box(&w->dc, 0, 0, 15, 15, COLOR_WHITE);
+                gfx_draw_bitmap(&w->dc, 0, 0, &gps_searching);
+                w->flags |= WF_DIRTY;
+                break;
+        }
+        default:
+                break;
+	}
 }
 
 static void status_bar_redraw(struct ui_widget *w)
@@ -190,6 +238,7 @@ static void status_bar_redraw(struct ui_widget *w)
 	//gfx_line(&w->dc, 0, w->pos.y1, 127, w->pos.y1, COLOR_BLACK);
 	gfx_round_box(&w->dc, 30, -10, 127-30, 10, 9, COLOR_BLACK);
 	gfx_centered_text(&w->dc, &font_helv11, 0, "Home");
+        gfx_draw_bitmap(&w->dc, 127-15, 0, &battery);
 }
 
 struct ui_widget status_bar = {

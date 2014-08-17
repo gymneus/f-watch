@@ -26,6 +26,13 @@ struct surface
     void *data;
 };
 
+struct rle_bitmap
+{
+        uint8_t w;
+        uint8_t h;
+        uint8_t *data;
+};
+
 
 static inline void gfx_set_pixel ( struct surface *surf, int x, int y, int value ) 
 {
@@ -56,5 +63,6 @@ void gfx_set_clip (struct surface *surf, int x0, int y0, int x1, int y1 );
 void gfx_reset_clip (struct surface *surf );
 void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value);
 void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value);
+void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitmap *b);
 
 #endif

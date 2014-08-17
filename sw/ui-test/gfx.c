@@ -208,3 +208,28 @@ void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int rad
     gfx_fill_circle(surf, x1-radius, y1-radius, radius, value);
     gfx_fill_circle(surf, x0+radius, y1-radius, radius, value);   
 }
+
+void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitmap *b)
+{
+	int x=0, y=0;
+	uint8_t *d = b->data;
+	while ( y != b->h)
+	{
+		int pix = (*d) & 0x80 ? 1: 0;
+		int rep = ( (*d) & 0x7f) + 1;
+		d++;
+
+		while(rep--)
+		{
+			if(pix)
+                                gfx_set_pixel(surf, x0+x, y0+y, COLOR_BLACK);
+			x++;
+			if(x == b->w)
+			{
+				x=0;
+				y++;
+			}
+		}
+	}
+
+}

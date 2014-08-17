@@ -67,7 +67,18 @@ int sys_update()
 		{
 		    switch(ev.key.keysym.sym)
 		    {
-		    	case SDLK_ESCAPE: exit(0); break;
+		    	case SDLK_ESCAPE:
+                                exit(0);
+                                break;
+                        case SDLK_UP:
+                                ui_post_event(EVT_UP, 0);
+                                break;
+                        case SDLK_DOWN:
+                                ui_post_event(EVT_DOWN, 0);
+                                break;
+                        case SDLK_RIGHT:
+                                ui_post_event(EVT_RIGHT, 0);
+                                break;
 			#if 0
 			case SDLK_LEFT: cur_key=KEY_L; break;	    
 			case SDLK_RIGHT: cur_key=KEY_R; break;

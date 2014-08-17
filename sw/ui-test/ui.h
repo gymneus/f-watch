@@ -20,6 +20,10 @@
 #define EVT_TAP         5
 #define EVT_ACTIVATE    6
 #define EVT_NEXT_CYCLE  7
+#define EVT_UP          8
+#define EVT_DOWN        9
+#define EVT_RIGHT       10
+
 
 #define UI_TICK_RATE 30 	/* UI refresh ticks = 30 milliseconds */
 #define UI_CYCLE_RATE 1200  /* The Machine Cycle */
