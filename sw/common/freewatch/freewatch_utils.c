@@ -39,7 +39,7 @@ void ResetEFM32(void)
 /**************************************************************************//**
  * @brief  Main function
  *****************************************************************************/
-void supercar_blink(int delay, int rep)
+void freewatch_backlight_blinky(int delay, int rep)
 {
   int i, c = rep * 2;
 
