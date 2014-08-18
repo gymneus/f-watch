@@ -27,6 +27,8 @@
 #include <em_device.h>
 #include <em_cmu.h>
 #include <em_gpio.h>
+#include <em_usb.h>
+#include <em_leuart.h>
 #include <drivers/lcd.h>
 #include <drivers/i2cdrv.h>
 #include <drivers/max17047.h>
@@ -34,6 +36,7 @@
 #include <stdio.h>
 #include <pp-printf.h>
 #include <LSM303C/lsm303c.h>
+#include <usbdesc.h>
 
 #define ACC_DEMO 0
 #define MAG_DEMO 1
@@ -89,6 +92,7 @@ int main(void)
     lcd_init();
     I2CDRV_Init(&i2c_init);
     lsm303_init();
+		USBD_Init(&initstruct);
 
     /* Infinite blink loop */
     while (1) {
@@ -120,32 +124,26 @@ int main(void)
         text(&font_helv17b, 5, 90, buf);
 #endif
 #if MAG_DEMO
-				//spi_read(DEV_MAG, LSM303_WHO_AM_I_REG, (uint8_t*) &t);
-        //pp_sprintf(buf, "who: 0x%x", (int8_t)t & 0xFF);
-        //text(&font_helv17, 5, 10, buf);
-				sprintf(buf, "min: %d ; %d ; %d", mag_min.x, mag_min.y, mag_min.z);
-        text(&font_helv11, 5, 5, buf);
-				sprintf(buf, "max: %d ; %d ; %d", mag_max.x, mag_max.y, mag_max.z);
-        text(&font_helv11, 5, 15, buf);
-        lsm303_get_sample(DEV_ACC, &smpl2);
-				sprintf(buf, "xa: %d, ya: %d", smpl2.x, smpl2.y);
-				text(&font_helv11, 5, 25, buf);
-				//lsm303_selftest(DEV_MAG, 0, 1);
-				//Delay(100);
-				lsm303_selftest(DEV_MAG, 0, 0);
-				Delay(10);
+				//sprintf(buf, "min: %d ; %d ; %d", mag_min.x, mag_min.y, mag_min.z);
+        //text(&font_helv11, 5, 5, buf);
+				//sprintf(buf, "max: %d ; %d ; %d", mag_max.x, mag_max.y, mag_max.z);
+        //text(&font_helv11, 5, 15, buf);
+        //lsm303_get_sample(DEV_ACC, &smpl2);
+				//sprintf(buf, "xa: %d, ya: %d", smpl2.x, smpl2.y);
+				//text(&font_helv11, 5, 25, buf);
+        //sprintf(buf, "x: %d", smpl.x);
+        //text(&font_helv17, 5, 50, buf);
+        //sprintf(buf, "y: %d", smpl.y);
+        //text(&font_helv17, 5, 70, buf);
+        //sprintf(buf, "z: %d", smpl.z);
+        //text(&font_helv17, 5, 90, buf);
+
+				/* print compass samples to UART for hard/soft-iron calibration */
         lsm303_get_sample(DEV_MAG, &smpl);
-        //sprintf(buf, "x: %f", smpl.x*0.58/10.0);
-        //sprintf(buf, "y: %f", smpl.y*0.58/10.0);
-        //sprintf(buf, "z: %f", smpl.z*0.58/10.0);
-        sprintf(buf, "x: %d", smpl.x);
-        text(&font_helv17, 5, 50, buf);
-        sprintf(buf, "y: %d", smpl.y);
-        text(&font_helv17, 5, 70, buf);
-        sprintf(buf, "z: %d", smpl.z);
-        text(&font_helv17, 5, 90, buf);
+				sprintf(buf, "x:%d y:%d z:%d\n\r", smpl.x, smpl.y, smpl.z);
+				USBD_Write(USBDESC_EP_DATA_OUT, (void*)buf, strlen(buf), NULL);
 #endif
-        lcd_update();
+        //lcd_update();
 				Delay(10);
     }
 }
