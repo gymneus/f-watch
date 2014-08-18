@@ -36,6 +36,8 @@
  *==============================================================================
  */
 
+#include <string.h>
+
 #include "em_device.h"
 #include "em_cmu.h"
 #include "em_usb.h"
@@ -50,28 +52,75 @@ volatile char idx = 0;
 
 static void gps_init();
 
-void LEUART0_IRQHandler()
-{
-        if (LEUART0->IF & LEUART_IF_RXDATAV) {
-                rxbuf[idx++] = LEUART_Rx(LEUART0);
-                if (idx == RXBUFSIZE) {
-                        idx = 0;
-                        USBD_Write(USBDESC_EP_DATA_OUT, rxbuf, RXBUFSIZE, NULL);
-                }
-        }
-}
+//void LEUART0_IRQHandler()
+//{
+//        if (LEUART0->IF & LEUART_IF_RXDATAV) {
+//                rxbuf[idx++] = LEUART_Rx(LEUART0);
+//                if (idx == RXBUFSIZE) {
+//                        idx = 0;
+//                        USBD_Write(USBDESC_EP_DATA_OUT, rxbuf, RXBUFSIZE, NULL);
+//                }
+//        }
+//}
+
+//void GPIO_EVEN_IRQHandler()
+//{
+//        uint32_t intline = GPIO_IntGet();
+//        GPIO_IntClear(1 << intline);
+//        if (intline == 0) USBD_Write(USBDESC_EP_DATA_OUT, "SW_TR\r\n", 6, NULL);
+//        if (intline == 8) USBD_Write(USBDESC_EP_DATA_OUT, "SW_BR\r\n", 6, NULL);
+//        if (intline == 6) USBD_Write(USBDESC_EP_DATA_OUT, "SW_BL\r\n", 6, NULL);
+//        GPIO_PinOutSet(gpioPortE, 11);
+//}
+//
+//void GPIO_ODD_IRQHandler()
+//{
+//        uint32_t intline = GPIO_IntGet();
+//        GPIO_IntClear(1 << intline);
+//        if (intline == 7) USBD_Write(USBDESC_EP_DATA_OUT, "SW_TL\r\n", 6, NULL);
+//        GPIO_PinOutSet(gpioPortE, 11);
+//}
 
 int main()
 {
         CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
         CMU_ClockEnable(cmuClock_HFPER, true);
         CMU_ClockEnable(cmuClock_GPIO, true);
+
+        GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
+        GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
+
         USBD_Init(&initstruct);
-        gps_init();
+
+        //gps_init();
+//  /* Configure interrupt pin as input with pull-up */
+//  GPIO_PinModeSet(gpioPortA, 0, gpioModeInputPull, 1);
+//  GPIO_PinModeSet(gpioPortA, 8, gpioModeInputPull, 1);
+//  GPIO_PinModeSet(gpioPortC, 6, gpioModeInputPull, 1);
+//  GPIO_PinModeSet(gpioPortC, 7, gpioModeInputPull, 1);
+//
+//  /* Set falling edge interrupt and clear/enable it */
+//  GPIO_IntConfig(gpioPortA, 0, false, true, true);
+//  GPIO_IntConfig(gpioPortA, 8, false, true, true);
+//  GPIO_IntConfig(gpioPortC, 6, false, true, true);
+//  GPIO_IntConfig(gpioPortC, 7, false, true, true);
+//
+//  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
+//  NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
+//  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+//  NVIC_EnableIRQ(GPIO_ODD_IRQn);
 
         int i;
+        int x = 0;
+
+        char *tmp = "now will you work?\r\n";
 
         for (;;) {
+                for (i = 0; i < 10000000; i++) ;
+                x ^= 1;
+                x ? GPIO_PinOutSet(gpioPortE, 11) :
+                    GPIO_PinOutClear(gpioPortE, 11);
+                USBD_Write(USBDESC_EP_DATA_OUT, (void *)tmp, strlen(tmp), NULL);
         }
 
         return 0;
@@ -81,8 +130,6 @@ static void gps_init()
 {
         int i;
 
-        GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-        GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
         /*-------------------------------------------------*
          * ON_OFF pulse
          *-------------------------------------------------*/
