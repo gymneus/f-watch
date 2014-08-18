@@ -109,8 +109,8 @@ int main(void)
   /* Enable GPIO clock */
   CMU_ClockEnable(cmuClock_GPIO, true);
 
-  /* Set new vector table pointer */
-  SCB->VTOR = 0x20000000;
+  /* Set new vector table pointer -- needed only if you use the loader-loader */
+  //SCB->VTOR = 0x20008000;
 
   /* Enable peripheral clocks. */
   CMU->HFPERCLKDIV = CMU_HFPERCLKDIV_HFPERCLKEN;
