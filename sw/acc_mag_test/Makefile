@@ -135,6 +135,8 @@ INCLUDEPATHS += \
 -I../common/drivers \
 -I../common/glib \
 -I../common/pp_printf \
+-I../common/usb \
+-I../common/usb/inc \
 -I../common
 
 ####################################################################
@@ -156,6 +158,8 @@ C_SRC += \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_usart.c \
+../common/emlib/src/em_timer.c \
+../common/emlib/src/em_leuart.c \
 ../common/gfx/graphics.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
@@ -164,6 +168,13 @@ C_SRC += \
 ../common/gfx/font_xm4x6.c \
 ../common/pp_printf/vsprintf-xint.c \
 ../common/udelay.c \
+../common/usb/src/em_usbd.c \
+../common/usb/src/em_usbdch9.c \
+../common/usb/src/em_usbhal.c \
+../common/usb/src/em_usbdep.c \
+../common/usb/src/em_usbdint.c \
+../common/usb/src/em_usbtimer.c \
+../common/usb/usbdesc.c \
 main.c
 #../common/drivers/display.c \
 #../common/drivers/displayls013b7dh03.c \
