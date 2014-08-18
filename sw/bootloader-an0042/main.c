@@ -103,7 +103,9 @@ int main(void)
 {
   int msElapsed, i;
 
-  supercar_blink(50, 4);
+  /* Blink a little bit as boot feedback */
+  freewatch_backlight_blinky(400, 4);
+
   /* Enable GPIO clock */
   CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -122,7 +124,7 @@ int main(void)
   RETARGET_SerialInit();        /* Setup debug serialport etc. */
   USB_PUTS( "EFM32 USB/USART0 bootloader\r\n" );
 #endif
-
+  freewatch_backlight_blinky(200, 4);
   /* Calculate CRC16 for the bootloader itself and the Device Information page. */
   /* This is used for production testing and can safely be omitted in */
   /* your own code. */
@@ -136,7 +138,7 @@ int main(void)
   /* Configure button TL and TR */
   GPIO_PinModeSet(gpioPortA, 0, gpioModeInput, 0);
   GPIO_PinModeSet(gpioPortC, 7, gpioModeInput, 0);
-
+  freewatch_backlight_blinky(100, 4);
 #if !defined( SIMULATE_SWDCLK_PIN_HI )
   /* Listen button TL and TR, if both are pressed then enter bootloader mode */
   while ( GPIO_PinInGet(gpioPortA, 0) || GPIO_PinInGet(gpioPortC, 7))
