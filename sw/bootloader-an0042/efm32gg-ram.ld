@@ -7,8 +7,8 @@
 /* Silicon Laboratories, Inc. 2014                                  */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x20008000, LENGTH = 0x8000
-  RAM (rwx)  : ORIGIN = 0x20010000, LENGTH = 0x8000
+  /*FLASH (rx) : ORIGIN = 0x20008000, LENGTH = 0x8000*/
+  RAM (rwx)  : ORIGIN = 0x20008000, LENGTH = 0x20000
 }
 
 /* Linker script to place sections and symbol values. Should be used together
@@ -66,18 +66,18 @@ SECTIONS
     *(.rodata*)
 
     KEEP(*(.eh_frame*))
-  } > FLASH
+  } > RAM
 
   .ARM.extab : 
   {
     *(.ARM.extab* .gnu.linkonce.armextab.*)
-  } > FLASH
+  } > RAM
 
   __exidx_start = .;
   .ARM.exidx :
   {
     *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-  } > FLASH
+  } > RAM
   __exidx_end = .;
 
   __etext = .;
