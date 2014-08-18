@@ -41,24 +41,21 @@ void ResetEFM32(void)
  *****************************************************************************/
 void supercar_blink(int delay, int rep)
 {
-  int i, c = rep;
+  int i, c = rep * 2;
 
     /* Setup SysTick Timer for 1 msec interrupts  */
     if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
-
-    for (i = 1; i < 5; ++i) {
-        GPIO_PinModeSet(gpioPortD, i, gpioModePushPull, 0);
-    }
+    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
+    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
     /* Infinite blink loop */
     while (c--) {
-        for (i = 1; i < 5; ++i) {
-            GPIO_PinOutToggle(gpioPortD, i);
+            GPIO_PinOutToggle(gpioPortE, 11);
+	    GPIO_PinOutToggle(gpioPortE, 12);
             Delay(delay);
-        }
     }
 }
 
