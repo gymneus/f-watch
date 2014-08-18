@@ -35,6 +35,7 @@
 #include "em_cmu.h"
 #include "em_emu.h"
 #include "em_usb.h"
+#include "em_gpio.h"
 #include "cdc.h"
 #include "crc.h"
 #include "flash.h"
@@ -103,6 +104,8 @@ int main(void)
   int msElapsed, i;
 
   supercar_blink(50, 4);
+  /* Enable GPIO clock */
+  CMU_ClockEnable(cmuClock_GPIO, true);
 
   /* Set new vector table pointer */
   SCB->VTOR = 0x20000000;
@@ -130,8 +133,13 @@ int main(void)
 
   StartRTC();
 
+  /* Configure button TL and TR */
+  GPIO_PinModeSet(gpioPortA, 0, gpioModeInput, 0);
+  GPIO_PinModeSet(gpioPortC, 7, gpioModeInput, 0);
+
 #if !defined( SIMULATE_SWDCLK_PIN_HI )
-  while ( SWDCLK_PIN_IS_LO() )
+  /* Listen button TL and TR, if both are pressed then enter bootloader mode */
+  while ( GPIO_PinInGet(gpioPortA, 0) || GPIO_PinInGet(gpioPortC, 7))
   {
     USB_PUTS( "SWDCLK is low\r\n" );
 
