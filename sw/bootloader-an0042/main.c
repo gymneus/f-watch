@@ -52,7 +52,7 @@
 #define BULK_EP_SIZE    64      /* This is the max. ep size.              */
 
 /** Version string, used when the user connects */
-#define BOOTLOADER_VERSION_STRING "BOOTLOADER version 1.01, Chip ID "
+#define BOOTLOADER_VERSION_STRING "BOOTLOADER version 1.01, FreeWatch v1 Chip ID "
 
 #define USER_PAGE_START 0x0FE00000
 #define USER_PAGE_END   0x0FE00200
