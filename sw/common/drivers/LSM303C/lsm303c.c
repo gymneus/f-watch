@@ -4,6 +4,9 @@
 #include <efm32gg330f1024.h>
 #include "lsm303c.h"
 
+extern volatile uint32_t msTicks;
+void Delay(uint32_t dlyTicks);
+
 /************************************************/
 /* First functions to initialize and access SPI */
 /************************************************/
@@ -29,7 +32,9 @@ static void spi_init()
 
   /* GPIO configuration */
   GPIO_PinModeSet(gpioPortC, 11, gpioModePushPull, 0); /* MOSI/MISO */
-  GPIO_PinModeSet(gpioPortC, MAG_CS_PIN, gpioModePushPull, 1); /* CS Mag*/
+  GPIO_PinModeSet(gpioPortC, MAG_CS_PIN, gpioModePushPull, 1); //InputPull, 0); /* CS Mag*/
+  //GPIO_PinModeSet(gpioPortC, MAG_CS_PIN, gpioModeWiredAndPullUp, 1); // gpioModePushPull, 1); /* CS Mag*/
+  //GPIO_PinModeSet(gpioPortC, ACC_CS_PIN, gpioModeWiredAndPullUp, 1); //gpioModePushPull, 1); /* CS Acc*/
   GPIO_PinModeSet(gpioPortC, ACC_CS_PIN, gpioModePushPull, 1); /* CS Acc*/
   GPIO_PinModeSet(gpioPortC,  9, gpioModePushPull, 1); /* Clock */
   GPIO_PinModeSet(gpioPortD,  4, gpioModeInput, 0);    /* Mag drdy */
@@ -112,12 +117,17 @@ int lsm303_init()
   /*setup 3-wire SPI for Accelerometer & Magnetometer*/
   //LSM303_ACC_SerialInterfaceMode(LSM303_ACC_SIM_3WIRE_INTERFACE);
 	lsm303_serialmode(DEV_ACC, LSM303_ACC_3WIRE);
-	//lsm303_serialmode(DEV_MAG, LSM303_ACC_3WIRE);
+	lsm303_serialmode(DEV_MAG, LSM303_MAG_3WIRE);
 
   lsm303_enableaxis(DEV_ACC, 0x7); 
   lsm303_fifo_mode(DEV_ACC, LSM303_FMODE_BYPASS, 1);
   lsm303_fifo_mode(DEV_ACC, LSM303_FMODE_BYPASS, 0);
   lsm303_odr(DEV_ACC, LSM303_ACC_ODR_10_Hz);
+	
+	lsm303_odr(DEV_MAG, LSM303_MAG_ODR_1_25_Hz);
+	lsm303_opmode(DEV_MAG, LSM303_MAG_OPM_MED, LSM303_MAG_CONV_CONT);
+	lsm303_fullscale(DEV_MAG, LSM303_16Ga);
+	lsm303_selftest(DEV_MAG, 0, 0);
 
   return LSM303_SUCCESS;
 }
@@ -171,18 +181,29 @@ int lsm303_odr(int dev, LSM303_ODR_t odr)
 /* set operation mode
  * dev: DEV_ACC/DEV_MAG
  * opm: constant from lsm303.h */
-int lsm303_opmode(int dev, LSM303_OPM_t opm)
+int lsm303_opmode(int dev, LSM303_OPM_t opm, LSM303_CONV_t conv)
 {
 	uint8_t val;
 
-	if (!spi_read(dev, LSM303_CTRL1, &val))
-		return LSM303_ERROR;
+	if (!spi_read(dev, LSM303_CTRL1, &val)) return LSM303_ERROR;
 
   val &= ~( dev==DEV_ACC ? LSM303_ACC_OPM_MASK : LSM303_MAG_OPM_MASK );
   val |= opm;
 
-  if( !spi_send(dev, LSM303_CTRL1, val) )
-    return LSM303_ERROR;
+  if( !spi_send(dev, LSM303_CTRL1, val) ) return LSM303_ERROR;
+
+	if (dev==DEV_ACC) return LSM303_SUCCESS;
+
+	/* only for MAG, set conversion mode and opmode for Z axis*/
+	if (!spi_read(dev, LSM303_CTRL4, &val)) return LSM303_ERROR;
+	val &= ~(LSM303_MAG_OPM_MASK>>3);
+	val |= (opm>>3);
+	if (!spi_send(dev, LSM303_CTRL4, val)) return LSM303_ERROR;
+
+	if (!spi_read(dev, LSM303_CTRL3, &val)) return LSM303_ERROR;
+	val &= ~LSM303_MAG_CONV_MASK;
+	val |= conv;
+	if (!spi_send(dev, LSM303_CTRL3, val)) return LSM303_ERROR;
 
 	return LSM303_SUCCESS;
 }
@@ -274,6 +295,9 @@ int lsm303_serialmode(int dev, LSM303_SMODE_t mode)
 			(dev==DEV_MAG && !spi_read(dev, LSM303_CTRL3, &val)) )
 		return LSM303_ERROR;
 
+	/* we'll use SPI, disable I2c */
+	val |= (dev==DEV_ACC ? LSM303_ACC_NOI2C : LSM303_MAG_NOI2C);
+	/* now set SPI mode */
 	val &= ~(dev==DEV_ACC ? LSM303_ACC_3WIRE : LSM303_MAG_3WIRE);
 	val |= mode;
 
@@ -334,24 +358,73 @@ int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en)
 	return LSM303_SUCCESS;
 }
 
-int lsm303_get_sample(int dev, int16_t *x, int16_t *y, int16_t *z)
+int lsm303_get_sample(int dev, lsm303_smpl *smpl)
 {
 	uint8_t val_l, val_h;
 
 	if( !spi_read(dev, LSM303_OUT_X_L, &val_l) ||
 			!spi_read(dev, LSM303_OUT_X_H, &val_h) )
 		return LSM303_ERROR;
-	*x = (int16_t) ((val_h << 8) | val_l);
+	smpl->x = (int16_t) ((val_h << 8) | val_l);
 
 	if( !spi_read(dev, LSM303_OUT_Y_L, &val_l) ||
 			!spi_read(dev, LSM303_OUT_Y_H, &val_h) )
 		return LSM303_ERROR;
-	*y = (int16_t) ((val_h << 8) | val_l);
+	smpl->y = (int16_t) ((val_h << 8) | val_l);
 
 	if( !spi_read(dev, LSM303_OUT_Z_L, &val_l) ||
 			!spi_read(dev, LSM303_OUT_Z_H, &val_h) )
 		return LSM303_ERROR;
-	*z = (int16_t) ((val_h << 8) | val_l);
+	smpl->z = (int16_t) ((val_h << 8) | val_l);
 
 	return LSM303_SUCCESS;
+}
+
+int lsm303_mag_calibrate(lsm303_smpl *max, lsm303_smpl *min)
+{
+	int i = 1000;
+	lsm303_smpl val;
+	max->x = -0x7fff;
+	max->y = -0x7fff;
+	max->z = -0x7fff;
+	min->x = 0x7fff;
+	min->y = 0x7fff;
+	min->z = 0x7fff;
+
+	while(i--) {
+		lsm303_get_sample(DEV_MAG, &val);
+		if(val.x > max->x) max->x = val.x;
+		if(val.x < min->x) min->x = val.x;
+		if(val.y > max->y) max->y = val.y;
+		if(val.y < min->y) min->y = val.y;
+		if(val.z > max->z) max->z = val.z;
+		if(val.z < min->z) min->z = val.z;
+		Delay(10);
+	}
+}
+
+#define LCD_W 100
+#define LCD_0 60
+int compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y)
+{
+	lsm303_smpl val;
+
+	lsm303_get_sample(DEV_MAG, &val);
+
+	if(val.x >= 0) {
+		*y = LCD_0 - (((val.x*1000)/(float)(max->x)) * LCD_W)/2000.0;
+	} else if(val.x < 0) {
+		*y = LCD_0 + (((val.x*1000)/(float)(min->x)) * LCD_W)/2000.0;
+	}
+
+	if(val.y >= 0) {
+		*x = LCD_0 + (((val.y*1000)/(float)(max->y)) * LCD_W)/2000.0;
+	} else if(val.x < 0) {
+		*x = LCD_0 - (((val.y*1000)/(float)(min->y)) * LCD_W)/2000.0;
+	}
+
+	if(*x > LCD_0 + LCD_W/2) *x = LCD_0+LCD_W/2;
+	if(*x < LCD_0 - LCD_W/2) *x = LCD_0-LCD_W/2;
+	if(*y > LCD_0 + LCD_W/2) *y = LCD_0+LCD_W/2;
+	if(*y < LCD_0 - LCD_W/2) *y = LCD_0-LCD_W/2;
 }
