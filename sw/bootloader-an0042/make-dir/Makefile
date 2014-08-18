@@ -117,10 +117,6 @@ override LOADER_LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cor
 -mthumb -T../efm32gg-rom.ld \
  -Wl,--gc-sections
 
-override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -T../efm32gg-ram.ld \
- -Wl,--gc-sections
-
 LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
 
 INCLUDEPATHS += \
@@ -211,25 +207,17 @@ vpath %.s $(S_PATHS)
 vpath %.S $(S_PATHS)
 
 # Default build is debug build
-all:      debug_bootloader debug_bootloader_loader
+all:      debug_bootloader
 
-debug:      debug_bootloader debug_bootloader_loader
+debug:      debug_bootloader
 
-#release:      release_bootloader debug_bootloader_loader
-release:      release_bootloader release_bootloader_loader
+release:      release_bootloader
 
-debug_bootloader:    CFLAGS += -DDEBUG -Os -g3
+debug_bootloader:    CFLAGS += -DDEBUG -Os -g3 -ggdb
 debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
-#debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN).bin
 
-release_bootloader:  CFLAGS += -DNDEBUG -Os -ggdb
-release_bootloader:  $(EXE_DIR)/$(PROJECTNAME_MAIN).bin
-
-debug_bootloader_loader:    CFLAGS += -DDEBUG -Os -g3
-debug_bootloader_loader:    $(EXE_DIR)/$(PROJECTNAME).bin
-
-release_bootloader_loader:  CFLAGS += -DNDEBUG -Os -ggdb
-release_bootloader_loader:  $(EXE_DIR)/$(PROJECTNAME).bin
+release_bootloader:  CFLAGS += -DNDEBUG -Os
+release_bootloader:  $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 
 # Create objects from C SRC files
 $(OBJ_DIR)/%.o: %.c
@@ -250,37 +238,11 @@ $(OBJ_DIR)/%.o: %.S
 	@echo "Assembling $<"
 	$(CC) $(ASMFLAGS) $(INCLUDEPATHS) -c -o $@ $<
 
-# Link
-$(EXE_DIR)/$(PROJECTNAME_MAIN).out: $(OBJS_MAIN)
-	@echo "Linking target: $@"
-	$(CC) $(LDFLAGS) $(OBJS_MAIN) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME_MAIN).out
 
-# HACK: Also allow for non-relocated version for debugging
 $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out: $(OBJS_MAIN)
 	@echo "Linking target: $@"
 	$(CC) $(LOADER_LDFLAGS) $(OBJS_MAIN) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
 
-#$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME).out
-$(EXE_DIR)/$(PROJECTNAME).out: $(OBJS)
-	@echo "Linking target: $@"
-	$(CC) $(LOADER_LDFLAGS) $(OBJS) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME).out
-
-
-# Create binary file
-$(EXE_DIR)/$(PROJECTNAME_MAIN).bin: $(EXE_DIR)/$(PROJECTNAME_MAIN).out
-	@echo "Creating binary file"
-	$(OBJCOPY) -O binary $(EXE_DIR)/$(PROJECTNAME_MAIN).out $(EXE_DIR)/$(PROJECTNAME_MAIN).bin
-	@echo "Deleting loader.o to ensure it does not exist yet"
-	$(RM) $(OBJ_DIR)\loader.o
-	$(RM) ..\bootld.h
-	@echo "Creating blob file needed by loader loader..."
-	@touch $(PWD)/../bootld.h
-	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
-	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
-	@echo "};" >> $(PWD)/../bootld.h
-#wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN).bin $(PWD)/../bootld.h -v bootloader
-
-# HACK: Also allow for a non-relocated-to-RAM version of 'main' for debugging. But still use the RAM version of the loader main when building loader-loader.
 $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
 	@echo "Creating binary file"
 	$(OBJCOPY) -O binary $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
@@ -292,21 +254,11 @@ $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
 	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
 	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
 	@echo "};" >> $(PWD)/../bootld.h
-#wine $(PWD)/../bin2h.exe $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin $(PWD)/../bootld.h -v bootloader
-
-$(EXE_DIR)/$(PROJECTNAME).bin: $(EXE_DIR)/$(PROJECTNAME).out
-	@echo "Creating binary file"
-	$(OBJCOPY) -O binary $(EXE_DIR)/$(PROJECTNAME).out $(EXE_DIR)/$(PROJECTNAME).bin
-# Uncomment next line to produce assembly listing of entire program
-#	$(DUMP) -h -S -C $(EXE_DIR)/$(PROJECTNAME).out>$(LST_DIR)/$(PROJECTNAME)out.lst
 
 clean:
 ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 	$(RMDIRS) $(OBJ_DIR) $(LST_DIR) $(EXE_DIR)
 endif
-
-flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s $(COMMONSW)/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
 
 flashmain: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 	openocd -s $(COMMONSW)/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin 0 verify reset"
