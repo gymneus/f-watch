@@ -272,8 +272,9 @@ static void commandlineLoop( void )
 
     /* Destructive upload command */
     case 'd':
-      BOOTLDIO_printString( readyString );
-      XMODEM_download( 0, flashSize );
+      BOOTLDIO_printString( "Destructive mode doesn't work.\r\n" );
+      //BOOTLDIO_printString( readyString );
+      //XMODEM_download( 0, flashSize );
       break;
 
     /* Write to user page */
