@@ -124,7 +124,7 @@ int lsm303_init()
   lsm303_fifo_mode(DEV_ACC, LSM303_FMODE_BYPASS, 0);
   lsm303_odr(DEV_ACC, LSM303_ACC_ODR_10_Hz);
 	
-	lsm303_odr(DEV_MAG, LSM303_MAG_ODR_1_25_Hz);
+	lsm303_odr(DEV_MAG, LSM303_MAG_ODR_20_Hz);
 	lsm303_opmode(DEV_MAG, LSM303_MAG_OPM_MED, LSM303_MAG_CONV_CONT);
 	lsm303_fullscale(DEV_MAG, LSM303_16Ga);
 	lsm303_selftest(DEV_MAG, 0, 0);
@@ -358,6 +358,13 @@ int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en)
 	return LSM303_SUCCESS;
 }
 
+static void lsm303_iron_calib(lsm303_smpl *smpl)
+{
+	smpl->x -= LSM303_IRON_X;
+	smpl->y -= LSM303_IRON_Y;
+	smpl->z -= LSM303_IRON_Z;
+}
+
 int lsm303_get_sample(int dev, lsm303_smpl *smpl)
 {
 	uint8_t val_l, val_h;
@@ -376,6 +383,8 @@ int lsm303_get_sample(int dev, lsm303_smpl *smpl)
 			!spi_read(dev, LSM303_OUT_Z_H, &val_h) )
 		return LSM303_ERROR;
 	smpl->z = (int16_t) ((val_h << 8) | val_l);
+
+	lsm303_iron_calib(smpl);
 
 	return LSM303_SUCCESS;
 }
