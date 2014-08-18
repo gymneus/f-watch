@@ -61,6 +61,10 @@
 #define 	LSM303_ZREF_L   0x3E /* ACC only */
 #define 	LSM303_ZREF_H   0x3F /* ACC only */
 
+typedef struct {
+	int16_t x, y, z
+} lsm303_smpl;
+
 /* Accelerometer config */
 #define LSM303_ACC_ST_MASK 0x0C
 #define LSM303_ACC_ST_POS  0x04
@@ -98,6 +102,13 @@ typedef enum {
 	LSM303_MAG_OPM_MASK = 0x60
 } LSM303_OPM_t;
 
+typedef enum {
+	LSM303_MAG_CONV_CONT	= 0x00,
+	LSM303_MAG_CONV_SING	= 0x01,
+	LSM303_MAG_CONV_PDOWN = 0x03,
+	LSM303_MAG_CONV_MASK	= 0x03
+} LSM303_CONV_t;
+
 #define LSM303_ACC_SRST 0x40
 #define LSM303_MAG_SRST 0x04
 
@@ -117,8 +128,10 @@ typedef enum {
 	LSM303_ACC_4WIRE = 0x00,
 	LSM303_MAG_4WIRE = 0x00,
 	LSM303_ACC_3WIRE = 0x01,
-	LSM303_MAG_3WIRE = 0x04
+	LSM303_MAG_3WIRE = 0x04,
 } LSM303_SMODE_t;
+#define LSM303_ACC_NOI2C 0x02
+#define LSM303_MAG_NOI2C 0x80
 
 typedef enum {
 	LEM303_ACC_XEN = 0x01,
@@ -147,14 +160,16 @@ typedef enum {
 int lsm303_init();
 int lsm303_selftest(int dev, int en, int dir);
 int lsm303_odr(int dev, LSM303_ODR_t odr);
-int lsm303_opmode(int dev, LSM303_OPM_t opm);
+int lsm303_opmode(int dev, LSM303_OPM_t opm, LSM303_CONV_t conv);
 int lsm303_rst(int dev, int hard);
 int lsm303_temp(int16_t *temp);
 int lsm303_fullscale(int dev, LSM303_FS_t fs);
 int lsm303_serialmode(int dev, LSM303_SMODE_t mode);
 int lsm303_enableaxis(int dev, int mask);
 int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en);
-int lsm303_get_sample(int dev, int16_t *x, int16_t *y, int16_t *z);
+int lsm303_get_sample(int dev, lsm303_smpl *smpl);
+int lsm303_mag_calibrate(lsm303_smpl *max, lsm303_smpl *min);
+int compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y);
 
 int spi_read(uint8_t dev, uint8_t adr, uint8_t *dat);
 
