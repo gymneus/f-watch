@@ -30,10 +30,10 @@
 #include <apps/application.h>
 #include <event.h>
 
-void gpio_irq_dispatcher(uint32_t flags)
+portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 {
     // We have not woken a task at the start of the ISR
-    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE; 
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 
     // Fill the event data
     struct event evt;
@@ -46,17 +46,12 @@ void gpio_irq_dispatcher(uint32_t flags)
         case 0x0100: evt.data.button = BUT_TL; break;
 
         // Unexpected event, do not send it
-        default: return;
+        default: return xHigherPriorityTaskWoken;
     }
 
     // Post the byte to the back of the queue
-    xQueueSendToBackFromISR( appQueue, &evt, &xHigherPriorityTaskWoken );   
-     
-    /* Did sending to the queue unblock a higher priority task? */
-    /*if( xHigherPriorityTaskWoken )*/
-    /*{*/
-        /*[> Actual macro used here is port specific. <]*/
-        /*[>taskYIELD_FROM_ISR();<]*/
-    /*}*/
+    xQueueSendToBackFromISR( appQueue, &evt, &xHigherPriorityTaskWoken );
+
+    return xHigherPriorityTaskWoken;
 }
 
