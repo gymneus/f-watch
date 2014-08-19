@@ -34,11 +34,11 @@ void menu_main(void* params) {
     (void)(params);  // suppress unused parameter warning
     struct event evt;
 
-    while( 1 ) {
-        // Run the clock application as the default one
-        clock.main(NULL);
+    // Run the clock application as the default one
+    clock.main(NULL);
 
-        // Once it is deactivated - display the menu
+    // Once it is deactivated - display the menu
+    while(1) {
         // TODO
         if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {

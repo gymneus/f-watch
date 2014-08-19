@@ -49,7 +49,7 @@ static void digital_watch_redraw(struct ui_widget *w)
     gfx_text(&w->dc, &font_helv22b, 84, 14, buf);
 }
 
-static void digital_watch_event(struct ui_widget *w, struct event evt)
+static void digital_watch_event(struct ui_widget *w, const struct event *evt)
 {
     // TODO if hour has changed, mark widget as dirty
     (void)(w);
@@ -76,6 +76,7 @@ void clock_main(void* params) {
     (void)(params); // suppress unused parameter warning
     struct event evt;
 
+    // Initialize user interface
     ui_init_widget(&clock_screen);
     ui_init_widget(&digital_watch);
 
@@ -86,39 +87,22 @@ void clock_main(void* params) {
     ui_init_widget(&status_bar);
     ui_add_widget(&status_bar);
 
-    while( 1 ) {
+    // Draw the screen
+    ui_update(NULL);
+
+    // Event loop
+    while(1) {
         if(xQueueReceive(appQueue, &evt, 0)) {
-/*            switch(evt.type) {
+            switch(evt.type) {
             case BUTTON_PRESSED:
-                lcd_clear();
-
-                switch(evt.data.button)
-                {
-                case BUT_TL:
-                    text(&font_helv11, 0, 0, "top left button");
-                    break;
-
-                case BUT_TR:
-                    text(&font_helv11, 0, 0, "top right button");
-                    break;
-
-                case BUT_BL:
-                    text(&font_helv11, 0, 0, "bottom left button");
-                    break;
-
-                case BUT_BR:
-                    text(&font_helv11, 0, 0, "botton right button");
-                    break;
-                }
-
-                lcd_update();
+                if(evt.data.button == BUT_TL)
+                    return;             // go back to the main menu
             break;
 
-            default:    // suppress warnings
-            break;
-            }*/
-
-            ui_update(evt);
+            default:
+                ui_update(&evt);        // forward event to widgets
+                break;
+            }
         }
     }
 }
