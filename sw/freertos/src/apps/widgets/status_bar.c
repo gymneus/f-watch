@@ -27,7 +27,7 @@
 
 #include "status_bar.h"
 
-static void status_bar_event(struct ui_widget *w, struct event evt)
+static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
     // TODO update info about GPS signal, time, etc.
 }

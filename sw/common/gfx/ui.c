@@ -60,8 +60,8 @@ void ui_add_widget(struct ui_widget *w) {
     w->flags |= WF_DIRTY;
 }
 
-static int update_widget(struct ui_widget *w, struct event evt) {
-    if((w->flags & WF_ACTIVE) && (w->event)) {
+static int update_widget(struct ui_widget *w, const struct event *evt) {
+    if((w->flags & WF_ACTIVE) && (w->event) && evt) {
         w->event(w, evt);
     }
 
@@ -96,7 +96,7 @@ void draw_surface(struct surface *surf)
     lcd_update();
 }
 
-void ui_update(struct event evt) {
+void ui_update(const struct event *evt) {
     int screen_dirty = 0;
     struct ui_widget *w;
 

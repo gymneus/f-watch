@@ -36,7 +36,7 @@
 
 struct ui_widget {
     void (*redraw)(struct ui_widget *w);
-    void (*event)(struct ui_widget *w, struct event evt);
+    void (*event)(struct ui_widget *w, const struct event *evt);
     struct rect pos;
     uint8_t order;
     int flags;
@@ -51,7 +51,7 @@ extern struct surface screen;
 
 void ui_init();
 void ui_add_widget(struct ui_widget *w);
-void ui_update(struct event evt);
+void ui_update(const struct event *evt);
 //void ui_activate(struct ui_widget *w, int activate);
 //void ui_show(struct ui_widget *w, int show);
 //void ui_set_modal(struct ui_widget *w, int modal);
