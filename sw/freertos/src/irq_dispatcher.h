@@ -28,12 +28,13 @@
 #ifndef IRQ_DISPATCHER_H
 #define IRQ_DISPATCHER_H
 
+#include <FreeRTOS.h>
 #include <stdint.h>
 
 /**
  * @brief GPIO interrupt requests dispatcher.
  */
-void gpio_irq_dispatcher(uint32_t flags);
+portBASE_TYPE gpio_irq_dispatcher(uint32_t flags);
 
 #endif /* IRQ_DISPATCHER_H */
 

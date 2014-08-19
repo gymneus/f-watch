@@ -37,7 +37,7 @@ void GPIO_EVEN_IRQHandler(void)
     // Clean only even interrupts
     GPIO_IntClear(iflags);
 
-    gpio_irq_dispatcher(iflags);
+    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
 }
 
 void GPIO_ODD_IRQHandler(void)
@@ -50,7 +50,7 @@ void GPIO_ODD_IRQHandler(void)
     // Clean only odd interrupts
     GPIO_IntClear(iflags);
 
-    gpio_irq_dispatcher(iflags);
+    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
 }
 
 void buttons_init(void)

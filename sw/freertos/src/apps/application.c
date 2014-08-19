@@ -37,7 +37,6 @@
 ///> Prioriuty of application task
 #define APP_PRIORITY    (tskIDLE_PRIORITY + 1)
 
-xTaskHandle appTask;
 xQueueHandle appQueue;
 
 void startMain(Application* app) {
@@ -46,9 +45,8 @@ void startMain(Application* app) {
         // TODO oops..
     }
 
-    xTaskCreate(app->main, (const signed char*)app->name, APP_STACK_SIZE, NULL, 
-                APP_PRIORITY, &appTask);
-    if(!appTask) {
+    if(xTaskCreate(app->main, (const signed char*)app->name, APP_STACK_SIZE,
+                   NULL, APP_PRIORITY, NULL) != pdPASS) {
         // TODO oops..
     }
 }
