@@ -158,8 +158,14 @@ C_SRC += \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
+../common/gfx/font_helv22b.c \
+../common/gfx/font_helv29.c \
+../common/gfx/font_helv38b.c \
+../common/gfx/font_luct38.c \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
+../common/gfx/font_xm5x8.c \
+../common/gfx/font_xm16x25b.c \
 ../common/udelay.c \
 ../common/delay.c \
 ../common/drivers/i2cdrv.c \

@@ -166,7 +166,7 @@ int main(void)
         err = max17047_set_config(0x2250);
 
         //GPIO_PinOutSet(gpioPortE, 11);
-        //GPIO_PinOutSet(gpioPortE, 12);
+        GPIO_PinOutSet(gpioPortE, 12);
 
         while(1)
         {
@@ -184,8 +184,10 @@ int main(void)
 
                         lcd_clear();
 
-                        sprintf(str, "%02d:%02d:%02d.%1d", hours, minutes, milliseconds/1000, (milliseconds%1000)/100);
-                        text(&font_helv17b, 5, 20, str);
+                        sprintf(str, "%02d:%02d", hours, minutes);
+                        text(&font_helv38b, 5, 20, str);
+                        sprintf(str, "%02d.%1d", milliseconds/1000, (milliseconds%1000)/100);
+                        text(&font_helv22b, 89, 34, str);
 
 
                         sprintf(str, "light: %3.3f lux", lux);
