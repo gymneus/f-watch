@@ -1,4 +1,7 @@
-#include "usbdesc.h"
+#include <stdio.h>
+#include <string.h>
+#include "usbdbg.h"
+#include "em_usb.h"
 
 /* The serial port LINE CODING data structure, used to carry information  */
 /* about serial port baudrate, parity etc. between host and device.       */
@@ -36,7 +39,7 @@ EFM32_PACK_END()
  *         USB_STATUS_REQ_UNHANDLED when command is unknown, the USB device
  *         stack will handle the request.
  *****************************************************************************/
-int usbdesc_cb_setup(const USB_Setup_TypeDef *setup)
+int usbdbg_cb_setup(const USB_Setup_TypeDef *setup)
 {
         int r = USB_STATUS_REQ_UNHANDLED;
 
@@ -81,4 +84,51 @@ int usbdesc_cb_setup(const USB_Setup_TypeDef *setup)
 
         return r;
 }
+
+/**************************************************************************//**
+ * @brief
+ *      Wrapper for USB device stack init.
+ *
+ * @param[in] none
+ *
+ * @return none
+ *****************************************************************************/
+void usbdbg_init()
+{
+        USBD_Init(&initstruct);
+}
+
+/**************************************************************************//**
+ * @brief
+ *   USB puts() function. Prints up to USBDBG_BULK_EP_SIZE-1 characters on
+ *   USB, or throws EOF if more than USBDBG_BULK_EP_SIZE-1 characters are
+ *   attempted to be transmitted, or the EOF character itself is received.
+ *
+ * @param[in] s String to put on USB
+ *
+ * @return 1 on success
+ *         -1 (EOF) otherwise
+ *****************************************************************************/
+int usbdbg_puts(const char *s)
+{
+        char buf[USBDBG_BULK_EP_SIZE];
+        int cnt = 0;
+
+        /* Fill buffer */
+        while (*s) {
+                if ((*s == EOF) || (cnt == USBDBG_BULK_EP_SIZE-1))
+                        return EOF;
+                buf[cnt++] = *s;
+                s++;
+        }
+
+        /* Null-terminate and roll back pointer */
+        buf[cnt] = '\0';
+
+        /* Call USB stack function we're so desperately trying to hide */
+        USBD_Write(USBDBG_EP_DATA_OUT, (void *)buf, strlen(buf), NULL);
+
+        return 1;
+}
+
 

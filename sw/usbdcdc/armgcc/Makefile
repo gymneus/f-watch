@@ -147,7 +147,7 @@ C_SRC +=  \
 ../../common/usb/src/em_usbdint.c \
 ../../common/usb/src/em_usbtimer.c \
 ../kits/common/drivers/dmactrl.c \
-../../common/usb/usbdesc.c \
+../../common/usb/usbdbg.c \
 ../src/main.c
 
 s_SRC +=

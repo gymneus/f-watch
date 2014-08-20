@@ -22,17 +22,19 @@ extern "C" {
 /*=====================*/
 /* Function prototypes */
 /*=====================*/
-int usbdesc_cb_setup(const USB_Setup_TypeDef *setup);
+void    usbdbg_init();
+int     usbdbg_puts(const char *s);
+int     usbdbg_cb_setup(const USB_Setup_TypeDef *setup);
 
 
 /*===============================*/
 /* Define USB endpoint addresses */
 /*===============================*/
-#define USBDESC_EP_DATA_IN      0x01  /* Endpoint for USB data reception.       */
-#define USBDESC_EP_DATA_OUT     0x81  /* Endpoint for USB data transmission.    */
-#define USBDESC_EP_NOTIFY       0x82  /* The notification endpoint (not used).  */
+#define USBDBG_EP_DATA_IN       0x01  /* Endpoint for USB data reception.       */
+#define USBDBG_EP_DATA_OUT      0x81  /* Endpoint for USB data transmission.    */
+#define USBDBG_EP_NOTIFY        0x82  /* The notification endpoint (not used).  */
 
-#define USBDESC_BULK_EP_SIZE    USB_MAX_EP_SIZE  /* This is the max. ep size.    */
+#define USBDBG_BULK_EP_SIZE     USB_MAX_EP_SIZE  /* This is the max. ep size.    */
 
 EFM32_ALIGN(4)
 static const USB_DeviceDescriptor_TypeDef deviceDesc __attribute__ ((aligned(4)))=
@@ -126,9 +128,9 @@ static const uint8_t configDesc[] __attribute__ ((aligned(4)))=
         /*** CDC Notification endpoint descriptor ***/
         USB_ENDPOINT_DESCSIZE,  /* bLength               */
         USB_ENDPOINT_DESCRIPTOR,/* bDescriptorType       */
-        USBDESC_EP_NOTIFY,      /* bEndpointAddress (IN) */
+        USBDBG_EP_NOTIFY,       /* bEndpointAddress (IN) */
         USB_EPTYPE_INTR,        /* bmAttributes          */
-        USBDESC_BULK_EP_SIZE,   /* wMaxPacketSize (LSB)  */
+        USBDBG_BULK_EP_SIZE,    /* wMaxPacketSize (LSB)  */
         0,                      /* wMaxPacketSize (MSB)  */
         0xFF,                   /* bInterval             */
 
@@ -146,17 +148,17 @@ static const uint8_t configDesc[] __attribute__ ((aligned(4)))=
         /*** CDC Data interface endpoint descriptors ***/
         USB_ENDPOINT_DESCSIZE,  /* bLength               */
         USB_ENDPOINT_DESCRIPTOR,/* bDescriptorType       */
-        USBDESC_EP_DATA_IN,    /* bEndpointAddress (IN) */
+        USBDBG_EP_DATA_IN,      /* bEndpointAddress (IN) */
         USB_EPTYPE_BULK,        /* bmAttributes          */
-        USBDESC_BULK_EP_SIZE,   /* wMaxPacketSize (LSB)  */
+        USBDBG_BULK_EP_SIZE,    /* wMaxPacketSize (LSB)  */
         0,                      /* wMaxPacketSize (MSB)  */
         0,                      /* bInterval             */
 
         USB_ENDPOINT_DESCSIZE,  /* bLength               */
         USB_ENDPOINT_DESCRIPTOR,/* bDescriptorType       */
-        USBDESC_EP_DATA_OUT,    /* bEndpointAddress (OUT)*/
+        USBDBG_EP_DATA_OUT,     /* bEndpointAddress (OUT)*/
         USB_EPTYPE_BULK,        /* bmAttributes          */
-        USBDESC_BULK_EP_SIZE,   /* wMaxPacketSize (LSB)  */
+        USBDBG_BULK_EP_SIZE,    /* wMaxPacketSize (LSB)  */
         0,                      /* wMaxPacketSize (MSB)  */
         0                       /* bInterval             */
 };
@@ -186,7 +188,7 @@ static const USBD_Callbacks_TypeDef callbacks =
 {
   .usbReset        = NULL,
   .usbStateChange  = NULL,
-  .setupCmd        = usbdesc_cb_setup,
+  .setupCmd        = usbdbg_cb_setup,
   .isSelfPowered   = NULL,
   .sofInt          = NULL
 };

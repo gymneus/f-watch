@@ -27,7 +27,7 @@
 #include "bsp.h"
 #include "bsp_trace.h"
 
-#include "usbdesc.h"
+#include "usbdbg.h"
 
 /**************************************************************************//**
  *
@@ -82,7 +82,7 @@ int main(void)
         GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);;
         GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 1);;
 
-        USBD_Init(&initstruct);
+        usbdbg_init();
 
         /*
         * When using a debugger it is practical to uncomment the following three
@@ -98,7 +98,7 @@ int main(void)
         {
               GPIO_PinOutToggle(gpioPortE, 11);
               GPIO_PinOutToggle(gpioPortE, 12);
-              USBD_Write(USBDESC_EP_DATA_OUT, (void *)tmp, strlen(tmp), NULL);
+              usbdbg_puts(tmp);
               delay(1000);
         }
 }
