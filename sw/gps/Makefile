@@ -120,7 +120,6 @@ INCLUDEPATHS += \
 -I../common/emlib/inc \
 -I../common/usb \
 -I../common/usb/inc \
--I../usb/inc
 
 ####################################################################
 # Files                                                            #
@@ -138,7 +137,7 @@ C_SRC +=  \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_leuart.c \
-../common/usb/usbdesc.c \
+../common/usb/usbdbg.c \
 ../common/usb/src/em_usbd.c \
 ../common/usb/src/em_usbdch9.c \
 ../common/usb/src/em_usbhal.c \

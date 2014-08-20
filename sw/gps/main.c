@@ -44,10 +44,10 @@
 #include "em_leuart.h"
 #include "em_gpio.h"
 
-#include "usbdesc.h"
+#include "usbdbg.h"
 
 #define RXBUFSIZE 8
-volatile char rxbuf[RXBUFSIZE] = {'0', '1', '2', '3', '4', '5', '6', '7'};
+volatile char rxbuf[RXBUFSIZE];
 volatile char idx = 0;
 
 static void gps_init();
@@ -59,7 +59,7 @@ void LEUART0_IRQHandler()
                 rxbuf[idx++] = LEUART_Rx(LEUART0);
                 if (idx == RXBUFSIZE) {
                         idx = 0;
-                        USBD_Write(USBDESC_EP_DATA_OUT, rxbuf, RXBUFSIZE, NULL);
+                        usbdbg_puts(rxbuf);
                 }
         }
 }
@@ -73,11 +73,9 @@ int main()
         GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
         GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
-        USBD_Init(&initstruct);
-
+        usbdbg_init();
         gps_init();
-
-        USBD_Write(USBDESC_EP_DATA_OUT, "init done!\r\n", 12, NULL);
+        usbdbg_puts("init done!\r\n");
 
         int i;
 
@@ -87,7 +85,7 @@ int main()
                                 GPIO_PinOutSet(gpioPortE, 11) :
                                 GPIO_PinOutClear(gpioPortE, 11);
                 }
-                USBD_Write(USBDESC_EP_DATA_OUT, "\r\nOFF\r\n", 7, NULL);
+                usbdbg_puts("\r\nOFF\r\n");
                 gps_on_off_pulse();
 
 
@@ -96,7 +94,7 @@ int main()
                                 GPIO_PinOutSet(gpioPortE, 11) :
                                 GPIO_PinOutClear(gpioPortE, 11);
                 }
-                USBD_Write(USBDESC_EP_DATA_OUT, "\r\nON\r\n", 6, NULL);
+                usbdbg_puts("\r\nON\r\n");
                 gps_on_off_pulse();
 
         }
