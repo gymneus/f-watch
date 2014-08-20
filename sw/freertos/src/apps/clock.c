@@ -77,6 +77,8 @@ void clock_main(void* params) {
     struct event evt;
 
     // Initialize user interface
+    ui_clear();
+
     ui_init_widget(&clock_screen);
     ui_init_widget(&digital_watch);
 
@@ -97,7 +99,7 @@ void clock_main(void* params) {
             case BUTTON_PRESSED:
                 if(evt.data.button == BUT_TL)
                     return;             // go back to the main menu
-            break;
+                break;
 
             default:
                 ui_update(&evt);        // forward event to widgets
