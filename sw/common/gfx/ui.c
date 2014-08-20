@@ -25,6 +25,7 @@
 #include <drivers/lcd.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 #define DBG
 
@@ -34,6 +35,20 @@ static struct ui_widget *widget_list = NULL;
 
 void ui_init() {
     gfx_init_surface(&screen, NULL, 0, 0, LCD_WIDTH, LCD_HEIGHT);
+}
+
+void ui_clear() {
+    struct ui_widget *wl = widget_list;
+
+    // Unlink widgets, so they can be reused
+    while(wl) {
+        struct ui_widget *next = wl->next;
+        wl->next = NULL;
+        wl = next;
+    }
+
+    widget_list = NULL;
+    memset(screen.data, 0x00, screen.stride * screen.height);
 }
 
 void ui_add_widget(struct ui_widget *w) {
@@ -100,12 +115,11 @@ void ui_update(const struct event *evt) {
     int screen_dirty = 0;
     struct ui_widget *w;
 
-    for(w = widget_list; w; w = w->next)
-    {
+    for(w = widget_list; w; w = w->next) {
         screen_dirty |= update_widget(w, evt);
     }
 
-    if(screen_dirty)
+    if(screen_dirty || !evt)
         draw_surface(&screen);
 }
 

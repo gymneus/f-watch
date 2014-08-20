@@ -50,6 +50,7 @@ struct ui_widget {
 extern struct surface screen;
 
 void ui_init();
+void ui_clear();
 void ui_add_widget(struct ui_widget *w);
 void ui_update(const struct event *evt);
 //void ui_activate(struct ui_widget *w, int activate);

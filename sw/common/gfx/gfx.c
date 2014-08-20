@@ -58,7 +58,7 @@ void gfx_init_surface( struct surface *surf, struct surface *parent, int x0, int
             surf->clip.y1 = h - 1;
             surf->stride = (w + 7) / 8;
             surf->data = gfx_alloc(surf->stride * h);
-            memset( surf->data, 0, surf->stride * h);
+            memset(surf->data, 0, surf->stride * h);
     } else {
             surf->width = parent->width;
             surf->height= parent->height;
