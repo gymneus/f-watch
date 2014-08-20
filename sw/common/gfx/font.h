@@ -41,7 +41,14 @@ typedef struct
 extern const font font_helv11;
 extern const font font_helv17;
 extern const font font_helv17b;
+extern const font font_helv38b;
+extern const font font_helv29;
+extern const font font_helv22b;
+extern const font font_luct38;
+extern const font font_xm16x25b;
 extern const font font_xm4x5;
 extern const font font_xm4x6;
+extern const font font_xm5x8;
+
 
 #endif /* FONT_H */
