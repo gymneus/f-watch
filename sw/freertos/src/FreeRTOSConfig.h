@@ -122,7 +122,7 @@ extern "C" {
 #endif
 /* Main functions*/
 #define configMAX_PRIORITIES                      (( unsigned portBASE_TYPE ) 3)
-#define configMINIMAL_STACK_SIZE                  (( unsigned short ) 140)
+#define configMINIMAL_STACK_SIZE                  (( unsigned short ) 255 )
 #define configTOTAL_HEAP_SIZE                     (( size_t )(9000))
 #define configMAX_TASK_NAME_LEN                   ( 10 )
 #define configUSE_TRACE_FACILITY                  ( 0 )
