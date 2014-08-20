@@ -26,25 +26,72 @@
 
 #include "menu.h"
 #include "clock.h"
-#include "event.h"
+#include "widgets/status_bar.h"
 
-#include <gfx/graphics.h>
+static int selected_item = 0;
+
+static void menu_screen_redraw(struct ui_widget *w)
+{
+    const int LINE_HEIGHT = 17;
+    int i;
+
+    gfx_clear(&w->dc, 0);
+    for(i = 0; i < 5; ++i)
+        gfx_text(&w->dc, &font_helv17, 15, i * LINE_HEIGHT, "Application");
+}
+
+static void menu_screen_event(struct ui_widget *w, const struct event *evt)
+{
+    // TODO change the selected item
+    (void)(w);
+    (void)(evt);
+}
+
+struct ui_widget menu_screen = {
+    menu_screen_redraw,
+    menu_screen_event,
+    { 0, 20, 127, 107 },
+    0,
+    WF_ACTIVE | WF_VISIBLE
+};
+
+static void run(Application *app) {
+    // Run the application
+    app->main(NULL);
+
+    // Reinitialize user interface when finished
+    ui_clear();
+
+    ui_init_widget(&menu_screen);
+    ui_add_widget(&menu_screen);
+
+    ui_init_widget(&status_bar);
+    ui_add_widget(&status_bar);
+
+    ui_update(NULL);
+}
 
 void menu_main(void* params) {
     (void)(params);  // suppress unused parameter warning
     struct event evt;
 
-    // Run the clock application as the default one
-    clock.main(NULL);
+    run(&clock);
 
     // Once it is deactivated - display the menu
     while(1) {
         // TODO
         if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {
+                case BUTTON_PRESSED:
+                    if(evt.data.button == BUT_TL)
+                        run(&clock);    // return to the clock screen
+                    break;
+
                 default:    // suppress warnings
-                break;
+                    ui_update(&evt);
+                    break;
             }
+
         }
     }
 }
