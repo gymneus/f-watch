@@ -27,7 +27,7 @@
 #include "menu_struct.h"
 #include "clock.h"
 
-int get_length(const menu_list *menu) {
+int get_menu_size(const menu_list *menu) {
     int len = 0;
     const menu_entry* ptr = menu->entries;
 

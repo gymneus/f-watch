@@ -64,7 +64,7 @@ typedef struct menu_list_t {
  * @brief Returns the number of entries for a given submenu.
  * @param menu is the menu that length is returned.
  */
-int get_length(const menu_list *menu);
+int get_menu_size(const menu_list *menu);
 
 /**
  * @brief Stores the main menu structure.
