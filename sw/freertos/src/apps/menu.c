@@ -67,12 +67,12 @@ static void menu_screen_redraw(struct ui_widget *w)
 static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 {
     if(evt->type == BUTTON_PRESSED) {
-        if(evt->data.button == BUT_BL) {
+        if(evt->data.button == BUT_BR) {
             if(selected_item < get_length(*current_menu)) {
                 ++selected_item;
                 w->flags |= WF_DIRTY;
             }
-        } else if(evt->data.button == BUT_BR) {
+        } else if(evt->data.button == BUT_BL) {
             if(selected_item > 0) {
                 --selected_item;
                 w->flags |= WF_DIRTY;
