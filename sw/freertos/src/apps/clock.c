@@ -97,7 +97,7 @@ void clock_main(void* params) {
         if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
-                if(evt.data.button == BUT_TL)
+                if(evt.data.button == BUT_TR)
                     return;             // go back to the main menu
                 break;
 
