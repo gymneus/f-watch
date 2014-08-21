@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,34 +46,34 @@ void *gfx_alloc(int count)
     return p;
 }
 
-void gfx_init_surface( struct surface *surf, struct surface *parent, int x0, int y0, int w, int h )
+void gfx_init_surface(struct surface *surf, struct surface *parent,
+                      int x0, int y0, int w, int h)
 {
-    if(!parent)
-    {
-            surf->width = w;
-            surf->height = h;
-            surf->clip.x0 = 0;
-            surf->clip.y0 = 0;
-            surf->clip.x1 = w - 1;
-            surf->clip.y1 = h - 1;
-            surf->stride = (w + 7) / 8;
-            surf->data = gfx_alloc(surf->stride * h);
-            memset(surf->data, 0, surf->stride * h);
+    if(!parent) {
+        surf->width = w;
+        surf->height = h;
+        surf->clip.x0 = 0;
+        surf->clip.y0 = 0;
+        surf->clip.x1 = w - 1;
+        surf->clip.y1 = h - 1;
+        surf->stride = (w + 7) / 8;
+        surf->data = gfx_alloc(surf->stride * h);
+        memset(surf->data, 0, surf->stride * h);
     } else {
-            surf->width = parent->width;
-            surf->height= parent->height;
-            surf->stride = parent->stride;
-            surf->clip.x0 = 0;
-            surf->clip.y0 = 0;
-            surf->clip.x1 = w - 1;
-            surf->clip.y1 = h - 1;
-            surf->client_x = x0;
-            surf->client_y = y0;
-            surf->data = parent->data;
+        surf->width = parent->width;
+        surf->height= parent->height;
+        surf->stride = parent->stride;
+        surf->clip.x0 = 0;
+        surf->clip.y0 = 0;
+        surf->clip.x1 = w - 1;
+        surf->clip.y1 = h - 1;
+        surf->client_x = x0;
+        surf->client_y = y0;
+        surf->data = parent->data;
     }
 }
 
-void gfx_set_clip (struct surface *surf, int x0, int y0, int x1, int y1 )
+void gfx_set_clip(struct surface *surf, int x0, int y0, int x1, int y1)
 {
     surf->clip.x0 = x0;
     surf->clip.y0 = y0;
@@ -81,7 +81,7 @@ void gfx_set_clip (struct surface *surf, int x0, int y0, int x1, int y1 )
     surf->clip.y1 = y1;
 }
 
-void gfx_reset_clip (struct surface *surf)
+void gfx_reset_clip(struct surface *surf)
 {
     surf->clip.x0 = 0;
     surf->clip.y0 = 0;
@@ -89,7 +89,7 @@ void gfx_reset_clip (struct surface *surf)
     surf->clip.y1 = surf->height - 1;
 }
 
-void gfx_box( struct surface *surf, int x0, int y0, int x1, int y1, int value)
+void gfx_box(struct surface *surf, int x0, int y0, int x1, int y1, int value)
 {
     uint8_t x, y;
 
@@ -97,7 +97,7 @@ void gfx_box( struct surface *surf, int x0, int y0, int x1, int y1, int value)
     x1 = MIN(x1, surf->clip.x1);
     y0 = MAX(y0, surf->clip.y0);
     y1 = MIN(y1, surf->clip.y1);
-    
+
     for(x = x0; x <= x1; x++)
     {
         for(y = y0; y <= y1; y++)
@@ -112,8 +112,7 @@ void gfx_clear(struct surface *surf, int value)
     gfx_box( surf, 0, 0, surf->width-1, surf->height-1, value);
 }
 
-
-void gfx_line( struct surface *surf, int x0, int y0, int x1, int y1, int value )
+void gfx_line(struct surface *surf, int x0, int y0, int x1, int y1, int value)
 {
     int dx = abs(x1 - x0);
     int sx = x0 < x1 ? 1 : -1;
@@ -135,7 +134,8 @@ void gfx_line( struct surface *surf, int x0, int y0, int x1, int y1, int value )
     }
 }
 
-static uint8_t draw_glyph(const struct font *font, struct surface *surf, uint8_t x0, uint8_t y0, char c)
+static uint8_t draw_glyph(const struct font *font, struct surface *surf,
+                          uint8_t x0, uint8_t y0, char c, int value)
 {
     if(c < font->min_char || c > font->max_char)
         return 0;
@@ -144,36 +144,36 @@ static uint8_t draw_glyph(const struct font *font, struct surface *surf, uint8_t
     uint8_t w = font->width_table[c - font->min_char];
     uint8_t x, y;
 
-    //printf("DrawGlyph: %d %d '%c'\n", x0, y0, c);
-
     for(y = 0; y < font->height; y++)
     {
         for(x = 0; x < w; x++)
         {
             if(buf[((w + 7) >> 3) * y + (x >> 3)] & (1 << (7 - (x & 7))))
-                gfx_set_pixel(surf, x + x0, y + y0, c);
+               gfx_set_pixel(surf, x + x0, y + y0, c ^ !value);
         }
     }
 
     return w;
 }
 
-void gfx_text(struct surface *surf, const struct font *font, uint8_t x, uint8_t y, const char *str)
+void gfx_text(struct surface *surf, const struct font *font,
+              uint8_t x, uint8_t y, const char *str, int value)
 {
     char c;
 
     while((c = *str++))
-        x += draw_glyph(font, surf, x, y, c);
+        x += draw_glyph(font, surf, x, y, c, value);
 }
 
-void gfx_centered_text(struct surface *surf, const struct font *font, uint8_t y, const char *str)
+void gfx_centered_text(struct surface *surf, const struct font *font,
+                       uint8_t y, const char *str, int value)
 {
     int w = gfx_text_width(font, str);
 
-    gfx_text(surf, font, surf->width / 2 - w / 2, y, str);
+    gfx_text(surf, font, surf->width / 2 - w / 2, y, str, value);
 }
 
-int gfx_text_width( const struct font *font, const char *str)
+int gfx_text_width(const struct font *font, const char *str)
 {
     int c;
     int w = 0;
@@ -222,12 +222,13 @@ void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value
     }
 }
 
-void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value)
+void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1,
+                   int radius, int value)
 {
     gfx_box(surf, x0, y0 + radius, x1, y1 - radius, value);
     gfx_box(surf, x0 +radius , y0, x1 - radius, y1, value);
     gfx_fill_circle(surf, x0+radius, y0+radius, radius, value);
     gfx_fill_circle(surf, x1-radius, y0+radius, radius, value);
     gfx_fill_circle(surf, x1-radius, y1-radius, radius, value);
-    gfx_fill_circle(surf, x0+radius, y1-radius, radius, value);   
+    gfx_fill_circle(surf, x0+radius, y1-radius, radius, value);
 }

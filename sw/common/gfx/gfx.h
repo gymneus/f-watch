@@ -67,11 +67,11 @@ static inline void gfx_set_pixel(struct surface *surf, int x, int y, int value)
 void gfx_init_surface(struct surface *surf, struct surface *parent, int x0, int y0, int w, int h);
 void gfx_box(struct surface *surf, int x0, int y0, int x1, int y1, int value);
 void gfx_line(struct surface *surf, int x0, int y0, int x1, int y1, int value);
-void gfx_text(struct surface *surf, const struct font *font, uint8_t x, uint8_t y, const char *str);
-void gfx_centered_text(struct surface *surf, const struct font *font, uint8_t y, const char *str);
+void gfx_text(struct surface *surf, const struct font *font, uint8_t x, uint8_t y, const char *str, int value);
+void gfx_centered_text(struct surface *surf, const struct font *font, uint8_t y, const char *str, int value);
 int gfx_text_width(const struct font *font, const char *str);
 void gfx_clear(struct surface *surf, int value);
-void gfx_set_clip (struct surface *surf, int x0, int y0, int x1, int y1);
+void gfx_set_clip(struct surface *surf, int x0, int y0, int x1, int y1);
 void gfx_reset_clip (struct surface *surf);
 void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value);
 void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value);
