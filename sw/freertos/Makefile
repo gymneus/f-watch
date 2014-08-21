@@ -163,6 +163,7 @@ src/apps/widgets/status_bar.c \
 src/apps/application.c \
 src/apps/clock.c \
 src/apps/menu.c \
+src/apps/menu_struct.c \
 src/main.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c

@@ -25,6 +25,7 @@
  */
 
 #include "menu.h"
+#include "menu_struct.h"
 #include "clock.h"
 #include "widgets/status_bar.h"
 
@@ -37,15 +38,25 @@ static void menu_screen_redraw(struct ui_widget *w)
     int i;
 
     gfx_clear(&w->dc, 0);
-    for(i = 0; i < 5; ++i)
+    for(i = 0; i < get_length(&main_menu); ++i)
     {
         if(i == selected_item) {
             gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
                     127, (i + 1) * LINE_HEIGHT, 1);
         }
 
-        gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
-                 i * LINE_HEIGHT, "Application", i != selected_item);
+        menu_entry *ent = &main_menu.entries[i];
+        if(ent->type == APP) {
+            application *a = ent->data.app;
+
+            gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
+                     i * LINE_HEIGHT, a->name, i != selected_item);
+        } else if(ent->type == SUBMENU) {
+            menu_list *l = ent->data.submenu;
+
+            gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
+                     i * LINE_HEIGHT, l->name, i != selected_item);
+        }
     }
 }
 
