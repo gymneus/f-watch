@@ -43,10 +43,10 @@ static void digital_watch_redraw(struct ui_widget *w)
     sprintf(buf,"%02d:%02d", h, m);
 
     gfx_clear(&w->dc, 0);
-    gfx_text(&w->dc, &font_helv38b, 0, 0, buf);
+    gfx_text(&w->dc, &font_helv38b, 0, 0, buf, 1);
 
     sprintf(buf,"%02d.%01d", c * 12 / 10, (c * 12) % 10);
-    gfx_text(&w->dc, &font_helv22b, 84, 14, buf);
+    gfx_text(&w->dc, &font_helv22b, 84, 14, buf, 1);
 }
 
 static void digital_watch_event(struct ui_widget *w, const struct event *evt)
