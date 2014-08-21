@@ -30,6 +30,7 @@
 #include "widgets/status_bar.h"
 
 static int selected_item = 0;
+static int menu_size = 0;
 
 // Store states to navigate between menus
 static menu_list *menu_stack[8] = { &main_menu, NULL, };
@@ -42,7 +43,7 @@ static void menu_screen_redraw(struct ui_widget *w)
     int i;
 
     gfx_clear(&w->dc, 0);
-    for(i = 0; i < get_length(&main_menu); ++i)
+    for(i = 0; i < menu_size; ++i)
     {
         if(i == selected_item) {
             gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
@@ -68,7 +69,7 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 {
     if(evt->type == BUTTON_PRESSED) {
         if(evt->data.button == BUT_BR) {
-            if(selected_item < get_length(*current_menu)) {
+            if(selected_item < menu_size - 1) {
                 ++selected_item;
                 w->flags |= WF_DIRTY;
             }
@@ -106,10 +107,12 @@ static void run(menu_entry *entry) {
         entry->data.app->main(NULL);
     } else if(entry->type == SUBMENU) {
         selected_item = 0;
+        menu_size = 0;
         // keep the operation separate to avoid crashes
         // when an interrupt goes off between the two following lines
         *(current_menu + 1) = entry->data.submenu;
         ++current_menu;
+        menu_size = get_menu_size(*current_menu);
     }
 
     menu_ui_init();
@@ -119,8 +122,10 @@ static void go_back() {
     if(current_menu == menu_stack) {
         clock.main(NULL);
     } else {
-        --current_menu;
+        menu_size = 0;
         selected_item = 0;
+        --current_menu;
+        menu_size = get_menu_size(*current_menu);
     }
 
     menu_ui_init();
@@ -130,7 +135,10 @@ void menu_main(void* params) {
     (void)(params);  // suppress unused parameter warning
     struct event evt;
 
-    run(&clock);
+    menu_size = get_menu_size(*current_menu);
+
+    clock.main(NULL);
+    menu_ui_init();
 
     // Once it is deactivated - display the menu
     while(1) {
