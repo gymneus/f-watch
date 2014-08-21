@@ -33,18 +33,33 @@ static int selected_item = 0;
 static void menu_screen_redraw(struct ui_widget *w)
 {
     const int LINE_HEIGHT = 17;
+    const int LEFT_MARGIN = 17;
     int i;
 
     gfx_clear(&w->dc, 0);
     for(i = 0; i < 5; ++i)
-        gfx_text(&w->dc, &font_helv17, 15, i * LINE_HEIGHT, "Application");
+    {
+        if(i == selected_item) {
+            gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
+                    127, (i + 1) * LINE_HEIGHT, 1);
+        }
+
+        gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
+                 i * LINE_HEIGHT, "Application", i != selected_item);
+    }
 }
 
 static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 {
-    // TODO change the selected item
-    (void)(w);
-    (void)(evt);
+    if(evt->type == BUTTON_PRESSED) {
+        if(evt->data.button == BUT_BL) {
+            ++selected_item;
+            w->flags |= WF_DIRTY;
+        } else if(evt->data.button == BUT_BR) {
+            --selected_item;
+            w->flags |= WF_DIRTY;
+        }
+    }
 }
 
 struct ui_widget menu_screen = {
@@ -79,19 +94,18 @@ void menu_main(void* params) {
 
     // Once it is deactivated - display the menu
     while(1) {
-        // TODO
         if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {
                 case BUTTON_PRESSED:
                     if(evt.data.button == BUT_TL)
                         run(&clock);    // return to the clock screen
+                    else
+                        ui_update(&evt);
                     break;
 
                 default:    // suppress warnings
-                    ui_update(&evt);
                     break;
             }
-
         }
     }
 }
