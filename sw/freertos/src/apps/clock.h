@@ -24,7 +24,12 @@
  * Clock application.
  */
 
+#ifndef CLOCK_H
+#define CLOCK_H
+
 #include "application.h"
 
-extern Application clock;
+extern application clock;
+
+#endif /* CLOCK_H */
 

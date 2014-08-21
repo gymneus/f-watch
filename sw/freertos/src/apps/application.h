@@ -51,14 +51,14 @@ typedef struct {
      * @params Optional parameters, dependendent on application.
      */
     void (*main)(void* params); 
-} Application;
+} application;
 
 /**
  * @brief Initializes the application task and event queue.
  * After that runs one as the main application.
  * @param app is the application to be run as the main one.
  */
-void startMain(Application* app);
+void startMain(application* app);
 
 #endif /* APPLICATION_H */
 

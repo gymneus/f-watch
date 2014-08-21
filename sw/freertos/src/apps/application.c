@@ -39,7 +39,7 @@
 
 xQueueHandle appQueue;
 
-void startMain(Application* app) {
+void startMain(application* app) {
     appQueue = xQueueCreate(APP_QUEUE_LEN, sizeof(struct event));
     if(!appQueue) {
         // TODO oops..

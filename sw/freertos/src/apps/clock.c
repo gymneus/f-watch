@@ -109,7 +109,7 @@ void clock_main(void* params) {
     }
 }
 
-Application clock = {
+application clock = {
     .name = "Clock",
     .main = clock_main
 };
