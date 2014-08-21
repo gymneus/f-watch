@@ -37,14 +37,25 @@ int get_length(const menu_list *menu) {
     return len;
 }
 
+menu_list sub_menu = {
+    "Submenu",
+    {
+        { APP, { .app = &clock } },
+        { APP, { .app = &clock } },
+        { APP, { .app = &clock } },
+        { END, { NULL } }
+    }
+};
+
 menu_list main_menu = {
     "Main menu",
     {
-       { APP, { &clock } },
-       { APP, { &clock } },
-       { APP, { &clock } },
-       { APP, { &clock } },
-       { END, { NULL } }
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { SUBMENU,   { .submenu = &sub_menu } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { END,       { NULL } }
     }
 };
 
