@@ -1,14 +1,22 @@
 
-
 SRCS=test_convert_files.c
-OBJS=$(SRCS:.c=.o)
-BIN=test_convert_files
+BINNAME=test_convert_files
 
 PREREQ_SRC.1=../watch_format/watch_file_format.c
-PREREQ_OBJ.1=$(notdir $(PREREQ_SRC.1:.c=.o))
-
 PREREQ_SRC.2=../watch_format/watch_file_gpx.c
-PREREQ_OBJ.2=$(notdir $(PREREQ_SRC.2:.c=.o))
+
+BUILDDIR=build
+OBJDIR=$(BUILDDIR)/obj
+PREREQDIR=$(BUILDDIR)/prereq
+BINDIR=$(BUILDDIR)/bin
+DIRLIST=$(BUILDDIR) $(OBJDIR) $(PREREQDIR) $(BINDIR)
+
+OBJS=$(addprefix $(OBJDIR)/, $(OBJFILES))
+OBJFILES=$(notdir $(SRCS:.c=.o))
+BIN=$(BINDIR)/$(BINNAME)
+
+PREREQ_OBJ.1=$(addprefix $(PREREQDIR)/, $(notdir $(PREREQ_SRC.1:.c=.o)))
+PREREQ_OBJ.2=$(addprefix $(PREREQDIR)/, $(notdir $(PREREQ_SRC.2:.c=.o)))
 
 PREREQ_SRCS=$(PREREQ_SRC.1) $(PREREQ_SRC.2)
 PREREQ_OBJS=$(PREREQ_OBJ.1) $(PREREQ_OBJ.2)
@@ -28,16 +36,18 @@ endif
 all: prerequis $(BIN)
 
 clean:
-	rm -rf $(BINS) $(OBJS)
+	rm -rf $(DIRLIST)
 
 prerequis:
-	$(COMPILER) $(CFLAGS) $(INCLUDES) -o $(PREREQ_OBJ.1) -c $(PREREQ_SRC.1)
-	$(COMPILER) $(CFLAGS) $(INCLUDES) -o $(PREREQ_OBJ.2) -c $(PREREQ_SRC.2)
+	mkdir -p $(DIRLIST)
 
-$(BIN): $(OBJS)
-	$(COMPILER) $(LDFLAGS) $(LIBS) -o $@ $^ $(PREREQ_OBJS)
+$(BIN): $(OBJS) $(PREREQ_OBJS)
+	$(COMPILER) $(LDFLAGS) $(LIBS) -o $@ $(OBJS) $(PREREQ_OBJS)
 
-%.o: %.c
+$(OBJDIR)/%.o: %.c
+	$(COMPILER) $(CFLAGS) $(INCLUDES) -o $@ -c $^
+
+$(PREREQDIR)/%.o:../watch_format/%.c
 	$(COMPILER) $(CFLAGS) $(INCLUDES) -o $@ -c $^
 
 printxavier:
