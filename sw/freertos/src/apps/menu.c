@@ -31,6 +31,10 @@
 
 static int selected_item = 0;
 
+// Store states to navigate between menus
+static menu_list *menu_stack[8] = { &main_menu, NULL, };
+static menu_list **current_menu = &menu_stack[0];
+
 static void menu_screen_redraw(struct ui_widget *w)
 {
     const int LINE_HEIGHT = 17;
@@ -45,7 +49,7 @@ static void menu_screen_redraw(struct ui_widget *w)
                     127, (i + 1) * LINE_HEIGHT, 1);
         }
 
-        menu_entry *ent = &main_menu.entries[i];
+        menu_entry *ent = &(*current_menu)->entries[i];
         if(ent->type == APP) {
             application *a = ent->data.app;
 
@@ -64,11 +68,15 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 {
     if(evt->type == BUTTON_PRESSED) {
         if(evt->data.button == BUT_BL) {
-            ++selected_item;
-            w->flags |= WF_DIRTY;
+            if(selected_item < get_length(*current_menu)) {
+                ++selected_item;
+                w->flags |= WF_DIRTY;
+            }
         } else if(evt->data.button == BUT_BR) {
-            --selected_item;
-            w->flags |= WF_DIRTY;
+            if(selected_item > 0) {
+                --selected_item;
+                w->flags |= WF_DIRTY;
+            }
         }
     }
 }
@@ -81,11 +89,7 @@ struct ui_widget menu_screen = {
     WF_ACTIVE | WF_VISIBLE
 };
 
-static void run(application *app) {
-    // Run the application
-    app->main(NULL);
-
-    // Reinitialize user interface when finished
+static void menu_ui_init() {
     ui_clear();
 
     ui_init_widget(&menu_screen);
@@ -95,6 +99,31 @@ static void run(application *app) {
     ui_add_widget(&status_bar);
 
     ui_update(NULL);
+}
+
+static void run(menu_entry *entry) {
+    if(entry->type == APP) {
+        entry->data.app->main(NULL);
+    } else if(entry->type == SUBMENU) {
+        selected_item = 0;
+        // keep the operation separate to avoid crashes
+        // when an interrupt goes off between the two following lines
+        *(current_menu + 1) = entry->data.submenu;
+        ++current_menu;
+    }
+
+    menu_ui_init();
+}
+
+static void go_back() {
+    if(current_menu == menu_stack) {
+        clock.main(NULL);
+    } else {
+        --current_menu;
+        selected_item = 0;
+    }
+
+    menu_ui_init();
 }
 
 void menu_main(void* params) {
@@ -109,7 +138,10 @@ void menu_main(void* params) {
             switch(evt.type) {
                 case BUTTON_PRESSED:
                     if(evt.data.button == BUT_TL)
-                        run(&clock);    // return to the clock screen
+                        go_back();
+                    else if(evt.data.button == BUT_TR)
+                        // run the selected application or submenu
+                        run(&(*current_menu)->entries[selected_item]);
                     else
                         ui_update(&evt);
                     break;
