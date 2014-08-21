@@ -32,7 +32,7 @@
 static int selected_item = 0;
 static int menu_size = 0;
 
-// Store states to navigate between menus
+// store menu states to navigate between menus
 static menu_list *menu_stack[8] = { &main_menu, NULL, };
 static menu_list **current_menu = &menu_stack[0];
 
@@ -45,11 +45,15 @@ static void menu_screen_redraw(struct ui_widget *w)
     gfx_clear(&w->dc, 0);
     for(i = 0; i < menu_size; ++i)
     {
+        // draw a white background for the selected entry
         if(i == selected_item) {
             gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
                     127, (i + 1) * LINE_HEIGHT, 1);
         }
 
+        // TODO draw icon
+
+        // display label (either app or submenu)
         menu_entry *ent = &(*current_menu)->entries[i];
         if(ent->type == APP) {
             application *a = ent->data.app;
@@ -67,6 +71,7 @@ static void menu_screen_redraw(struct ui_widget *w)
 
 static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 {
+    // scroll through the menu if a button was pressed
     if(evt->type == BUTTON_PRESSED) {
         if(evt->data.button == BUT_BR) {
             if(selected_item < menu_size - 1) {
@@ -137,6 +142,7 @@ void menu_main(void* params) {
 
     menu_size = get_menu_size(*current_menu);
 
+    // run clock as the the initial application
     clock.main(NULL);
     menu_ui_init();
 
