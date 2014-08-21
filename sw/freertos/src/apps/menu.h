@@ -24,7 +24,12 @@
  * Menu application.
  */
 
+#ifndef MENU_H
+#define MENU_H
+
 #include "application.h"
 
-extern Application menu;
+extern application menu;
+
+#endif /* MENU_H */
 

@@ -70,7 +70,7 @@ struct ui_widget menu_screen = {
     WF_ACTIVE | WF_VISIBLE
 };
 
-static void run(Application *app) {
+static void run(application *app) {
     // Run the application
     app->main(NULL);
 
@@ -110,7 +110,7 @@ void menu_main(void* params) {
     }
 }
 
-Application menu = {
+application menu = {
     .name = "Menu",
     .main = menu_main
 };
