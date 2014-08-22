@@ -80,23 +80,9 @@ int main()
         int i;
 
         for (;;) {
-                for (i = 0; i < 3000000; i++) {
-                        GPIO_PinInGet(gpioPortA, 1) ?
-                                GPIO_PinOutSet(gpioPortE, 11) :
-                                GPIO_PinOutClear(gpioPortE, 11);
-                }
-                usbdbg_puts("\r\nOFF\r\n");
-                gps_on_off_pulse();
-
-
-                for (i = 0; i < 3000000; i++) {
-                        GPIO_PinInGet(gpioPortA, 1) ?
-                                GPIO_PinOutSet(gpioPortE, 11) :
-                                GPIO_PinOutClear(gpioPortE, 11);
-                }
-                usbdbg_puts("\r\nON\r\n");
-                gps_on_off_pulse();
-
+                GPIO_PinInGet(gpioPortA, 1) ?
+                        GPIO_PinOutSet(gpioPortE, 11) :
+                        GPIO_PinOutClear(gpioPortE, 11);
         }
 
         return 0;
@@ -104,22 +90,19 @@ int main()
 
 static void gps_init()
 {
-        /* GPS reset pin */
+        int i;
+        /* Init GPS control pins & delay before ON_OFF pulse */
         USB->ROUTE &= ~(USB_ROUTE_VBUSENPEN);
         GPIO_PinModeSet(gpioPortF, 5, gpioModePushPull, 1);
-
-        /* GPS WAKUP pin */
         GPIO_PinModeSet(gpioPortA, 1, gpioModeInput, 0);
-
-        /* ON_OFF _double_ pulse */
         GPIO_PinModeSet(gpioPortE, 13, gpioModePushPull, 0);
-        gps_on_off_pulse();
+        for (i = 0; i < 100000000; i++)
+                ;
         gps_on_off_pulse();
 
         /* LEUART0 config */
         LEUART_Init_TypeDef init = LEUART_INIT_DEFAULT;
 
-        /* To avoid false start, configure output as high */
         GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 1);
         GPIO_PinModeSet(gpioPortE, 15, gpioModeInput, 0);
 
@@ -151,6 +134,7 @@ static void gps_init()
 static void gps_on_off_pulse()
 {
         int i;
+
         /* Pulse */
         GPIO_PinOutSet(gpioPortE, 13);
         GPIO_PinOutSet(gpioPortE, 12);
