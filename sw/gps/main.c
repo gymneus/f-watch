@@ -47,7 +47,7 @@
 #include "usbdbg.h"
 
 #define RXBUFSIZE 8
-volatile char rxbuf[RXBUFSIZE];
+static char rxbuf[RXBUFSIZE];
 volatile char idx = 0;
 
 static void gps_init();
@@ -146,7 +146,6 @@ static void gps_init()
         NVIC_EnableIRQ(LEUART0_IRQn);
 
         LEUART_Enable(LEUART0, leuartEnable);
-
 }
 
 static void gps_on_off_pulse()

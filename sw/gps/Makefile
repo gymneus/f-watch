@@ -15,7 +15,7 @@ uniq = $(strip $(if $1,$(firstword $1) \
 
 DEVICE = EFM32GG330F1024
 PROJECTNAME = gps
-OOCD_IFACE ?= stlink-v2-1
+OOCD_IFACE ?= stlink-v2
 
 OBJ_DIR = build
 EXE_DIR = exe

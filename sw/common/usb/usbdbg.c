@@ -111,12 +111,14 @@ void usbdbg_init()
  *****************************************************************************/
 int usbdbg_puts(const char *s)
 {
-        char buf[USBDBG_BULK_EP_SIZE];
         int cnt = 0;
+        static char __attribute__((aligned(4))) buf[USBDBG_BULK_EP_SIZE];
 
         /* Fill buffer */
         while (*s) {
-                if ((*s == EOF) || (cnt == USBDBG_BULK_EP_SIZE-1))
+                //if ((*s == EOF) || (cnt == USBDBG_BULK_EP_SIZE-1))
+                //        return EOF;
+                if (cnt == USBDBG_BULK_EP_SIZE-1)
                         return EOF;
                 buf[cnt++] = *s;
                 s++;
