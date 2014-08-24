@@ -38,7 +38,7 @@ encoding utf-8
 Sheet 3 4
 Title "Freewatch Peripherals & Sensors"
 Date ""
-Rev "v1"
+Rev "v2"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -1256,4 +1256,15 @@ NoConn ~ 4300 2700
 Wire Wire Line
 	10150 2800 10050 2800
 Connection ~ 10050 2800
+$Comp
+L MAX2659 U?
+U 1 1 53F8CA7E
+P 950 2850
+F 0 "U?" H 1550 3000 60  0000 C CNN
+F 1 "MAX2659" H 1550 2300 60  0000 C CNN
+F 2 "" H 950 2850 60  0000 C CNN
+F 3 "" H 950 2850 60  0000 C CNN
+	1    950  2850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

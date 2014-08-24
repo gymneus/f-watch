@@ -38,7 +38,7 @@ encoding utf-8
 Sheet 2 4
 Title "Freewatch USB & Power supply"
 Date ""
-Rev "v1"
+Rev "v2"
 Comp ""
 Comment1 ""
 Comment2 ""
