@@ -1,0 +1,3 @@
+Test program for nmealib.
+
+Tested with UP501 GPS module plugged into /dev/ttyUSB0.
