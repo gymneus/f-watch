@@ -93,7 +93,7 @@ SIZE    = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-size$(QUOTE)
 # -MF  : Specify a file to write the dependencies to.
 DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 
-#
+
 # Add -Wa,-ahld=$(LST_DIR)/$(@F:.o=.lst) to CFLAGS to produce assembly list files
 #
 override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
@@ -110,16 +110,16 @@ override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 
 -mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
  -Wl,--gc-sections
 
-LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
+LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 
 INCLUDEPATHS += \
--I../src \
--I../src \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common/emlib/inc \
 -I../common/usb \
 -I../common/usb/inc \
+-Igps/ \
+-Igps/nmealib/include
 
 ####################################################################
 # Files                                                            #
@@ -144,7 +144,18 @@ C_SRC +=  \
 ../common/usb/src/em_usbdep.c \
 ../common/usb/src/em_usbdint.c \
 ../common/usb/src/em_usbtimer.c \
-../src/main.c
+gps/nmealib/src/context.c \
+gps/nmealib/src/generate.c \
+gps/nmealib/src/generator.c \
+gps/nmealib/src/gmath.c \
+gps/nmealib/src/info.c \
+gps/nmealib/src/parse.c \
+gps/nmealib/src/parser.c \
+gps/nmealib/src/sentence.c \
+gps/nmealib/src/time.c \
+gps/nmealib/src/tok.c \
+gps/gps.c \
+main.c
 
 s_SRC += 
 
