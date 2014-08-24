@@ -38,7 +38,7 @@ encoding utf-8
 Sheet 4 4
 Title "Freewatch MCU & Display"
 Date ""
-Rev "v1"
+Rev "v2"
 Comp ""
 Comment1 ""
 Comment2 ""
