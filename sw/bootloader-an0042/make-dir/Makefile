@@ -213,10 +213,10 @@ debug:      debug_bootloader
 
 release:      release_bootloader
 
-debug_bootloader:    CFLAGS += -DDEBUG -Os -g3 -ggdb
+debug_bootloader:    CFLAGS += -DDEBUG -g3 -ggdb
 debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 
-release_bootloader:  CFLAGS += -DNDEBUG -Os
+release_bootloader:  CFLAGS += -DNDEBUG
 release_bootloader:  $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 
 # Create objects from C SRC files
