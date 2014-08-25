@@ -47,6 +47,7 @@
 
 #include "usbdbg.h"
 
+#include "gps.h"
 
 int main()
 {
@@ -62,40 +63,28 @@ int main()
         usbdbg_puts("init done!\r\n");
 
         int i, one = 1;
-        static char tmp[64];
-        static char c[2];
-        static char cmd[64];
+        static char tmp[128];
+        double lat, lon, elv;
+        double spd, dir;
 
         for (;;) {
                 GPIO_PinInGet(gpioPortA, 1) ?
                         GPIO_PinOutSet(gpioPortE, 11) :
                         GPIO_PinOutClear(gpioPortE, 11);
 
-                LEUART_Tx(LEUART0, 0x54);
-//                if (one) {
-//                        one = 0;
-//                        for (i = 0; i < 20000000; i++)
-//                                ;
-////                        usbdbg_puts("\r\n\r\n\r\n\r\n"); //strcpy(tmp, "$PSRF105,1*");
-////                        sprintf(c, "%02X", nmea_crc(tmp));
-////                        strcat(tmp, c);
-////                        strcat(tmp, "\r\n");
-////                        usbdbg_puts(tmp);
-////                        gps_puts(tmp);
-////                        usbdbg_puts("\r\n\r\n\r\n\r\n");
-//                        /* Send init command */
-////                        strcpy(tmp, "$PSRF104,46.22954,6.06156,100,0,55020,1807,12,1*");
-//                        strcpy(tmp, "$PSRF125*");
-//                        sprintf(c, "%02X", nmea_crc(tmp));
-//                        strcpy(cmd, tmp);
-//                        strcat(cmd, c);
-//                        strcat(cmd, "\r\n");
-//                        if (gps_puts(cmd)) {
-//                                usbdbg_puts("\r\n\r\n\r\n\r\n");
-//                                usbdbg_puts(cmd);
-//                                usbdbg_puts("\r\n\r\n\r\n\r\n");
-//                        }
-//                }
+                gps_get_coord(&lat, &lon, &elv);
+                gps_get_speed(&spd);
+                gps_get_direction(&dir);
+
+                sprintf(tmp, "%d: ", gps_fixed());
+                sprintf(tmp + strlen(tmp), "%4.4f / %4.4f / %2.3f / ",
+                                lat, lon, elv);
+                sprintf(tmp + strlen(tmp), "%3.2f / %3.2f", spd, dir);
+                sprintf(tmp + strlen(tmp), "\r\n");
+                usbdbg_puts(tmp);
+
+                for (i = 0; i < 1000000; i++)
+                        ;
         }
 
         return 0;

@@ -50,26 +50,22 @@
 
 #define GPS_OK_TO_SEND "$PSRF150,1*3E\r\n"
 
-#define RXBUFSIZE 16
+#define RXBUFSIZE 128
 static char rxbuf[RXBUFSIZE];
-volatile char idx = 0;
+volatile int idx = 0;
 
-volatile char gps_rdy = 0;
+static nmeaINFO gps_info;
+static nmeaPARSER gps_parser;
 
 void LEUART0_IRQHandler()
 {
         if (LEUART0->IF & LEUART_IF_RXDATAV) {
                 rxbuf[idx++] = LEUART_Rx(LEUART0);
-                if ((gps_rdy == 0) && (strncmp(rxbuf, GPS_OK_TO_SEND,
-                                                strlen(GPS_OK_TO_SEND)) == 0)) {
-                        gps_rdy = 1;
-                        usbdbg_puts("GPS ready to send!\r\n");
+                if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
+                        rxbuf[idx] = '\0';
                         idx = 0;
-                }
-
-                if ((gps_rdy) && (idx == RXBUFSIZE)) {
-                        idx = 0;
-                        usbdbg_puts(rxbuf);
+                        nmea_parse(&gps_parser, rxbuf, strlen(rxbuf),
+                                        &gps_info);
                 }
         }
 }
@@ -116,6 +112,9 @@ void gps_init()
 
         LEUART_Enable(LEUART0, leuartEnable);
 
+        /* NMEA parser & info structure init */
+        nmea_zero_INFO(&gps_info);
+        nmea_parser_init(&gps_parser);
 }
 
 void gps_on_off_pulse()
@@ -164,5 +163,37 @@ int gps_nmea_crc(const char *nmeastr)
                 chksum ^= (int)buf[i];
 
         return chksum;
+}
+
+int gps_fixed()
+{
+        return gps_info.sig;
+}
+
+void gps_get_utc(int *yr, int *mon, int *day, int *hr, int *min, int *sec)
+{
+        *yr  = 1900 + gps_info.utc.year;
+        *mon = 1 + gps_info.utc.mon;
+        *day = gps_info.utc.day;
+        *hr  = gps_info.utc.hour;
+        *min = gps_info.utc.min;
+        *sec = gps_info.utc.sec;
+}
+
+void gps_get_coord(double *lat, double *lon, double *elv)
+{
+        *lat = gps_info.lat;
+        *lon = gps_info.lon;
+        *elv = gps_info.elv;
+}
+
+void gps_get_speed(double *spd)
+{
+        *spd = gps_info.speed;
+}
+
+void gps_get_direction(double *dir)
+{
+        *dir = gps_info.direction;
 }
 

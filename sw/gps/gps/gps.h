@@ -47,6 +47,10 @@ void    gps_on_off_pulse();
 void    gps_reset(int val);
 int     gps_puts(char *s);
 int     gps_nmea_crc(const char *nmeastr);
-
+int     gps_fixed();
+void    gps_get_utc(int *yr, int *mon, int *day, int *hr, int *min, int *sec);
+void    gps_get_coord(double *lat, double *lon, double *elv);
+void    gps_get_speed(double *spd);
+void    gps_get_direction(double *dir);
 
 #endif // __GPS_H_
