@@ -55,6 +55,18 @@ menu_list main_menu = {
        { SUBMENU,   { .submenu = &sub_menu } },
        { APP,       { .app = &clock } },
        { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { SUBMENU,   { .submenu = &sub_menu } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
+       { SUBMENU,   { .submenu = &sub_menu } },
+       { SUBMENU,   { .submenu = &sub_menu } },
+       { SUBMENU,   { .submenu = &sub_menu } },
+       { APP,       { .app = &clock } },
+       { APP,       { .app = &clock } },
        { END,       { NULL } }
     }
 };
