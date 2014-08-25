@@ -30,7 +30,13 @@
 #include "widgets/status_bar.h"
 
 static int selected_item = 0;
+static int offset = 0;
 static int menu_size = 0;
+
+#define LINE_HEIGHT 17
+#define LEFT_MARGIN 17
+#define MENU_SCREEN_HEIGHT 107
+#define MAX_ENTRIES (MENU_SCREEN_HEIGHT / LINE_HEIGHT)
 
 // store menu states to navigate between menus
 static menu_list *menu_stack[8] = { &main_menu, NULL, };
@@ -38,15 +44,16 @@ static menu_list **current_menu = &menu_stack[0];
 
 static void menu_screen_redraw(struct ui_widget *w)
 {
-    const int LINE_HEIGHT = 17;
-    const int LEFT_MARGIN = 17;
     int i;
+    int menu_limit = (menu_size < MAX_ENTRIES ? menu_size : MAX_ENTRIES);
 
     gfx_clear(&w->dc, 0);
-    for(i = 0; i < menu_size; ++i)
+    for(i = 0; i < menu_limit; ++i)
     {
+        int pos = offset + i;
+
         // draw a white background for the selected entry
-        if(i == selected_item) {
+        if(pos == selected_item) {
             gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
                     127, (i + 1) * LINE_HEIGHT, 1);
         }
@@ -54,7 +61,7 @@ static void menu_screen_redraw(struct ui_widget *w)
         // TODO draw icon
 
         // display label (either app or submenu)
-        menu_entry *ent = &(*current_menu)->entries[i];
+        menu_entry *ent = &(*current_menu)->entries[pos];
         if(ent->type == APP) {
             application *a = ent->data.app;
 
@@ -76,11 +83,19 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
         if(evt->data.button == BUT_BR) {
             if(selected_item < menu_size - 1) {
                 ++selected_item;
+
+                if(selected_item >= MAX_ENTRIES)
+                    offset = selected_item - MAX_ENTRIES + 1;
+
                 w->flags |= WF_DIRTY;
             }
         } else if(evt->data.button == BUT_BL) {
             if(selected_item > 0) {
                 --selected_item;
+
+                if(selected_item < offset)
+                    offset = selected_item;
+
                 w->flags |= WF_DIRTY;
             }
         }
@@ -90,7 +105,7 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 struct ui_widget menu_screen = {
     menu_screen_redraw,
     menu_screen_event,
-    { 0, 20, 127, 107 },
+    { 0, 20, 127, 20 + MENU_SCREEN_HEIGHT },
     0,
     WF_ACTIVE | WF_VISIBLE
 };
@@ -112,6 +127,7 @@ static void run(menu_entry *entry) {
         entry->data.app->main(NULL);
     } else if(entry->type == SUBMENU) {
         selected_item = 0;
+        offset = 0;
         menu_size = 0;
         // keep the operation separate to avoid crashes
         // when an interrupt goes off between the two following lines
@@ -129,6 +145,7 @@ static void go_back() {
     } else {
         menu_size = 0;
         selected_item = 0;
+        offset = 0;
         --current_menu;
         menu_size = get_menu_size(*current_menu);
     }
