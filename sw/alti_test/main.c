@@ -50,6 +50,8 @@ int main(void)
         double temp = 0;
         double pressure = 0;
         double altitude = 0;
+        double pressure_calc;
+        double pressure_comp;
 
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -70,25 +72,40 @@ int main(void)
         text(&font_helv11, 5, 10, str);
         lcd_update();
 
+        err = alti_get_temp_pressure(&temp, &pressure, true);
+        err = alti_altitude2mbar(&pressure_calc, 440);
+        pressure_comp = pressure - pressure_calc;
+
         while(1)
         {
 
                 err = alti_get_temp_pressure(&temp, &pressure, true);
                 sprintf(str, "temp: %f C", temp);
                 text(&font_helv11, 5, 20, str);
-                sprintf(str, "pressure: %f mbar", pressure);
+                sprintf(str, "pressure: %5.2f mbar", pressure);
                 text(&font_helv11, 5, 30, str);
 
                 err = alti_mbar2altitude(pressure, &altitude);
-                sprintf(str, "altitude: %f m", altitude);
+                sprintf(str, "altitude: %4.2f m", altitude);
                 text(&font_helv11, 5, 40, str);
+
+
+                sprintf(str, "p calc: %5.2f mbar", pressure_calc);
+                text(&font_helv11, 5, 60, str);
+
+                sprintf(str, "p comp: %5.2f mbar", pressure_comp);
+                text(&font_helv11, 5, 70, str);
+
+                err = alti_mbar2altitude(pressure-pressure_comp, &altitude);
+                sprintf(str, "alti comp: %4.2f m", altitude);
+                text(&font_helv11, 5, 50, str);
 
                 //sprintf(str, "err: 0x%02x", err);
                 //text(&font_helv11, 5, 50, str);
                 lcd_update();
                 //Delay(1000);
-                box(5, 10, 128, 50, 0);
-                //lcd_clear();
+                //box(5, 10, 128, 50, 0);
+                lcd_clear();
         }
 
 

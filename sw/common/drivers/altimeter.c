@@ -281,8 +281,8 @@ uint8_t alti_get_temp_pressure(double* temp, double* pressure, bool filter)
  * source: Intersema (Meas-spec), AN501 - Using MS5534 for Altimeters and Barometers
  *
  * @param pressure : Pressure in millibars.
- * @param altitude : Altitude in merters.
- * @return i2c error code or crc error (-1), 0 if no errors.
+ * @param altitude : Altitude in meters.
+ * @return coefficient index.
  */
 uint8_t alti_mbar2altitude(double pressure, double* altitude)
 {
@@ -297,6 +297,36 @@ uint8_t alti_mbar2altitude(double pressure, double* altitude)
         }
 
         *altitude = p2a_coeff[i][3] - (pressure*10 - p2a_coeff[i][0]) * p2a_coeff[i][2]/pow(2,11);
+
+        return i;
+}
+
+
+/**
+ * @brief Helper function to convert from altitude to mbar.
+ *
+ * Uses piecewise interpolation of pressure to altitude conversion formula (troposhere model)
+ * h = 288.15/0.065 * (1 - (p/1013.25)^(0.065*287.052/9.81))
+ * source: Intersema (Meas-spec), AN501 - Using MS5534 for Altimeters and Barometers
+ *
+ * @param pressure : Pressure in millibars.
+ * @param altitude : Altitude in meters.
+ * @return coefficient index.
+ */
+uint8_t alti_altitude2mbar(double* pressure, double altitude)
+{
+        uint8_t i;
+
+        for(i=0; i<P2A_COEFF_SIZE; i++)
+        {
+                if(altitude > p2a_coeff[i][3])
+                {
+                        i--;
+                        break;
+                }
+        }
+
+        *pressure = (p2a_coeff[i][0] + (p2a_coeff[i][3] - altitude) * pow(2,11) / p2a_coeff[i][2]) / 10;
 
         return i;
 }
