@@ -83,10 +83,23 @@ uint8_t alti_get_temp_pressure(double* temp, double* pressure, bool filter);
  * source: Intersema (Meas-spec), AN501 - Using MS5534 for Altimeters and Barometers
  *
  * @param pressure : Pressure in millibars.
- * @param altitude : Altitude in merters.
- * @return i2c error code or crc error (-1), 0 if no errors.
+ * @param altitude : Altitude in meters.
+ * @return coefficient index.
  */
 uint8_t alti_mbar2altitude(double pressure, double* altitude);
+
+/**
+ * @brief Helper function to convert from altitude to mbar.
+ *
+ * Uses piecewise interpolation of pressure to altitude conversion formula (troposhere model)
+ * h = 288.15/0.065 * (1 - (p/1013.25)^(0.065*287.052/9.81))
+ * source: Intersema (Meas-spec), AN501 - Using MS5534 for Altimeters and Barometers
+ *
+ * @param pressure : Pressure in millibars.
+ * @param altitude : Altitude in meters.
+ * @return coefficient index.
+ */
+uint8_t alti_altitude2mbar(double* pressure, double altitude);
 
 
 #endif /* ALTIMETER_H */
