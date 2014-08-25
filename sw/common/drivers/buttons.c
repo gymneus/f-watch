@@ -25,8 +25,8 @@
  */
 
 #include "buttons.h"
-#include "irq_dispatcher.h"
 
+__attribute__((weak))
 void GPIO_EVEN_IRQHandler(void)
 {
     uint32_t iflags;
@@ -36,10 +36,9 @@ void GPIO_EVEN_IRQHandler(void)
 
     // Clean only even interrupts
     GPIO_IntClear(iflags);
-
-    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
 }
 
+__attribute__((weak))
 void GPIO_ODD_IRQHandler(void)
 {
     uint32_t iflags;
@@ -49,8 +48,6 @@ void GPIO_ODD_IRQHandler(void)
 
     // Clean only odd interrupts
     GPIO_IntClear(iflags);
-
-    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
 }
 
 void buttons_init(void)

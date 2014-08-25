@@ -25,12 +25,12 @@
  * hardware interrupts and operating system.
  */
 
-#include "irq_dispatcher.h"
-
 #include <apps/application.h>
 #include <event.h>
 
-portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
+#include <em_gpio.h>
+
+static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 {
     // We have not woken a task at the start of the ISR
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
@@ -50,8 +50,34 @@ portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
     }
 
     // Post the byte to the back of the queue
-    xQueueSendToBackFromISR( appQueue, &evt, &xHigherPriorityTaskWoken );
+    xQueueSendToBackFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
 
     return xHigherPriorityTaskWoken;
+}
+
+void GPIO_EVEN_IRQHandler(void)
+{
+    uint32_t iflags;
+
+    // Get all even interrupts
+    iflags = GPIO_IntGetEnabled() & 0x00005555;
+
+    // Clean only even interrupts
+    GPIO_IntClear(iflags);
+
+    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
+}
+
+void GPIO_ODD_IRQHandler(void)
+{
+    uint32_t iflags;
+
+    // Get all odd interrupts
+    iflags = GPIO_IntGetEnabled() & 0x0000AAAA;
+
+    // Clean only odd interrupts
+    GPIO_IntClear(iflags);
+
+    portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
 }
 
