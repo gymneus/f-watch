@@ -112,6 +112,7 @@ LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
 INCLUDEPATHS += \
 -Isrc \
 -IFreeRTOS/Source/include \
+-I../bitmaps \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common \
@@ -123,6 +124,7 @@ INCLUDEPATHS += \
 ####################################################################
 
 C_SRC +=  \
+../bitmaps/bitmaps.c \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_burtc.c \
