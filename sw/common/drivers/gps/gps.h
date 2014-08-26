@@ -39,6 +39,21 @@
 #ifndef __GPS_H_
 #define __GPS_H_
 
+struct gps_coord {
+        double lat;
+        double lon;
+        double elev;
+};
+
+struct gps_utc {
+        int yr;
+        int mon;
+        int day;
+        int hr;
+        int min;
+        int sec;
+};
+
 /*=====================*/
 /* Function prototypes */
 /*=====================*/
@@ -48,8 +63,8 @@ void    gps_reset(int val);
 int     gps_puts(char *s);
 int     gps_nmea_crc(const char *nmeastr);
 int     gps_fixed();
-void    gps_get_utc(int *yr, int *mon, int *day, int *hr, int *min, int *sec);
-void    gps_get_coord(double *lat, double *lon, double *elv);
+void    gps_get_utc(struct gps_utc *utc);
+void    gps_get_coord(struct gps_coord *coord);
 void    gps_get_speed(double *spd);
 void    gps_get_direction(double *dir);
 

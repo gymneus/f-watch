@@ -170,21 +170,21 @@ int gps_fixed()
         return gps_info.sig;
 }
 
-void gps_get_utc(int *yr, int *mon, int *day, int *hr, int *min, int *sec)
+void gps_get_utc(struct gps_utc *utc)
 {
-        *yr  = 1900 + gps_info.utc.year;
-        *mon = 1 + gps_info.utc.mon;
-        *day = gps_info.utc.day;
-        *hr  = gps_info.utc.hour;
-        *min = gps_info.utc.min;
-        *sec = gps_info.utc.sec;
+        utc->yr  = 1900 + gps_info.utc.year;
+        utc->mon = 1 + gps_info.utc.mon;
+        utc->day = gps_info.utc.day;
+        utc->hr  = gps_info.utc.hour;
+        utc->min = gps_info.utc.min;
+        utc->sec = gps_info.utc.sec;
 }
 
-void gps_get_coord(double *lat, double *lon, double *elv)
+void gps_get_coord(struct gps_coord *coord)
 {
-        *lat = gps_info.lat;
-        *lon = gps_info.lon;
-        *elv = gps_info.elv;
+        coord->lat  = gps_info.lat;
+        coord->lon  = gps_info.lon;
+        coord->elev = gps_info.elv;
 }
 
 void gps_get_speed(double *spd)
