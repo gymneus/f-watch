@@ -57,12 +57,16 @@ static int i = 0;
 
 static void gps_redraw(struct ui_widget *w)
 {
-        char buf[4];
+        char buf[16];
+        struct gps_utc utc;
 
-        i+=2;
+        gps_get_utc(&utc);
+
         gfx_clear(&w->dc, 0);
-        sprintf(buf, "%d", i);
-        gfx_text(&w->dc, &font_helv38b, 0, 0, buf, 1);
+        sprintf(buf, "%d:%d:%d", utc.hr,
+                                 utc.min,
+                                 utc.sec);
+        gfx_text(&w->dc, &font_helv17b, 0, 0, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)

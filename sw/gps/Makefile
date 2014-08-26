@@ -163,7 +163,16 @@ C_SRC +=  \
 ../common/gfx/graphics.c \
 ../common/gfx/ui.c \
 ../common/gfx/font_helv11.c \
+../common/gfx/font_helv17.c \
+../common/gfx/font_helv17b.c \
+../common/gfx/font_helv22b.c \
+../common/gfx/font_helv29.c \
 ../common/gfx/font_helv38b.c \
+../common/gfx/font_luct38.c \
+../common/gfx/font_xm16x25b.c \
+../common/gfx/font_xm4x5.c \
+../common/gfx/font_xm4x6.c \
+../common/gfx/font_xm5x8.c \
 ../common/udelay.c \
 gpsapp.c
 
