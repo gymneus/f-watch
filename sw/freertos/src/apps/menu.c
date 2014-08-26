@@ -24,9 +24,8 @@
  * Menu application.
  */
 
-#include "menu.h"
+#include "app_list.h"
 #include "menu_struct.h"
-#include "clock.h"
 #include "widgets/status_bar.h"
 
 static int selected_item = 0;

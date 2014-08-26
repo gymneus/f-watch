@@ -171,7 +171,7 @@ src/main.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c
 
-s_SRC += 
+s_SRC +=
 
 S_SRC +=  \
 ../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
