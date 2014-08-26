@@ -165,6 +165,7 @@ FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
 src/apps/widgets/status_bar.c \
 src/apps/application.c \
 src/apps/clock.c \
+src/apps/example_app.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \

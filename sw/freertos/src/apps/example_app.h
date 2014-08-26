@@ -21,17 +21,15 @@
  */
 
 /**
- * List of applications.
+ * Clock application.
  */
 
-#ifndef APP_LIST_H
-#define APP_LIST_H
+#ifndef CLOCK_H
+#define CLOCK_H
 
 #include "application.h"
 
-extern application menu;
 extern application clock;
-extern application example;
 
-#endif /* APP_LIST_H */
+#endif /* CLOCK_H */
 
