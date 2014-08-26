@@ -116,6 +116,7 @@ INCLUDEPATHS += \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common/emlib/inc \
+-I../common/ \
 -I../common/drivers/usb \
 -I../common/drivers/usb/inc \
 -I../common/drivers/gps/ \
@@ -137,6 +138,7 @@ C_SRC +=  \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_leuart.c \
+../common/emlib/src/em_rtc.c \
 ../common/drivers/usb/usbdbg.c \
 ../common/drivers/usb/src/em_usbd.c \
 ../common/drivers/usb/src/em_usbdch9.c \
@@ -144,6 +146,7 @@ C_SRC +=  \
 ../common/drivers/usb/src/em_usbdep.c \
 ../common/drivers/usb/src/em_usbdint.c \
 ../common/drivers/usb/src/em_usbtimer.c \
+../common/drivers/usb/src/em_usart.c \
 ../common/drivers/gps/nmealib/src/context.c \
 ../common/drivers/gps/nmealib/src/generate.c \
 ../common/drivers/gps/nmealib/src/generator.c \
@@ -155,6 +158,11 @@ C_SRC +=  \
 ../common/drivers/gps/nmealib/src/time.c \
 ../common/drivers/gps/nmealib/src/tok.c \
 ../common/drivers/gps/gps.c \
+../common/drivers/lcd.c \
+../common/gfx/gfx.c \
+../common/gfx/graphics.c \
+../common/gfx/font_helv11.c \
+../common/udelay.c \
 main.c
 
 s_SRC += 
