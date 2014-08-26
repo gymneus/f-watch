@@ -58,10 +58,13 @@ static void menu_screen_redraw(struct ui_widget *w)
                     127, (i + 1) * LINE_HEIGHT, 1);
         }
 
-        // TODO draw icon
+        menu_entry *ent = &(*current_menu)->entries[pos];
+
+        // draw icon
+        if(ent->icon)
+            gfx_draw_bitmap(&w->dc, 0, i * LINE_HEIGHT, ent->icon);
 
         // display label (either app or submenu)
-        menu_entry *ent = &(*current_menu)->entries[pos];
         if(ent->type == APP) {
             application *a = ent->data.app;
 

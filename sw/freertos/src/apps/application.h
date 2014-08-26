@@ -44,13 +44,11 @@ typedef struct {
     ///> Application name
     const char* name;
 
-    // TODO const char* icon;
-    
     /**
      * @brief Main application routine.
      * @params Optional parameters, dependendent on application.
      */
-    void (*main)(void* params); 
+    void (*main)(void* params);
 } application;
 
 /**
