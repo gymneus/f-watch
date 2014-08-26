@@ -27,33 +27,46 @@
 
 #include "clock.h"
 #include "widgets/status_bar.h"
+#include <drivers/rtc.h>
 
 #include <stdio.h>
 
+static unsigned int hour, mins, secs, msecs;
+
 static void digital_watch_redraw(struct ui_widget *w)
 {
-    int h, m, c;
-
-    // TODO sys_get_time(&h, &m, &c);
-    h = 16;
-    m = 20;
-    c = 0;
-
     char buf[20];
-    sprintf(buf,"%02d:%02d", h, m);
+    sprintf(buf,"%02d:%02d", hour, mins);
 
     gfx_clear(&w->dc, 0);
     gfx_text(&w->dc, &font_helv38b, 0, 0, buf, 1);
 
-    sprintf(buf,"%02d.%01d", c * 12 / 10, (c * 12) % 10);
+    sprintf(buf,"%02d.%01d", secs, msecs / 100);
     gfx_text(&w->dc, &font_helv22b, 84, 14, buf, 1);
 }
 
 static void digital_watch_event(struct ui_widget *w, const struct event *evt)
 {
-    // TODO if hour has changed, mark widget as dirty
-    (void)(w);
-    (void)(evt);
+    // Hour has changed, it is time to redraw the clock
+    if(evt->type == RTC_TICK) {
+        msecs += 200;
+        if(1000 == msecs) {
+            ++secs;
+            msecs = 0;
+        }
+
+        ++secs;
+        if(60 == secs) {
+            ++mins; secs = 0;
+            if(60 == mins) {
+                ++hour; mins = 0;
+                if(24 == hour)
+                    hour = 0; // TODO 12/24 hour format
+            }
+        }
+
+        w->flags |= WF_DIRTY;
+    }
 }
 
 struct ui_widget digital_watch = {
@@ -75,6 +88,16 @@ struct ui_widget clock_screen = {
 void clock_main(void* params) {
     (void)(params); // suppress unused parameter warning
     struct event evt;
+
+    // Restore clock
+    struct rtc_time time = rtc_get_time();
+    msecs = time.msecs;
+    secs = time.epoch;
+    mins = secs / 60;
+    hour = mins / 60;
+    secs %= 60;
+    mins %= 60;
+    hour %= 24;
 
     // Initialize user interface
     ui_clear();
@@ -99,12 +122,15 @@ void clock_main(void* params) {
             case BUTTON_PRESSED:
                 if(evt.data.button == BUT_TR)
                     return;             // go back to the main menu
-                break;
+                // no break; fall through
 
-            default:
+            case RTC_TICK:  // and BUTTON_PRESSED
                 ui_update(&evt);        // forward event to widgets
+
+            default:    // suppress warnings
                 break;
             }
+
         }
     }
 }
