@@ -28,7 +28,10 @@
 #include <apps/application.h>
 #include <event.h>
 
+#include <drivers/rtc.h>
+
 #include <em_gpio.h>
+#include <em_burtc.h>
 
 static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 {
@@ -49,7 +52,7 @@ static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
         default: return xHigherPriorityTaskWoken;
     }
 
-    // Post the byte to the back of the queue
+    // Post the event to the back of the queue
     xQueueSendToBackFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
 
     return xHigherPriorityTaskWoken;
@@ -79,5 +82,24 @@ void GPIO_ODD_IRQHandler(void)
     GPIO_IntClear(iflags);
 
     portEND_SWITCHING_ISR(gpio_irq_dispatcher(iflags));
+}
+
+void BURTC_IRQHandler(void)
+{
+    // We have not woken a task at the start of the ISR
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+
+    rtc_tick();
+
+    // Fill the event data
+    struct event evt;
+    evt.type = RTC_TICK;
+
+    // Post the byte to the back of the queue
+    xQueueSendToBackFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
+
+    BURTC_IntClear(BURTC_IFC_COMP0);
+
+    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
 

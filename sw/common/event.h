@@ -32,7 +32,8 @@
  */
 enum event_type {
     BUTTON_PRESSED,
-    SENSOR
+    SENSOR,
+    RTC_TICK
 };
 
 /**

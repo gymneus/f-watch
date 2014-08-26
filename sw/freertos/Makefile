@@ -137,6 +137,7 @@ C_SRC +=  \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
 ../common/drivers/buttons.c \
+../common/drivers/rtc.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \

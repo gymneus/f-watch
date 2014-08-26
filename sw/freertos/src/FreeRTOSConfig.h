@@ -89,7 +89,7 @@ extern "C" {
 /* Available options when configUSE_TICKLESS_IDLE set to 1 
  * or configUSE_SLEEP_MODE_IN_IDLE set to 1 :
  * 1 - EM1, 2 - EM2, 3 - EM3, timer in EM3 is not very accurate*/
-#define configSLEEP_MODE           ( 3 )
+#define configSLEEP_MODE           ( 1 )
 /* Definition used only if configUSE_TICKLESS_IDLE == 0 */
 #define configUSE_SLEEP_MODE_IN_IDLE       ( 1 )
 
