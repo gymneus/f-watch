@@ -14,7 +14,7 @@ uniq = $(strip $(if $1,$(firstword $1) \
        $(call uniq,$(filter-out $(firstword $1),$1))))
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = gps
+PROJECTNAME = gpsapp
 OOCD_IFACE ?= stlink-v2
 
 OBJ_DIR = build
@@ -161,9 +161,11 @@ C_SRC +=  \
 ../common/drivers/lcd.c \
 ../common/gfx/gfx.c \
 ../common/gfx/graphics.c \
+../common/gfx/ui.c \
 ../common/gfx/font_helv11.c \
+../common/gfx/font_helv38b.c \
 ../common/udelay.c \
-main.c
+gpsapp.c
 
 s_SRC += 
 

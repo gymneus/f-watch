@@ -1,7 +1,7 @@
 /*
  *==============================================================================
  * CERN (BE-CO-HT)
- * Source file for Main
+ * Source file for GPS app
  *==============================================================================
  *
  * author: Theodor Stana (t.stana@cern.ch)
@@ -39,19 +39,39 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "em_device.h"
-#include "em_cmu.h"
-#include "em_usb.h"
-#include "em_leuart.h"
-#include "em_gpio.h"
+#include <em_device.h>
+#include <em_cmu.h>
+#include <em_usb.h>
+#include <em_leuart.h>
+#include <em_gpio.h>
 
 #include <drivers/lcd.h>
 #include <gfx/graphics.h>
+#include <gfx/ui.h>
 
 #include "gps.h"
 
-int main()
+static struct ui_widget gps_screen = {
+        NULL, //gps_redraw,
+        NULL, //gps_event,
+        {0, 0, 127, 127},
+        0,
+        WF_ACTIVE | WF_VISIBLE
+};
+
+//static struct ui_widget coord_screen = {
+//        NULL,
+//        NULL,
+//};
+
+void main(void *params)
 {
+        int i = 0,
+            j;
+        char buf[4];
+
+        /* Init clocks */
+        // TODO: move to common init
         CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
         CMU_ClockEnable(cmuClock_HFPER, true);
         CMU_ClockEnable(cmuClock_GPIO, true);
@@ -59,31 +79,26 @@ int main()
         GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
         GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
-        int i = 0,
-            j;
-        static char tmp[128];
-        double lat, lon, elv;
-        double spd, dir;
-        int yr, mon, day, hr, min, sec;
-
-        lcd_init();
         gps_init();
-        text(&font_helv11, 5, 10, "init done!\r\n");
-        lcd_update();
 
-        for (;;) {
+        // TODO: remove, this is done in startMain()
+        lcd_init();
+        ui_init();
+
+        /* Init UI */
+        ui_clear();
+        ui_init_widget(&gps_screen);
+        ui_add_widget(&gps_screen);
+        ui_update(NULL);
+
+        while (1) {
                 i++;
-                lcd_clear();
-
-                gps_get_utc(&yr, &mon, &day, &hr, &min, &sec);
-                sprintf(tmp, "(%d:%d) %d-%d-%d %d:%d:%d\r\n", i, gps_fixed(), yr, mon, day, hr, min, sec);
-                text(&font_helv11, 5, 30, tmp);
-                lcd_update();
-
+                gfx_clear(&gps_screen.dc, 0);
+                sprintf(buf, "%d", i);
+                gfx_text(&gps_screen.dc, &font_helv38b, 0, 0, buf, 1);
+                ui_update(NULL);
                 for (j = 0; j < 100000; j++)
                         ;
         }
-
-        return 0;
 }
 
