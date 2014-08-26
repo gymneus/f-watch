@@ -72,16 +72,14 @@ int main()
         lcd_update();
 
         for (;;) {
-                GPIO_PinInGet(gpioPortA, 1) ?
-                        GPIO_PinOutSet(gpioPortE, 11) :
-                        GPIO_PinOutClear(gpioPortE, 11);
+                i++;
+                lcd_clear();
 
                 gps_get_utc(&yr, &mon, &day, &hr, &min, &sec);
-                sprintf(tmp, "%d-%d-%d %d:%d:%d\r\n", yr, mon, day, hr, min, sec);
-                text(&font_helv11, 5, 30+i%60, tmp);
+                sprintf(tmp, "(%d:%d) %d-%d-%d %d:%d:%d\r\n", i, gps_fixed(), yr, mon, day, hr, min, sec);
+                text(&font_helv11, 5, 30, tmp);
                 lcd_update();
 
-                i += 15;
                 for (j = 0; j < 100000; j++)
                         ;
         }
