@@ -251,7 +251,7 @@ void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 
 #ifdef LCD_ROTATE
     uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
@@ -270,7 +270,7 @@ void lcd_toggle_pixel(uint8_t x, uint8_t y)
 
 #ifdef LCD_ROTATE
     uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
@@ -286,7 +286,7 @@ uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
 
 #ifdef LCD_ROTATE
     uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x) * LCD_STRIDE) + (y >> 3);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
