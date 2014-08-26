@@ -45,15 +45,34 @@
 #include <em_leuart.h>
 #include <em_gpio.h>
 
+#include <event.h>
+
 #include <drivers/lcd.h>
 #include <gfx/graphics.h>
 #include <gfx/ui.h>
 
 #include "gps.h"
 
+static int i = 0;
+
+static void gps_redraw(struct ui_widget *w)
+{
+        char buf[4];
+
+        i+=2;
+        gfx_clear(&w->dc, 0);
+        sprintf(buf, "%d", i);
+        gfx_text(&w->dc, &font_helv38b, 0, 0, buf, 1);
+}
+
+static void gps_event(struct ui_widget *w, const struct event *evt)
+{
+        w->flags |= WF_DIRTY;
+}
+
 static struct ui_widget gps_screen = {
-        NULL, //gps_redraw,
-        NULL, //gps_event,
+        gps_redraw,
+        gps_event,
         {0, 0, 127, 127},
         0,
         WF_ACTIVE | WF_VISIBLE
@@ -66,9 +85,9 @@ static struct ui_widget gps_screen = {
 
 void main(void *params)
 {
-        int i = 0,
-            j;
-        char buf[4];
+        struct event evt;
+        evt.type = RTC_TICK;
+        int i = 0;
 
         /* Init clocks */
         // TODO: move to common init
@@ -79,6 +98,7 @@ void main(void *params)
         GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
         GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
+        /* Initialize GPS module */
         gps_init();
 
         // TODO: remove, this is done in startMain()
@@ -92,13 +112,9 @@ void main(void *params)
         ui_update(NULL);
 
         while (1) {
-                i++;
-                gfx_clear(&gps_screen.dc, 0);
-                sprintf(buf, "%d", i);
-                gfx_text(&gps_screen.dc, &font_helv38b, 0, 0, buf, 1);
-                ui_update(NULL);
-                for (j = 0; j < 100000; j++)
+                for (i = 0; i < 100000; i++)
                         ;
+                ui_update(&evt);
         }
 }
 
