@@ -25,7 +25,7 @@
  * Clock application.
  */
 
-#include "clock.h"
+#include "application.h"
 #include "widgets/status_bar.h"
 #include <drivers/rtc.h>
 

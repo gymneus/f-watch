@@ -21,15 +21,16 @@
  */
 
 /**
- * Menu application.
+ * List of applications.
  */
 
-#ifndef MENU_H
-#define MENU_H
+#ifndef APP_LIST_H
+#define APP_LIST_H
 
 #include "application.h"
 
 extern application menu;
+extern application clock;
 
-#endif /* MENU_H */
+#endif /* APP_LIST_H */
 

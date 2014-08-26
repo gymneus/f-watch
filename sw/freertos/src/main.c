@@ -29,7 +29,7 @@
 #include <em_cmu.h>
 #include <sleep.h>
 
-#include <apps/menu.h>
+#include <apps/app_list.h>
 #include <drivers/buttons.h>
 #include <drivers/lcd.h>
 #include <drivers/rtc.h>

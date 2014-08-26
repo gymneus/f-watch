@@ -25,7 +25,7 @@
  */
 
 #include "menu_struct.h"
-#include "clock.h"
+#include "app_list.h"
 
 int get_menu_size(const menu_list *menu) {
     int len = 0;
