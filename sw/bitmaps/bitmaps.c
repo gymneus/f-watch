@@ -1,5 +1,41 @@
 #include <bitmaps.h>
 
+static const uint8_t example_icon_data[] = {
+        0x2e,
+        0x81,
+        0x05,
+        0x81,
+        0x04,
+        0x81,
+        0x05,
+        0x82,
+        0x16,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x08,
+        0x80,
+        0x09,
+        0x80,
+        0x02,
+        0x80,
+        0x08,
+        0x81,
+        0x02,
+        0x81,
+        0x06,
+        0x81,
+        0x04,
+        0x83,
+        0x01,
+        0x82,
+        0x08,
+        0x83,
+        0x14};
+const struct rle_bitmap example_icon = { 15, 15, example_icon_data };
+
 static const uint8_t gps_receiving_data[] = {
         0x06,
         0x83,

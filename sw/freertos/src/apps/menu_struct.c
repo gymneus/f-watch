@@ -50,6 +50,7 @@ menu_list sub_menu = {
 menu_list main_menu = {
     "Main menu",
     {
+       { APP,       &example_icon,      { .app = &example } },
        { APP,       &gps_receiving,     { .app = &clock } },
        { APP,       &battery_charging,  { .app = &clock } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
