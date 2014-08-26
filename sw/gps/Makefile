@@ -116,10 +116,10 @@ INCLUDEPATHS += \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common/emlib/inc \
--I../common/usb \
--I../common/usb/inc \
--Igps/ \
--Igps/nmealib/include
+-I../common/drivers/usb \
+-I../common/drivers/usb/inc \
+-I../common/drivers/gps/ \
+-I../common/drivers/gps/nmealib/include
 
 ####################################################################
 # Files                                                            #
@@ -137,24 +137,24 @@ C_SRC +=  \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_leuart.c \
-../common/usb/usbdbg.c \
-../common/usb/src/em_usbd.c \
-../common/usb/src/em_usbdch9.c \
-../common/usb/src/em_usbhal.c \
-../common/usb/src/em_usbdep.c \
-../common/usb/src/em_usbdint.c \
-../common/usb/src/em_usbtimer.c \
-gps/nmealib/src/context.c \
-gps/nmealib/src/generate.c \
-gps/nmealib/src/generator.c \
-gps/nmealib/src/gmath.c \
-gps/nmealib/src/info.c \
-gps/nmealib/src/parse.c \
-gps/nmealib/src/parser.c \
-gps/nmealib/src/sentence.c \
-gps/nmealib/src/time.c \
-gps/nmealib/src/tok.c \
-gps/gps.c \
+../common/drivers/usb/usbdbg.c \
+../common/drivers/usb/src/em_usbd.c \
+../common/drivers/usb/src/em_usbdch9.c \
+../common/drivers/usb/src/em_usbhal.c \
+../common/drivers/usb/src/em_usbdep.c \
+../common/drivers/usb/src/em_usbdint.c \
+../common/drivers/usb/src/em_usbtimer.c \
+../common/drivers/gps/nmealib/src/context.c \
+../common/drivers/gps/nmealib/src/generate.c \
+../common/drivers/gps/nmealib/src/generator.c \
+../common/drivers/gps/nmealib/src/gmath.c \
+../common/drivers/gps/nmealib/src/info.c \
+../common/drivers/gps/nmealib/src/parse.c \
+../common/drivers/gps/nmealib/src/parser.c \
+../common/drivers/gps/nmealib/src/sentence.c \
+../common/drivers/gps/nmealib/src/time.c \
+../common/drivers/gps/nmealib/src/tok.c \
+../common/drivers/gps/gps.c \
 main.c
 
 s_SRC += 

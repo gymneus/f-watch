@@ -1,6 +1,0 @@
-- read NMEA specification (SiRF)
--- output messages
--- input messages
-- interpret NMEA message (use NMEA library?)
--- adapt ISR
-- CRC (use NMEA library?)
