@@ -3,6 +3,8 @@
 import sys
 import math
 import numpy
+import os
+import os.path
 from PIL import Image
 
 def pixel_to_bit(pixel,threshold=128):
@@ -13,17 +15,13 @@ def pixel_to_bit(pixel,threshold=128):
         return 0
 
 def convert(im, name):
-
     name = name.split('.')[0]
-
-    f = open(name+".h",'w')
-
+    f = open("bitmaps.c",'a')
     pix = im.load()
-
 
     f.write("static const uint8_t %s_data[] = {\n"%name);
     for y in range(0, im.size[1]):
-	for x in range(0, im.size[0]):
+        for x in range(0, im.size[0]):
             if(x==0 and y==0):
                 prev = pix[0, 0][0]
                 l=0
@@ -40,48 +38,72 @@ def convert(im, name):
                 prev=cur
 
     if(prev):
-	f.write("        0x%02x" % (l))
+        f.write("        0x%02x" % (l))
     else:
-	f.write("        0x%02x" % (l | 0x80))
+        f.write("        0x%02x" % (l | 0x80))
 
     f.write("};\n");
-    f.write("static const struct rle_bitmap %s = { %d, %d, %s_data };\n" % (name, im.size[0], im.size[1], name));
+
+    f.write("const struct rle_bitmap %s = { %d, %d, %s_data };\n\n" % (name, im.size[0], im.size[1], name));
     f.close()
 
-    print "RLE encoded image written to: %s.h\n"%name
-
-
-def use():
-    print "Use: bmp2array.py  imagefile"
-
+    f = open("bitmaps.h",'a')
+    f.write("extern const struct rle_bitmap %s;\n" % name);
+    f.close()
 
 #
 # Main script begins here.
 #
-# First check for keyword arguments on the command line.
-#
 
-if len(sys.argv) > 2:
-    print "Too many arghuments."
-    use()
-    exit(-1)
+# Clean the previous output
+if os.path.isfile("bitmaps.c"):
+    os.remove("bitmaps.h")
 
+if os.path.isfile("bitmaps.c"):
+    os.remove("bitmaps.c")
+
+# Write headers
+f = open("bitmaps.h", 'a')
+f.write("""#ifndef BITMAPS_H
+#define BITMAPS_H
+
+#include <stdint.h>
+
+struct rle_bitmap
+{
+    uint8_t w;
+    uint8_t h;
+    uint8_t *data;
+};
+
+""")
+f.close()
+
+f = open("bitmaps.c", 'a')
+f.write("#include <bitmaps.h>\n\n")
+f.close()
 
 #
-# Open the image file and get the basic information about it.
+# Process .bmp files in the current directory
 #
-try:
-    im = Image.open(sys.argv[1])
-except:
-    # Eventually this should give more useful information (e.g. file does not
-    # exist, or not an image file, or ...
-    print "Unable to open %s" % sys.argv[1]
-    exit(-1)
+for file in os.listdir("."):
+    if file.endswith(".bmp"):
+        try:
+            print("Processing: " + file)
+            im = Image.open(file)
+            width,height = im.size
+            print("format  : %s" % im.format)
+            print("mode    : %s" % im.mode)
+            print("palette : %s" % im.palette)
+            print("size    : %dx%d" % (width, height))
+            convert(im, file)
 
-width,height = im.size
-print "\nfile    : %s\nformat  : %s\nmode    : %s\npalette : %s\nsize    : %dx%d\n" % (sys.argv[1], im.format, im.mode, im.palette, width, height)
+        except:
+            # Eventually this should give more useful information (e.g. file does not
+            # exist, or not an image file, or ...
+            print("Unable to open " + file)
 
-#
-# Do it!
-#
-convert(im, sys.argv[1])
+f = open("bitmaps.h", 'a')
+f.write("\n#endif /* BITMAPS_H */\n")
+f.close()
+
