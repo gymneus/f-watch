@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  * @author Maciej Suminski <maciej.suminski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
@@ -21,49 +22,40 @@
  */
 
 /**
- * @brief Main file.
+ * @brief Real time clock routines.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#ifndef RTC_H
+#define RTC_H
 
-#include <apps/menu.h>
-#include <drivers/buttons.h>
-#include <drivers/lcd.h>
-#include <drivers/rtc.h>
-#include <gfx/ui.h>
+struct rtc_time {
+    ///> Seconds since 01-01-1970 00:00
+    unsigned int epoch;
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+    ///> Milliseconds
+    unsigned int msecs;
+};
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+/**
+ * @brief Setup backup RTC
+ * Using LFRCO clock source and enabling interrupt on COMP0 match
+ */
+void rtc_init(void);
 
-    buttons_init();
-    rtc_init();
-    lcd_init();
-    ui_init();
+/**
+ * @brief Returns the current time.
+ */
+struct rtc_time rtc_get_time(void);
 
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
+/**
+ * @brief Sets the time.
+ */
+void rtc_set_time(struct rtc_time current);
 
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
+/**
+ * @brief Function to be called on every timer tick in the interrupt
+ * servicer routine.
+ */
+void rtc_tick(void);
 
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
-}
-
+#endif /* RTC_H */
