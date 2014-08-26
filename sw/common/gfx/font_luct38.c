@@ -1,3 +1,29 @@
+/*
+ * Copyright (C) 2014 Julian Lewis
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, you may find one here:
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * or you may search the http://www.gnu.org website for the version 2 license,
+ * or you may write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
+
+/**
+ * @brief Font glyphs defintion.
+ */
+
 #include "font.h"
 
 static const uint8_t _gw[] = { 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24};
@@ -228,5 +254,7 @@ static const uint8_t _gd[] = { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01,0xc7,0x00,0x01,0xc7,0x00,0x00,0x00,0x00,0x1e,0x00,0x38,0x0e,0x00,0x30,0x0e,0x00,0x70,0x07,0x00,0x60,0x07,0x00,0x60,0x07,0x80,0xc0,0x03,0x80,0xc0,0x03,0x81,0x80,0x01,0xc1,0x80,0x01,0xc3,0x80,0x01,0xe3,0x00,0x00,0xe3,0x00,0x00,0xe6,0x00,0x00,0x76,0x00,0x00,0x7c,0x00,0x00,0x3c,0x00,0x00,0x3c,0x00,0x00,0x38,0x00,0x00,0x38,0x00,0x00,0x30,0x00,0x00,0x30,0x00,0x00,0x60,0x00,0x00,0xe0,0x00,0x0f,0xc0,0x00,0x0f,0x00,0x00
 };
 
-const font font_luct38 = {
-32, 255, 38, _gw, _go, _gd };
+const struct font font_luct38 = {
+    32, 255, 38,
+    _gw, _go, _gd
+};

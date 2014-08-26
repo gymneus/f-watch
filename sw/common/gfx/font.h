@@ -21,7 +21,7 @@
  */
 
 /**
- * @brief Basic drawing library.
+ * @brief List of available fonts.
  */
 
 #ifndef FONT_H
@@ -29,26 +29,26 @@
 
 #include <stdint.h>
 
-typedef struct
+struct font
 {
     uint8_t min_char, max_char, height;
     const uint8_t *width_table;
     const uint16_t *offset_table;
     const uint8_t *glyph_data;
-} font;
+};
 
 // List of available fonts
-extern const font font_helv11;
-extern const font font_helv17;
-extern const font font_helv17b;
-extern const font font_helv38b;
-extern const font font_helv29;
-extern const font font_helv22b;
-extern const font font_luct38;
-extern const font font_xm16x25b;
-extern const font font_xm4x5;
-extern const font font_xm4x6;
-extern const font font_xm5x8;
-
+extern const struct font font_helv11;
+extern const struct font font_helv17;
+extern const struct font font_helv38b;
+extern const struct font font_helv29;
+extern const struct font font_helv17b;
+extern const struct font font_helv22b;
+extern const struct font font_xm4x5;
+extern const struct font font_xm4x6;
+extern const struct font font_luct38;
+extern const struct font font_xm16x25b;
+extern const struct font font_xm5x8;
 
 #endif /* FONT_H */
+
