@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +25,7 @@
 #define __GFX_H
 
 #include "font.h"
+#include "bitmaps.h"
 
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
@@ -44,16 +46,16 @@ struct surface
     void *data;
 };
 
-static inline void gfx_set_pixel(struct surface *surf, int x, int y, int value) 
+static inline void gfx_set_pixel(struct surface *surf, int x, int y, int value)
 {
-    if(x < surf->clip.x0 || x > surf->clip.x1 || 
+    if(x < surf->clip.x0 || x > surf->clip.x1 ||
        y < surf->clip.y0 || y > surf->clip.y1)
         return;
-    
+
     x += surf->client_x;
     y += surf->client_y;
 
-    uint8_t mask = 1 << (x & 0x07);                   
+    uint8_t mask = 1 << (x & 0x07);
     uint8_t *p = surf->data + (y * surf->stride) + (x >> 3);
 
     if(value == COLOR_BLACK)
@@ -75,6 +77,7 @@ void gfx_set_clip(struct surface *surf, int x0, int y0, int x1, int y1);
 void gfx_reset_clip (struct surface *surf);
 void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value);
 void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value);
+void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitmap *b);
 
 #endif
 
