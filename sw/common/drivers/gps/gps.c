@@ -43,9 +43,7 @@
 #include <em_leuart.h>
 #include <em_gpio.h>
 
-#include "usbdbg.h"
-
-#include "gps.h"
+#include "drivers/gps/gps.h"
 #include "nmea/nmea.h"
 
 #define GPS_OK_TO_SEND "$PSRF150,1*3E\r\n"
@@ -79,7 +77,7 @@ void gps_init()
         GPIO_PinModeSet(gpioPortF, 5, gpioModePushPull, 1);
         GPIO_PinModeSet(gpioPortA, 1, gpioModeInput, 0);
         GPIO_PinModeSet(gpioPortE, 13, gpioModePushPull, 0);
-        for (i = 0; i < 10000000; i++)
+        for (i = 0; i < 100000; i++)
                 ;
         gps_on_off_pulse();
 
@@ -89,7 +87,6 @@ void gps_init()
         GPIO_PinModeSet(gpioPortE, 14, gpioModePushPull, 1);
         GPIO_PinModeSet(gpioPortE, 15, gpioModeInput, 0);
 
-        CMU_ClockEnable(cmuClock_CORELE, true);
         CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_LFXO);
         CMU_ClockEnable(cmuClock_LEUART0, true);
         CMU_ClockDivSet(cmuClock_LEUART0, cmuClkDiv_1);
@@ -123,11 +120,9 @@ void gps_on_off_pulse()
 
         /* Pulse */
         GPIO_PinOutSet(gpioPortE, 13);
-        GPIO_PinOutSet(gpioPortE, 12);
         for (i = 0; i < 100000; i++)
                 ;
         GPIO_PinOutClear(gpioPortE, 13);
-        GPIO_PinOutClear(gpioPortE, 12);
         /* Delay to make sure GPS module sees this as a pulse */
         for (i = 0; i < 100000; i++)
                 ;

@@ -51,7 +51,7 @@ menu_list main_menu = {
     "Main menu",
     {
        { APP,       &example_icon,      { .app = &example } },
-       { APP,       &gps_receiving,     { .app = &clock } },
+       { APP,       &gps_receiving,     { .app = &gpscoord } },
        { APP,       &battery_charging,  { .app = &clock } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
        { APP,       &battery,           { .app = &clock } },

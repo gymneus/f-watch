@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  * @author Maciej Suminski <maciej.suminski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
@@ -21,18 +22,40 @@
  */
 
 /**
- * List of applications.
+ * @brief Real time clock routines.
  */
 
-#ifndef APP_LIST_H
-#define APP_LIST_H
+#ifndef RTC_H
+#define RTC_H
 
-#include "application.h"
+struct rtc_time {
+    ///> Seconds since 01-01-1970 00:00
+    unsigned int epoch;
 
-extern application menu;
-extern application clock;
-extern application example;
-extern application gpscoord;
+    ///> Milliseconds
+    unsigned int msecs;
+};
 
-#endif /* APP_LIST_H */
+/**
+ * @brief Setup backup RTC
+ * Using LFRCO clock source and enabling interrupt on COMP0 match
+ */
+void rtc_init(void);
 
+/**
+ * @brief Returns the current time.
+ */
+struct rtc_time rtc_get_time(void);
+
+/**
+ * @brief Sets the time.
+ */
+void rtc_set_time(struct rtc_time current);
+
+/**
+ * @brief Function to be called on every timer tick in the interrupt
+ * servicer routine.
+ */
+void rtc_tick(void);
+
+#endif /* RTC_H */

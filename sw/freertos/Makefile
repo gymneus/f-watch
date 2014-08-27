@@ -12,7 +12,8 @@
 DEVICE = EFM32GG330F1024
 PROJECTNAME = freertos
 # Name of interface configuration file used by OpenOCD
-OOCD_IFACE ?= stlink-v2-1
+#OOCD_IFACE ?= stlink-v2-1
+OOCD_IFACE ?= stlink-v2
 
 OBJ_DIR = build
 EXE_DIR = exe
@@ -118,6 +119,7 @@ INCLUDEPATHS += \
 -I../common \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
+-I../common/drivers/gps/nmealib/include
 
 ####################################################################
 # Files                                                            #
@@ -136,6 +138,7 @@ C_SRC +=  \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_usart.c \
+../common/emlib/src/em_leuart.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
 ../common/drivers/buttons.c \
@@ -170,7 +173,19 @@ src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
 src/irq_dispatcher.c \
-src/low_power_tick_management.c
+src/low_power_tick_management.c \
+../common/drivers/gps/nmealib/src/context.c \
+../common/drivers/gps/nmealib/src/generate.c \
+../common/drivers/gps/nmealib/src/generator.c \
+../common/drivers/gps/nmealib/src/gmath.c \
+../common/drivers/gps/nmealib/src/info.c \
+../common/drivers/gps/nmealib/src/parse.c \
+../common/drivers/gps/nmealib/src/parser.c \
+../common/drivers/gps/nmealib/src/sentence.c \
+../common/drivers/gps/nmealib/src/time.c \
+../common/drivers/gps/nmealib/src/tok.c \
+../common/drivers/gps/gps.c \
+src/apps/gpscoord.c
 
 s_SRC +=
 

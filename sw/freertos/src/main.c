@@ -34,6 +34,7 @@
 #include <drivers/lcd.h>
 #include <drivers/rtc.h>
 #include <gfx/ui.h>
+#include <drivers/gps/gps.h>
 
 int main(void)
 {
@@ -41,6 +42,7 @@ int main(void)
     CHIP_Init();
 
     // Enable clocks
+    CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -48,6 +50,7 @@ int main(void)
     rtc_init();
     lcd_init();
     ui_init();
+    gps_init();
 
     GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
     GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
