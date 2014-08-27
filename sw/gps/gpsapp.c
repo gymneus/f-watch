@@ -88,18 +88,21 @@ static void gps_event(struct ui_widget *w, const struct event *evt)
         w->flags |= WF_DIRTY;
 }
 
-static struct ui_widget gps_screen = {
+static struct ui_widget gps_coord_display = {
         gps_redraw,
         gps_event,
-        {0, 0, 127, 127},
+        {16, 16, 111, 111},
         0,
         WF_ACTIVE | WF_VISIBLE
 };
 
-//static struct ui_widget coord_screen = {
-//        NULL,
-//        NULL,
-//};
+static struct ui_widget gps_screen = {
+        NULL,
+        NULL,
+        {0, 0, 127, 127},
+        0,
+        WF_ACTIVE | WF_VISIBLE
+};
 
 static struct ui_widget gps_fix = {
         NULL,
@@ -132,8 +135,17 @@ void main(void *params)
 
         /* Init UI */
         ui_clear();
+
         ui_init_widget(&gps_screen);
+        ui_init_widget(&gps_coord_display);
         ui_add_widget(&gps_screen);
+
+        ui_add_child(&gps_screen, &gps_coord_display);
+        ui_add_widget(&gps_coord_display);
+
+//        ui_init_widget(&status_bar);
+//        ui_add_widget(&status_bar);
+
         ui_update(NULL);
 
         while (1) {
