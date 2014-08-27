@@ -51,9 +51,12 @@
 #include <gfx/graphics.h>
 #include <gfx/ui.h>
 
+#include <bitmaps.h>
+
 #include "gps.h"
 
-static int i = 0;
+static struct rle_bitmap gps_ico;
+static int gps_ico_blink = 0;
 
 static void gps_redraw(struct ui_widget *w)
 {
@@ -67,10 +70,21 @@ static void gps_redraw(struct ui_widget *w)
                                  utc.min,
                                  utc.sec);
         gfx_text(&w->dc, &font_helv17b, 0, 0, buf, 0);
+        gfx_draw_bitmap(&w->dc, 0, 112, &gps_ico);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
 {
+        if (evt->type == GPS_FIX_LOST) {
+                gps_ico_blink ^= 1;
+                if (gps_ico_blink)
+                        memcpy(&gps_ico, &gps_searching,
+                                sizeof(struct rle_bitmap));
+                else
+                        memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+        } else if (evt->type == GPS_FIX_ACQ) {
+                memcpy(&gps_ico, &gps_receiving, sizeof(struct rle_bitmap));
+        }
         w->flags |= WF_DIRTY;
 }
 
@@ -87,10 +101,17 @@ static struct ui_widget gps_screen = {
 //        NULL,
 //};
 
+static struct ui_widget gps_fix = {
+        NULL,
+        NULL,
+        {0, 112, 15, 112},
+        0,
+        WF_ACTIVE | WF_VISIBLE
+};
+
 void main(void *params)
 {
         struct event evt;
-        evt.type = RTC_TICK;
         int i = 0;
 
         /* Init clocks */
@@ -118,7 +139,14 @@ void main(void *params)
         while (1) {
                 for (i = 0; i < 100000; i++)
                         ;
-                ui_update(&evt);
+
+                if (gps_fixed()) {
+                        evt.type = GPS_FIX_ACQ;
+                        ui_update(&evt);
+                } else {
+                        evt.type = GPS_FIX_LOST;
+                        ui_update(&evt);
+                }
         }
 }
 

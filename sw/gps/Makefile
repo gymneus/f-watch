@@ -120,7 +120,8 @@ INCLUDEPATHS += \
 -I../common/drivers/usb \
 -I../common/drivers/usb/inc \
 -I../common/drivers/gps/ \
--I../common/drivers/gps/nmealib/include
+-I../common/drivers/gps/nmealib/include \
+-I../bitmaps/
 
 ####################################################################
 # Files                                                            #
@@ -174,6 +175,7 @@ C_SRC +=  \
 ../common/gfx/font_xm4x6.c \
 ../common/gfx/font_xm5x8.c \
 ../common/udelay.c \
+../bitmaps/bitmaps.c \
 gpsapp.c
 
 s_SRC += 
