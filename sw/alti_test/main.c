@@ -53,8 +53,7 @@ void buf_init(hist_buf *buf, uint16_t size)
         uint16_t *scan;
 
         //buf->buffer = malloc(size);
-        //buf->end = buf->buffer + size;
-        buf->end = &buf->buffer[HIST_SIZE];
+        buf->end = buf->buffer + size;
         buf->wrap = false;
         buf->head = buf->buffer;
         buf->tail = buf->buffer;
@@ -70,7 +69,8 @@ void buf_init(hist_buf *buf, uint16_t size)
 
 void buf_write(hist_buf *buf, uint16_t data)
 {
-        *buf->head++ = data;
+        *buf->head = data;
+        buf->head++;
         if(buf->head >= buf->end)
         {
                 buf->head = buf->buffer;
@@ -86,30 +86,29 @@ void buf_write(hist_buf *buf, uint16_t data)
         }
 }
 
-void buf_get_last(hist_buf *buf, uint16_t *last)
+void plot_hist(hist_buf *buf, uint8_t y_org, uint8_t y_size)
 {
+        uint8_t x;
+        uint16_t y_min, y_max;
+        uint16_t *scan;
+        uint16_t *last;
+        double y_val;
+        char str[20];
+
         if(buf->head == buf->buffer)
         {
                 last = buf->end;
         }
         else
         {
-                last = buf->head--;
+                last = buf->head - 1;
         }
-}
 
-
-void plot_hist(hist_buf *buf, uint8_t y_org, uint8_t y_size)
-{
-        uint8_t x;
-        uint16_t y_min, y_max;
-        uint16_t *scan;
-        uint16_t y_val;
-
-        buf_get_last(buf, scan);
+        scan = last;
 
         y_min = *scan;
         y_max = *scan;
+
 
         while(scan != buf->tail)
         {
@@ -124,20 +123,24 @@ void plot_hist(hist_buf *buf, uint8_t y_org, uint8_t y_size)
                         y_min = *scan;
         }
 
-        buf_get_last(buf, scan);
+
+        y_min = 210;
+        y_max = 250;
+        scan = last;
 
         // scan x axis (entire screen)
         for(x=0; x<127; x++)
         {
-                while(scan != buf->tail)
+                if(1)//*scan != 0)
                 {
-                        if(*scan != 0)
-                        {
-                                y_val = (*scan-960) * (10)/y_size;
-                                //y_val = (*scan-y_min) * (y_max-y_min)/y_size;
-                                lcd_set_pixel(x, y_val + y_org, 1);
-                        }
-                        scan++;
+                        y_val = (*scan-y_min) * y_size/(y_max-y_min);
+                        //y_val = (*scan-200) * y_size/(100);
+                        lcd_set_pixel(x, y_org - (uint16_t)(y_val), 1);
+                }
+                scan++;
+                if(scan >= buf->end)
+                {
+                        scan = buf->buffer;
                 }
         }
 }
@@ -158,7 +161,7 @@ int main(void)
         double altitude = 0;
         double pressure_calc;
         double pressure_comp;
-        hist_buf *pressure_hist;
+        hist_buf pressure_hist;
 
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -186,7 +189,7 @@ int main(void)
         err = alti_altitude2mbar(&pressure_calc, 440);
         pressure_comp = pressure - pressure_calc;
 
-        buf_init(pressure_hist, HIST_SIZE);
+        buf_init(&pressure_hist, HIST_SIZE);
 
         while(1)
         {
@@ -199,7 +202,7 @@ int main(void)
                 sprintf(str, "pressure: %5.2f mbar", pressure);
                 text(&font_helv11, 5, 20, str);
 
-                buf_write(pressure_hist, (uint16_t)(pressure));
+                buf_write(&pressure_hist, (uint16_t)(temp * 10));
 
                 err = alti_mbar2altitude(pressure, &altitude);
                 sprintf(str, "altitude: %4.2f m", altitude);
@@ -215,12 +218,28 @@ int main(void)
                 sprintf(str, "alti comp: %4.2f m", altitude);
                 text(&font_helv11, 5, 40, str);
 
-                //plot_hist(pressure_hist, 120, 60);
+
+                //sprintf(str, "buf[0]: %d", pressure_hist.buffer[0]);
+                //text(&font_helv11, 5, 70, str);
+                /*
+                sprintf(str, "start: %x", pressure_hist.buffer);
+                text(&font_helv11, 5, 70, str);
+
+                sprintf(str, "end  : %x", pressure_hist.end);
+                text(&font_helv11, 5, 80, str);
+
+                sprintf(str, "head : %x", pressure_hist.head);
+                text(&font_helv11, 5, 90, str);
+
+                sprintf(str, "tail : %x", pressure_hist.tail);
+                text(&font_helv11, 5, 100, str);
+                */
+                plot_hist(&pressure_hist, 120, 50);
 
                 //sprintf(str, "err: 0x%02x", err);
                 //text(&font_helv11, 5, 50, str);
                 lcd_update();
-                //Delay(1000);
+                //Delay(2000);
                 //box(5, 10, 128, 50, 0);
                 lcd_clear();
 
