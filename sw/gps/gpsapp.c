@@ -70,7 +70,6 @@ static void gps_redraw(struct ui_widget *w)
                                  utc.min,
                                  utc.sec);
         gfx_text(&w->dc, &font_helv17b, 0, 0, buf, 0);
-        gfx_draw_bitmap(&w->dc, 0, 112, &gps_ico);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
@@ -104,14 +103,6 @@ static struct ui_widget gps_screen = {
         WF_ACTIVE | WF_VISIBLE
 };
 
-static struct ui_widget gps_fix = {
-        NULL,
-        NULL,
-        {0, 112, 15, 112},
-        0,
-        WF_ACTIVE | WF_VISIBLE
-};
-
 void main(void *params)
 {
         struct event evt;
@@ -137,11 +128,11 @@ void main(void *params)
         ui_clear();
 
         ui_init_widget(&gps_screen);
-        ui_init_widget(&gps_coord_display);
         ui_add_widget(&gps_screen);
 
-        ui_add_child(&gps_screen, &gps_coord_display);
+        ui_init_widget(&gps_coord_display);
         ui_add_widget(&gps_coord_display);
+        ui_add_child(&gps_screen, &gps_coord_display);
 
 //        ui_init_widget(&status_bar);
 //        ui_add_widget(&status_bar);
