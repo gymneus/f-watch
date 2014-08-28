@@ -36,19 +36,12 @@
 
 #include "application.h"
 
-static struct rle_bitmap gps_ico;
-static int gps_ico_blink = 0;
-
-static int asdf = 0;
-
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
         struct gps_utc utc;
 
         gps_get_utc(&utc);
-
-        asdf++;
 
         gfx_clear(&w->dc, 0);
         sprintf(buf, "%d:%d:%d", utc.hr,
@@ -59,17 +52,8 @@ static void gps_redraw(struct ui_widget *w)
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
 {
-        if (evt->type == GPS_FIX_LOST) {
-                gps_ico_blink ^= 1;
-                if (gps_ico_blink)
-                        memcpy(&gps_ico, &gps_searching,
-                                sizeof(struct rle_bitmap));
-                else
-                        memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
-        } else if (evt->type == GPS_FIX_ACQ) {
-                memcpy(&gps_ico, &gps_receiving, sizeof(struct rle_bitmap));
-        }
-        w->flags |= WF_DIRTY;
+        if (evt->type == RTC_TICK)
+                w->flags |= WF_DIRTY;
 }
 
 static struct ui_widget gps_coord_display = {
@@ -116,17 +100,11 @@ void gpscoord_main(void *params)
                                         return;
                                 break;
                         case RTC_TICK:
+                                if (gps_fixed()) evt.type = GPS_FIX_ACQ;
+                                else evt.type = GPS_FIX_LOST;
                                 ui_update(&evt);
                         }
                 }
-
-                //if (gps_fixed()) {
-                //        evt.type = GPS_FIX_ACQ;
-                //        ui_update(&evt);
-                //} else {
-                //        evt.type = GPS_FIX_LOST;
-                //        ui_update(&evt);
-                //}
         }
 }
 
