@@ -29,27 +29,32 @@
 
 #include <string.h>
 
+#include <drivers/gps/gps.h>
+
 static struct rle_bitmap gps_ico;
 static int gps_ico_blink = 0;
 
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
-        if (evt->type == GPS_FIX_LOST) {
+        if (evt->type == RTC_TICK) {
                 w->flags |= WF_DIRTY;
-                gps_ico_blink ^= 1;
-                if (gps_ico_blink)
-                        memcpy(&gps_ico, &gps_searching,
+                if (gps_fixed()) {
+                        memcpy(&gps_ico, &gps_receiving,
                                 sizeof(struct rle_bitmap));
-                else
-                        memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
-        } else if (evt->type == GPS_FIX_ACQ) {
-                w->flags |= WF_DIRTY;
-                memcpy(&gps_ico, &gps_receiving, sizeof(struct rle_bitmap));
+                } else {
+                        gps_ico_blink ^= 1;
+                        if (gps_ico_blink) {
+                                memcpy(&gps_ico, &gps_searching,
+                                        sizeof(struct rle_bitmap));
+                        } else
+                                memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+                }
         }
 }
 
 static void status_bar_redraw(struct ui_widget *w)
 {
+    gfx_clear(&w->dc, 0);
     gfx_round_box(&w->dc, 30, -10, 127-30, 10, 9, COLOR_BLACK);
     gfx_centered_text(&w->dc, &font_helv11, 0, "Home", 1);
     gfx_draw_bitmap(&w->dc, 0, 0, &gps_ico);

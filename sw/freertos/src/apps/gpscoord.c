@@ -36,18 +36,26 @@
 
 #include "application.h"
 
+static int i = 0;
+
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
-        struct gps_utc utc;
+        struct gps_coord c;
 
-        gps_get_utc(&utc);
+        gps_get_coord(&c);
 
         gfx_clear(&w->dc, 0);
-        sprintf(buf, "%d:%d:%d", utc.hr,
-                                 utc.min,
-                                 utc.sec);
-        gfx_text(&w->dc, &font_helv17b, 0, 0, buf, 0);
+        sprintf(buf, "%2.4f", c.lat);
+        gfx_text(&w->dc, &font_helv17b, 10, 0, buf, 0);
+
+        i++;
+        sprintf(buf, "(%d)%d", i, gps_fixed());
+        gfx_text(&w->dc, &font_helv17b, 10, 50, buf, 0);
+//        sprintf(buf, "%2.4f", c.lon);
+//        gfx_text(&w->dc, &font_helv38b, 30, 0, buf, 0);
+//        sprintf(buf, "%2.4fm", c.elev);
+//        gfx_text(&w->dc, &font_helv38b, 50, 0, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
@@ -100,9 +108,9 @@ void gpscoord_main(void *params)
                                         return;
                                 break;
                         case RTC_TICK:
-                                if (gps_fixed()) evt.type = GPS_FIX_ACQ;
-                                else evt.type = GPS_FIX_LOST;
                                 ui_update(&evt);
+                        default:
+                                break;
                         }
                 }
         }
