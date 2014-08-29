@@ -28,6 +28,7 @@
 #include <em_cmu.h>
 #include <em_usart.h>
 #include <em_rtc.h>
+#include <em_timer.h>
 #include <udelay.h>
 
 // Enable 90* rotation
@@ -94,38 +95,53 @@ static void timer_delay(uint16_t usecs)
     UDELAY_Delay(usecs);
 }
 
-static void rtc_setup(unsigned int frequency)
+static void extcomin_setup(unsigned int frequency)
 {
-    RTC_Init_TypeDef rtc_init = RTC_INIT_DEFAULT;
+    CMU_ClockEnable(cmuClock_TIMER0, true);
 
-    // Enable LE domain registers
-    if(!(CMU->HFCORECLKEN0 & CMU_HFCORECLKEN0_LE))
-        CMU_ClockEnable(cmuClock_CORELE, true);
+    // Select CC channel parameters
+    TIMER_InitCC_TypeDef timerCCInit =
+    {
+        .cufoa      = timerOutputActionNone,
+        .cofoa      = timerOutputActionToggle,
+        .cmoa       = timerOutputActionNone,
+        .mode       = timerCCModeCompare,
+        .filter     = false,
+        .prsInput   = false,
+        .coist      = false,
+        .outInvert  = false,
+    };
 
-    if(cmuSelect_LFXO != CMU_ClockSelectGet(cmuClock_LFA))
-        CMU_ClockSelectSet(cmuClock_LFA, cmuSelect_LFXO);
+    // Configure CC channel
+    TIMER_InitCC(TIMER0, 2, &timerCCInit);
 
-    CMU_ClockDivSet(cmuClock_RTC, cmuClkDiv_2);
-    CMU_ClockEnable(cmuClock_RTC, true);
+    // Route CC2 to location 1 (PE12) and enable pin
+    TIMER0->ROUTE |= (TIMER_ROUTE_CC2PEN | TIMER_ROUTE_LOCATION_LOC0);
 
-    // Initialize RTC
-    rtc_init.enable   = false;  // Do not start RTC after initialization is complete
-    rtc_init.debugRun = false;  // Halt RTC when debugging
-    rtc_init.comp0Top = true;   // Wrap around on COMP0 match
-    RTC_Init(&rtc_init);
+    // Set compare value starting at 0 - it will be incremented in the interrupt handler
+    TIMER_CompareBufSet(TIMER0, 2, 0);
 
-    RTC_CompareSet(0, (CMU_ClockFreqGet(cmuClock_RTC) / frequency) - 1);
+    // Set Top Value
+    TIMER_TopSet(TIMER0, (CMU_ClockFreqGet(cmuClock_HFPER) / 16)/ frequency);
 
-    NVIC_EnableIRQ(RTC_IRQn);
-    RTC_IntEnable(RTC_IEN_COMP0);
+    // Select timer parameters
+    TIMER_Init_TypeDef timerInit =
+    {
+        .enable     = true,
+        .debugRun   = true,
+        .prescale   = timerPrescale8,
+        .clkSel     = timerClkSelHFPerClk,
+        .fallAction = timerInputActionNone,
+        .riseAction = timerInputActionNone,
+        .mode       = timerModeUp,
+        .dmaClrAct  = false,
+        .quadModeX4 = false,
+        .oneShot    = false,
+        .sync       = false,
+    };
 
-    RTC_Enable(true);
-}
-
-void RTC_IRQHandler(void)
-{
-    RTC_IntClear(RTC_IF_COMP0);
-    GPIO_PinOutToggle(LCD_PORT_EXTCOMIN, LCD_PIN_EXTCOMIN);
+    // Configure timer
+    TIMER_Init(TIMER0, &timerInit);
 }
 
 void lcd_init(void)
@@ -147,8 +163,8 @@ void lcd_init(void)
     // EXTMODE is hardwired
     // GPIO_PinModeSet(LCD_PORT_EXTMODE, LCD_PIN_EXTMODE, gpioModePushPull, 0);
 
-    // Setup RTC to generate interrupts at given frequency
-    rtc_setup(LCD_POL_INV_FREQ);
+    // Setup timer to generate interrupts at given frequency for EXTCOMIN pin
+    extcomin_setup(LCD_POL_INV_FREQ);
 
     lcd_power(1);
 

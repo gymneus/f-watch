@@ -135,6 +135,7 @@ C_SRC +=  \
 ../common/emlib/src/em_rmu.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
+../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
