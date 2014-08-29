@@ -36,26 +36,22 @@
 
 #include "application.h"
 
-static int i = 0;
+static struct gps_coord coord;
 
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
-        struct gps_coord c;
 
-        gps_get_coord(&c);
+        if (gps_fixed())
+                gps_get_coord(&coord);
 
         gfx_clear(&w->dc, 0);
-        sprintf(buf, "%2.4f", c.lat);
-        gfx_text(&w->dc, &font_helv17b, 10, 0, buf, 0);
-
-        i++;
-        sprintf(buf, "(%d)%d", i, gps_fixed());
-        gfx_text(&w->dc, &font_helv17b, 10, 50, buf, 0);
-//        sprintf(buf, "%2.4f", c.lon);
-//        gfx_text(&w->dc, &font_helv38b, 30, 0, buf, 0);
-//        sprintf(buf, "%2.4fm", c.elev);
-//        gfx_text(&w->dc, &font_helv38b, 50, 0, buf, 0);
+        sprintf(buf, "%4.4f", coord.lat);
+        gfx_text(&w->dc, &font_helv22b, 10, 10, buf, 0);
+        sprintf(buf, "%4.4f", coord.lon);
+        gfx_text(&w->dc, &font_helv22b, 10, 30, buf, 0);
+        sprintf(buf, "%5.0f m", coord.elev);
+        gfx_text(&w->dc, &font_helv22b, 10, 50, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)

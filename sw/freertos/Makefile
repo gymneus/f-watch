@@ -119,7 +119,10 @@ INCLUDEPATHS += \
 -I../common \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
--I../common/drivers/gps/nmealib/include
+-I../common/drivers/gps/nmealib/include \
+-I../common/drivers/usb/ \
+-I../common/drivers/usb/inc \
+# TODO remove the USB stuff above
 
 ####################################################################
 # Files                                                            #
@@ -138,7 +141,7 @@ C_SRC +=  \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_usart.c \
-../common/emlib/src/em_leuart.c \
+../common/emlib/src/em_leuart.c  \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
 ../common/drivers/buttons.c \
@@ -185,7 +188,19 @@ src/low_power_tick_management.c \
 ../common/drivers/gps/nmealib/src/time.c \
 ../common/drivers/gps/nmealib/src/tok.c \
 ../common/drivers/gps/gps.c \
-src/apps/gpscoord.c
+src/apps/gpscoord.c \
+../common/drivers/usb/usbdbg.c \
+../common/drivers/usb/src/em_usbd.c \
+../common/drivers/usb/src/em_usbdch9.c \
+../common/drivers/usb/src/em_usbdep.c \
+../common/drivers/usb/src/em_usbdint.c \
+../common/drivers/usb/src/em_usbh.c \
+../common/drivers/usb/src/em_usbhal.c \
+../common/drivers/usb/src/em_usbhep.c \
+../common/drivers/usb/src/em_usbhint.c \
+../common/drivers/usb/src/em_usbtimer.c \
+../common/drivers/emlib/src/em_timer.c
+# TODO remove the USB stuff above
 
 s_SRC +=
 
