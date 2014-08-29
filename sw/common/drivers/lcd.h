@@ -56,7 +56,7 @@
 #define LCD_SPI_CLOCK       cmuClock_USART2
 #define LCD_SPI_LOCATION    0
 #define LCD_SPI_BAUDRATE    500000
-#define LCD_POL_INV_FREQ    64
+#define LCD_POL_INV_FREQ    60
 
 /**
  * @brief LCD initialization routine.
