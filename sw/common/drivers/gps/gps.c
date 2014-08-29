@@ -43,8 +43,12 @@
 #include <em_leuart.h>
 #include <em_gpio.h>
 
-#include "drivers/gps/gps.h"
-#include "nmea/nmea.h"
+#include <drivers/gps/gps.h>
+#include <nmea/nmea.h>
+
+#include <usbconfig.h>
+#include <usbdbg.h>
+
 
 #define GPS_OK_TO_SEND "$PSRF150,1*3E\r\n"
 
@@ -64,6 +68,7 @@ void LEUART0_IRQHandler()
                         idx = 0;
                         nmea_parse(&gps_parser, rxbuf, strlen(rxbuf),
                                         &gps_info);
+                        usbdbg_puts(rxbuf);
                 }
         }
 }
@@ -71,6 +76,9 @@ void LEUART0_IRQHandler()
 void gps_init()
 {
         int i;
+
+        // TODO remove debug
+        usbdbg_init();
 
         /* Init GPS control pins & delay before ON_OFF pulse */
         USB->ROUTE &= ~(USB_ROUTE_VBUSENPEN);

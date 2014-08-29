@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-#include "em_usb.h"
+#include "inc/em_usb.h"
 
 /*=====================*/
 /* Function prototypes */

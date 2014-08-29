@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+
+#include "inc/em_usb.h"
 #include "usbdbg.h"
-#include "em_usb.h"
 
 /* The serial port LINE CODING data structure, used to carry information  */
 /* about serial port baudrate, parity etc. between host and device.       */
