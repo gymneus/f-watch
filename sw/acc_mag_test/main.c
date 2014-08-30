@@ -37,6 +37,7 @@
 #include <pp-printf.h>
 #include <LSM303C/lsm303c.h>
 #include <usbdesc.h>
+#include <sincos.h>
 
 #define ACC_DEMO 0
 #define MAG_DEMO 1
@@ -65,6 +66,77 @@ void Delay(uint32_t dlyTicks)
     while ((msTicks - curTicks) < dlyTicks);
 }
 
+#define COMPASS_R 50
+#define COMPASS_X0 64
+#define COMPASS_Y0 64
+#define MAG_BUFSZ 10
+int compass_app(void)
+{
+	lsm303_smpl acc, mag;
+	lsm303_smpl mag_buf[MAG_BUFSZ];
+	int sum_x, sum_y, sum_z;
+	int pitch, roll, xh, yh;
+	unsigned int x2, y2, z2;
+	int x_comp, y_comp;
+	float xy_mean;
+	unsigned x_lcd, y_lcd;
+	char buf[50];
+	int i, j;
+
+	i=0;
+	while(1) {
+		lsm303_get_sample(DEV_ACC, &acc);
+		lsm303_get_sample(DEV_MAG, &mag);
+
+		/* calculate pitch and roll from accelerometer */
+		x2 = acc.x * acc.x;
+		y2 = acc.y * acc.y;
+		z2 = acc.z * acc.z;
+		pitch = -small_atan(acc.x, small_sqrt(acc.y*acc.y + acc.z*acc.z));
+		roll = small_atan(acc.y, small_sqrt(acc.x*acc.x + acc.z*acc.z));
+
+		/* work with compass readout, first revert it because magnetic south is north */
+		mag.x *= -1;
+		mag.y *= -1;
+		mag.z *= -1;
+
+		mag_buf[i++] = mag;
+		if(i==MAG_BUFSZ)
+			i=0;
+
+		/* calc mean readouts */
+		sum_x=0; sum_y=0; sum_z=0;
+		for(j=0; j<MAG_BUFSZ; ++j) {
+			sum_x += mag_buf[j].x;
+			sum_y += mag_buf[j].y;
+			sum_z += mag_buf[j].z;
+		}
+		mag.x = sum_x/MAG_BUFSZ;
+		mag.y = sum_y/MAG_BUFSZ;
+		mag.z = sum_z/MAG_BUFSZ;
+
+		/*now calculate heading based on MAG readout and pinch/roll*/
+		xh = mag.x*small_cos(pitch) + mag.z*small_sin(pitch);
+		yh = mag.x*small_sin(roll)*small_sin(pitch) + mag.y*small_cos(roll) - mag.z*small_sin(roll)*small_cos(pitch);
+
+		/* calculate x,y for compass in cartesian */
+		xy_mean = small_sqrt(xh*xh + yh*yh);
+		x_comp = COMPASS_R*yh / xy_mean;
+		y_comp = COMPASS_R*xh / xy_mean;
+
+		/* transform to LCD coordinates */
+		x_lcd = x_comp + COMPASS_X0;
+		y_lcd = -y_comp + COMPASS_Y0;
+
+		/*drawing*/
+		lcd_clear();
+		line(COMPASS_X0, COMPASS_Y0, x_lcd, y_lcd, 1);
+		lcd_update();
+
+		Delay(10);
+	}
+}
+
 /**
  * @brief  Main function
  */
@@ -76,6 +148,7 @@ int main(void)
     //uint8_t ret = 0;
     //int16_t acc_x[2], acc_y[2], acc_z[2];
 		lsm303_smpl smpl, smpl2, mag_max, mag_min;
+		lsm303_smpl smpl_max;
 
     /* Setup SysTick Timer for 1 msec interrupts */
     if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -93,6 +166,10 @@ int main(void)
     I2CDRV_Init(&i2c_init);
     lsm303_init();
 		USBD_Init(&initstruct);
+
+		smpl_max.x = 0;
+		smpl_max.y = 0;
+		smpl_max.z = 0;
 
     /* Infinite blink loop */
     while (1) {
@@ -112,16 +189,16 @@ int main(void)
 				//	line(60, 60, x, y, 1);
 				//}
 #if ACC_DEMO
-				spi_read(DEV_ACC, LSM303_WHO_AM_I_REG, (uint8_t*) &t);
-        pp_sprintf(buf, "who: 0x%x", (int8_t)t);
-        text(&font_helv17b, 5, 10, buf);
+				//spi_read(DEV_ACC, LSM303_WHO_AM_I_REG, (uint8_t*) &t);
+        //pp_sprintf(buf, "who: 0x%x", (int8_t)t);
+        //text(&font_helv17b, 5, 10, buf);
         lsm303_get_sample(DEV_ACC, &smpl);
-        pp_sprintf(buf, "x:%d", smpl.x);
-        text(&font_helv17b, 5, 50, buf);
-        pp_sprintf(buf, "y:%d", smpl.y);
-        text(&font_helv17b, 5, 70, buf);
-        pp_sprintf(buf, "z:%d", smpl.z);
-        text(&font_helv17b, 5, 90, buf);
+        //pp_sprintf(buf, "x:%d", smpl.x);
+        //text(&font_helv17b, 5, 50, buf);
+        //pp_sprintf(buf, "y:%d", smpl.y);
+        //text(&font_helv17b, 5, 70, buf);
+        //pp_sprintf(buf, "z:%d", smpl.z);
+        //text(&font_helv17b, 5, 90, buf);
 #endif
 #if MAG_DEMO
 				//sprintf(buf, "min: %d ; %d ; %d", mag_min.x, mag_min.y, mag_min.z);
@@ -139,12 +216,13 @@ int main(void)
         //text(&font_helv17, 5, 90, buf);
 
 				/* print compass samples to UART for hard/soft-iron calibration */
-        lsm303_get_sample(DEV_MAG, &smpl);
+        //lsm303_get_sample(DEV_MAG, &smpl);
+				compass_app();
+#endif
 				sprintf(buf, "x:%d y:%d z:%d\n\r", smpl.x, smpl.y, smpl.z);
 				USBD_Write(USBDESC_EP_DATA_OUT, (void*)buf, strlen(buf), NULL);
-#endif
         //lcd_update();
-				Delay(10);
+				Delay(100);
     }
 }
 

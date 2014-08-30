@@ -32,7 +32,7 @@
 #include <udelay.h>
 
 // Enable 90* rotation
-#define LCD_ROTATE_90
+//#define LCD_ROTATE_90
 
 // Do not use DMA for frame transfer
 #define LCD_NODMA
