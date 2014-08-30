@@ -27,8 +27,6 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
-#include "em_gpio.h"
-
 // Top left button
 #define BUT_TL_PORT     gpioPortC
 #define BUT_TL_PIN      7
@@ -43,7 +41,7 @@
 #define BUT_BR_PIN      8
 
 /**
- * @TODO desc
+ * @brief Iniailize button IOs & interrupts.
  */
 void buttons_init(void);
 
