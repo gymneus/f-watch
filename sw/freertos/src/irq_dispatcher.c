@@ -43,10 +43,10 @@ static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
     evt.type = BUTTON_PRESSED;
     switch(flags)
     {
-        case 0x01: evt.data.button = BUT_BL; break;
-        case 0x40: evt.data.button = BUT_TR; break;
-        case 0x80: evt.data.button = BUT_BR; break;
-        case 0x0100: evt.data.button = BUT_TL; break;
+        case 0x01: evt.data.button = BUT_TR; break;
+        case 0x40: evt.data.button = BUT_BL; break;
+        case 0x80: evt.data.button = BUT_TL; break;
+        case 0x0100: evt.data.button = BUT_BR; break;
 
         // Unexpected event, do not send it
         default: return xHigherPriorityTaskWoken;
