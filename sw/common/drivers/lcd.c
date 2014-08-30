@@ -32,7 +32,7 @@
 #include <udelay.h>
 
 // Enable 90* rotation
-#define LCD_ROTATE
+#define LCD_ROTATE_90
 
 // Do not use DMA for frame transfer
 #define LCD_NODMA
@@ -265,13 +265,16 @@ void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
-#ifdef LCD_ROTATE
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
     uint8_t mask = 1 << (y & 0x07);
     uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
+#endif
 
     if(value)
         buffer[offset] |= mask;
@@ -284,13 +287,16 @@ void lcd_toggle_pixel(uint8_t x, uint8_t y)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
-#ifdef LCD_ROTATE
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
     uint8_t mask = 1 << (y & 0x07);
     uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
+#endif
 
     buffer[offset] ^= mask;
 }
@@ -300,13 +306,16 @@ uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
     x %= LCD_WIDTH;
     y %= LCD_HEIGHT;
 
-#ifdef LCD_ROTATE
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
     uint8_t mask = 1 << (y & 0x07);
     uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
     uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
+#endif
 
     return buffer[offset] & mask;
 }
