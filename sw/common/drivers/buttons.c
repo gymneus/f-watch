@@ -25,6 +25,7 @@
  */
 
 #include "buttons.h"
+#include <em_gpio.h>
 
 __attribute__((weak))
 void GPIO_EVEN_IRQHandler(void)
