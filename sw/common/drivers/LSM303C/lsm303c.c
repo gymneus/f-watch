@@ -122,7 +122,8 @@ int lsm303_init()
   lsm303_enableaxis(DEV_ACC, 0x7); 
   lsm303_fifo_mode(DEV_ACC, LSM303_FMODE_BYPASS, 1);
   lsm303_fifo_mode(DEV_ACC, LSM303_FMODE_BYPASS, 0);
-  lsm303_odr(DEV_ACC, LSM303_ACC_ODR_10_Hz);
+	lsm303_fullscale(DEV_ACC, LSM303_8G);
+  lsm303_odr(DEV_ACC, LSM303_ACC_ODR_50_Hz);
 	
 	lsm303_odr(DEV_MAG, LSM303_MAG_ODR_20_Hz);
 	lsm303_opmode(DEV_MAG, LSM303_MAG_OPM_MED, LSM303_MAG_CONV_CONT);
