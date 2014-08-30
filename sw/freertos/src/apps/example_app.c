@@ -26,6 +26,7 @@
 
 #include "application.h"
 #include "widgets/status_bar.h"
+#include "drivers/buzzer.h"
 
 #include <string.h>     // for strcpy
 
@@ -60,10 +61,15 @@ static void widget_event(struct ui_widget *w, const struct event *evt)
             case BUT_TL:    // this should not happen, it is handled
                 break;      // in the main loop
         }
+        break;
 
     case RTC_TICK:
-        // commented out, because it interferes with other messages
-        //strcpy(message, "tick-tock");
+        // tick-tock with a buzzer
+        buzzer_enable();
+        vTaskDelay(100);
+        buzzer_disable();
+        // ok, we do not need redrawing
+        w->flags &= ~WF_DIRTY;
         break;
 
     default:    // suppress warnings
