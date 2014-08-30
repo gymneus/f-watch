@@ -168,6 +168,7 @@ C_SRC += \
 ../common/gfx/font_xm4x6.c \
 ../common/pp_printf/vsprintf-xint.c \
 ../common/udelay.c \
+../common/sincos.c \
 ../common/usb/src/em_usbd.c \
 ../common/usb/src/em_usbdch9.c \
 ../common/usb/src/em_usbhal.c \
