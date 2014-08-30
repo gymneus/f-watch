@@ -27,6 +27,7 @@
 #include "application.h"
 #include "widgets/status_bar.h"
 #include "drivers/buzzer.h"
+#include "drivers/vibra.h"
 
 #include <string.h>     // for strcpy
 
@@ -61,6 +62,11 @@ static void widget_event(struct ui_widget *w, const struct event *evt)
             case BUT_TL:    // this should not happen, it is handled
                 break;      // in the main loop
         }
+
+        // short vibration
+        vibra_enable();
+        vTaskDelay(100);
+        vibra_disable();
         break;
 
     case RTC_TICK:

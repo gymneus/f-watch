@@ -142,6 +142,7 @@ C_SRC +=  \
 ../common/drivers/buttons.c \
 ../common/drivers/buzzer.c \
 ../common/drivers/rtc.c \
+../common/drivers/vibra.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
