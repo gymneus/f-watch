@@ -28,17 +28,17 @@
 #define BUTTONS_H
 
 // Top left button
-#define BUT_TL_PORT     gpioPortC
-#define BUT_TL_PIN      7
+#define BUT_TL_PORT     gpioPortA
+#define BUT_TL_PIN      8
 // Top right button
-#define BUT_TR_PORT     gpioPortA
-#define BUT_TR_PIN      0
+#define BUT_TR_PORT     gpioPortC
+#define BUT_TR_PIN      6
 // Bottom left button
-#define BUT_BL_PORT     gpioPortC
-#define BUT_BL_PIN      6
+#define BUT_BL_PORT     gpioPortA
+#define BUT_BL_PIN      0
 // Bottom right button
-#define BUT_BR_PORT     gpioPortA
-#define BUT_BR_PIN      8
+#define BUT_BR_PORT     gpioPortC
+#define BUT_BR_PIN      7
 
 /**
  * @brief Iniailize button IOs & interrupts.
