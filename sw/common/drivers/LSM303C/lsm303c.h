@@ -20,9 +20,9 @@
 #define DEV_ACC 0
 #define DEV_MAG 1
 
-#define LSM303_IRON_X 176
-#define LSM303_IRON_Y 368
-#define LSM303_IRON_Z 484
+#define LSM303_IRON_X 403
+#define LSM303_IRON_Y 431
+#define LSM303_IRON_Z 588
 
 /* Accelerometer & Magnetometer registers */
 //#define 	LSM303_ACC_TEMP_L		 0x0B
