@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,53 +22,26 @@
  */
 
 /**
- * @brief Main file.
+ * @brief Vibration motor control.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#ifndef VIBRA_H
+#define VIBRA_H
 
-#include <apps/app_list.h>
-#include <drivers/buttons.h>
-#include <drivers/buzzer.h>
-#include <drivers/lcd.h>
-#include <drivers/rtc.h>
-#include <drivers/vibra.h>
-#include <gfx/ui.h>
+/**
+ * @brief Initialize vibration motor.
+ */
+void vibra_init(void);
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+/**
+ * @brief Turns on the vibration motor.
+ */
+void vibra_enable(void);
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+/**
+ * @brief Turns off the vibration motor.
+ */
+void vibra_disable(void);
 
-    buttons_init();
-    buzzer_init();
-    vibra_init();
-    rtc_init();
-    lcd_init();
-    ui_init();
-
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
-
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
-}
+#endif /* VIBRA_H */
 
