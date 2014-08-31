@@ -7,7 +7,7 @@ struct rle_bitmap
 {
     uint8_t w;
     uint8_t h;
-    uint8_t *data;
+    const uint8_t *data;
 };
 
 extern const struct rle_bitmap example_icon;
