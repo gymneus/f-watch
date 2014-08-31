@@ -34,7 +34,7 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
 
 static void status_bar_redraw(struct ui_widget *w)
 {
-    gfx_round_box(&w->dc, 30, -10, 127-30, 10, 9, COLOR_BLACK);
+    gfx_round_box(&w->dc, 30, -10, 127 - 30, 10, 9, COLOR_BLACK);
     gfx_centered_text(&w->dc, &font_helv11, 0, "Home", 1);
 }
 

@@ -27,5 +27,8 @@
 
 #include <gfx/ui.h>
 
+///> Height of the status bar
+#define STATUS_BAR_HEIGHT   20
+
 struct ui_widget status_bar;
 
