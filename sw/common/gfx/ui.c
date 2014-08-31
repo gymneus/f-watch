@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -65,11 +65,11 @@ void ui_add_widget(struct ui_widget *w) {
     }
 
     if(!(w->flags & WF_DOUBLE_BUFFER)) {
-        gfx_init_surface(&w->dc, &screen, w->pos.x0, w->pos.y0, 
+        gfx_init_surface(&w->dc, &screen, w->pos.x0, w->pos.y0,
                          w->pos.x1 - w->pos.x0 + 1, w->pos.y1 - w->pos.y0 + 1);
     }
     else {
-        DBG("NonImpl\n");
+        // DBG("NonImpl\n");
     }
 
     w->flags |= WF_DIRTY;

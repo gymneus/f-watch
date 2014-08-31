@@ -237,7 +237,7 @@ void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1,
 void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitmap *b)
 {
     int x = 0, y = 0;
-    uint8_t *d = b->data;
+    const uint8_t *d = b->data;
     while(y != b->h)
     {
         int pix = (*d) & 0x80 ? 1 : 0;
