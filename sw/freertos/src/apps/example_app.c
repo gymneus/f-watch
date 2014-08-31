@@ -26,6 +26,7 @@
 
 #include "application.h"
 #include "widgets/status_bar.h"
+#include "drivers/backlight.h"
 #include "drivers/buzzer.h"
 #include "drivers/vibra.h"
 
@@ -47,16 +48,18 @@ static void widget_event(struct ui_widget *w, const struct event *evt)
     switch(evt->type) {
     case BUTTON_PRESSED:
         switch(evt->data.button) {
-            case BUT_TR:
-                strcpy(message, "top right");
+            case BUT_TR:    // top right button
+                backlight_set_level(backlight_get_level() + 10);
+                sprintf(message, "top right (bl: %d)", backlight_get_level());
                 break;
 
-            case BUT_BR:
-                strcpy(message, "bottom right");
+            case BUT_BR:    // bottom right button
+                backlight_set_level(backlight_get_level() - 10);
+                sprintf(message, "bot right (bl: %d)", backlight_get_level());
                 break;
 
-            case BUT_BL:
-                strcpy(message, "bottom left");
+            case BUT_BL:    // bottom left button
+                strcpy(message, "bot left");
                 break;
 
             case BUT_TL:    // this should not happen, it is handled

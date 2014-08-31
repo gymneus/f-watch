@@ -139,6 +139,7 @@ C_SRC +=  \
 ../common/emlib/src/em_usart.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/lcd.c \
+../common/drivers/backlight.c \
 ../common/drivers/buttons.c \
 ../common/drivers/buzzer.c \
 ../common/drivers/rtc.c \
