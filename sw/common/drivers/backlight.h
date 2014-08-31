@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,52 +22,28 @@
  */
 
 /**
- * @brief Main file.
+ * @brief Backlight control.
  */
 
-#include <em_chip.h>
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <sleep.h>
+#ifndef BACKLIGHT_H
+#define BACKLIGHT_H
 
-#include <apps/app_list.h>
-#include <drivers/backlight.h>
-#include <drivers/buttons.h>
-#include <drivers/buzzer.h>
-#include <drivers/lcd.h>
-#include <drivers/rtc.h>
-#include <drivers/vibra.h>
-#include <gfx/ui.h>
+/**
+ * @brief Initialize backlight control.
+ */
+void backlight_init(void);
 
-int main(void)
-{
-    // Chip errata
-    CHIP_Init();
+/**
+ * @brief Sets the backlight brightness.
+ * @param level is the brightness level to be set. Valid values are in the
+ * 0-100 range. 0 stands for completely turned off, 100 is full brightness.
+ */
+void backlight_set_level(int level);
 
-    // Enable clocks
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
+/**
+ * @brief Returns the current level of backlight.
+ */
+unsigned int backlight_get_level(void);
 
-    backlight_init();
-    buttons_init();
-    buzzer_init();
-    vibra_init();
-    rtc_init();
-    lcd_init();
-    ui_init();
-
-    // Initialize SLEEP driver, no callbacks are used
-    SLEEP_Init(NULL, NULL);
-#if (configSLEEP_MODE < 3)
-    // do not let to sleep deeper than define
-    SLEEP_SleepBlockBegin((SLEEP_EnergyMode_t)(configSLEEP_MODE+1));
-#endif
-
-    startMain(&menu);
-
-    // Start FreeRTOS Scheduler
-    vTaskStartScheduler();
-
-    return 0;
-}
+#endif /* BACKLIGHT_H */
 
