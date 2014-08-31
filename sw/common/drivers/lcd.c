@@ -31,24 +31,8 @@
 #include <em_timer.h>
 #include <udelay.h>
 
-// Enable 90* rotation
-#define LCD_ROTATE_90
-
-// Do not use DMA for frame transfer
-#define LCD_NODMA
-
-// Additional bytes to control the LCD; required for DMA transfers
-#ifdef LCD_NODMA
-#define CONTROL_BYTES       0
-#else
-#define CONTROL_BYTES       2
-#endif
-
-// Number of bytes to store one line
-#define LCD_STRIDE          (LCD_WIDTH / 8 + CONTROL_BYTES)
-
 // Framebuffer - pixels are stored as consecutive rows
-static uint8_t buffer[LCD_STRIDE * LCD_HEIGHT];
+uint8_t lcd_buffer[LCD_STRIDE * LCD_HEIGHT];
 
 static void spi_init(void)
 {
@@ -201,19 +185,19 @@ void lcd_power(uint8_t enable)
 void lcd_clear(void)
 {
     // Using uint32_t instead of uint8_t reduces the number of writes 4 times
-    uint32_t *p = (uint32_t*)buffer;
+    uint32_t *p = (uint32_t*)lcd_buffer;
     uint16_t i;
 
     // Clear pixel buffer
-    for(i = 0; i < sizeof(buffer) / sizeof(uint32_t); ++i)
+    for(i = 0; i < sizeof(lcd_buffer) / sizeof(uint32_t); ++i)
         *p++ = 0x00;
 
 #ifndef LCD_NODMA
     // Add control codes
     for(i = 1; i < LCD_HEIGHT; ++i)
     {
-        buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
-        buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
+        lcd_buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
+        lcd_buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
     }
 #endif
 }
@@ -227,7 +211,7 @@ void lcd_update(void)
     // TODO use DMA
     uint16_t cmd;
     uint16_t i;
-    uint8_t *p = (uint8_t*) buffer;
+    uint8_t *p = (uint8_t*) lcd_buffer;
 
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
     timer_delay(6);
@@ -258,65 +242,5 @@ void lcd_update(void)
 
     timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
-}
-
-void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#if defined(LCD_ROTATE_90)
-    uint8_t mask = 0x80 >> (y & 0x07);
-    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
-#elif defined(LCD_ROTATE_270)
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
-#else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif
-
-    if(value)
-        buffer[offset] |= mask;
-    else
-        buffer[offset] &= ~mask;
-}
-
-void lcd_toggle_pixel(uint8_t x, uint8_t y)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#if defined(LCD_ROTATE_90)
-    uint8_t mask = 0x80 >> (y & 0x07);
-    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
-#elif defined(LCD_ROTATE_270)
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
-#else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif
-
-    buffer[offset] ^= mask;
-}
-
-uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#if defined(LCD_ROTATE_90)
-    uint8_t mask = 0x80 >> (y & 0x07);
-    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
-#elif defined(LCD_ROTATE_270)
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
-#else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif
-
-    return buffer[offset] & mask;
 }
 
