@@ -86,7 +86,7 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
             if(selected_item < menu_size - 1) {
                 ++selected_item;
 
-                if(selected_item >= MAX_ENTRIES)
+                if(selected_item >= offset + MAX_ENTRIES)
                     offset = selected_item - MAX_ENTRIES + 1;
 
                 w->flags |= WF_DIRTY;
