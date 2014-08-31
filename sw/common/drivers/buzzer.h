@@ -45,7 +45,10 @@ void buzzer_disable(void);
 
 /**
  * @brief Sets the frequency of buzzer sound.
- * @param frequency is the frequency to be set.
+ * @param frequency is the frequency to be set. Valid values are between 6
+ * and 5500. If the requested frequency is out of the valid range, it will
+ * be set to either the closest valid value (either the lowest one or the
+ * highest one).
  */
 void buzzer_set_freq(int frequency);
 
