@@ -95,7 +95,7 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 #
 override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 -DDEBUG_EFM  \
+-fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 \
 $(DEPFLAGS)
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
@@ -204,10 +204,10 @@ vpath %.S $(S_PATHS)
 # Default build is debug build
 all:      debug
 
-debug:    CFLAGS += -DDEBUG -O0 -g
+debug:    CFLAGS += -DDEBUG -O0 -g -DDEBUG_EFM
 debug:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release:  CFLAGS += -DNDEBUG -O3 
+release:  CFLAGS += -DNDEBUG -O3
 release:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files
