@@ -33,6 +33,7 @@ extern application menu;
 extern application clock;
 extern application example;
 extern application gpscoord;
+extern application reset;
 
 #endif /* APP_LIST_H */
 

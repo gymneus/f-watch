@@ -105,7 +105,7 @@ override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=corte
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
 #
 override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg_bootld.ld \
+-mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
  -Wl,--gc-sections
 
 LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
@@ -189,6 +189,7 @@ src/low_power_tick_management.c \
 ../common/drivers/gps/nmealib/src/tok.c \
 ../common/drivers/gps/gps.c \
 src/apps/gpscoord.c \
+src/apps/reset.c \
 ../common/drivers/usb/usbdbg.c \
 ../common/drivers/usb/src/em_usbd.c \
 ../common/drivers/usb/src/em_usbdch9.c \
