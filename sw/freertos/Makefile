@@ -161,7 +161,6 @@ C_SRC +=  \
 ../common/gfx/graphics.c \
 ../common/gfx/gfx.c \
 ../common/gfx/ui.c \
-../common/udelay.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
