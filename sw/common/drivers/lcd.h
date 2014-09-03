@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Bartosz Bielawski <bartosz.bielawski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,22 +58,18 @@
 // Peripherals
 #define LCD_SPI_UNIT        USART2
 #define LCD_SPI_CLOCK       cmuClock_USART2
-#define LCD_SPI_LOCATION    0
+#define LCD_SPI_LOCATION    USART_ROUTE_LOCATION_LOC0
 #define LCD_SPI_BAUDRATE    500000
 #define LCD_POL_INV_FREQ    60
 
-// Do not use DMA for frame transfer
-#define LCD_NODMA
-
-// Additional bytes to control the LCD; required for DMA transfers
-#ifdef LCD_NODMA
-#define CONTROL_BYTES       0
-#else
-#define CONTROL_BYTES       2
-#endif
+// Additional bytes to control the LCD; stored in framebuffer, required for DMA transfers
+#define LCD_CONTROL_BYTES       2
 
 // Number of bytes to store one line
-#define LCD_STRIDE          (LCD_WIDTH / 8 + CONTROL_BYTES)
+#define LCD_STRIDE          (LCD_WIDTH / 8 + LCD_CONTROL_BYTES)
+
+// Framebuffer size (in bytes)
+#define LCD_BUF_SIZE        (LCD_STRIDE * LCD_HEIGHT + LCD_CONTROL_BYTES)
 
 /**
  * @brief LCD initialization routine.
@@ -109,7 +106,7 @@ void lcd_update(void);
  */
 static inline void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 {
-    extern uint8_t lcd_buffer[];
+    extern uint8_t * const off_buffer;
 
     // x %= LCD_WIDTH;
     // y %= LCD_HEIGHT;
@@ -126,9 +123,9 @@ static inline void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
 #endif
 
     if(value)
-        lcd_buffer[offset] |= mask;
+        off_buffer[offset] |= mask;
     else
-        lcd_buffer[offset] &= ~mask;
+        off_buffer[offset] &= ~mask;
 }
 
 /**
@@ -138,7 +135,7 @@ static inline void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
  */
 static inline void lcd_toggle_pixel(uint8_t x, uint8_t y)
 {
-    extern uint8_t lcd_buffer[];
+    extern uint8_t * const off_buffer;
 
     // x %= LCD_WIDTH;
     // y %= LCD_HEIGHT;
@@ -154,7 +151,7 @@ static inline void lcd_toggle_pixel(uint8_t x, uint8_t y)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
 #endif
 
-    lcd_buffer[offset] ^= mask;
+    off_buffer[offset] ^= mask;
 }
 
 /**
@@ -164,7 +161,7 @@ static inline void lcd_toggle_pixel(uint8_t x, uint8_t y)
  */
 static inline uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
 {
-    extern uint8_t lcd_buffer[];
+    extern uint8_t * const off_buffer;
 
     // x %= LCD_WIDTH;
     // y %= LCD_HEIGHT;
@@ -180,7 +177,7 @@ static inline uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
     uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
 #endif
 
-    return lcd_buffer[offset] & mask;
+    return off_buffer[offset] & mask;
 }
 
 #endif /* LCD_H */

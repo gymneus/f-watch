@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Bartosz Bielawski <bartosz.bielawski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,26 +24,36 @@
 /**
  * @brief LS013B7DH03 LCD driver
  */
+// Uncomment if you do not want to use DMA for frame transfer
+//#define LCD_NODMA
 
 #include "lcd.h"
+#ifndef LCD_NODMA
+#include "lcd_dma.h"
+#endif
 #include <em_cmu.h>
 #include <em_usart.h>
 #include <em_rtc.h>
 #include <em_timer.h>
 #include <udelay.h>
 
-// Framebuffer - pixels are stored as consecutive rows
-uint8_t lcd_buffer[LCD_STRIDE * LCD_HEIGHT];
+// Frame buffer - pixels are stored as consecutive rows
+uint8_t lcd_buffer[LCD_BUF_SIZE];
+uint8_t * const off_buffer = lcd_buffer + LCD_CONTROL_BYTES;
 
 static void spi_init(void)
 {
-    USART_InitSync_TypeDef usartInit = USART_INITSYNC_DEFAULT;
-
     CMU_ClockEnable(LCD_SPI_CLOCK, true);
-    usartInit.baudrate = LCD_SPI_BAUDRATE;
 
+    USART_InitSync_TypeDef usartInit = USART_INITSYNC_DEFAULT;
+    usartInit.databits = usartDatabits8;
+    usartInit.baudrate = LCD_SPI_BAUDRATE;
     USART_InitSync(LCD_SPI_UNIT, &usartInit);
+
+    /*LCD_SPI_UNIT->CTRL |= USART_CTRL_AUTOCS;*/
+
     LCD_SPI_UNIT->ROUTE = (USART_ROUTE_CLKPEN | USART_ROUTE_TXPEN | LCD_SPI_LOCATION);
+    /*USART_ROUTE_CSPEN*/
 }
 
 static void spi_transmit(uint8_t *data, uint16_t length)
@@ -50,7 +61,7 @@ static void spi_transmit(uint8_t *data, uint16_t length)
     while(length > 0)
     {
         // Send only one byte if len==1 or data pointer is not aligned at a 16 bit
-        //   word location in memory.
+        // word location in memory.
         if((length == 1) || ((unsigned int)data & 0x1))
         {
             USART_Tx(LCD_SPI_UNIT, *(uint8_t*)data);
@@ -128,6 +139,21 @@ static void extcomin_setup(unsigned int frequency)
     TIMER_Init(TIMER0, &timerInit);
 }
 
+static void lcd_prepend_update_commands()
+{
+    // Add control codes for all lines
+    uint16_t i;
+    for(i = 0; i < LCD_HEIGHT; ++i)
+    {
+        lcd_buffer[i * LCD_STRIDE]     = LCD_CMD_UPDATE;
+        lcd_buffer[i * LCD_STRIDE + 1] = i + 1;
+    }
+
+    // Ending control command
+    lcd_buffer[LCD_HEIGHT * LCD_STRIDE]     = 0xff;
+    lcd_buffer[LCD_HEIGHT * LCD_STRIDE + 1] = 0xff;
+}
+
 void lcd_init(void)
 {
     uint16_t cmd;
@@ -163,6 +189,12 @@ void lcd_init(void)
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 
     lcd_clear();
+    lcd_prepend_update_commands();
+
+#ifndef LCD_NODMA
+    lcd_dma_init();
+#endif /* LCD_NODMA */
+
     lcd_enable(1);
 }
 
@@ -186,61 +218,31 @@ void lcd_clear(void)
 {
     // Using uint32_t instead of uint8_t reduces the number of writes 4 times
     uint32_t *p = (uint32_t*)lcd_buffer;
-    uint16_t i;
+    uint16_t x, y;
 
-    // Clear pixel buffer
-    for(i = 0; i < sizeof(lcd_buffer) / sizeof(uint32_t); ++i)
-        *p++ = 0x00;
+    for(y = 0; y < LCD_HEIGHT; ++y) {
+        // skip control bytes
+        p = (uint32_t*)((uint8_t*)p + 2);
 
-#ifndef LCD_NODMA
-    // Add control codes
-    for(i = 1; i < LCD_HEIGHT; ++i)
-    {
-        lcd_buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
-        lcd_buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
+        // clear line
+        for(x = 0; x < LCD_STRIDE / sizeof(uint32_t); ++x) {
+            *p++ = 0x00;
+        }
     }
-#endif
 }
 
 void lcd_update(void)
 {
-    // Need to adjust start row by one because LS013B7DH03 starts counting lines
-    // from 1, while the DISPLAY interface starts from 0.
-    const uint8_t START_ROW = 1;
-
-    // TODO use DMA
-    uint16_t cmd;
-    uint16_t i;
-    uint8_t *p = (uint8_t*) lcd_buffer;
-
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
     timer_delay(6);
 
-    // Send update command and first line address
-    cmd = LCD_CMD_UPDATE | (START_ROW << 8);
-    spi_transmit((uint8_t*) &cmd, 2);
-
 #ifdef LCD_NODMA
-    for(i = 0; i < LCD_HEIGHT; ++i)
-    {
-        // Send pixels for this line
-        spi_transmit(p, LCD_WIDTH / 8);
-        p += (LCD_WIDTH / 8);
-
-        // TODO seems unnecessary
-//        if(i == LCD_HEIGHT - 1)
-//            cmd = 0xffff;
-//        else
-        cmd = 0xff | ((START_ROW + i + 1) << 8);
-
-        spi_transmit((uint8_t*) &cmd, 2);
-    }
-#else
-    // TODO here the DMA transfer should run in the end
-    spi_transmit(p, LCD_STRIDE * LCD_HEIGHT);
-#endif
-
+    spi_transmit(lcd_buffer, LCD_BUF_SIZE);
     timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
+#else
+    lcd_dma_send_frame();
+    // chip select is deasserted in the dma tx complete interrupt
+#endif
 }
 
