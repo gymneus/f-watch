@@ -129,6 +129,7 @@ C_SRC +=  \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_burtc.c \
 ../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_dma.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
 ../common/emlib/src/em_int.c \
@@ -138,7 +139,9 @@ C_SRC +=  \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
 ../common/emdrv/sleep/src/sleep.c \
+../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
+../common/drivers/lcd_dma.c \
 ../common/drivers/backlight.c \
 ../common/drivers/buttons.c \
 ../common/drivers/buzzer.c \

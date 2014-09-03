@@ -142,17 +142,21 @@ INCLUDEPATHS += \
 
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
+../common/drivers/lcd_dma.c \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/max17047.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_dma.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
 ../common/emlib/src/em_i2c.c \
 ../common/emlib/src/em_int.c \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_rtc.c \
+../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
 ../common/gfx/graphics.c \
 ../common/gfx/font_helv11.c \
