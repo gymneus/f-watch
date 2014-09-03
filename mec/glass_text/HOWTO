@@ -1,0 +1,15 @@
+
+ 1) Create text in inkscape at final size
+ 2) Scale it up (e.g 1500%)
+ 3) Select scale up version, File > Export bitmap...
+ 4) Choose a file name (.png), default 300dpi is fine, Export
+ 5) Open KiCad
+ 6) In the project explorer, open Bitmap2Component
+ 7) Load the bitmap
+ 8) Select negative, Threshold = 50, Export
+ 9) Scale down the generated module using scale_kicad_mod.py
+    scale_kicad_mod.py 0.0666 < old.kicad_mod > new.kicad_mod
+10) Open KiCad's module editor
+11) Select a library
+12) Import the module
+13) Save it (change the module name)
