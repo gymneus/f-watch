@@ -35,7 +35,6 @@
 #include <em_usart.h>
 #include <em_rtc.h>
 #include <em_timer.h>
-#include <udelay.h>
 
 // Frame buffer - pixels are stored as consecutive rows
 uint8_t lcd_buffer[LCD_BUF_SIZE];
@@ -78,16 +77,6 @@ static void spi_transmit(uint8_t *data, uint16_t length)
 
     // Be sure that all transfer have finished
     while(!(LCD_SPI_UNIT->STATUS & USART_STATUS_TXC));
-}
-
-static void timer_init(void)
-{
-    UDELAY_Calibrate();
-}
-
-static void timer_delay(uint16_t usecs)
-{
-    UDELAY_Delay(usecs);
 }
 
 static void extcomin_setup(unsigned int frequency)
@@ -158,7 +147,6 @@ void lcd_init(void)
 {
     uint16_t cmd;
 
-    timer_init();
     spi_init();
     // TODO I am pretty sure, it will be already initialized somewhere..
     CMU_ClockEnable(cmuClock_GPIO, true);
@@ -180,12 +168,10 @@ void lcd_init(void)
 
     // Send command to clear the display
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
-    timer_delay(6);
 
     cmd = LCD_CMD_ALL_CLEAR;
     spi_transmit((uint8_t*) &cmd, 2);
 
-    timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 
     lcd_clear();
@@ -234,11 +220,9 @@ void lcd_clear(void)
 void lcd_update(void)
 {
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
-    timer_delay(6);
 
 #ifdef LCD_NODMA
     spi_transmit(lcd_buffer, LCD_BUF_SIZE);
-    timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 #else
     lcd_dma_send_frame();
