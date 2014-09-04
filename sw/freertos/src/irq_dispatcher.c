@@ -40,13 +40,45 @@ static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 
     // Fill the event data
     struct event evt;
-    evt.type = BUTTON_PRESSED;
     switch(flags)
     {
-        case 0x01: evt.data.button = BUT_TR; break;
-        case 0x40: evt.data.button = BUT_BL; break;
-        case 0x80: evt.data.button = BUT_TL; break;
-        case 0x0100: evt.data.button = BUT_BR; break;
+        // Buttons
+        case (1 << 0):      // PA0
+            evt.type = BUTTON_PRESSED;
+            evt.data.button = BUT_TR;
+            break;
+
+        case (1 << 6):      // PC6
+            evt.type = BUTTON_PRESSED;
+            evt.data.button = BUT_BL;
+            break;
+
+        case (1 << 7):      // PC7
+            evt.type = BUTTON_PRESSED;
+            evt.data.button = BUT_TL;
+            break;
+
+        case (1 << 8):      // PA8
+            evt.type = BUTTON_PRESSED;
+            evt.data.button = BUT_BR;
+            break;
+
+        // Sensors
+// There is a conflict with the bottom-left button interrupt
+//        case (1 << 6):      // PA6
+//            evt.type = SENSOR_INT;
+//            evt.data.sensor = LIGHT;
+//            break;
+
+        case (1 << 10):     // PA10
+            evt.type = SENSOR_INT;
+            evt.data.sensor = MAGNETOMETER;
+            break;
+
+        case (1 << 5):      // PD5
+            evt.type = SENSOR_INT;
+            evt.data.sensor = ACCELEROMETER;
+            break;
 
         // Unexpected event, do not send it
         default: return xHigherPriorityTaskWoken;
