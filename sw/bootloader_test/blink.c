@@ -50,5 +50,7 @@ int main(void)
     freewatch_backlight_blinky(200, 15);
     freewatch_backlight_blinky(1000, 5);
 
+    /* Reset MCU */
+    ResetEFM32();
 }
 
