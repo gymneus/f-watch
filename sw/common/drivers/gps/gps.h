@@ -64,7 +64,7 @@ int     gps_puts(char *s);
 int     gps_nmea_crc(const char *nmeastr);
 int     gps_fixed();
 void    gps_get_utc(struct gps_utc *utc);
-void    gps_get_coord(struct gps_coord *coord);
+void    gps_get_coord(struct gps_coord *coord, int format);
 void    gps_get_speed(double *spd);
 void    gps_get_direction(double *dir);
 

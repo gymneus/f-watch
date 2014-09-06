@@ -183,10 +183,19 @@ void gps_get_utc(struct gps_utc *utc)
         utc->sec = gps_info.utc.sec;
 }
 
-void gps_get_coord(struct gps_coord *coord)
+void gps_get_coord(struct gps_coord *coord, int format)
 {
-        coord->lat  = gps_info.lat;
-        coord->lon  = gps_info.lon;
+        if (format == 0) {
+                /* Raw [deg][min].[sec/60] data */
+                coord->lat = gps_info.lat;
+                coord->lon = gps_info.lon;
+        } else if (format == 1) {
+                /* [deg][min].[sec] */
+                coord->lat = (int)gps_info.lat + 0.6 * (
+                        gps_info.lat - (int)gps_info.lat);
+                coord->lon = (int)gps_info.lon + 0.6 * (
+                        gps_info.lon - (int)gps_info.lon);
+        }
         coord->elev = gps_info.elv;
 }
 

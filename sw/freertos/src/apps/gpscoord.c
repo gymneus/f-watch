@@ -37,21 +37,31 @@
 #include "application.h"
 
 static struct gps_coord coord;
+static int coord_format;
 
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
 
         if (gps_fixed())
-                gps_get_coord(&coord);
+                gps_get_coord(&coord, coord_format);
 
         gfx_clear(&w->dc, 0);
-        sprintf(buf, "%4.4f", coord.lat);
-        gfx_text(&w->dc, &font_helv22b, 10, 10, buf, 0);
-        sprintf(buf, "%4.4f", coord.lon);
-        gfx_text(&w->dc, &font_helv22b, 10, 30, buf, 0);
-        sprintf(buf, "%5.0f m", coord.elev);
-        gfx_text(&w->dc, &font_helv22b, 10, 50, buf, 0);
+        sprintf(buf, "L: -90", (int)(coord.lat / 100));
+        gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+        sprintf(buf, "60.7777'");
+        gfx_text(&w->dc, &font_helv22b, 15, 20, buf, 0);
+        sprintf(buf, "l: -180", (int)(coord.lon / 100));
+        gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
+        sprintf(buf, "60.7777'");
+        gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
+        sprintf(buf, "h: 8848m");
+        gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+
+//        sprintf(buf, "%2.4f" )
+//        gfx_text(&w->dc, &font_helv22b, 0, 30, buf, 0);
+//        sprintf(buf, "%5.0f m", coord.elev);
+//        gfx_text(&w->dc, &font_helv22b, 0, 50, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
@@ -102,6 +112,10 @@ void gpscoord_main(void *params)
                         case BUTTON_PRESSED:
                                 if (evt.data.button == BUT_TR)
                                         return;
+                                else if (evt.data.button == BUT_BR) {
+                                        coord_format += 1;
+                                        coord_format %= 2;
+                                }
                                 break;
                         case RTC_TICK:
                                 ui_update(&evt);
