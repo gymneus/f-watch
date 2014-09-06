@@ -36,32 +36,8 @@
 #include "em_cmu.h"
 #include "em_gpio.h"
 
-/* Counts 1ms timeTicks */
-volatile uint32_t msTicks;
+#include <freewatch/freewatch_utils.h>
 
-/* Local prototypes */
-void Delay(uint32_t dlyTicks);
-
-/**************************************************************************//**
-* @brief SysTick_Handler
-* Interrupt Service Routine for system tick counter
- *****************************************************************************/
-void SysTick_Handler(void)
-{
-    msTicks++; /* increment counter necessary in Delay()*/
-}
-
-/**************************************************************************//**
- * @brief Delays number of msTick Systicks (typically 1 ms)
- * @param dlyTicks Number of ticks to delay
- *****************************************************************************/
-void Delay(uint32_t dlyTicks)
-{
-    uint32_t curTicks;
-
-    curTicks = msTicks;
-    while ((msTicks - curTicks) < dlyTicks);
-}
 
 /**************************************************************************//**
  * @brief  Main function
@@ -70,21 +46,9 @@ int main(void)
 {
     int i;
 
-    /* Setup SysTick Timer for 1 msec interrupts */
-    if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
+    freewatch_backlight_blinky(10, 100);
+    freewatch_backlight_blinky(200, 15);
+    freewatch_backlight_blinky(1000, 5);
 
-    // Enable clocks and configure pins
-    CMU_ClockEnable(cmuClock_HFPER, true);
-    CMU_ClockEnable(cmuClock_GPIO, true);
-
-    GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
-    GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
-
-    /* Infinite blink loop */
-    while (1) {
-            GPIO_PinOutToggle(gpioPortE, 11);
-            GPIO_PinOutToggle(gpioPortE, 12);
-            Delay(200);
-    }
 }
 
