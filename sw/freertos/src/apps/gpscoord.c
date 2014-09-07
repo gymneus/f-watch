@@ -42,21 +42,48 @@ static int coord_format;
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
+        float tmp;
 
         if (gps_fixed())
                 gps_get_coord(&coord, coord_format);
 
         gfx_clear(&w->dc, 0);
-        sprintf(buf, "L: -90", (int)(coord.lat / 100));
-        gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
-        sprintf(buf, "60.7777'");
-        gfx_text(&w->dc, &font_helv22b, 15, 20, buf, 0);
-        sprintf(buf, "l: -180", (int)(coord.lon / 100));
-        gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
-        sprintf(buf, "60.7777'");
-        gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
-        sprintf(buf, "h: 8848m");
-        gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+
+        if (coord_format == 0) {
+                /* Display raw [deg][min].[sec/60] */
+                tmp = coord.lat / 100;
+                sprintf(buf, "L: %d", (int)tmp);
+                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                sprintf(buf, "%2.5f'", 100*(tmp - (int)tmp));
+                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+
+                tmp = coord.lon / 100;
+                sprintf(buf, "l: %d", (int)(tmp));
+                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
+                sprintf(buf, "%2.5f'", 100*(tmp - (int)tmp));
+                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
+
+                sprintf(buf, "h: %5.2f", coord.elev);
+                gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+        } else if (coord_format == 1) {
+                /* Display [deg][min].[sec] nicely */
+                tmp = coord.lat / 100;
+                sprintf(buf, "L: %d", (int)tmp);
+                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                sprintf(buf, "%d' %2.2f''", (int)(100*(tmp - (int)tmp)),
+                                        (100*(coord.lat - (int)coord.lat)));
+                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+
+                tmp = coord.lon / 100;
+                sprintf(buf, "l: %d", (int)(tmp));
+                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
+                sprintf(buf, "%d' %2.2f''", (int)(100*(tmp - (int)tmp)),
+                                        (100*(coord.lon - (int)coord.lon)));
+                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
+
+                sprintf(buf, "h: %5.2f", coord.elev);
+                gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+        }
 
 //        sprintf(buf, "%2.4f" )
 //        gfx_text(&w->dc, &font_helv22b, 0, 30, buf, 0);
