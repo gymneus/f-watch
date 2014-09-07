@@ -1,0 +1,194 @@
+
+autobaud.h,28
+#define _AUTOBAUD_H34,1723
+
+config.h,797
+#define CONFIG_H35,1758
+#define EP_DATA_OUT 48,2240
+#define EP_DATA_IN 49,2318
+#define EP_NOTIFY 50,2396
+#define PIN_LOOP_INTERVAL 53,2556
+#define BOOTLOADER_USART 56,2630
+#define BOOTLOADER_USART_CLOCK 57,2672
+#define BOOTLOADER_USART_LOCATION 58,2730
+#define AUTOBAUD_TIMER 62,2930
+#define AUTOBAUD_TIMER_CHANNEL 63,2972
+#define AUTOBAUD_TIMER_LOCATION 64,3009
+#define AUTOBAUD_TIMER_IRQn 65,3070
+#define AUTOBAUD_TIMER_CLOCK 66,3117
+#define AUTOBAUD_TIMER_INT_MASK 67,3175
+#define AUTOBAUD_TIMER_ROUTE 68,3224
+#define AUTOBAUD_TIMER_IRQHANDLER 69,3278
+#define SWDCLK_PIN_IS_HI(71,3333
+#define SWDCLK_PIN_IS_LO(72,3404
+#define BOOTLOADER_SIZE 75,3524
+#define MAX_SIZE_OF_FLASH 78,3638
+#define MASSERASE_BLOCK_SIZE 81,3741
+__STATIC_INLINE void CONFIG_UsartGpioSetup(84,3880
+
+xmodem.h,453
+#define _XMODEM_H34,1712
+#define XMODEM_SOH 36,1733
+#define XMODEM_EOT 37,1770
+#define XMODEM_ACK 38,1807
+#define XMODEM_NAK 39,1844
+#define XMODEM_CAN 40,1882
+#define XMODEM_NCG 41,1920
+#define XMODEM_DATA_SIZE 43,1960
+  uint8_t padding;47,2020
+  uint8_t header;48,2091
+  uint8_t packetNumber;49,2110
+  uint8_t packetNumberC;50,2135
+  uint8_t data[data51,2161
+  uint8_t crcHigh;52,2196
+  uint8_t crcLow;53,2216
+} XMODEM_packet;54,2235
+
+xmodem.c,209
+#define ALIGNMENT(43,1852
+uint8_t rawPacket[rawPacket48,2023
+uint8_t rawPacket[rawPacket50,2108
+uint8_t rawPacket[rawPacket52,2222
+static int VerifyPacketChecksum(63,2728
+int XMODEM_download(100,3728
+
+usbconfig.h,215
+#define __USBCONFIG_H34,1758
+#define USB_DEVICE42,1850
+#define NUM_EP_USED 49,2268
+#define NUM_APP_TIMERS 56,2689
+  #define USER_PUTCHAR 67,3260
+  #define DEBUG_USB_API70,3371
+  #define USB_USE_PRINTF73,3436
+
+autobaud.c,296
+#define SAMPLE_MAX 40,1827
+static volatile int currentSample 42,1851
+static volatile uint16_t samples[samples43,1891
+void AUTOBAUD_TIMER_IRQHANDLER(50,2235
+static uint32_t EstimateBaudRate(73,2929
+void AUTOBAUD_start(103,3921
+void AUTOBAUD_stop(138,5033
+bool AUTOBAUD_completed(155,5567
+
+retargetdebug.h,34
+#define __RETARGETDEBUG_H34,1733
+
+bootldio.h,28
+#define _BOOTLDIO_H34,1730
+
+retargetdebug.c,448
+#define RETARGET_IRQ_NAME 44,1926
+#define RETARGET_CLK 45,1975
+#define RETARGET_IRQn 46,2019
+#define RETARGET_UART 47,2062
+#define RETARGET_TX 48,2097
+#define RETARGET_RX 49,2134
+#define RETARGET_LOCATION 50,2171
+#define RETARGET_TXPORT 51,2225
+#define RETARGET_TXPIN 52,2263
+#define RETARGET_RXPORT 53,2294
+#define RETARGET_RXPIN 54,2332
+void RETARGET_SerialInit(59,2561
+int RETARGET_ReadChar(94,3855
+int RETARGET_WriteChar(105,4170
+
+boot.h,24
+#define _BOOT_H34,1700
+
+bootldio.c,496
+#define USB_BUF_SIZ 41,1845
+static bool useUsb 43,1872
+static uint32_t           usbXferCnt;47,1945
+static volatile bool      usbXferDone;48,1984
+static USB_Status_TypeDef usbXferStatus;49,2024
+static int UsbDataXferred(56,2337
+void BOOTLDIO_setMode(75,2913
+bool BOOTLDIO_usbMode(87,3247
+void BOOTLDIO_printHex(99,3563
+uint8_t BOOTLDIO_rxByte(135,4272
+bool BOOTLDIO_getPacket(168,5198
+int BOOTLDIO_txByte(202,6023
+void BOOTLDIO_printString(225,6721
+void BOOTLDIO_usartInit(252,7364
+
+loader.c,18
+int main(44,2004
+
+cdc.c,421
+bool CDC_Configured 38,1739
+EFM32_PACK_START(42,1927
+	uint32_t    dwDTERate;45,1969
+	uint8_t     bCharFormat;46,2046
+	uint8_t     bParityType;47,2123
+	uint8_t     bDataBits;48,2200
+	uint8_t     dummy;49,2277
+} __attribute__ ((packed)) cdcLineCoding_TypeDef;50,2358
+EFM32_PACK_END(51,2409
+cdcLineCoding_TypeDef __attribute__ ((aligned(4))) cdcLineCoding 59,2581
+EFM32_PACK_END(63,2678
+int CDC_SetupCmd(86,3468
+
+flash.c,372
+DMA_DESCRIPTOR_TypeDef descr;42,1949
+DMA_DESCRIPTOR_TypeDef descr 44,2006
+DMA_DESCRIPTOR_TypeDef descr 46,2094
+uint32_t flashSize,51,2199
+uint32_t flashSize, flashPageSize;51,2199
+void FLASH_CalcPageSize(58,2445
+void FLASH_init(80,3062
+void FLASH_writeWord(109,4222
+void FLASH_writeBlock(153,6057
+void FLASH_eraseOneBlock(213,8629
+void FLASH_massErase(248,9753
+
+crc.h,23
+#define _CRC_H34,1716
+
+bootld.h,36
+char bootloader[bootloader34,1667
+
+boot.c,118
+bool BOOT_checkFirmwareIsValid(44,2059
+__asm void BOOT_jump(60,2498
+void BOOT_jump(70,2671
+void BOOT_boot(87,3096
+
+crc.c,27
+uint16_t CRC_calc(59,2640
+
+descriptors.h,300
+EFM32_ALIGN(34,1717
+#define CONFIG_DESCSIZE 53,2298
+EFM32_ALIGN(61,2745
+static const void * const strings[strings165,8187
+static uint8_t bufferingMultiplier[bufferingMultiplier175,8457
+static const USBD_Callbacks_TypeDef callbacks 177,8532
+static const USBD_Init_TypeDef initstruct 186,8748
+
+main.c,779
+#define BULK_EP_SIZE 49,1977
+#define BOOTLOADER_VERSION_STRING 52,2109
+#define USER_PAGE_START 54,2182
+#define USER_PAGE_END 55,2218
+#define LOCK_PAGE_START 56,2254
+#define LOCK_PAGE_END 57,2290
+#define DEBUG_LOCK_WORD 59,2328
+__no_init uint32_t bootloaderCRC;81,3062
+static const uint8_t crcString[crcString89,3315
+static const uint8_t newLineString[newLineString90,3368
+static const uint8_t readyString[readyString91,3416
+static const uint8_t okString[okString92,3473
+static const uint8_t failString[failString93,3527
+static const uint8_t unknownString[unknownString94,3583
+int main(99,3826
+static void commandlineLoop(224,7184
+static void verify(360,10951
+static void Disconnect(371,11357
+void RTC_IRQHandler(397,12004
+static void StartRTC(406,12321
+
+flash.h,24
+#define FLASH_H34,1711
+
+cdc.h,0

@@ -3,16 +3,16 @@
 ####################################################################
 
 .SUFFIXES:				# ignore builtin rules
-.PHONY: all debug release clean
+.PHONY: all debug release clean flash
 
 ####################################################################
 # Definitions                                                      #
 ####################################################################
 
 DEVICE = EFM32GG330F1024
-PROJECTNAME = freertos
+PROJECTNAME_MAIN = usb_uart_bootloader
+PROJECTNAME = usb_uart_bootloader_loader
 # Name of interface configuration file used by OpenOCD
-#OOCD_IFACE ?= stlink-v2-1
 OOCD_IFACE ?= stlink-v2
 
 OBJ_DIR = build
@@ -34,6 +34,10 @@ RMFILES    := rm -rf
 ALLFILES   := /*.*
 NULLDEVICE := /dev/null
 SHELLNAMES := $(ComSpec)$(COMSPEC)
+
+# HACK: Separately specifiy includes dir so we can keep it separate from the application.
+#COMMONSW := C:/Users/xxxxxx/AppData/Roaming/energymicro
+COMMONSW := ../../common
 
 # Try autodetecting the environment
 ifeq ($(SHELLNAMES),)
@@ -80,7 +84,6 @@ LD      = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-ld$(QUOTE)
 AR      = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-ar$(QUOTE)
 OBJCOPY = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-objcopy$(QUOTE)
 DUMP    = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-objdump$(QUOTE)
-SIZE    = $(QUOTE)$(TOOLDIR)/bin/arm-none-eabi-size$(QUOTE)
 
 ####################################################################
 # Flags                                                            #
@@ -95,8 +98,8 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 # Add -Wa,-ahld=$(LST_DIR)/$(@F:.o=.lst) to CFLAGS to produce assembly list files
 #
 override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
--mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 -DDEBUG_EFM  \
+-ffunction-sections \
+-fdata-sections -fomit-frame-pointer       \
 $(DEPFLAGS)
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
@@ -104,141 +107,126 @@ override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=corte
 #
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
 #
-override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg_bootld.ld \
+#override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
+#-mthumb -T$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/G++/efm32gg.ld \
+# -Wl,--gc-sections
+
+#LOADER_LDFLAGS = $(LDFLAGS)
+
+override LOADER_LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
+-mthumb -T../efm32gg-rom.ld \
  -Wl,--gc-sections
 
 LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
 
 INCLUDEPATHS += \
--Isrc \
--IFreeRTOS/Source/include \
--I../bitmaps \
--I../common/CMSIS/Include \
--I../common/Device/EnergyMicro/EFM32GG/Include \
--I../common \
--I../common/emlib/inc \
--I../common/emdrv/sleep/inc \
--I../common/drivers/gps/nmealib/include \
--I../common/drivers/usb/ \
--I../common/drivers/usb/inc \
-# TODO remove the USB stuff above
+-I$(COMMONSW) \
+-I$(COMMONSW)/CMSIS/Include \
+-I$(COMMONSW)/Device/EnergyMicro/EFM32GG/Include \
+-I$(COMMONSW)/emlib/inc \
+-I$(COMMONSW)/drivers/usb/inc \
+-I$(COMMONSW)/kits/common/drivers \
+-I../
+
 
 ####################################################################
 # Files                                                            #
 ####################################################################
 
-C_SRC +=  \
-../bitmaps/bitmaps.c \
-../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
-../common/emlib/src/em_assert.c \
-../common/emlib/src/em_burtc.c \
-../common/emlib/src/em_cmu.c \
-../common/emlib/src/em_emu.c \
-../common/emlib/src/em_gpio.c \
-../common/emlib/src/em_int.c \
-../common/emlib/src/em_rmu.c \
-../common/emlib/src/em_rtc.c \
-../common/emlib/src/em_system.c \
-../common/emlib/src/em_usart.c \
-../common/emlib/src/em_leuart.c  \
-../common/emdrv/sleep/src/sleep.c \
-../common/drivers/lcd.c \
-../common/drivers/buttons.c \
-../common/drivers/rtc.c \
-../common/gfx/font_helv11.c \
-../common/gfx/font_helv17.c \
-../common/gfx/font_helv17b.c \
-../common/gfx/font_helv22b.c \
-../common/gfx/font_helv29.c \
-../common/gfx/font_helv38b.c \
-../common/gfx/font_luct38.c \
-../common/gfx/font_xm16x25b.c \
-../common/gfx/font_xm4x5.c \
-../common/gfx/font_xm4x6.c \
-../common/gfx/font_xm5x8.c \
-../common/gfx/graphics.c \
-../common/gfx/gfx.c \
-../common/gfx/ui.c \
-../common/udelay.c \
-FreeRTOS/Source/timers.c \
-FreeRTOS/Source/tasks.c \
-FreeRTOS/Source/queue.c \
-FreeRTOS/Source/list.c \
-FreeRTOS/Source/croutine.c \
-FreeRTOS/Source/portable/MemMang/heap_1.c \
-FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
-src/apps/widgets/status_bar.c \
-src/apps/application.c \
-src/apps/clock.c \
-src/apps/example_app.c \
-src/apps/menu.c \
-src/apps/menu_struct.c \
-src/main.c \
-src/irq_dispatcher.c \
-src/low_power_tick_management.c \
-../common/drivers/gps/nmealib/src/context.c \
-../common/drivers/gps/nmealib/src/generate.c \
-../common/drivers/gps/nmealib/src/generator.c \
-../common/drivers/gps/nmealib/src/gmath.c \
-../common/drivers/gps/nmealib/src/info.c \
-../common/drivers/gps/nmealib/src/parse.c \
-../common/drivers/gps/nmealib/src/parser.c \
-../common/drivers/gps/nmealib/src/sentence.c \
-../common/drivers/gps/nmealib/src/time.c \
-../common/drivers/gps/nmealib/src/tok.c \
-../common/drivers/gps/gps.c \
-src/apps/gpscoord.c \
-src/apps/reset.c \
-../common/drivers/usb/usbdbg.c \
-../common/drivers/usb/src/em_usbd.c \
-../common/drivers/usb/src/em_usbdch9.c \
-../common/drivers/usb/src/em_usbdep.c \
-../common/drivers/usb/src/em_usbdint.c \
-../common/drivers/usb/src/em_usbh.c \
-../common/drivers/usb/src/em_usbhal.c \
-../common/drivers/usb/src/em_usbhep.c \
-../common/drivers/usb/src/em_usbhint.c \
-../common/drivers/usb/src/em_usbtimer.c \
-../common/drivers/emlib/src/em_timer.c
-# TODO remove the USB stuff above
+C_SRC_COMMON =  \
+$(COMMONSW)/emlib/src/em_system.c \
+$(COMMONSW)/emlib/src/em_cmu.c \
+$(COMMONSW)/emlib/src/em_assert.c \
+$(COMMONSW)/emlib/src/em_gpio.c \
+$(COMMONSW)/freewatch/freewatch_utils.c
 
-s_SRC +=
+
+C_SRC_MAIN += $(C_SRC_COMMON) \
+$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+$(COMMONSW)/emlib/src/em_emu.c \
+$(COMMONSW)/emlib/src/em_dma.c \
+$(COMMONSW)/emlib/src/em_rtc.c \
+$(COMMONSW)/emlib/src/em_prs.c \
+$(COMMONSW)/emlib/src/em_int.c \
+$(COMMONSW)/emlib/src/em_timer.c \
+$(COMMONSW)/emlib/src/em_usart.c \
+$(COMMONSW)/kits/common/drivers/retargetio.c \
+$(COMMONSW)/drivers/usb/src/em_usbd.c \
+$(COMMONSW)/drivers/usb/src/em_usbdch9.c \
+$(COMMONSW)/drivers/usb/src/em_usbhal.c \
+$(COMMONSW)/drivers/usb/src/em_usbdep.c \
+$(COMMONSW)/drivers/usb/src/em_usbdint.c \
+$(COMMONSW)/drivers/usb/src/em_usbtimer.c \
+../autobaud.c \
+../boot.c \
+../bootldio.c \
+../cdc.c \
+../crc.c \
+../flash.c \
+../main.c \
+../retargetdebug.c \
+../xmodem.c
+
+C_SRC +=  $(C_SRC_COMMON) \
+$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../boot.c \
+../loader.c \
+../freewatch_utils.c
+
+
+
+
+s_SRC += 
 
 S_SRC +=  \
-../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
+$(COMMONSW)/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
 
 ####################################################################
 # Rules                                                            #
 ####################################################################
 
+C_FILES_MAIN = $(notdir $(C_SRC_MAIN) )
 C_FILES = $(notdir $(C_SRC) )
 S_FILES = $(notdir $(S_SRC) $(s_SRC) )
 #make list of source paths, sort also removes duplicates
+C_PATHS_MAIN = $(sort $(dir $(C_SRC_MAIN) ) )
 C_PATHS = $(sort $(dir $(C_SRC) ) )
 S_PATHS = $(sort $(dir $(S_SRC) $(s_SRC) ) )
 
+C_OBJS_MAIN = $(addprefix $(OBJ_DIR)/, $(C_FILES_MAIN:.c=.o))
 C_OBJS = $(addprefix $(OBJ_DIR)/, $(C_FILES:.c=.o))
 S_OBJS = $(if $(S_SRC), $(addprefix $(OBJ_DIR)/, $(S_FILES:.S=.o)))
 s_OBJS = $(if $(s_SRC), $(addprefix $(OBJ_DIR)/, $(S_FILES:.s=.o)))
+C_DEPS_MAIN = $(addprefix $(OBJ_DIR)/, $(C_FILES_MAIN:.c=.d))
 C_DEPS = $(addprefix $(OBJ_DIR)/, $(C_FILES:.c=.d))
+OBJS_MAIN = $(C_OBJS_MAIN) $(S_OBJS) $(s_OBJS)
 OBJS = $(C_OBJS) $(S_OBJS) $(s_OBJS)
 
-vpath %.c $(C_PATHS)
+vpath %.c $(C_PATHS_MAIN):$(C_PATHS)
+#vpath %.c_loader $(C_PATHS)
 vpath %.s $(S_PATHS)
 vpath %.S $(S_PATHS)
 
 # Default build is debug build
-all:      debug
+all:      debug_bootloader
 
-debug:    CFLAGS += -DDEBUG -O0 -g
-debug:    $(EXE_DIR)/$(PROJECTNAME).bin
+debug:      debug_bootloader
 
-release:  CFLAGS += -DNDEBUG -O3 
-release:  $(EXE_DIR)/$(PROJECTNAME).bin
+release:      release_bootloader
+
+debug_bootloader:    CFLAGS += -DDEBUG -g3 -ggdb
+debug_bootloader:    $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
+
+release_bootloader:  CFLAGS += -DNDEBUG
+release_bootloader:  $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
 
 # Create objects from C SRC files
 $(OBJ_DIR)/%.o: %.c
+	@echo "Building file: $<"
+	$(CC) $(CFLAGS) $(INCLUDEPATHS) -c -o $@ $<
+
+# Create objects from C SRC files
+$(OBJ_DIR)/%.o: %.c_loader
 	@echo "Building file: $<"
 	$(CC) $(CFLAGS) $(INCLUDEPATHS) -c -o $@ $<
 
@@ -251,27 +239,31 @@ $(OBJ_DIR)/%.o: %.S
 	@echo "Assembling $<"
 	$(CC) $(ASMFLAGS) $(INCLUDEPATHS) -c -o $@ $<
 
-# Link
-$(EXE_DIR)/$(PROJECTNAME).out: $(OBJS)
-	@echo "Linking target: $@"
-	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME).out
 
-# Create binary file
-$(EXE_DIR)/$(PROJECTNAME).bin: $(EXE_DIR)/$(PROJECTNAME).out
-	@echo "Creating binary file and code footprint"
-	$(OBJCOPY) -O binary $(EXE_DIR)/$(PROJECTNAME).out $(EXE_DIR)/$(PROJECTNAME).bin
-# Uncomment next line to produce assembly listing of entire program
-#	$(DUMP) -h -S -C $(EXE_DIR)/$(PROJECTNAME).out>$(LST_DIR)/$(PROJECTNAME)out.lst
-# Uncomment next line to produce code footprint
-	$(SIZE) $<
+$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out: $(OBJS_MAIN)
+	@echo "Linking target: $@"
+	$(CC) $(LOADER_LDFLAGS) $(OBJS_MAIN) $(LIBS) -o $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
+
+$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out
+	@echo "Creating binary file"
+	$(OBJCOPY) -O binary $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.out $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
+	@echo "Deleting loader.o to ensure it does not exist yet"
+	$(RM) $(OBJ_DIR)\loader.o
+	$(RM) ..\bootld.h
+	@echo "DEBUGGING: Creating blob file needed by loader loader..."
+	@touch $(PWD)/../bootld.h
+	@echo "char bootloader[] = {" > $(PWD)/../bootld.h
+	@hexdump -v -e '1/1 "  0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, " 1/1 "0x%02x, \n"' $(PWD)/$(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin | sed "s/ 0x  ,//g" >> $(PWD)/../bootld.h
+	@echo "};" >> $(PWD)/../bootld.h
 
 clean:
 ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 	$(RMDIRS) $(OBJ_DIR) $(LST_DIR) $(EXE_DIR)
 endif
 
-flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+flashmain: $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin
+	openocd -s $(COMMONSW)/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME_MAIN)-rom.bin 0 verify reset"
+
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))
