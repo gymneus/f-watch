@@ -30,6 +30,14 @@
 
 #include "em_gpio.h"
 
+#ifdef FREERTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+///> How long should we wait for the semaphore
+#define LCD_SEM_TICKS 100
+extern xSemaphoreHandle lcd_sem;
+#endif /* FREERTOS */
+
 // Dimensions
 #define LCD_HEIGHT          128
 #define LCD_WIDTH           128
