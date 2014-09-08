@@ -132,6 +132,7 @@ C_SRC +=  \
 ../common/emlib/src/em_dma.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
+../common/emlib/src/em_i2c.c \
 ../common/emlib/src/em_int.c \
 ../common/emlib/src/em_rmu.c \
 ../common/emlib/src/em_rtc.c \
@@ -145,6 +146,8 @@ C_SRC +=  \
 ../common/drivers/backlight.c \
 ../common/drivers/buttons.c \
 ../common/drivers/buzzer.c \
+../common/drivers/i2cdrv.c \
+../common/drivers/light_sensor.c \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
 ../common/gfx/font_helv11.c \
@@ -175,6 +178,7 @@ src/apps/example_app.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
+src/blight_task.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c
 
