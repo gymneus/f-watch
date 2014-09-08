@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -51,7 +52,7 @@ int main(void)
         double temp = 0;
         double pressure = 0;
         double altitude = 0;
-        double lux;
+        uint32_t lux;
 
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
@@ -76,7 +77,7 @@ int main(void)
         {
 
                 err = light_sensor_get_lux(&lux);
-                sprintf(str, "light: %3.3f lux", lux);
+                sprintf(str, "light: %u lux", lux);
                 text(&font_helv11, 5, 10, str);
 
                 err = alti_get_temp_pressure(&temp, &pressure, true);

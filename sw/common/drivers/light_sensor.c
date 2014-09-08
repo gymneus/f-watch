@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Matthieu Cattin <matthieu.cattin@cern.ch>
+ * @author Maciej Suminski <maciej.suminski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,13 +26,10 @@
  */
 
 #include "light_sensor.h"
-#include <math.h>
-#include <stdio.h>
 #include "i2cdrv.h"
 
-
 // Writes a register
-uint8_t max44009_write_reg(uint8_t reg_add, uint8_t value)
+static uint8_t max44009_write_reg(uint8_t reg_add, uint8_t value)
 {
         I2C_TransferSeq_TypeDef    seq;
         I2C_TransferReturn_TypeDef ret;
@@ -57,9 +55,8 @@ uint8_t max44009_write_reg(uint8_t reg_add, uint8_t value)
         return 0;
 }
 
-
 // Reads a register
-uint8_t max44009_read_reg(uint8_t reg_add, uint8_t* value)
+static uint8_t max44009_read_reg(uint8_t reg_add, uint8_t *value, uint8_t length)
 {
         I2C_TransferSeq_TypeDef    seq;
         I2C_TransferReturn_TypeDef ret;
@@ -73,7 +70,7 @@ uint8_t max44009_read_reg(uint8_t reg_add, uint8_t* value)
 
         // Read value in buffer
         seq.buf[1].data = value;
-        seq.buf[1].len  = 1;
+        seq.buf[1].len  = length;
 
         // Initiate transfer
         ret = I2CDRV_Transfer(&seq);
@@ -85,73 +82,72 @@ uint8_t max44009_read_reg(uint8_t reg_add, uint8_t* value)
         return 0;
 }
 
-
-uint8_t light_sensor_set_int(uint8_t enable)
+/*uint8_t light_sensor_set_int(uint8_t enable)
 {
         return 0;
 }
-
 
 uint8_t light_sensor_get_isr(uint8_t* isr)
 {
         return 0;
 }
 
-
 uint8_t light_sensor_set_cfg(Light_Sensor_Conf_TypeDef *cfg)
 {
         return 0;
+}*/
+
+///> Converts 16-bit raw register value (registers 3 & 4) to millilux.
+static uint32_t raw16_to_lux(uint16_t val)
+{
+        uint8_t e = (val & 0xf000) >> 12;                   // exponent
+        uint8_t m = ((val & 0x0f00) >> 4) | (val & 0x0f);   // mantissa
+
+        return (1 << e) * m * 45;
+}
+
+///> Converts 8-bit raw register value (register 3) to millilux.
+static uint32_t raw8_to_lux(uint8_t val)
+{
+        uint8_t e = (val >> 4);                             // exponent
+        uint8_t m = (val & 0x0f);                           // mantissa
+
+        return (1 << e) * m * 720;
 }
 
 
-uint8_t light_sensor_get_lux(double* lux)
+uint8_t light_sensor_get_raw(uint16_t *val)
 {
-        uint8_t err, high_b, low_b, m, e;
+        uint8_t err;
 
-        /* TODO
-         * For accurate reading, high and low registers have to
-         * be read during the same i2c transfer.
-         * => Apparently not possible with the current i2cdrvr!
-         *
-         * For now, only read high byte
-        */
+        // Read Lux registers
+        err = max44009_read_reg(MAX44009_REG_LUX_H, (uint8_t*)val, 2);
 
-        // Read Lux registers high byte
-        err = max44009_read_reg(MAX44009_REG_LUX_H, &high_b);
         if(err)
-        {
                 return err;
-        }
-
-        /*
-        // Read Lux register low byte
-        err = max44009_read_reg(MAX44009_REG_LUX_L, &low_b);
-        if(err)
-        {
-                return err;
-        }
-        */
-
-        // Extract mantissa and exponent
-        m = high_b & 0xff;
-        //m = ((high_b & 0xff) << 4) + (low_b & 0xff);
-        e = ((high_b & 0xff00) >> 4);
-
-        // Calculate Lux value
-        *lux = pow(2,(double) e) * m * 0.72;
-        //*lux = pow(2,(double) e) * m * 0.045;
 
         return 0;
 }
 
-
-uint8_t light_sensor_set_thres(double thres)
+uint8_t light_sensor_get_lux(uint32_t *lux)
 {
+        uint16_t raw;
+        uint8_t ret = light_sensor_get_raw(&raw);
+
+        if(ret != 0)
+            return ret;     // error, no more processing
+
+        *lux = raw16_to_lux(raw);
+
         return 0;
 }
 
+/*uint8_t light_sensor_set_thres(double thres)
+{
+        return 0;
+}
 
 uint8_t light_sensor_set_thres_timer(uint8_t timer)
 {
         return 0;
-}
+}*/
