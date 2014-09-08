@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="235.50455"
+   height="183.38617"
+   id="svg3855"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="baro.svg"
+   inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
+  <defs
+     id="defs3857" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="22.543299"
+     inkscape:cy="17.327352"
+     inkscape:document-units="px"
+     inkscape:current-layer="g5281"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1280"
+     inkscape:window-height="776"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3860">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-39.531597,-154.90293)">
+    <g
+       transform="matrix(0.71556222,0,0,0.71556222,-72.163193,-47.17532)"
+       id="g9784">
+      <g
+         id="g5281"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300"
+         inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro.png">
+        <g
+           id="g5289">
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             transform="matrix(1.1999999,0,0,0.94736839,-94.999959,-0.40198059)"
+             d="m 350.10981,416.22975 a 37.5,47.5 0 1 1 65.41579,35.19293"
+             sodipodi:ry="47.5"
+             sodipodi:rx="37.5"
+             sodipodi:cy="419.86218"
+             sodipodi:cx="387.5"
+             id="path8259"
+             style="color:#000000;fill:none;stroke:#000000;stroke-width:19.66046524000000062;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             sodipodi:type="arc"
+             sodipodi:start="3.2181397"
+             sodipodi:end="7.0099181"
+             sodipodi:open="true" />
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             inkscape:connector-curvature="0"
+             id="path8769"
+             d="m 370,327.36218 c 0,-35 0,-35 0,-35"
+             style="fill:none;stroke:#000000;stroke-width:19.60865974000000023;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             inkscape:connector-curvature="0"
+             id="path8769-0"
+             d="m 425,352.36218 c 24.74874,-24.74874 24.74874,-24.74874 24.74874,-24.74874"
+             style="fill:none;stroke:#000000;stroke-width:19.60865974000000023;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             inkscape:connector-curvature="0"
+             id="path8769-5"
+             d="m 475,397.36218 c -35,0 -35,0 -35,0"
+             style="fill:none;stroke:#000000;stroke-width:19.60865974000000023;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             inkscape:connector-curvature="0"
+             id="path8769-7"
+             d="M 320,347.36218 C 295.25126,322.61344 295.25126,322.61344 295.25126,322.61344"
+             style="fill:none;stroke:#000000;stroke-width:19.60865974000000023;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+          <path
+             inkscape:export-ydpi="300"
+             inkscape:export-xdpi="300"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/baro_white.png"
+             sodipodi:nodetypes="ssccsscss"
+             inkscape:connector-curvature="0"
+             id="path8814"
+             d="m 252.42457,354.78676 c -48.36657,0 -87.57542,39.20885 -87.57542,87.57542 0,48.36656 39.20885,87.57542 87.57542,87.57542 68.80925,-0.0107 72.33737,-0.48102 129.27801,-0.86012 28.78962,0 52.12822,-23.3386 52.12822,-52.12823 0,-28.78962 -23.3386,-52.12823 -52.12822,-52.12823 -17.08654,0 -32.27379,8.2014 -41.78078,20.90343 0.0427,-1.1233 0.0782,-2.22853 0.0782,-3.36227 0,-48.36657 -39.20885,-87.57542 -87.57541,-87.57542 z"
+             style="color:#000000;fill:none;fill-opacity:1;stroke:#000000;stroke-width:17.48383713000000128;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
