@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Matthieu Cattin <matthieu.cattin@cern.ch>
+ * @author Maciej Suminski <maciej.suminski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,7 +51,7 @@
 #define MAX44009_CFG_TIM  0x07 // Integration time
 
 /** Ambient light sensor configuration structure. */
-typedef struct
+/*typedef struct
 {
         bool    cont;
         bool    manual;
@@ -61,10 +62,23 @@ typedef struct
 
 uint8_t light_sensor_set_int(uint8_t enable);
 uint8_t light_sensor_get_isr(uint8_t* isr);
-uint8_t light_sensor_set_cfg(Light_Sensor_Conf_TypeDef *cfg);
-uint8_t light_sensor_get_lux(double* lux);
-uint8_t light_sensor_set_thres(double thres);
-uint8_t light_sensor_set_thres_timer(uint8_t timer);
+uint8_t light_sensor_set_cfg(Light_Sensor_Conf_TypeDef *cfg);*/
 
+/**
+ * Returns raw reading from the light sensor.
+ * @param val is the place where the reading will be stored.
+ * @return 0 in case of success, error code otherwise.
+ */
+uint8_t light_sensor_get_raw(uint16_t* val);
+
+/**
+ * Returns light level expressed in millilux.
+ * @param lux is the variable where the computed value will be stored.
+ * @return 0 in case of success, error code otherwise.
+ */
+uint8_t light_sensor_get_lux(uint32_t *lux);
+
+/*uint8_t light_sensor_set_thres(double thres);
+uint8_t light_sensor_set_thres_timer(uint8_t timer);*/
 
 #endif /* LIGHT_SENSOR_H */
