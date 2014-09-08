@@ -29,14 +29,17 @@
 #include <em_cmu.h>
 #include <sleep.h>
 
-#include <apps/app_list.h>
+#include <drivers/i2cdrv.h>
 #include <drivers/backlight.h>
 #include <drivers/buttons.h>
 #include <drivers/buzzer.h>
 #include <drivers/lcd.h>
 #include <drivers/rtc.h>
 #include <drivers/vibra.h>
+
 #include <gfx/ui.h>
+#include <apps/app_list.h>
+#include "blight_task.h"
 
 int main(void)
 {
@@ -47,6 +50,9 @@ int main(void)
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
+    I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
+    I2CDRV_Init(&i2cInit);
+
     backlight_init();
     buttons_init();
     buzzer_init();
@@ -54,6 +60,9 @@ int main(void)
     rtc_init();
     lcd_init();
     ui_init();
+    auto_backlight_init();
+
+    auto_backlight_enable(true);
 
     // Initialize SLEEP driver, no callbacks are used
     SLEEP_Init(NULL, NULL);
