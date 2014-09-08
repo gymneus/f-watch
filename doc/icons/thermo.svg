@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="92.687889"
+   height="183.63536"
+   id="svg3792"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="thermo.svg"
+   inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
+  <defs
+     id="defs3794" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="-47.271307"
+     inkscape:cy="23.056634"
+     inkscape:document-units="px"
+     inkscape:current-layer="g13826"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1280"
+     inkscape:window-height="776"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3797">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-139.36754,-149.09901)">
+    <g
+       transform="translate(-504.28571,-325.7725)"
+       id="g13826">
+      <g
+         id="g5871">
+        <g
+           id="g5864">
+          <path
+             sodipodi:open="true"
+             sodipodi:end="6.2831853"
+             sodipodi:start="3.1415927"
+             transform="matrix(1.2499998,0,0,1.2499998,323.33777,260.49654)"
+             d="m 273.32983,197.49254 c 0,-11.0457 8.95431,-20 20,-20 11.0457,0 20,8.9543 20,20"
+             sodipodi:ry="20"
+             sodipodi:rx="20"
+             sodipodi:cy="197.49254"
+             sodipodi:cx="293.32983"
+             id="path13740"
+             style="color:#000000;fill:none;stroke:#000000;stroke-width:12.00000191;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             sodipodi:type="arc"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo_white.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path13742"
+             d="m 665,507.36218 0,75"
+             style="fill:none;stroke:#000000;stroke-width:15;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo_white.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path13742-9"
+             d="m 715,502.3622 0,79.00001"
+             style="fill:none;stroke:#000000;stroke-width:15;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo_white.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path13742-0"
+             d="m 690,527.36218 0,75"
+             style="fill:none;stroke:#000000;stroke-width:15;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo_white.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+          <path
+             sodipodi:open="true"
+             sodipodi:end="10.297443"
+             sodipodi:start="5.4105207"
+             transform="matrix(0.81880219,0,0,0.81880219,378.17569,341.9574)"
+             d="m 411.36225,293.60544 c 20.09604,16.86259 22.71728,46.82348 5.85469,66.91953 -16.86258,20.09604 -46.82347,22.71728 -66.91952,5.85469 -20.09604,-16.86258 -22.71728,-46.82347 -5.8547,-66.91952 1.77744,-2.11826 3.73645,-4.07727 5.85472,-5.85471"
+             sodipodi:ry="47.5"
+             sodipodi:rx="47.5"
+             sodipodi:cy="329.99255"
+             sodipodi:cx="380.82983"
+             id="path13775"
+             style="color:#000000;fill:none;stroke:#000000;stroke-width:18.31944275;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             sodipodi:type="arc"
+             inkscape:export-filename="/home/mcattin/Documents/freewatch/hw/block_diagram/thermo_white.png"
+             inkscape:export-xdpi="300"
+             inkscape:export-ydpi="300" />
+        </g>
+        <path
+           sodipodi:type="arc"
+           style="color:#000000;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.3319695;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           id="path6000-1-2"
+           sodipodi:cx="410"
+           sodipodi:cy="632.36218"
+           sodipodi:rx="30"
+           sodipodi:ry="30"
+           d="m 440,632.36218 c 0,16.56855 -13.43146,30 -30,30 -16.56854,0 -30,-13.43145 -30,-30 0,-16.56854 13.43146,-30 30,-30 16.56854,0 30,13.43146 30,30 z"
+           transform="matrix(0.63107753,0,0,0.63107753,431.25821,214.39951)" />
+      </g>
+    </g>
+  </g>
+</svg>
