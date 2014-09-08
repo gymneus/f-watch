@@ -56,6 +56,10 @@ static void lcd_dma_tx_complete(unsigned int channel, bool primary, void *user)
     (void) user;
 
     dma_transfer_active = false;
+
+#ifdef FREERTOS
+    xSemaphoreGive(lcd_sem);
+#endif /* FREERTOS */
 }
 
 void lcd_dma_init(void)
@@ -110,10 +114,17 @@ void lcd_dma_init(void)
 
 void lcd_dma_send_frame(void)
 {
+#ifdef FREERTOS
+    if(xSemaphoreTake(lcd_sem, LCD_SEM_TICKS) != pdTRUE)
+        return;
+#else
     while(dma_transfer_active);
+#endif /* else FREERTOS */
 
     dma_transfer_active = true;
     DMA_ActivateScatterGather(DMA_CHANNEL, true, dma_cfg_block, DMA_TRANSFERS);
+
+    // semaphore is given back in the DMA transfer finished interrupt
 }
 
 bool lcd_dma_is_active(void)

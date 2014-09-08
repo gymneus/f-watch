@@ -36,6 +36,10 @@
 #include <em_rtc.h>
 #include <em_timer.h>
 
+#ifdef FREERTOS
+xSemaphoreHandle lcd_sem;
+#endif /* FREERTOS */
+
 // Frame buffer - pixels are stored as consecutive rows
 uint8_t lcd_buffer[LCD_BUF_SIZE];
 uint8_t * const off_buffer = lcd_buffer + LCD_CONTROL_BYTES;
@@ -147,6 +151,13 @@ void lcd_init(void)
 {
     uint16_t cmd;
 
+#ifdef FREERTOS
+    lcd_sem = xSemaphoreCreateMutex();
+    if(lcd_sem == NULL) {
+        // TODO oops..
+    }
+#endif /* FREERTOS */
+
     spi_init();
     // TODO I am pretty sure, it will be already initialized somewhere..
     CMU_ClockEnable(cmuClock_GPIO, true);
@@ -206,6 +217,11 @@ void lcd_clear(void)
     uint32_t *p = (uint32_t*)lcd_buffer;
     uint16_t x, y;
 
+#ifdef FREERTOS
+    if(xSemaphoreTake(lcd_sem, LCD_SEM_TICKS) != pdTRUE)
+        return;
+#endif /* FREERTOS */
+
     for(y = 0; y < LCD_HEIGHT; ++y) {
         // skip control bytes
         p = (uint32_t*)((uint8_t*)p + 2);
@@ -215,6 +231,10 @@ void lcd_clear(void)
             *p++ = 0x00;
         }
     }
+
+#ifdef FREERTOS
+    xSemaphoreGive(lcd_sem);
+#endif /* FREERTOS */
 }
 
 void lcd_update(void)
