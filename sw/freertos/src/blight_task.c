@@ -61,7 +61,7 @@ static bool auto_enabled = false;
 static xTimerHandle timer_handle;
 
 ///> Currently used index in the lookup table
-static uint8_t cur_idx = 0;
+static int8_t cur_idx = -1;
 
 static void auto_backlight_task(void *params)
 {
@@ -100,10 +100,14 @@ void auto_backlight_enable(bool enable)
         if(xTimerStart(timer_handle, 0) != pdPASS) {
             // TODO kernel panic
         }
+
+        // Select appropriate backlight level
+        auto_backlight_task(NULL);
     } else {
         xTimerStop(timer_handle, 0);
+        cur_idx = -1;
     }
 
-    auto_enabled = true;
+    auto_enabled = enable;
 }
 

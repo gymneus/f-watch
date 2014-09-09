@@ -33,10 +33,13 @@
 #include <em_gpio.h>
 #include <em_burtc.h>
 
+#include "state.h"
+
 static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 {
     // We have not woken a task at the start of the ISR
-    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    portBASE_TYPE task_woken1 = pdFALSE;
+    portBASE_TYPE task_woken2 = pdFALSE;
 
     // Fill the event data
     struct event evt;
@@ -81,13 +84,17 @@ static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
             break;
 
         // Unexpected event, do not send it
-        default: return xHigherPriorityTaskWoken;
+        default: return pdFALSE;
     }
 
     // Post the event to the back of the queue
-    xQueueSendToBackFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
+    xQueueSendToBackFromISR(appQueue, &evt, &task_woken1);
 
-    return xHigherPriorityTaskWoken;
+    // Switch to active state if a button was pressed
+    if(evt.type == BUTTON_PRESSED)
+        reset_active_irq(&task_woken2);
+
+    return task_woken1 || task_woken2;
 }
 
 void GPIO_EVEN_IRQHandler(void)
