@@ -180,7 +180,8 @@ src/apps/menu_struct.c \
 src/main.c \
 src/blight_task.c \
 src/irq_dispatcher.c \
-src/low_power_tick_management.c
+src/low_power_tick_management.c \
+src/state.c
 
 s_SRC +=
 

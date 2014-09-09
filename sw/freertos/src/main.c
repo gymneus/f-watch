@@ -40,6 +40,7 @@
 #include <gfx/ui.h>
 #include <apps/app_list.h>
 #include "blight_task.h"
+#include "state.h"
 
 int main(void)
 {
@@ -61,8 +62,7 @@ int main(void)
     lcd_init();
     ui_init();
     auto_backlight_init();
-
-    auto_backlight_enable(true);
+    state_init();
 
     // Initialize SLEEP driver, no callbacks are used
     SLEEP_Init(NULL, NULL);
