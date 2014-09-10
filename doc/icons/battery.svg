@@ -14,7 +14,10 @@
    id="svg3666"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="New document 17">
+   sodipodi:docname="battery.svg"
+   inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/battery.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs3668" />
   <sodipodi:namedview
@@ -24,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="58.01076"
-     inkscape:cy="-58.915753"
+     inkscape:zoom="2.8"
+     inkscape:cx="32.562518"
+     inkscape:cy="75.034443"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,8 +37,8 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1280"
-     inkscape:window-height="776"
+     inkscape:window-width="1920"
+     inkscape:window-height="1176"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
