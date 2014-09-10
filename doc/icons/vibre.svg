@@ -14,7 +14,10 @@
    id="svg4395"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="New document 44">
+   sodipodi:docname="vibre.svg"
+   inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs4397" />
   <sodipodi:namedview
@@ -24,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="75.242127"
-     inkscape:cy="-7.5658275"
+     inkscape:zoom="1.4"
+     inkscape:cx="25.220265"
+     inkscape:cy="54.627198"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,8 +37,8 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1280"
-     inkscape:window-height="776"
+     inkscape:window-width="1920"
+     inkscape:window-height="1176"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
@@ -57,73 +60,80 @@
      id="layer1"
      transform="translate(-299.75787,-339.9353)">
     <rect
-       style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:15.00000095;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:none;fill-opacity:1;stroke:#000000;stroke-width:15.00000095000000044;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect8892-3-6"
        width="114"
        height="114"
        x="463.59457"
        y="237.75598"
        ry="1.6509147"
-       transform="matrix(0.95751639,0.28837886,-0.28837886,0.95751639,0,0)" />
-    <g
-       id="g3727"
-       transform="matrix(0.2815815,0.95953731,-0.95953731,0.2815815,39.594825,-1246.6115)">
-      <path
-         sodipodi:open="true"
-         sodipodi:end="1.8325957"
-         sodipodi:start="1.3089969"
-         transform="matrix(8.6263876,4.9804473,-4.9804473,8.6263876,296.93535,-3561.9173)"
-         d="m 307.58819,257.02144 c -1.69555,0.45432 -3.48083,0.45432 -5.17638,0"
-         sodipodi:ry="10"
-         sodipodi:rx="10"
-         sodipodi:cy="247.36218"
-         sodipodi:cx="305"
-         id="path4016-7-5"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:1.50588882;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc" />
-      <path
-         sodipodi:open="true"
-         sodipodi:end="1.8325957"
-         sodipodi:start="1.3089969"
-         transform="matrix(10.696726,6.1757576,-6.1757576,10.696726,-38.444648,-4439.3006)"
-         d="m 307.58819,257.02144 c -1.69555,0.45432 -3.48083,0.45432 -5.17638,0"
-         sodipodi:ry="10"
-         sodipodi:rx="10"
-         sodipodi:cy="247.36218"
-         sodipodi:cx="305"
-         id="path4016-8-4-1"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:1.2144258;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc" />
-    </g>
-    <g
-       transform="matrix(-0.33171668,-0.94337905,0.94337905,-0.33171668,869.77062,2094.2406)"
-       id="g3727-9">
-      <path
-         sodipodi:open="true"
-         sodipodi:end="1.8325957"
-         sodipodi:start="1.3089969"
-         transform="matrix(8.6263876,4.9804473,-4.9804473,8.6263876,296.93535,-3561.9173)"
-         d="m 307.58819,257.02144 c -1.69555,0.45432 -3.48083,0.45432 -5.17638,0"
-         sodipodi:ry="10"
-         sodipodi:rx="10"
-         sodipodi:cy="247.36218"
-         sodipodi:cx="305"
-         id="path4016-7-5-4"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:1.50588882;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc" />
-      <path
-         sodipodi:open="true"
-         sodipodi:end="1.8325957"
-         sodipodi:start="1.3089969"
-         transform="matrix(10.696726,6.1757576,-6.1757576,10.696726,-38.444648,-4439.3006)"
-         d="m 307.58819,257.02144 c -1.69555,0.45432 -3.48083,0.45432 -5.17638,0"
-         sodipodi:ry="10"
-         sodipodi:rx="10"
-         sodipodi:cy="247.36218"
-         sodipodi:cx="305"
-         id="path4016-8-4-1-8"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:1.2144258;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         sodipodi:type="arc" />
-    </g>
+       transform="matrix(0.95751639,0.28837886,-0.28837886,0.95751639,0,0)"
+       inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre_white.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:1.50588882000000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4016-7-5"
+       sodipodi:cx="305"
+       sodipodi:cy="247.36218"
+       sodipodi:rx="10"
+       sodipodi:ry="10"
+       d="m 307.58819,257.02144 a 10,10 0 0 1 -5.17638,0"
+       transform="matrix(-2.3498938,9.6797426,-9.6797426,-2.3498938,3540.9989,-1964.661)"
+       sodipodi:start="1.3089969"
+       sodipodi:end="1.8325957"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre_white.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:1.21442580000000011;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4016-8-4-1"
+       sodipodi:cx="305"
+       sodipodi:cy="247.36218"
+       sodipodi:rx="10"
+       sodipodi:ry="10"
+       d="m 307.58819,257.02144 a 10,10 0 0 1 -5.17638,0"
+       transform="matrix(-2.9138697,12.002887,-12.002887,-2.9138697,4288.4441,-2533.5255)"
+       sodipodi:start="1.3089969"
+       sodipodi:end="1.8325957"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre_white.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:1.50588882000000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4016-7-5-4"
+       sodipodi:cx="305"
+       sodipodi:cy="247.36218"
+       sodipodi:rx="10"
+       sodipodi:ry="10"
+       d="m 307.58819,257.02144 a 10,10 0 0 1 -5.17638,0"
+       transform="matrix(1.836933,-9.7900508,9.7900508,1.836933,-2588.9659,2995.6654)"
+       sodipodi:start="1.3089969"
+       sodipodi:end="1.8325957"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre_white.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:1.21442580000000011;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4016-8-4-1-8"
+       sodipodi:cx="305"
+       sodipodi:cy="247.36218"
+       sodipodi:rx="10"
+       sodipodi:ry="10"
+       d="m 307.58819,257.02144 a 10,10 0 0 1 -5.17638,0"
+       transform="matrix(2.2777979,-12.139669,12.139669,2.2777979,-3305.4198,3603.0985)"
+       sodipodi:start="1.3089969"
+       sodipodi:end="1.8325957"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/mcattin/Documents/freewatch/doc/icons/vibre_white.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
   </g>
 </svg>
