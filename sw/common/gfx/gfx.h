@@ -2,6 +2,7 @@
  * Copyright (C) 2014 Julian Lewis
  * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  * @author Matthieu Cattin <matthieu.cattin@cern.ch>
+ * &author Grzegorz Daniluk <grzegorz.daniluk@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -78,6 +79,8 @@ void gfx_reset_clip (struct surface *surf);
 void gfx_fill_circle(struct surface *surf, int x0, int y0, int radius, int value);
 void gfx_round_box(struct surface *surf, int x0, int y0, int x1, int y1, int radius, int value);
 void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitmap *b);
+void gfx_draw_bitmap_rotate(struct surface *surf, int x0, int y0,
+    const struct rle_bitmap *b, int xr, int yr, int angle, float sina, float cosa);
 
 #endif
 
