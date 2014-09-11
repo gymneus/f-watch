@@ -181,6 +181,7 @@ src/apps/application.c \
 src/apps/clock.c \
 src/apps/example_app.c \
 src/apps/compass.c \
+src/apps/game.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
