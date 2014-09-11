@@ -51,9 +51,9 @@ menu_list main_menu = {
     "Main menu",
     {
        { APP,       &example_icon,      { .app = &example } },
+       { APP,       &comp_ico,          { .app = &compass } },
        { APP,       &gps_receiving,     { .app = &clock } },
        { APP,       &battery_charging,  { .app = &clock } },
-			 { APP,       NULL,               { .app = &compass } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
        { APP,       &battery,           { .app = &clock } },
        { APP,       NULL,               { .app = &clock } },

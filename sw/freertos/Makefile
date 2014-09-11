@@ -116,6 +116,8 @@ INCLUDEPATHS += \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common \
+-I../common/usb \
+-I../common/usb/inc \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
 
@@ -159,6 +161,14 @@ C_SRC +=  \
 ../common/gfx/gfx.c \
 ../common/gfx/ui.c \
 ../common/udelay.c \
+../common/sincos.c \
+../common/usb/src/em_usbd.c \
+../common/usb/src/em_usbdch9.c \
+../common/usb/src/em_usbhal.c \
+../common/usb/src/em_usbdep.c \
+../common/usb/src/em_usbdint.c \
+../common/usb/src/em_usbtimer.c \
+../common/usb/usbdesc.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
