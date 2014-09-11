@@ -4,6 +4,8 @@
 #include <efm32gg330f1024.h>
 #include "lsm303c.h"
 
+static int iron_x, iron_y, iron_z;
+
 extern volatile uint32_t msTicks;
 void Delay(uint32_t dlyTicks);
 
@@ -129,6 +131,11 @@ int lsm303_init()
 	lsm303_opmode(DEV_MAG, LSM303_MAG_OPM_MED, LSM303_MAG_CONV_CONT);
 	lsm303_fullscale(DEV_MAG, LSM303_16Ga);
 	lsm303_selftest(DEV_MAG, 0, 0);
+
+	/*load default hard iron calibration values*/
+	iron_x = LSM303_IRON_X;
+	iron_y = LSM303_IRON_Y;
+	iron_z = LSM303_IRON_Z;
 
   return LSM303_SUCCESS;
 }
@@ -359,11 +366,15 @@ int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en)
 	return LSM303_SUCCESS;
 }
 
-static void lsm303_iron_calib(lsm303_smpl *smpl)
+static void lsm303_iron_corr(lsm303_smpl *smpl)
 {
-	smpl->x -= LSM303_IRON_X;
-	smpl->y -= LSM303_IRON_Y;
-	smpl->z -= LSM303_IRON_Z;
+	smpl->x -= iron_x;
+	smpl->y -= iron_y;
+	smpl->z -= iron_z;
+
+	//smpl->x = (int)( (float)smpl->x*siron_x );
+	//smpl->y = (int)( (float)smpl->y*siron_y );
+	//smpl->z = (int)( (float)smpl->z*siron_z );
 }
 
 int lsm303_get_sample(int dev, lsm303_smpl *smpl)
@@ -385,32 +396,23 @@ int lsm303_get_sample(int dev, lsm303_smpl *smpl)
 		return LSM303_ERROR;
 	smpl->z = (int16_t) ((val_h << 8) | val_l);
 
-	lsm303_iron_calib(smpl);
+	lsm303_iron_corr(smpl);
 
 	return LSM303_SUCCESS;
 }
 
-int lsm303_mag_calibrate(lsm303_smpl *max, lsm303_smpl *min)
+lsm303_smpl lsm303_calib_iron(lsm303_smpl *max, lsm303_smpl *min)
 {
-	int i = 1000;
-	lsm303_smpl val;
-	max->x = -0x7fff;
-	max->y = -0x7fff;
-	max->z = -0x7fff;
-	min->x = 0x7fff;
-	min->y = 0x7fff;
-	min->z = 0x7fff;
+	lsm303_smpl ret;
 
-	while(i--) {
-		lsm303_get_sample(DEV_MAG, &val);
-		if(val.x > max->x) max->x = val.x;
-		if(val.x < min->x) min->x = val.x;
-		if(val.y > max->y) max->y = val.y;
-		if(val.y < min->y) min->y = val.y;
-		if(val.z > max->z) max->z = val.z;
-		if(val.z < min->z) min->z = val.z;
-		Delay(10);
-	}
+	iron_x = (min->x + max->x)/2;
+	iron_y = (min->y + max->y)/2;
+	iron_z = (min->z + max->z)/2;
+
+	ret.x = iron_x;
+	ret.y = iron_y;
+	ret.z = iron_z;
+	return ret;
 }
 
 #define LCD_W 100

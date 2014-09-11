@@ -20,9 +20,12 @@
 #define DEV_ACC 0
 #define DEV_MAG 1
 
-#define LSM303_IRON_X 403
-#define LSM303_IRON_Y 431
-#define LSM303_IRON_Z 588
+#define LSM303_IRON_X 415
+#define LSM303_IRON_Y 417
+#define LSM303_IRON_Z 491
+#define LSM303_SIRON_X 0.98
+#define LSM303_SIRON_Y 0.99
+#define LSM303_SIRON_Z 1.02
 
 /* Accelerometer & Magnetometer registers */
 //#define 	LSM303_ACC_TEMP_L		 0x0B
@@ -172,7 +175,7 @@ int lsm303_serialmode(int dev, LSM303_SMODE_t mode);
 int lsm303_enableaxis(int dev, int mask);
 int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en);
 int lsm303_get_sample(int dev, lsm303_smpl *smpl);
-int lsm303_mag_calibrate(lsm303_smpl *max, lsm303_smpl *min);
+lsm303_smpl lsm303_calib_iron(lsm303_smpl *max, lsm303_smpl *min);
 int compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y);
 
 int spi_read(uint8_t dev, uint8_t adr, uint8_t *dat);
