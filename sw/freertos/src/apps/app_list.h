@@ -32,6 +32,7 @@
 extern application menu;
 extern application clock;
 extern application example;
+extern application compass;
 
 #endif /* APP_LIST_H */
 

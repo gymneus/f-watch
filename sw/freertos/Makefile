@@ -143,6 +143,7 @@ C_SRC +=  \
 ../common/drivers/buzzer.c \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
+../common/drivers/LSM303C/lsm303c.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
@@ -169,6 +170,7 @@ src/apps/widgets/status_bar.c \
 src/apps/application.c \
 src/apps/clock.c \
 src/apps/example_app.c \
+src/apps/compass.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
