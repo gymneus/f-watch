@@ -24,7 +24,7 @@
 #define __SINCOS_H__
 
 #define PI 3.14159265
-#define ABS(x) (x>0?x:(-x))
+#define ABS(x) (x>0?x:(-(x)))
 float small_sin(int deg);
 float small_cos(int deg);
 int small_atan(float y, float x);
