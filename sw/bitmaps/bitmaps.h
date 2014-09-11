@@ -12,6 +12,7 @@ struct rle_bitmap
 
 extern const struct rle_bitmap comp_circle;
 extern const struct rle_bitmap battery;
+extern const struct rle_bitmap game_ico;
 extern const struct rle_bitmap battery_charging;
 extern const struct rle_bitmap gps_searching;
 extern const struct rle_bitmap comp_ico;
