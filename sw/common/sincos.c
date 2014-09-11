@@ -57,6 +57,12 @@ float small_sin(int deg)
 	deg -= 90;
 	if (deg<=90)
 		return q*SIN_LUP[255-(int)(deg*SIN_STEP)]/65535.0;
+	deg -= 90;
+	if (deg<=90)
+		return -q*SIN_LUP[(int)(deg*SIN_STEP)]/65535.0;
+	deg -= 90;
+	if (deg<=90)
+		return -q*SIN_LUP[255-(int)(deg*SIN_STEP)]/65535.0;
 
 	return 0xff;
 }
@@ -70,6 +76,12 @@ float small_cos(int deg)
 	deg -= 90;
 	if (deg<=90)
 		return -SIN_LUP[(int)(deg*SIN_STEP)]/65535.0;
+	deg -= 90;
+	if (deg<=90)
+		return -SIN_LUP[255-(int)(deg*SIN_STEP)]/65535.0;
+	deg -= 90;
+	if (deg<=90)
+		return SIN_LUP[(int)(deg*SIN_STEP)]/65535.0;
 
 	return 0xff;
 }
