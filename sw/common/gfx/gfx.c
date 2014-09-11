@@ -2,6 +2,7 @@
  * Copyright (C) 2014 Julian Lewis
  * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  * @author Matthieu Cattin <matthieu.cattin@cern.ch>
+ * &author Grzegorz Daniluk <grzegorz.daniluk@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,6 +28,7 @@
 #include <stdlib.h>
 
 #include "gfx.h"
+#include "sincos.h"
 
 #define GFX_POOL_SIZE 4096
 
@@ -248,6 +250,52 @@ void gfx_draw_bitmap(struct surface *surf, int x0, int y0, const struct rle_bitm
         {
             if(pix)
                 gfx_set_pixel(surf, x0 + x, y0 + y, COLOR_BLACK);
+            x++;
+            if(x == b->w)
+            {
+                x=0;
+                y++;
+            }
+        }
+    }
+}
+
+static void gfx_rotate(int x0, int y0, int xr, int yr, float sina, float cosa,
+		int *x1, int *y1)
+{
+		int xt, yt;
+    /* 1. transform to (0, 0) */
+		xt = x0 - xr;
+		yt = y0 - yr;
+		/* 2. rotate */
+		*x1 = xt*cosa - yt*sina;
+		*y1 = yt*cosa + xt*sina;
+		/* 3. transofrm back to desired position */
+		*x1 = *x1 + xr;
+		*y1 = *y1 + yr;
+}
+
+void gfx_draw_bitmap_rotate(struct surface *surf, int x0, int y0,
+    const struct rle_bitmap *b, int xr, int yr, int angle, float sina, float cosa)
+{
+    int x = 0, y = 0, xt, yt;
+    uint8_t *d = b->data;
+
+    /*calculate sin/cos of angle only once*/
+		if(sina>1 || sina<-1) sina = small_sin(angle);
+    if(cosa>1 || cosa<-1) cosa = small_cos(angle);
+    while(y != b->h)
+    {
+        int pix = (*d) & 0x80 ? 1 : 0;
+        int rep = ((*d) & 0x7f) + 1;
+        d++;
+
+        while(rep--)
+        {
+            if(pix) {
+								gfx_rotate(x0+x, y0+y, xr, yr, sina, cosa, &xt, &yt);
+                gfx_set_pixel(surf, xt, yt, COLOR_BLACK);
+						}
             x++;
             if(x == b->w)
             {
