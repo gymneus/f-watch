@@ -19,5 +19,6 @@ extern const struct rle_bitmap example_icon;
 extern const struct rle_bitmap battery_charging;
 extern const struct rle_bitmap gps_searching;
 extern const struct rle_bitmap settings_icon;
+extern const struct rle_bitmap compass_arrow;
 
 #endif /* BITMAPS_H */
