@@ -50,7 +50,7 @@ menu_list main_menu = {
     "Main menu",
     {
        { APP,       &example_icon,      { .app = &example } },
-       { APP,       NULL,               { .app = &compass } },
+       { APP,       &comp_ico,          { .app = &compass } },
        { SUBMENU,   &settings_icon,     { .submenu = &settings_menu } },
        { END,       NULL,               { NULL } }
     }
