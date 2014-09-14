@@ -30,40 +30,34 @@
 #include <drivers/rtc.h>
 
 #include <stdio.h>
+#include <time.h>
 
-static unsigned int hour, mins, secs, msecs;
+static struct rtc_time rtc;
+static struct tm cur_time;
 
 static void digital_watch_redraw(struct ui_widget *w)
 {
-    char buf[20];
-    sprintf(buf,"%02d:%02d", hour, mins);
+    char buf[32];
+    strftime(buf, sizeof(buf), "%H:%M", &cur_time);
+    /*sprintf(buf,"%02d:%02d", cur_time.tm_hour, cur_time.tm_min);*/
 
     gfx_clear(&w->dc, 0);
-    gfx_text(&w->dc, &font_helv38b, 0, 0, buf, 1);
+    gfx_text(&w->dc, &font_helv38b, 4, 0, buf, 1);
 
-    sprintf(buf,"%02d.%01d", secs, msecs / 100);
-    gfx_text(&w->dc, &font_helv22b, 84, 14, buf, 1);
+    // sprintf must be used, so we can display msecs too
+    sprintf(buf, "%02d.%01d", cur_time.tm_sec, rtc.msecs / 100);
+    gfx_text(&w->dc, &font_helv22b, 88, 14, buf, 1);
+
+    strftime(buf, sizeof(buf), "%a %d %b %Y", &cur_time);
+    gfx_centered_text(&w->dc, &font_helv17, 40, buf, 1);
 }
 
 static void digital_watch_event(struct ui_widget *w, const struct event *evt)
 {
     // Hour has changed, it is time to redraw the clock
     if(evt->type == RTC_TICK) {
-        msecs += 200;
-        if(1000 == msecs) {
-            ++secs;
-            msecs = 0;
-        }
-
-        ++secs;
-        if(60 == secs) {
-            ++mins; secs = 0;
-            if(60 == mins) {
-                ++hour; mins = 0;
-                if(24 == hour)
-                    hour = 0; // TODO 12/24 hour format
-            }
-        }
+        rtc = rtc_get_time();
+        localtime_r((time_t*) &rtc.epoch, &cur_time);
 
         w->flags |= WF_DIRTY;
     }
@@ -72,7 +66,7 @@ static void digital_watch_event(struct ui_widget *w, const struct event *evt)
 struct ui_widget digital_watch = {
     digital_watch_redraw,
     digital_watch_event,
-    { 0, 20, 127, 59 },
+    { 0, 35, 127, 35 + 53 },
     0,
     WF_ACTIVE | WF_VISIBLE
 };
@@ -90,14 +84,8 @@ void clock_main(void* params) {
     struct event evt;
 
     // Restore clock
-    struct rtc_time time = rtc_get_time();
-    msecs = time.msecs;
-    secs = time.epoch;
-    mins = secs / 60;
-    hour = mins / 60;
-    secs %= 60;
-    mins %= 60;
-    hour %= 24;
+    rtc = rtc_get_time();
+    localtime_r((time_t*) &rtc.epoch, &cur_time);
 
     // Initialize user interface
     ui_clear();
@@ -135,7 +123,7 @@ void clock_main(void* params) {
     }
 }
 
-application clock = {
+application clock_app = {
     .name = "Clock",
     .main = clock_main
 };

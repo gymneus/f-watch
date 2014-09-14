@@ -40,9 +40,9 @@ int get_menu_size(const menu_list *menu) {
 menu_list sub_menu = {
     "Submenu",
     {
-        { APP, &gps_receiving,      { .app = &clock } },
-        { APP, &battery,            { .app = &clock } },
-        { APP, &gps_disconnected,   { .app = &clock } },
+        { APP, &gps_receiving,      { .app = &clock_app } },
+        { APP, &battery,            { .app = &clock_app } },
+        { APP, &gps_disconnected,   { .app = &clock_app } },
         { END, &gps_searching,      { NULL } }
     }
 };
@@ -51,23 +51,23 @@ menu_list main_menu = {
     "Main menu",
     {
        { APP,       &example_icon,      { .app = &example } },
-       { APP,       &gps_receiving,     { .app = &clock } },
-       { APP,       &battery_charging,  { .app = &clock } },
+       { APP,       &gps_receiving,     { .app = &clock_app } },
+       { APP,       &battery_charging,  { .app = &clock_app } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
-       { APP,       &battery,           { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
-       { APP,       &gps_disconnected,  { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
+       { APP,       &battery,           { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       &gps_disconnected,  { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
        { SUBMENU,   &battery_charging,  { .submenu = &sub_menu } },
-       { APP,       NULL,               { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
        { SUBMENU,   NULL,               { .submenu = &sub_menu } },
-       { APP,       NULL,               { .app = &clock } },
-       { APP,       NULL,               { .app = &clock } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
        { END,       NULL,               { NULL } }
     }
 };
