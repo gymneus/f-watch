@@ -30,7 +30,7 @@
 #include "application.h"
 
 extern application menu;
-extern application clock;
+extern application clock_app;
 extern application example;
 
 #endif /* APP_LIST_H */

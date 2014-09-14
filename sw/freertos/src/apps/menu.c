@@ -145,7 +145,7 @@ static void run(menu_entry *entry) {
 
 static void go_back() {
     if(current_menu == menu_stack) {
-        clock.main(NULL);
+        clock_app.main(NULL);
     } else {
         menu_size = 0;
         selected_item = 0;
@@ -164,7 +164,7 @@ void menu_main(void* params) {
     menu_size = get_menu_size(*current_menu);
 
     // run clock as the the initial application
-    clock.main(NULL);
+    clock_app.main(NULL);
     menu_ui_init();
 
     // Once it is deactivated - display the menu
