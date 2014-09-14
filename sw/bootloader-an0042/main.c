@@ -142,21 +142,11 @@ int main(void)
   GPIO_PinModeSet(gpioPortC, 6, gpioModeInput, 0);
   freewatch_backlight_blinky(100, 4);
 
-//  int j;
-//  // BR -> backlight bottom
-//  GPIO_PinInGet(gpioPortA, 8) ? GPIO_PinOutClear(gpioPortE, 11) : GPIO_PinOutSet(gpioPortE, 11);
-//  // BL -> backlight top
-//  GPIO_PinInGet(gpioPortC, 6) ? GPIO_PinOutClear(gpioPortE, 12) : GPIO_PinOutSet(gpioPortE, 12);
-//  for (j = 0; j < 10000000; j++)
-//    ;
-//  GPIO_PinOutClear(gpioPortE, 11);
-//  GPIO_PinOutClear(gpioPortE, 12);
-//  for (j = 0; j < 100000; j++)
-//    ;
+  int j;
 
 #if !defined( SIMULATE_SWDCLK_PIN_HI )
   /* Listen button TL and TR, if both are pressed then enter bootloader mode */
-  while ( GPIO_PinInGet(gpioPortA, 8) || GPIO_PinInGet(gpioPortC, 6))
+  while (GPIO_PinInGet(gpioPortC, 6))
   {
     USB_PUTS( "SWDCLK is low\r\n" );
 
