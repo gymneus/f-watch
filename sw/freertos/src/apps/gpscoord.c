@@ -42,53 +42,63 @@ static int coord_format;
 static void gps_redraw(struct ui_widget *w)
 {
         char buf[16];
-        float tmp;
+        float latdeg;
+        float latmin;
+        float latsec;
+        float londeg;
+        float lonmin;
+        float lonsec;
 
         if (gps_fixed())
                 gps_get_coord(&coord, coord_format);
 
+        latdeg = coord.lat/100;
+        latmin = 100 * (latdeg - (int)latdeg);
+        latsec = coord.lat - (int)coord.lat;
+
+        londeg = coord.lon/100;
+        lonmin = 100 * (londeg - (int)londeg);
+        lonsec = coord.lon - (int)coord.lon;
+
         gfx_clear(&w->dc, 0);
 
+        /* Display latitude and longitude depending on format */
         if (coord_format == 0) {
-                /* Display raw [deg][min].[sec/60] */
-                tmp = coord.lat / 100;
-                sprintf(buf, "L: %d", (int)tmp);
+                /* raw [deg][min].[sec/60] */
+                sprintf(buf, "L: %d", (int)latdeg);
                 gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
-                sprintf(buf, "%2.5f'", 100*(tmp - (int)tmp));
+                sprintf(buf, "%2.5f'", latmin);
                 gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
 
-                tmp = coord.lon / 100;
-                sprintf(buf, "l: %d", (int)(tmp));
+                sprintf(buf, "l: %d", (int)(londeg));
                 gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
-                sprintf(buf, "%2.5f'", 100*(tmp - (int)tmp));
+                sprintf(buf, "%2.5f'", lonmin);
                 gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
-
-                sprintf(buf, "h: %5.2f", coord.elev);
-                gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
         } else if (coord_format == 1) {
-                /* Display [deg][min].[sec] nicely */
-                tmp = coord.lat / 100;
-                sprintf(buf, "L: %d", (int)tmp);
+                /* [deg] [min] [sec] */
+                sprintf(buf, "L: %d", (int)latdeg);
                 gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
-                sprintf(buf, "%d' %2.2f''", (int)(100*(tmp - (int)tmp)),
-                                        (100*(coord.lat - (int)coord.lat)));
+                sprintf(buf, "%d' %2.2f''", (int)latmin, 0.6 * latsec);
                 gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
 
-                tmp = coord.lon / 100;
-                sprintf(buf, "l: %d", (int)(tmp));
-                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
-                sprintf(buf, "%d' %2.2f''", (int)(100*(tmp - (int)tmp)),
-                                        (100*(coord.lon - (int)coord.lon)));
-                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
+                sprintf(buf, "l: %d", (int)londeg);
+                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                sprintf(buf, "%d' %2.2f''", (int)lonmin, 60 * lonsec);
+                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+        } else if (coord_format == 2) {
+                /* [deg].[min/60] */
+                latdeg = latdeg/0.6;
+                sprintf(buf, "L: %2.5f", latdeg);
+                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
 
-                sprintf(buf, "h: %5.2f", coord.elev);
-                gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+                londeg = londeg/0.6;
+                sprintf(buf, "l: %2.5f", londeg);
+                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
         }
 
-//        sprintf(buf, "%2.4f" )
-//        gfx_text(&w->dc, &font_helv22b, 0, 30, buf, 0);
-//        sprintf(buf, "%5.0f m", coord.elev);
-//        gfx_text(&w->dc, &font_helv22b, 0, 50, buf, 0);
+        /* Display elevation */
+        sprintf(buf, "h: %5.2f", coord.elev);
+        gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
@@ -140,8 +150,10 @@ void gpscoord_main(void *params)
                                 if (evt.data.button == BUT_TR)
                                         return;
                                 else if (evt.data.button == BUT_BR) {
+                                        /* increment coordinate format and wrap
+                                         * around at 3 */
                                         coord_format += 1;
-                                        coord_format %= 2;
+                                        coord_format %= 3;
                                 }
                                 break;
                         case RTC_TICK:
