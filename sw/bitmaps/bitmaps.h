@@ -10,11 +10,13 @@ struct rle_bitmap
     const uint8_t *data;
 };
 
-extern const struct rle_bitmap example_icon;
+extern const struct rle_bitmap gps_disconnected;
 extern const struct rle_bitmap gps_receiving;
 extern const struct rle_bitmap battery;
-extern const struct rle_bitmap gps_disconnected;
+extern const struct rle_bitmap clock_icon;
+extern const struct rle_bitmap example_icon;
 extern const struct rle_bitmap battery_charging;
 extern const struct rle_bitmap gps_searching;
+extern const struct rle_bitmap settings_icon;
 
 #endif /* BITMAPS_H */
