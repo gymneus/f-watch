@@ -21,36 +21,16 @@
  */
 
 /**
- * Menu structure.
+ * List of settings subapps.
  */
 
-#include "menu_struct.h"
-#include "app_list.h"
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-int get_menu_size(const menu_list *menu) {
-    int len = 0;
-    const menu_entry* ptr = menu->entries;
+#include "application.h"
 
-    // Look for sentinel
-    while((*ptr++).type != END) ++len;
+extern application set_time;
 
-    return len;
-}
+#endif /* SETTINGS_H */
 
-menu_list settings_menu = {
-    "Settings",
-    {
-        { APP, &clock_icon,         { .app = &set_time } },
-        { END, NULL,                { NULL } }
-    }
-};
-
-menu_list main_menu = {
-    "Main menu",
-    {
-       { APP,       &example_icon,      { .app = &example } },
-       { SUBMENU,   &settings_icon,     { .submenu = &settings_menu } },
-       { END,       NULL,               { NULL } }
-    }
-};
 

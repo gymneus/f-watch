@@ -25,6 +25,8 @@
  * Clock application.
  */
 
+#include "clock.h"
+
 #include "application.h"
 #include "widgets/status_bar.h"
 #include <drivers/rtc.h>
@@ -35,13 +37,12 @@
 static struct rtc_time rtc;
 static struct tm cur_time;
 
-static void digital_watch_redraw(struct ui_widget *w)
-{
+static void digital_watch_redraw(struct ui_widget *w) {
     char buf[32];
-    strftime(buf, sizeof(buf), "%H:%M", &cur_time);
-    /*sprintf(buf,"%02d:%02d", cur_time.tm_hour, cur_time.tm_min);*/
 
     gfx_clear(&w->dc, 0);
+
+    strftime(buf, sizeof(buf), "%H:%M", &cur_time);
     gfx_text(&w->dc, &font_helv38b, 4, 0, buf, 1);
 
     // sprintf must be used, so we can display msecs too
@@ -52,8 +53,7 @@ static void digital_watch_redraw(struct ui_widget *w)
     gfx_centered_text(&w->dc, &font_helv17, 40, buf, 1);
 }
 
-static void digital_watch_event(struct ui_widget *w, const struct event *evt)
-{
+static void digital_watch_event(struct ui_widget *w, const struct event *evt) {
     // Hour has changed, it is time to redraw the clock
     if(evt->type == RTC_TICK) {
         rtc = rtc_get_time();
@@ -127,4 +127,20 @@ application clock_app = {
     .name = "Clock",
     .main = clock_main
 };
+
+// Settings
+struct tm clock_get_time(void) {
+    rtc = rtc_get_time();
+    localtime_r((time_t*) &rtc.epoch, &cur_time);
+
+    return cur_time;
+}
+
+void clock_set_time(struct tm *time) {
+    struct rtc_time r;
+    r.msecs = 0;
+    r.epoch = mktime(time);
+
+    rtc_set_time(r);
+}
 

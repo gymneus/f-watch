@@ -21,36 +21,22 @@
  */
 
 /**
- * Menu structure.
+ * Clock application settings.
  */
 
-#include "menu_struct.h"
-#include "app_list.h"
+#ifndef CLOCK_H
+#define CLOCK_H
 
-int get_menu_size(const menu_list *menu) {
-    int len = 0;
-    const menu_entry* ptr = menu->entries;
+#include <stdbool.h>
 
-    // Look for sentinel
-    while((*ptr++).type != END) ++len;
+/**
+ * TODO
+ */
+struct tm clock_get_time(void);
 
-    return len;
-}
+/**
+ * TODO
+ */
+void clock_set_time(struct tm *time);
 
-menu_list settings_menu = {
-    "Settings",
-    {
-        { APP, &clock_icon,         { .app = &set_time } },
-        { END, NULL,                { NULL } }
-    }
-};
-
-menu_list main_menu = {
-    "Main menu",
-    {
-       { APP,       &example_icon,      { .app = &example } },
-       { SUBMENU,   &settings_icon,     { .submenu = &settings_menu } },
-       { END,       NULL,               { NULL } }
-    }
-};
-
+#endif /* CLOCK_H */
