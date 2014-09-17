@@ -47,7 +47,7 @@ uint32_t watch_gpx_write_data(watch_format_data* data, uint8_t* dest) {
 			(1 << WATCH_PRESENCE_ALT_FROM_PRESSURE))) ) {
 		double altitude = (data->fields_mask & (1 << WATCH_PRESENCE_ALT_FROM_PRESSURE) ?
 					data->alt_from_pressure : data->alt_gps);//pressure more prioritar
-		n += sprintf(((char*) dest + n), "  <%s>%ld<%s>\n", string_elevation_tag, (long) altitude, string_elevation_tag);
+		n += sprintf(((char*) dest + n), "  <%s>%ld</%s>\n", string_elevation_tag, (long) altitude, string_elevation_tag);
 	}
 	n += sprintf(((char*) dest + n), "  <%s>", string_time_tag);
 	{
@@ -64,13 +64,13 @@ uint32_t watch_gpx_write_data(watch_format_data* data, uint8_t* dest) {
 			(1 << WATCH_PRESENCE_PRESSURE))) ) {
 		n += sprintf(((char*) dest + n), "  <%s>\n", string_extensions_tag);
 		if (data->fields_mask & (1 << WATCH_PRESENCE_ALT_GPS)) {
-			n += sprintf(((char*) dest + n), "    <%s>%ld<%s>\n", string_extaltgps_tag, (long) data->alt_gps, string_extaltgps_tag);
+			n += sprintf(((char*) dest + n), "    <%s>%ld</%s>\n", string_extaltgps_tag, (long) data->alt_gps, string_extaltgps_tag);
 		}
 		if (data->fields_mask & (1 << WATCH_PRESENCE_ALT_FROM_PRESSURE)) {
-			n += sprintf(((char*) dest + n), "    <%s>%ld<%s>\n", string_extaltfrompressure_tag, (long) data->alt_gps, string_extaltfrompressure_tag);
+			n += sprintf(((char*) dest + n), "    <%s>%ld</%s>\n", string_extaltfrompressure_tag, (long) data->alt_gps, string_extaltfrompressure_tag);
 		}
 		if (data->fields_mask & (1 << WATCH_PRESENCE_PRESSURE)) {
-			n += sprintf(((char*) dest + n), "    <%s>%ld<%s>\n", string_extpressure_tag, (long) data->pressure, string_extpressure_tag);
+			n += sprintf(((char*) dest + n), "    <%s>%ld</%s>\n", string_extpressure_tag, (long) data->pressure, string_extpressure_tag);
 		}
 		n += sprintf(((char*) dest + n), "  </%s>\n", string_extensions_tag);
 	}
@@ -82,7 +82,7 @@ static const char* string_gpx_footer = "</gpx>";
 
 uint32_t watch_gpx_write_footer(uint8_t* dest) {
 	char* str_dest = (char*) dest;
-	int n = sprintf(str_dest, "  <%s>\n%s", string_track_tag, string_gpx_footer);
+	int n = sprintf(str_dest, "  </%s>\n%s", string_track_tag, string_gpx_footer);
 	return (uint32_t) n;
 }
 
