@@ -28,6 +28,7 @@
 #define APP_LIST_H
 
 #include "application.h"
+#include "settings/settings.h"
 
 extern application menu;
 extern application clock_app;

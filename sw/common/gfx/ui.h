@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch> 
+ * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ struct ui_widget {
     struct rect pos;
     uint8_t order;
     int flags;
+    void *data;
 
     struct surface dc;
     struct ui_widget *next;

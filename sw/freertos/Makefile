@@ -111,6 +111,7 @@ LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 
 INCLUDEPATHS += \
 -Isrc \
+-Isrc/apps \
 -IFreeRTOS/Source/include \
 -I../bitmaps \
 -I../common/CMSIS/Include \
@@ -171,6 +172,8 @@ FreeRTOS/Source/list.c \
 FreeRTOS/Source/croutine.c \
 FreeRTOS/Source/portable/MemMang/heap_1.c \
 FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
+src/apps/settings/set_time.c \
+src/apps/widgets/spinbox.c \
 src/apps/widgets/status_bar.c \
 src/apps/application.c \
 src/apps/clock.c \
