@@ -186,7 +186,7 @@ void gps_get_utc(struct gps_utc *utc)
 void gps_get_coord(struct gps_coord *coord, int format)
 {
         if (format == 0) {
-                /* Raw [deg][min].[sec/60] data */
+                /* Raw [deg][min].[sec/60] */
                 coord->lat = gps_info.lat;
                 coord->lon = gps_info.lon;
         } else if (format == 1) {
@@ -195,6 +195,13 @@ void gps_get_coord(struct gps_coord *coord, int format)
                         gps_info.lat - (int)gps_info.lat);
                 coord->lon = (int)gps_info.lon + 0.6 * (
                         gps_info.lon - (int)gps_info.lon);
+        } else if (format == 2) {
+                /* [deg].[min/60] */
+                float tmp;
+                tmp = gps_info.lat/100;
+                coord->lat = (int)tmp + (tmp - (int)tmp) / 0.6;
+                tmp = gps_info.lon/100;
+                coord->lon = (int)tmp + (tmp - (int)tmp) / 0.6;
         }
         coord->elev = gps_info.elv;
 }

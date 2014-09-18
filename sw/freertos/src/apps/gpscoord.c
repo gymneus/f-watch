@@ -37,7 +37,8 @@
 #include "application.h"
 
 static struct gps_coord coord;
-static int coord_format;
+static int coord_format = 1;
+static int gpsscreen = 0;
 
 static void gps_redraw(struct ui_widget *w)
 {
@@ -63,42 +64,44 @@ static void gps_redraw(struct ui_widget *w)
         gfx_clear(&w->dc, 0);
 
         /* Display latitude and longitude depending on format */
-        if (coord_format == 0) {
-                /* raw [deg][min].[sec/60] */
-                sprintf(buf, "L: %d deg", (int)latdeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
-                sprintf(buf, "%2.5f'", latmin);
-                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+        if (gpsscreen == 0) {
+                if (coord_format == 0) {
+                        /* raw [deg][min].[sec/60] */
+                        sprintf(buf, "L: %d deg", (int)latdeg);
+                        gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                        sprintf(buf, "%2.4f'", latmin);
+                        gfx_text(&w->dc, &font_helv22b, 22, 20, buf, 0);
 
-                sprintf(buf, "l: %d deg", (int)(londeg));
-                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
-                sprintf(buf, "%2.5f'", lonmin);
-                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
-        } else if (coord_format == 1) {
-                /* [deg] [min] [sec] */
-                sprintf(buf, "L: %d deg", (int)latdeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
-                sprintf(buf, "%d' %2.2f''", (int)latmin, 0.6 * latsec);
-                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+                        sprintf(buf, "l: %d deg", (int)(londeg));
+                        gfx_text(&w->dc, &font_helv22b, 0, 50, buf, 0);
+                        sprintf(buf, "%2.4f'", lonmin);
+                        gfx_text(&w->dc, &font_helv22b, 15, 70, buf, 0);
+                } else if (coord_format == 1) {
+                        /* [deg] [min] [sec] */
+                        sprintf(buf, "L: %d deg", (int)latdeg);
+                        gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                        sprintf(buf, "%d'%2.2f''", (int)latmin, 0.6 * latsec);
+                        gfx_text(&w->dc, &font_helv22b, 22, 20, buf, 0);
 
-                sprintf(buf, "l: %d deg", (int)londeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
-                sprintf(buf, "%d' %2.2f''", (int)lonmin, 60 * lonsec);
-                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
-        } else if (coord_format == 2) {
-                /* [deg].[min/60] */
-                latdeg = latdeg/0.6;
-                sprintf(buf, "L: %2.5f", latdeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                        sprintf(buf, "l: %d deg", (int)londeg);
+                        gfx_text(&w->dc, &font_helv22b, 0, 50, buf, 0);
+                        sprintf(buf, "%d'%2.2f''", (int)lonmin, 60 * lonsec);
+                        gfx_text(&w->dc, &font_helv22b, 15, 70, buf, 0);
+                } else if (coord_format == 2) {
+                        /* [deg].[min/60] */
+                        sprintf(buf, "L: %2.4f", coord.lat);
+                        gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
 
-                londeg = londeg/0.6;
-                sprintf(buf, "l: %2.5f", londeg);
+                        sprintf(buf, "l: %2.4f", coord.lon);
+                        gfx_text(&w->dc, &font_helv22b, 0, 50, buf, 0);
+                }
+        /* Display elevation */
+        } else {
+                sprintf(buf, "elev:");
+                gfx_text(&w->dc, &font_helv22b, 0, 20, buf, 0);
+                sprintf(buf, "%5.3f", coord.elev);
                 gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
         }
-
-        /* Display elevation */
-        sprintf(buf, "h: %5.2f", coord.elev);
-        gfx_text(&w->dc, &font_helv22b, 0, 75, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
@@ -150,10 +153,12 @@ void gpscoord_main(void *params)
                                 if (evt.data.button == BUT_TR)
                                         return;
                                 else if (evt.data.button == BUT_BR) {
-                                        /* increment coordinate format and wrap
-                                         * around at 3 */
-                                        coord_format += 1;
-                                        coord_format %= 3;
+                                        /*
+                                         * Toggle between coordinate and
+                                         * elevation screens
+                                         */
+                                        gpsscreen += 1;
+                                        gpsscreen %= 2;
                                 }
                                 break;
                         case RTC_TICK:
