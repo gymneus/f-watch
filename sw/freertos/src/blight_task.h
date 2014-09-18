@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +21,27 @@
  */
 
 /**
- * @brief Status bar widget.
+ * @brief Automatic backlight regulation.
  */
 
-#include <gfx/ui.h>
+#ifndef BLIGHT_TASK_H
+#define BLIGHT_TASK_H
 
-///> Height of the status bar
-#define STATUS_BAR_HEIGHT   20
+#include <stdbool.h>
 
-struct ui_widget status_bar;
+/**
+ * Initializes the automatic backlight adjustment task.
+ */
+void auto_backlight_init(void);
+
+/**
+ * Enables/disables automatic backlight adjustment.
+ * @param enable decides if the automatic regulation should be enabled.
+ * Note that you are still able to change the backlight level manually, but
+ * it will be overridden next time the automatic adjustment task is
+ * executed.
+ */
+void auto_backlight_enable(bool enable);
+
+#endif /* BLIGHT_TASK_H */
 

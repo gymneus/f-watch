@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,15 +22,35 @@
  */
 
 /**
- * Clock application.
+ * @brief Buzzer control.
  */
 
-#ifndef CLOCK_H
-#define CLOCK_H
+#ifndef BUZZER_H
+#define BUZZER_H
 
-#include "application.h"
+/**
+ * @brief Initialize buzzer.
+ */
+void buzzer_init(void);
 
-extern application clock;
+/**
+ * @brief Turns on the buzzer.
+ */
+void buzzer_enable(void);
 
-#endif /* CLOCK_H */
+/**
+ * @brief Turns off the buzzer.
+ */
+void buzzer_disable(void);
+
+/**
+ * @brief Sets the frequency of buzzer sound.
+ * @param frequency is the frequency to be set. Valid values are between 6
+ * and 5500. If the requested frequency is out of the valid range, it will
+ * be set to either the closest valid value (either the lowest one or the
+ * highest one).
+ */
+void buzzer_set_freq(int frequency);
+
+#endif /* BUZZER_H */
 

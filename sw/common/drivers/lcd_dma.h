@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Bartosz Bielawski <bartosz.bielawski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,16 +21,26 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
+// TODO author note
+
+#ifndef LCD_DMA_H
+#define LCD_DMA_H
+
 /**
- * Menu application.
+ * Initialize DMA operation.
+ * Enables the clock and sets up descriptors and
+ * registers for dma frame buffer transfer.
  */
+void lcd_dma_init(void);
 
-#ifndef MENU_H
-#define MENU_H
+/**
+ * TODO
+ */
+void lcd_dma_send_frame(void);
 
-#include "application.h"
+/**
+ * TODO
+ */
+bool lcd_dma_is_active(void);
 
-extern application menu;
-
-#endif /* MENU_H */
-
+#endif /* LCD_DMA_H */

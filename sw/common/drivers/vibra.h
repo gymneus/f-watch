@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +22,26 @@
  */
 
 /**
- * @brief Status bar widget.
+ * @brief Vibration motor control.
  */
 
-#include <gfx/ui.h>
+#ifndef VIBRA_H
+#define VIBRA_H
 
-///> Height of the status bar
-#define STATUS_BAR_HEIGHT   20
+/**
+ * @brief Initialize vibration motor.
+ */
+void vibra_init(void);
 
-struct ui_widget status_bar;
+/**
+ * @brief Turns on the vibration motor.
+ */
+void vibra_enable(void);
+
+/**
+ * @brief Turns off the vibration motor.
+ */
+void vibra_disable(void);
+
+#endif /* VIBRA_H */
 

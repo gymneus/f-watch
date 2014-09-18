@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +21,38 @@
  */
 
 /**
- * @brief Status bar widget.
+ * @brief Watch states handling.
  */
 
-#include <gfx/ui.h>
+#ifndef STATE_H
+#define STATE_H
 
-///> Height of the status bar
-#define STATUS_BAR_HEIGHT   20
+#include <FreeRTOS.h>
 
-struct ui_widget status_bar;
+///> Possible states for the watch.
+enum watch_state { ACTIVE, IDLE };
 
+/**
+ * @brief Initializes the state handler.
+ */
+void state_init(void);
+
+/**
+ * @brief Returns the current state of watch.
+ */
+enum watch_state get_state(void);
+
+/**
+ * @brief Switches to the active state for a period of time.
+ */
+void reset_active(void);
+
+/**
+ * @brief Switches to the active state for a period of time (version
+ * that can be called from interrupt service routines).
+ * @param task_woken will be set to true if a context switch should
+ * be performed (@see xTimerReset()).
+ */
+void reset_active_irq(portBASE_TYPE *task_woken);
+
+#endif /* STATE_H */

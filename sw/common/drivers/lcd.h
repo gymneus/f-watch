@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Bartosz Bielawski <bartosz.bielawski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,9 +30,20 @@
 
 #include "em_gpio.h"
 
+#ifdef FREERTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+///> How long should we wait for the semaphore
+#define LCD_SEM_TICKS 100
+extern xSemaphoreHandle lcd_sem;
+#endif /* FREERTOS */
+
 // Dimensions
 #define LCD_HEIGHT          128
 #define LCD_WIDTH           128
+
+// Enable 90* rotation
+#define LCD_ROTATE_90
 
 // Pinout
 #define LCD_PORT_SCLK       gpioPortC
@@ -54,9 +66,18 @@
 // Peripherals
 #define LCD_SPI_UNIT        USART2
 #define LCD_SPI_CLOCK       cmuClock_USART2
-#define LCD_SPI_LOCATION    0
+#define LCD_SPI_LOCATION    USART_ROUTE_LOCATION_LOC0
 #define LCD_SPI_BAUDRATE    500000
-#define LCD_POL_INV_FREQ    64
+#define LCD_POL_INV_FREQ    60
+
+// Additional bytes to control the LCD; stored in framebuffer, required for DMA transfers
+#define LCD_CONTROL_BYTES       2
+
+// Number of bytes to store one line
+#define LCD_STRIDE          (LCD_WIDTH / 8 + LCD_CONTROL_BYTES)
+
+// Framebuffer size (in bytes)
+#define LCD_BUF_SIZE        (LCD_STRIDE * LCD_HEIGHT + LCD_CONTROL_BYTES)
 
 /**
  * @brief LCD initialization routine.
@@ -91,21 +112,81 @@ void lcd_update(void);
  * @param uint8_t y is the y coordinate of the pixel.
  * @param uint8_t value turns off the pixel if 0, turns on otherwise.
  */
-void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value);
+static inline void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
+{
+    extern uint8_t * const off_buffer;
+
+    // x %= LCD_WIDTH;
+    // y %= LCD_HEIGHT;
+
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
+#else
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif
+
+    if(value)
+        off_buffer[offset] |= mask;
+    else
+        off_buffer[offset] &= ~mask;
+}
 
 /**
  * @brief Toggles a single pixel.
  * @param uint8_t x is the x coordinate of the pixel.
  * @param uint8_t y is the y coordinate of the pixel.
  */
-void lcd_toggle_pixel(uint8_t x, uint8_t y);
+static inline void lcd_toggle_pixel(uint8_t x, uint8_t y)
+{
+    extern uint8_t * const off_buffer;
+
+    // x %= LCD_WIDTH;
+    // y %= LCD_HEIGHT;
+
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
+#else
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif
+
+    off_buffer[offset] ^= mask;
+}
 
 /**
  * @brief Returns the state of a single pixel.
  * @param uint8_t x is the x coordinate of the pixel.
  * @param uint8_t y is the y coordinate of the pixel.
  */
-uint8_t lcd_get_pixel(uint8_t x, uint8_t y);
+static inline uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
+{
+    extern uint8_t * const off_buffer;
+
+    // x %= LCD_WIDTH;
+    // y %= LCD_HEIGHT;
+
+#if defined(LCD_ROTATE_90)
+    uint8_t mask = 0x80 >> (y & 0x07);
+    uint16_t offset = (x * LCD_STRIDE) + ((LCD_HEIGHT - 1 - y) >> 3);
+#elif defined(LCD_ROTATE_270)
+    uint8_t mask = 1 << (y & 0x07);
+    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
+#else
+    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
+    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
+#endif
+
+    return off_buffer[offset] & mask;
+}
 
 #endif /* LCD_H */
 

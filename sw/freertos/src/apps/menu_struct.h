@@ -28,6 +28,7 @@
 #define MENU_STRUCT_H
 
 #include "application.h"
+#include "bitmaps.h"
 
 /**
  * @brief Type of menu entry.
@@ -44,6 +45,8 @@ enum entry_type {
  */
 typedef struct menu_entry_t {
     enum entry_type type;
+
+    const struct rle_bitmap *icon;
 
     union {
         application *app;

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Bartosz Bielawski <bartosz.bielawski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,41 +24,39 @@
 /**
  * @brief LS013B7DH03 LCD driver
  */
+// Uncomment if you do not want to use DMA for frame transfer
+//#define LCD_NODMA
 
 #include "lcd.h"
+#ifndef LCD_NODMA
+#include "lcd_dma.h"
+#endif
 #include <em_cmu.h>
 #include <em_usart.h>
 #include <em_rtc.h>
-#include <udelay.h>
+#include <em_timer.h>
 
-// Enable 90* rotation
-#define LCD_ROTATE
+#ifdef FREERTOS
+xSemaphoreHandle lcd_sem;
+#endif /* FREERTOS */
 
-// Do not use DMA for frame transfer
-#define LCD_NODMA
-
-// Additional bytes to control the LCD; required for DMA transfers
-#ifdef LCD_NODMA
-#define CONTROL_BYTES       0
-#else
-#define CONTROL_BYTES       2
-#endif
-
-// Number of bytes to store one line
-#define LCD_STRIDE          (LCD_WIDTH / 8 + CONTROL_BYTES)
-
-// Framebuffer - pixels are stored as consecutive rows
-static uint8_t buffer[LCD_STRIDE * LCD_HEIGHT];
+// Frame buffer - pixels are stored as consecutive rows
+uint8_t lcd_buffer[LCD_BUF_SIZE];
+uint8_t * const off_buffer = lcd_buffer + LCD_CONTROL_BYTES;
 
 static void spi_init(void)
 {
-    USART_InitSync_TypeDef usartInit = USART_INITSYNC_DEFAULT;
-
     CMU_ClockEnable(LCD_SPI_CLOCK, true);
-    usartInit.baudrate = LCD_SPI_BAUDRATE;
 
+    USART_InitSync_TypeDef usartInit = USART_INITSYNC_DEFAULT;
+    usartInit.databits = usartDatabits8;
+    usartInit.baudrate = LCD_SPI_BAUDRATE;
     USART_InitSync(LCD_SPI_UNIT, &usartInit);
+
+    /*LCD_SPI_UNIT->CTRL |= USART_CTRL_AUTOCS;*/
+
     LCD_SPI_UNIT->ROUTE = (USART_ROUTE_CLKPEN | USART_ROUTE_TXPEN | LCD_SPI_LOCATION);
+    /*USART_ROUTE_CSPEN*/
 }
 
 static void spi_transmit(uint8_t *data, uint16_t length)
@@ -65,7 +64,7 @@ static void spi_transmit(uint8_t *data, uint16_t length)
     while(length > 0)
     {
         // Send only one byte if len==1 or data pointer is not aligned at a 16 bit
-        //   word location in memory.
+        // word location in memory.
         if((length == 1) || ((unsigned int)data & 0x1))
         {
             USART_Tx(LCD_SPI_UNIT, *(uint8_t*)data);
@@ -84,55 +83,81 @@ static void spi_transmit(uint8_t *data, uint16_t length)
     while(!(LCD_SPI_UNIT->STATUS & USART_STATUS_TXC));
 }
 
-static void timer_init(void)
+static void extcomin_setup(unsigned int frequency)
 {
-    UDELAY_Calibrate();
+    CMU_ClockEnable(cmuClock_TIMER0, true);
+
+    // Select CC channel parameters
+    TIMER_InitCC_TypeDef timerCCInit =
+    {
+        .cufoa      = timerOutputActionNone,
+        .cofoa      = timerOutputActionToggle,
+        .cmoa       = timerOutputActionNone,
+        .mode       = timerCCModeCompare,
+        .filter     = false,
+        .prsInput   = false,
+        .coist      = false,
+        .outInvert  = false,
+    };
+
+    // Configure CC channel
+    TIMER_InitCC(TIMER0, 2, &timerCCInit);
+
+    // Route CC2 to location 1 (PE12) and enable pin
+    TIMER0->ROUTE |= (TIMER_ROUTE_CC2PEN | TIMER_ROUTE_LOCATION_LOC0);
+
+    // Set compare value starting at 0 - it will be incremented in the interrupt handler
+    TIMER_CompareBufSet(TIMER0, 2, 0);
+
+    // Set Top Value
+    TIMER_TopSet(TIMER0, (CMU_ClockFreqGet(cmuClock_HFPER) / 16)/ frequency);
+
+    // Select timer parameters
+    TIMER_Init_TypeDef timerInit =
+    {
+        .enable     = true,
+        .debugRun   = true,
+        .prescale   = timerPrescale8,
+        .clkSel     = timerClkSelHFPerClk,
+        .fallAction = timerInputActionNone,
+        .riseAction = timerInputActionNone,
+        .mode       = timerModeUp,
+        .dmaClrAct  = false,
+        .quadModeX4 = false,
+        .oneShot    = false,
+        .sync       = false,
+    };
+
+    // Configure timer
+    TIMER_Init(TIMER0, &timerInit);
 }
 
-static void timer_delay(uint16_t usecs)
+static void lcd_prepend_update_commands()
 {
-    UDELAY_Delay(usecs);
-}
+    // Add control codes for all lines
+    uint16_t i;
+    for(i = 0; i < LCD_HEIGHT; ++i)
+    {
+        lcd_buffer[i * LCD_STRIDE]     = LCD_CMD_UPDATE;
+        lcd_buffer[i * LCD_STRIDE + 1] = i + 1;
+    }
 
-static void rtc_setup(unsigned int frequency)
-{
-    RTC_Init_TypeDef rtc_init = RTC_INIT_DEFAULT;
-
-    // Enable LE domain registers
-    if(!(CMU->HFCORECLKEN0 & CMU_HFCORECLKEN0_LE))
-        CMU_ClockEnable(cmuClock_CORELE, true);
-
-    if(cmuSelect_LFXO != CMU_ClockSelectGet(cmuClock_LFA))
-        CMU_ClockSelectSet(cmuClock_LFA, cmuSelect_LFXO);
-
-    CMU_ClockDivSet(cmuClock_RTC, cmuClkDiv_2);
-    CMU_ClockEnable(cmuClock_RTC, true);
-
-    // Initialize RTC
-    rtc_init.enable   = false;  // Do not start RTC after initialization is complete
-    rtc_init.debugRun = false;  // Halt RTC when debugging
-    rtc_init.comp0Top = true;   // Wrap around on COMP0 match
-    RTC_Init(&rtc_init);
-
-    RTC_CompareSet(0, (CMU_ClockFreqGet(cmuClock_RTC) / frequency) - 1);
-
-    NVIC_EnableIRQ(RTC_IRQn);
-    RTC_IntEnable(RTC_IEN_COMP0);
-
-    RTC_Enable(true);
-}
-
-void RTC_IRQHandler(void)
-{
-    RTC_IntClear(RTC_IF_COMP0);
-    GPIO_PinOutToggle(LCD_PORT_EXTCOMIN, LCD_PIN_EXTCOMIN);
+    // Ending control command
+    lcd_buffer[LCD_HEIGHT * LCD_STRIDE]     = 0xff;
+    lcd_buffer[LCD_HEIGHT * LCD_STRIDE + 1] = 0xff;
 }
 
 void lcd_init(void)
 {
     uint16_t cmd;
 
-    timer_init();
+#ifdef FREERTOS
+    lcd_sem = xSemaphoreCreateMutex();
+    if(lcd_sem == NULL) {
+        // TODO oops..
+    }
+#endif /* FREERTOS */
+
     spi_init();
     // TODO I am pretty sure, it will be already initialized somewhere..
     CMU_ClockEnable(cmuClock_GPIO, true);
@@ -147,22 +172,26 @@ void lcd_init(void)
     // EXTMODE is hardwired
     // GPIO_PinModeSet(LCD_PORT_EXTMODE, LCD_PIN_EXTMODE, gpioModePushPull, 0);
 
-    // Setup RTC to generate interrupts at given frequency
-    rtc_setup(LCD_POL_INV_FREQ);
+    // Setup timer to generate interrupts at given frequency for EXTCOMIN pin
+    extcomin_setup(LCD_POL_INV_FREQ);
 
     lcd_power(1);
 
     // Send command to clear the display
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
-    timer_delay(6);
 
     cmd = LCD_CMD_ALL_CLEAR;
     spi_transmit((uint8_t*) &cmd, 2);
 
-    timer_delay(2);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
 
     lcd_clear();
+    lcd_prepend_update_commands();
+
+#ifndef LCD_NODMA
+    lcd_dma_init();
+#endif /* LCD_NODMA */
+
     lcd_enable(1);
 }
 
@@ -185,113 +214,39 @@ void lcd_power(uint8_t enable)
 void lcd_clear(void)
 {
     // Using uint32_t instead of uint8_t reduces the number of writes 4 times
-    uint32_t *p = (uint32_t*)buffer;
-    uint16_t i;
+    uint32_t *p = (uint32_t*)lcd_buffer;
+    uint16_t x, y;
 
-    // Clear pixel buffer
-    for(i = 0; i < sizeof(buffer) / sizeof(uint32_t); ++i)
-        *p++ = 0x00;
+#ifdef FREERTOS
+    if(xSemaphoreTake(lcd_sem, LCD_SEM_TICKS) != pdTRUE)
+        return;
+#endif /* FREERTOS */
 
-#ifndef LCD_NODMA
-    // Add control codes
-    for(i = 1; i < LCD_HEIGHT; ++i)
-    {
-        buffer[i * LCD_STRIDE - 2] = 0xff;      // Dummy
-        buffer[i * LCD_STRIDE - 1] = (i + 1);   // Address of next line
+    for(y = 0; y < LCD_HEIGHT; ++y) {
+        // skip control bytes
+        p = (uint32_t*)((uint8_t*)p + 2);
+
+        // clear line
+        for(x = 0; x < LCD_STRIDE / sizeof(uint32_t); ++x) {
+            *p++ = 0x00;
+        }
     }
-#endif
+
+#ifdef FREERTOS
+    xSemaphoreGive(lcd_sem);
+#endif /* FREERTOS */
 }
 
 void lcd_update(void)
 {
-    // Need to adjust start row by one because LS013B7DH03 starts counting lines
-    // from 1, while the DISPLAY interface starts from 0.
-    const uint8_t START_ROW = 1;
-
-    // TODO use DMA
-    uint16_t cmd;
-    uint16_t i;
-    uint8_t *p = (uint8_t*) buffer;
-
     GPIO_PinOutSet(LCD_PORT_SCS, LCD_PIN_SCS);
-    timer_delay(6);
-
-    // Send update command and first line address
-    cmd = LCD_CMD_UPDATE | (START_ROW << 8);
-    spi_transmit((uint8_t*) &cmd, 2);
 
 #ifdef LCD_NODMA
-    for(i = 0; i < LCD_HEIGHT; ++i)
-    {
-        // Send pixels for this line
-        spi_transmit(p, LCD_WIDTH / 8);
-        p += (LCD_WIDTH / 8);
-
-        // TODO seems unnecessary
-//        if(i == LCD_HEIGHT - 1)
-//            cmd = 0xffff;
-//        else
-        cmd = 0xff | ((START_ROW + i + 1) << 8);
-
-        spi_transmit((uint8_t*) &cmd, 2);
-    }
-#else
-    // TODO here the DMA transfer should run in the end
-    spi_transmit(p, LCD_STRIDE * LCD_HEIGHT);
-#endif
-
-    timer_delay(2);
+    spi_transmit(lcd_buffer, LCD_BUF_SIZE);
     GPIO_PinOutClear(LCD_PORT_SCS, LCD_PIN_SCS);
-}
-
-void lcd_set_pixel(uint8_t x, uint8_t y, uint8_t value)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#ifdef LCD_ROTATE
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
 #else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
-
-    if(value)
-        buffer[offset] |= mask;
-    else
-        buffer[offset] &= ~mask;
-}
-
-void lcd_toggle_pixel(uint8_t x, uint8_t y)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#ifdef LCD_ROTATE
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
-#else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
-
-    buffer[offset] ^= mask;
-}
-
-uint8_t lcd_get_pixel(uint8_t x, uint8_t y)
-{
-    x %= LCD_WIDTH;
-    y %= LCD_HEIGHT;
-
-#ifdef LCD_ROTATE
-    uint8_t mask = 1 << (y & 0x07);
-    uint16_t offset = ((LCD_WIDTH - x - 1) * LCD_STRIDE) + (y >> 3);
-#else
-    uint8_t mask = 1 << (x & 0x07);                 // == 1 << (x % 8)
-    uint16_t offset = (y * LCD_STRIDE) + (x >> 3);  // == y * LCD_STRIDE + x / 8
-#endif /* else LCD_ROTATE */
-
-    return buffer[offset] & mask;
+    lcd_dma_send_frame();
+    // chip select is deasserted in the dma tx complete interrupt
+#endif
 }
 

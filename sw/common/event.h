@@ -32,7 +32,7 @@
  */
 enum event_type {
     BUTTON_PRESSED,
-    SENSOR,
+    SENSOR_INT,
     RTC_TICK
 };
 
@@ -47,6 +47,15 @@ enum button_name {
 };
 
 /**
+ * Sensor interrupts.
+ */
+enum sensor_type {
+//    LIGHT,            // disabled for the time being
+    MAGNETOMETER,
+    ACCELEROMETER
+};
+
+/**
  * Structure describing events received by applications.
  */
 struct event {
@@ -56,6 +65,7 @@ struct event {
     ///> Data dependent on the event type
     union {
         enum button_name button;
+        enum sensor_type sensor;
     } data;
 };
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
+ * @author Matthieu Cattin <matthieu.cattin@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +22,29 @@
  */
 
 /**
- * @brief Status bar widget.
+ * @brief Vibration motor control.
  */
 
-#include <gfx/ui.h>
+#include "vibra.h"
 
-///> Height of the status bar
-#define STATUS_BAR_HEIGHT   20
+#include <em_cmu.h>
+#include <em_gpio.h>
 
-struct ui_widget status_bar;
+#define VIBRA_PORT  gpioPortA
+#define VIBRA_PIN   3
+
+void vibra_init(void)
+{
+    GPIO_PinModeSet(VIBRA_PORT, VIBRA_PIN, gpioModePushPull, 0);
+}
+
+void vibra_enable(void)
+{
+    GPIO_PinOutSet(VIBRA_PORT, VIBRA_PIN);
+}
+
+void vibra_disable(void)
+{
+    GPIO_PinOutClear(VIBRA_PORT, VIBRA_PIN);
+}
 

@@ -24,19 +24,19 @@
  * Menu application.
  */
 
-#include "menu.h"
+#include "app_list.h"
 #include "menu_struct.h"
-#include "clock.h"
 #include "widgets/status_bar.h"
 
 static int selected_item = 0;
 static int offset = 0;
 static int menu_size = 0;
 
-#define LINE_HEIGHT 17
-#define LEFT_MARGIN 17
-#define MENU_SCREEN_HEIGHT 107
-#define MAX_ENTRIES (MENU_SCREEN_HEIGHT / LINE_HEIGHT)
+#define LINE_HEIGHT         17
+#define LEFT_MARGIN         17
+#define MENU_SCREEN_HEIGHT  107
+#define MENU_SCREEN_WIDTH   127
+#define MAX_ENTRIES         (MENU_SCREEN_HEIGHT / LINE_HEIGHT)
 
 // store menu states to navigate between menus
 static menu_list *menu_stack[8] = { &main_menu, NULL, };
@@ -55,13 +55,16 @@ static void menu_screen_redraw(struct ui_widget *w)
         // draw a white background for the selected entry
         if(pos == selected_item) {
             gfx_box(&w->dc, LEFT_MARGIN, i * LINE_HEIGHT,
-                    127, (i + 1) * LINE_HEIGHT, 1);
+                    MENU_SCREEN_WIDTH, (i + 1) * LINE_HEIGHT, 1);
         }
 
-        // TODO draw icon
+        menu_entry *ent = &(*current_menu)->entries[pos];
+
+        // draw icon
+        if(ent->icon)
+            gfx_draw_bitmap(&w->dc, 0, i * LINE_HEIGHT, ent->icon);
 
         // display label (either app or submenu)
-        menu_entry *ent = &(*current_menu)->entries[pos];
         if(ent->type == APP) {
             application *a = ent->data.app;
 
@@ -84,7 +87,7 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
             if(selected_item < menu_size - 1) {
                 ++selected_item;
 
-                if(selected_item >= MAX_ENTRIES)
+                if(selected_item >= offset + MAX_ENTRIES)
                     offset = selected_item - MAX_ENTRIES + 1;
 
                 w->flags |= WF_DIRTY;
@@ -105,7 +108,8 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 struct ui_widget menu_screen = {
     menu_screen_redraw,
     menu_screen_event,
-    { 0, 20, 127, 20 + MENU_SCREEN_HEIGHT },
+    { 0, STATUS_BAR_HEIGHT,
+      MENU_SCREEN_WIDTH, STATUS_BAR_HEIGHT + MENU_SCREEN_HEIGHT },
     0,
     WF_ACTIVE | WF_VISIBLE
 };
@@ -141,7 +145,7 @@ static void run(menu_entry *entry) {
 
 static void go_back() {
     if(current_menu == menu_stack) {
-        clock.main(NULL);
+        clock_app.main(NULL);
     } else {
         menu_size = 0;
         selected_item = 0;
@@ -160,7 +164,7 @@ void menu_main(void* params) {
     menu_size = get_menu_size(*current_menu);
 
     // run clock as the the initial application
-    clock.main(NULL);
+    clock_app.main(NULL);
     menu_ui_init();
 
     // Once it is deactivated - display the menu

@@ -95,8 +95,8 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 #
 override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 -DDEBUG_EFM  \
-$(DEPFLAGS)
+-fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 \
+-DFREERTOS $(DEPFLAGS)
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
 
@@ -107,11 +107,12 @@ override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 
 -mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
  -Wl,--gc-sections
 
-LIBS = -Wl,--start-group -lgcc -lc -lnosys   -Wl,--end-group
+LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 
 INCLUDEPATHS += \
 -Isrc \
 -IFreeRTOS/Source/include \
+-I../bitmaps \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common \
@@ -123,21 +124,32 @@ INCLUDEPATHS += \
 ####################################################################
 
 C_SRC +=  \
+../bitmaps/bitmaps.c \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_burtc.c \
 ../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_dma.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
+../common/emlib/src/em_i2c.c \
 ../common/emlib/src/em_int.c \
 ../common/emlib/src/em_rmu.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_system.c \
+../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
 ../common/emdrv/sleep/src/sleep.c \
+../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
+../common/drivers/lcd_dma.c \
+../common/drivers/backlight.c \
 ../common/drivers/buttons.c \
+../common/drivers/buzzer.c \
+../common/drivers/i2cdrv.c \
+../common/drivers/light_sensor.c \
 ../common/drivers/rtc.c \
+../common/drivers/vibra.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
@@ -152,7 +164,6 @@ C_SRC +=  \
 ../common/gfx/graphics.c \
 ../common/gfx/gfx.c \
 ../common/gfx/ui.c \
-../common/udelay.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
@@ -163,13 +174,16 @@ FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
 src/apps/widgets/status_bar.c \
 src/apps/application.c \
 src/apps/clock.c \
+src/apps/example_app.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
+src/blight_task.c \
 src/irq_dispatcher.c \
-src/low_power_tick_management.c
+src/low_power_tick_management.c \
+src/state.c
 
-s_SRC += 
+s_SRC +=
 
 S_SRC +=  \
 ../common/Device/EnergyMicro/EFM32GG/Source/GCC/startup_efm32gg.S
@@ -197,10 +211,10 @@ vpath %.S $(S_PATHS)
 # Default build is debug build
 all:      debug
 
-debug:    CFLAGS += -DDEBUG -O0 -g
+debug:    CFLAGS += -DDEBUG -O0 -g -DDEBUG_EFM
 debug:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release:  CFLAGS += -DNDEBUG -O3 
+release:  CFLAGS += -DNDEBUG -O3
 release:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files

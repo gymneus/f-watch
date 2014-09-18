@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
- * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,13 +21,17 @@
  */
 
 /**
- * @brief Status bar widget.
+ * List of applications.
  */
 
-#include <gfx/ui.h>
+#ifndef APP_LIST_H
+#define APP_LIST_H
 
-///> Height of the status bar
-#define STATUS_BAR_HEIGHT   20
+#include "application.h"
 
-struct ui_widget status_bar;
+extern application menu;
+extern application clock_app;
+extern application example;
+
+#endif /* APP_LIST_H */
 

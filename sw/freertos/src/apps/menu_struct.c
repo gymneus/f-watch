@@ -25,7 +25,7 @@
  */
 
 #include "menu_struct.h"
-#include "clock.h"
+#include "app_list.h"
 
 int get_menu_size(const menu_list *menu) {
     int len = 0;
@@ -40,34 +40,35 @@ int get_menu_size(const menu_list *menu) {
 menu_list sub_menu = {
     "Submenu",
     {
-        { APP, { .app = &clock } },
-        { APP, { .app = &clock } },
-        { APP, { .app = &clock } },
-        { END, { NULL } }
+        { APP, &gps_receiving,      { .app = &clock_app } },
+        { APP, &battery,            { .app = &clock_app } },
+        { APP, &gps_disconnected,   { .app = &clock_app } },
+        { END, &gps_searching,      { NULL } }
     }
 };
 
 menu_list main_menu = {
     "Main menu",
     {
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { SUBMENU,   { .submenu = &sub_menu } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { SUBMENU,   { .submenu = &sub_menu } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { SUBMENU,   { .submenu = &sub_menu } },
-       { SUBMENU,   { .submenu = &sub_menu } },
-       { SUBMENU,   { .submenu = &sub_menu } },
-       { APP,       { .app = &clock } },
-       { APP,       { .app = &clock } },
-       { END,       { NULL } }
+       { APP,       &example_icon,      { .app = &example } },
+       { APP,       &gps_receiving,     { .app = &clock_app } },
+       { APP,       &battery_charging,  { .app = &clock_app } },
+       { SUBMENU,   NULL,               { .submenu = &sub_menu } },
+       { APP,       &battery,           { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       &gps_disconnected,  { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { SUBMENU,   &battery_charging,  { .submenu = &sub_menu } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { SUBMENU,   NULL,               { .submenu = &sub_menu } },
+       { SUBMENU,   NULL,               { .submenu = &sub_menu } },
+       { SUBMENU,   NULL,               { .submenu = &sub_menu } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { APP,       NULL,               { .app = &clock_app } },
+       { END,       NULL,               { NULL } }
     }
 };
 
