@@ -65,26 +65,26 @@ static void gps_redraw(struct ui_widget *w)
         /* Display latitude and longitude depending on format */
         if (coord_format == 0) {
                 /* raw [deg][min].[sec/60] */
-                sprintf(buf, "L: %d", (int)latdeg);
+                sprintf(buf, "L: %d deg", (int)latdeg);
                 gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
                 sprintf(buf, "%2.5f'", latmin);
                 gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
 
-                sprintf(buf, "l: %d", (int)(londeg));
+                sprintf(buf, "l: %d deg", (int)(londeg));
                 gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
                 sprintf(buf, "%2.5f'", lonmin);
                 gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
         } else if (coord_format == 1) {
                 /* [deg] [min] [sec] */
-                sprintf(buf, "L: %d", (int)latdeg);
+                sprintf(buf, "L: %d deg", (int)latdeg);
                 gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
                 sprintf(buf, "%d' %2.2f''", (int)latmin, 0.6 * latsec);
                 gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
 
-                sprintf(buf, "l: %d", (int)londeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                sprintf(buf, "l: %d deg", (int)londeg);
+                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
                 sprintf(buf, "%d' %2.2f''", (int)lonmin, 60 * lonsec);
-                gfx_text(&w->dc, &font_helv22b, 20, 20, buf, 0);
+                gfx_text(&w->dc, &font_helv22b, 15, 60, buf, 0);
         } else if (coord_format == 2) {
                 /* [deg].[min/60] */
                 latdeg = latdeg/0.6;
@@ -93,12 +93,12 @@ static void gps_redraw(struct ui_widget *w)
 
                 londeg = londeg/0.6;
                 sprintf(buf, "l: %2.5f", londeg);
-                gfx_text(&w->dc, &font_helv22b, 0, 0, buf, 0);
+                gfx_text(&w->dc, &font_helv22b, 0, 40, buf, 0);
         }
 
         /* Display elevation */
         sprintf(buf, "h: %5.2f", coord.elev);
-        gfx_text(&w->dc, &font_helv22b, 0, 80, buf, 0);
+        gfx_text(&w->dc, &font_helv22b, 0, 75, buf, 0);
 }
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
