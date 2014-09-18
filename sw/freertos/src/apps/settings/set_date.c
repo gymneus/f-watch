@@ -30,19 +30,20 @@
 #include "clock.h"
 #include <time.h>
 
-static const int DIST_X = 24;
-static const int POS_X = 20;
+static const int DIST_X = 20;
+static const int POS_X = 1;
 static const int POS_Y = 30;
 static const int SIZE_X = 16;
 static const int SIZE_Y = 38;
 
-static void set_time_redraw(struct ui_widget *w)
+static void set_date_redraw(struct ui_widget *w)
 {
-    gfx_centered_text(&w->dc, &font_helv38b, POS_Y, ":", 1);
+    gfx_text(&w->dc, &font_helv38b, 36, POS_Y, "/", 1);
+    gfx_text(&w->dc, &font_helv38b, 80, POS_Y, "/", 1);
 }
 
-static struct ui_widget set_time_screen = {
-    &set_time_redraw,
+static struct ui_widget set_date_screen = {
+    &set_date_redraw,
     NULL,
     { 0, 0, 127, 127 },
     0,
@@ -50,11 +51,11 @@ static struct ui_widget set_time_screen = {
     NULL
 };
 
-#define SPINBOX_NUMBER 4
-enum SPINBOX { H1 = 0, H2, M1, M2 };
+#define SPINBOX_NUMBER 6
+enum SPINBOX { D1 = 0, D2, M1, M2, Y1, Y2 };
 
 // Spinboxes used for setting the hour & minute.
-static struct spinbox sb_time[SPINBOX_NUMBER];
+static struct spinbox sb_date[SPINBOX_NUMBER];
 
 // Index that indicates the active spinbox
 static int sb_index;
@@ -62,13 +63,37 @@ static int sb_index;
 static inline char sb_digit(int idx)
 {
     // convert ascii character to a digit by subtracting 0x30 ('0')
-    return spinbox_get_value(&sb_time[idx]) - '0';
+    return spinbox_get_value(&sb_date[idx]) - '0';
+}
+
+static bool is_leap(int year)
+{
+    if(year < 100)
+        year += 2000;
+
+    if (year % 400 == 0)
+        return true;
+    else if (year % 100 == 0)
+        return false;
+    else if (year % 4 == 0 )
+        return true;
+    else
+        return false;
 }
 
 // Checks if spinboxes contain correct values
 static bool is_valid(void)
 {
-    return (sb_digit(H1) < 3 && sb_digit(H2) < 5 && sb_digit(M1) < 6);
+    const int days_per_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    const int days_per_month_leap[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int day = sb_digit(D1) * 10 + sb_digit(D2);
+    int month = sb_digit(M1) * 10 + sb_digit(M2);
+    int year = sb_digit(Y1) * 10 + sb_digit(Y2);
+
+    int max_day = is_leap(year) ? days_per_month_leap[month - 1] : days_per_month[month - 1];
+
+    return (day > 0 && day <= max_day && month > 0 && month < 13);
 }
 
 // Sets the hour from spinboxes to clock
@@ -76,9 +101,9 @@ static void save(void)
 {
     struct tm time = clock_get_time();
 
-    time.tm_hour = sb_digit(H1) * 10 + sb_digit(H2);
-    time.tm_min = sb_digit(M1) * 10 + sb_digit(M2);
-    time.tm_sec = 0;
+    time.tm_mday = sb_digit(D1) * 10 + sb_digit(D2);
+    time.tm_mon = sb_digit(M1) * 10 + sb_digit(M2) - 1;
+    time.tm_year = sb_digit(Y1) * 10 + sb_digit(Y2) + 100;
 
     clock_set_time(&time);
 }
@@ -87,14 +112,18 @@ static void save(void)
 static void load(void)
 {
     struct tm time = clock_get_time();
+    int year = time.tm_year - 100;
+    int month = time.tm_mon + 1;
 
-    spinbox_set_value(&sb_time[H1], (time.tm_hour / 10) + '0');
-    spinbox_set_value(&sb_time[H2], (time.tm_hour % 10) + '0');
-    spinbox_set_value(&sb_time[M1], (time.tm_min / 10) + '0');
-    spinbox_set_value(&sb_time[M2], (time.tm_min % 10) + '0');
+    spinbox_set_value(&sb_date[D1], (time.tm_mday / 10) + '0');
+    spinbox_set_value(&sb_date[D2], (time.tm_mday % 10) + '0');
+    spinbox_set_value(&sb_date[M1], (month / 10) + '0');
+    spinbox_set_value(&sb_date[M2], (month % 10) + '0');
+    spinbox_set_value(&sb_date[Y1], (year / 10) + '0');
+    spinbox_set_value(&sb_date[Y2], (year % 10) + '0');
 }
 
-void set_time_main(void* params) {
+void set_date_main(void* params) {
     (void)(params); // suppress unused parameter warning
     struct event evt;
     int i;
@@ -104,24 +133,25 @@ void set_time_main(void* params) {
 
     // initialize widgets before adding them
     for(i = 0; i < SPINBOX_NUMBER; ++i) {
-        struct rect pos = {POS_X + i * DIST_X, POS_Y,
-                           POS_X + i * DIST_X + SIZE_X, POS_Y + SIZE_Y};
-        spinbox_init_widget(&sb_time[i], pos, char_digits);
+        struct rect pos = {POS_X + i * DIST_X + (i / 2 * 4), POS_Y,
+                           POS_X + i * DIST_X + (i / 2 * 4) + SIZE_X, POS_Y + SIZE_Y};
+        spinbox_init_widget(&sb_date[i], pos, char_digits);
+        spinbox_set_font(&sb_date[i], &font_helv38b);
     }
-    sb_index = H1;
-    spinbox_set_active(&sb_time[H1], true);
+    sb_index = D1;
+    spinbox_set_active(&sb_date[D1], true);
 
-    ui_init_widget(&set_time_screen);
+    ui_init_widget(&set_date_screen);
 
     for(i = 0; i < SPINBOX_NUMBER; ++i) {
-        ui_add_widget(&sb_time[i].widget);
+        ui_add_widget(&sb_date[i].widget);
     }
 
     // widget belongs to the main screen
     for(i = 0; i < SPINBOX_NUMBER; ++i) {
-        ui_add_child(&set_time_screen, &sb_time[i].widget);
+        ui_add_child(&set_date_screen, &sb_date[i].widget);
     }
-    ui_add_widget(&set_time_screen);
+    ui_add_widget(&set_date_screen);
 
     ui_init_widget(&status_bar);
     ui_add_widget(&status_bar);
@@ -139,16 +169,16 @@ void set_time_main(void* params) {
                     return;             // go back to the main menu
                 } else if(evt.data.button == BUT_TR) {
                     if(sb_index < SPINBOX_NUMBER - 1) {
-                        spinbox_set_active(&sb_time[sb_index], false);
-                        spinbox_set_active(&sb_time[++sb_index], true);
+                        spinbox_set_active(&sb_date[sb_index], false);
+                        spinbox_set_active(&sb_date[++sb_index], true);
                     } else if(is_valid()) {
                         save();
                         return;
                     } else {
                         // the set hour is invalid, start from the beginning
-                        spinbox_set_active(&sb_time[sb_index], false);
-                        sb_index = H1;
-                        spinbox_set_active(&sb_time[H1], true);
+                        spinbox_set_active(&sb_date[sb_index], false);
+                        sb_index = D1;
+                        spinbox_set_active(&sb_date[D1], true);
                     }
                 }
 
@@ -162,8 +192,8 @@ void set_time_main(void* params) {
     }
 }
 
-application set_time = {
-    .name = "Set time",      // this will be shown in menu
-    .main = set_time_main
+application set_date = {
+    .name = "Set date",      // this will be shown in menu
+    .main = set_date_main
 };
 

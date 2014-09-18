@@ -41,6 +41,7 @@ menu_list settings_menu = {
     "Settings",
     {
         { APP, &clock_icon,         { .app = &set_time } },
+        { APP, &date_icon,          { .app = &set_date } },
         { END, NULL,                { NULL } }
     }
 };

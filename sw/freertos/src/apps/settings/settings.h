@@ -30,6 +30,7 @@
 #include "application.h"
 
 extern application set_time;
+extern application set_date;
 
 #endif /* SETTINGS_H */
 

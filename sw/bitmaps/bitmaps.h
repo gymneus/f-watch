@@ -11,6 +11,7 @@ struct rle_bitmap
 };
 
 extern const struct rle_bitmap gps_disconnected;
+extern const struct rle_bitmap date_icon;
 extern const struct rle_bitmap gps_receiving;
 extern const struct rle_bitmap battery;
 extern const struct rle_bitmap clock_icon;
