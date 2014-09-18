@@ -172,6 +172,7 @@ FreeRTOS/Source/list.c \
 FreeRTOS/Source/croutine.c \
 FreeRTOS/Source/portable/MemMang/heap_1.c \
 FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
+src/apps/settings/set_date.c \
 src/apps/settings/set_time.c \
 src/apps/widgets/spinbox.c \
 src/apps/widgets/status_bar.c \
