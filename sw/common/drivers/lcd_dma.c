@@ -31,6 +31,10 @@
 #include "lcd.h"
 #include "lcd_dma.h"
 
+/**
+ * @brief Routines for DMA transfer of the frame buffer.
+ */
+
 // The DMA channel to use
 #define DMA_CHANNEL     0
 // Number of DMA transfers
