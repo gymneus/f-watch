@@ -54,6 +54,16 @@ static struct ui_widget set_date_screen = {
 #define SPINBOX_NUMBER 6
 enum SPINBOX { D1 = 0, D2, M1, M2, Y1, Y2 };
 
+static const char const *days1 = "0123";
+static const char const *months1 = "01";
+
+// Character sets for spinboxes
+static const char **char_sets[SPINBOX_NUMBER] = {
+    &days1, &char_digits,           // character set for days
+    &months1, &char_digits,         // character set for months
+    &char_digits, &char_digits      // character set for years
+};
+
 // Spinboxes used for setting the hour & minute.
 static struct spinbox sb_date[SPINBOX_NUMBER];
 
@@ -68,8 +78,12 @@ static inline char sb_digit(int idx)
 
 static bool is_leap(int year)
 {
-    if(year < 100)
-        year += 2000;
+    if(year < 1970) {
+        if(year < 70)
+            year += 2000;
+        else
+            year += 1900;
+    }
 
     if (year % 400 == 0)
         return true;
@@ -135,8 +149,7 @@ void set_date_main(void* params) {
     for(i = 0; i < SPINBOX_NUMBER; ++i) {
         struct rect pos = {POS_X + i * DIST_X + (i / 2 * 4), POS_Y,
                            POS_X + i * DIST_X + (i / 2 * 4) + SIZE_X, POS_Y + SIZE_Y};
-        spinbox_init_widget(&sb_date[i], pos, char_digits);
-        spinbox_set_font(&sb_date[i], &font_helv38b);
+        spinbox_init_widget(&sb_date[i], pos, *char_sets[i]);
     }
     sb_index = D1;
     spinbox_set_active(&sb_date[D1], true);

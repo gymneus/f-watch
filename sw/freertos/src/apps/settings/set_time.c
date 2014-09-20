@@ -53,6 +53,14 @@ static struct ui_widget set_time_screen = {
 #define SPINBOX_NUMBER 4
 enum SPINBOX { H1 = 0, H2, M1, M2 };
 
+static const char const *hours1 = "012";
+static const char const *minutes1 = "012345";
+
+static const char **char_sets[SPINBOX_NUMBER] = {
+    &hours1, &char_digits,           // character set for hours
+    &minutes1, &char_digits         // character set for minutes
+};
+
 // Spinboxes used for setting the hour & minute.
 static struct spinbox sb_time[SPINBOX_NUMBER];
 
@@ -106,7 +114,7 @@ void set_time_main(void* params) {
     for(i = 0; i < SPINBOX_NUMBER; ++i) {
         struct rect pos = {POS_X + i * DIST_X, POS_Y,
                            POS_X + i * DIST_X + SIZE_X, POS_Y + SIZE_Y};
-        spinbox_init_widget(&sb_time[i], pos, char_digits);
+        spinbox_init_widget(&sb_time[i], pos, *char_sets[i]);
     }
     sb_index = H1;
     spinbox_set_active(&sb_time[H1], true);
