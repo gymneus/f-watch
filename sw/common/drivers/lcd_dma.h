@@ -21,7 +21,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-// TODO author note
+/**
+ * @brief Routines for DMA transfer of the frame buffer.
+ */
 
 #ifndef LCD_DMA_H
 #define LCD_DMA_H
@@ -34,12 +36,13 @@
 void lcd_dma_init(void);
 
 /**
- * TODO
+ * Sends the current frame buffer to the display contents using DMA.
  */
 void lcd_dma_send_frame(void);
 
 /**
- * TODO
+ * Checks if there is a transfer in progress.
+ * @return true if DMA is currently used.
  */
 bool lcd_dma_is_active(void);
 
