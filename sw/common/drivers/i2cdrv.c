@@ -31,12 +31,21 @@
  * special damages, or any other relief, or for any claim by any third party,
  * arising from your use of this Software.
  *
+ * Modifications:
+ * Maciej Suminski: added semaphore synchronization.
+ *
  *****************************************************************************/
 
 #include <stddef.h>
 #include "em_cmu.h"
 #include "em_gpio.h"
 #include "i2cdrv.h"
+#undef FREERTOS
+#ifdef FREERTOS
+#include <FreeRTOS.h>
+#include <semphr.h>
+xSemaphoreHandle i2c_sem;
+#endif /* FREERTOS */
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -87,6 +96,13 @@ void I2CDRV_Init(const I2C_Init_TypeDef *init)
                 (1 << _I2C_ROUTE_LOCATION_SHIFT);
 
   I2C_Init(I2C1, init);
+
+#ifdef FREERTOS
+    i2c_sem = xSemaphoreCreateMutex();
+    if(i2c_sem == NULL) {
+        // TODO oops..
+    }
+#endif /* FREERTOS */
 }
 
 
@@ -105,13 +121,25 @@ void I2CDRV_Init(const I2C_Init_TypeDef *init)
 I2C_TransferReturn_TypeDef I2CDRV_Transfer(I2C_TransferSeq_TypeDef *seq)
 {
   I2C_TransferReturn_TypeDef ret;
+
+#ifdef FREERTOS
+  if(xSemaphoreTake(i2c_sem, 300000) != pdTRUE)
+    return i2cTransferInProgress;
+
+  I2C_TransferInit(I2C1, seq);
+  ret = I2C_Transfer(I2C1);
+
+  xSemaphoreGive(i2c_sem);
+#else
   uint32_t                   timeout = 300000;
+
   /* Do a polled transfer */
   ret = I2C_TransferInit(I2C1, seq);
   while (ret == i2cTransferInProgress && timeout--)
   {
     ret = I2C_Transfer(I2C1);
   }
+#endif
 
   return(ret);
 }
