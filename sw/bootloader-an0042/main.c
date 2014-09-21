@@ -145,20 +145,24 @@ int main(void)
   int j;
 
 #if !defined( SIMULATE_SWDCLK_PIN_HI )
-  /* Listen button TL and TR, if both are pressed then enter bootloader mode */
-  while (GPIO_PinInGet(gpioPortC, 6))
+  /* Listen button BR and enter bootloader mode if pressed */
+  while (GPIO_PinInGet(gpioPortA, 8))
   {
     USB_PUTS( "SWDCLK is low\r\n" );
 
     if ( BOOT_checkFirmwareIsValid() )
     {
       GPIO_PinOutSet(gpioPortE, 11);
+      for (j = 0; j < 1000000; j++) ;
+
       USB_PUTS( "Booting application\r\n  " );
       BOOT_boot();
     }
     else
     {
       GPIO_PinOutSet(gpioPortE, 12);
+      for (j = 0; j < 1000000; j++) ;
+
       USB_PUTS( "No valid application, resetting EFM32... \r\n" );
 
       /* Go to EM2 and wait for RTC wakeup. */
