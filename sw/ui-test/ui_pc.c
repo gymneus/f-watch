@@ -79,6 +79,9 @@ int sys_update()
                         case SDLK_RIGHT:
                                 ui_post_event(EVT_RIGHT, 0);
                                 break;
+                        case SDLK_LEFT:
+                                ui_post_event(EVT_LEFT, 0);
+                                break;
 			#if 0
 			case SDLK_LEFT: cur_key=KEY_L; break;	    
 			case SDLK_RIGHT: cur_key=KEY_R; break;

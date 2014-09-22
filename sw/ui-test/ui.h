@@ -23,6 +23,7 @@
 #define EVT_UP          8
 #define EVT_DOWN        9
 #define EVT_RIGHT       10
+#define EVT_LEFT        11
 
 
 #define UI_TICK_RATE 30 	/* UI refresh ticks = 30 milliseconds */
