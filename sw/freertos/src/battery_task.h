@@ -21,62 +21,15 @@
  */
 
 /**
- * @brief Application event definitions.
+ * @brief Battery status monitor.
  */
 
-#ifndef EVENT_H
-#define EVENT_H
-
-#include <stdint.h>
-#include <stdbool.h>
+#ifndef BATTERY_TASK_H
+#define BATTERY_TASK_H
 
 /**
- * Possible event types.
+ * Initializes and starts the battery monitor.
  */
-enum event_type {
-    BUTTON_PRESSED,
-    SENSOR_INT,
-    RTC_TICK,
-    BATTERY_STATUS
-};
+void battery_monitor_init(void);
 
-/**
- * Button markings.
- */
-enum button_name {
-    BUT_TL,     // top left
-    BUT_TR,     // top right
-    BUT_BL,     // bottom left
-    BUT_BR      // bottom right
-};
-
-/**
- * Sensor interrupts.
- */
-enum sensor_type {
-//    LIGHT,            // disabled for the time being
-    MAGNETOMETER,
-    ACCELEROMETER
-};
-
-struct battery_info {
-    uint8_t percentage;
-    bool charging;
-};
-
-/**
- * Structure describing events received by applications.
- */
-struct event {
-    ///> Determines the source of event
-    enum event_type type;
-
-    ///> Data dependent on the event type
-    union {
-        enum button_name button;
-        enum sensor_type sensor;
-        struct battery_info battery;
-    } data;
-};
-
-#endif /* EVENT_H */
+#endif /* BATTERY_TASK_H */
