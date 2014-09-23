@@ -29,6 +29,7 @@
 #define __MAX17047_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 // Two-wire protocol address
 #define MAX17047_ADDRESS                0x6C
@@ -58,7 +59,7 @@
 #define MAX17047_REG_DESIGN_CAP         0x18
 #define MAX17047_REG_AVG_VCELL          0x19
 #define MAX17047_REG_MAX_MIN_TEMP       0x1A
-#define MAX17047_REG_MAX_MIN_VCELL      0z1B
+#define MAX17047_REG_MAX_MIN_VCELL      0x1B
 #define MAX17047_REG_MAX_MIN_CURRENT    0x1C
 #define MAX17047_REG_CONFIG             0x1D
 #define MAX17047_REG_ICHG_TERM          0x1E
@@ -177,7 +178,7 @@ uint8_t max17047_write_reg(uint8_t address, uint8_t length, uint8_t* buffer);
 uint8_t max17047_init(void);
 
 /**
- * @brief Saves the leared-value and application register.
+ * @brief Saves the learned-value and application register.
  *
  * This function should be called periodically (e.g. End-of-charge, End-of-discharge,
  * prior to entering shutdown state).
@@ -235,5 +236,14 @@ uint8_t max17047_get_charge(void);
  * @return Time to empty (in minutes).
  */
 uint16_t max17047_get_time_left(void);
+
+/**
+ * @brief Checks if the battery is charging or discharging.
+ * @return true if the battery is charging, false otherwise.
+ */
+static inline bool max17047_is_charging(void)
+{
+    return (max17047_get_current() > 0);
+}
 
 #endif /*__MAX17047_H_ */

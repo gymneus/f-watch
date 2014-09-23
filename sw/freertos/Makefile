@@ -149,6 +149,7 @@ C_SRC +=  \
 ../common/drivers/buzzer.c \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/light_sensor.c \
+../common/drivers/max17047.c \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
 ../common/gfx/font_helv11.c \
@@ -182,6 +183,7 @@ src/apps/example_app.c \
 src/apps/menu.c \
 src/apps/menu_struct.c \
 src/main.c \
+src/battery_task.c \
 src/blight_task.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c \

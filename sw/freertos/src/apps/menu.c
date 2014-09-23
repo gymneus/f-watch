@@ -172,16 +172,16 @@ void menu_main(void* params) {
         if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {
                 case BUTTON_PRESSED:
-                    if(evt.data.button == BUT_TL)
+                    if(evt.data.button == BUT_TL) {
                         go_back();
-                    else if(evt.data.button == BUT_TR)
+                    } else if(evt.data.button == BUT_TR) {
                         // run the selected application or submenu
                         run(&(*current_menu)->entries[selected_item]);
-                    else
-                        ui_update(&evt);
+                    }
                     break;
 
                 default:    // suppress warnings
+                    ui_update(&evt);
                     break;
             }
         }

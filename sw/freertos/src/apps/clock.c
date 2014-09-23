@@ -112,13 +112,10 @@ void clock_main(void* params) {
                     return;             // go back to the main menu
                 // no break; fall through
 
-            case RTC_TICK:  // and BUTTON_PRESSED
-                ui_update(&evt);        // forward event to widgets
-
             default:    // suppress warnings
+                ui_update(&evt);        // forward event to widgets
                 break;
             }
-
         }
     }
 }

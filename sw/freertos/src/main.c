@@ -39,6 +39,7 @@
 
 #include <gfx/ui.h>
 #include <apps/app_list.h>
+#include "battery_task.h"
 #include "blight_task.h"
 #include "state.h"
 
@@ -60,8 +61,10 @@ int main(void)
     vibra_init();
     rtc_init();
     lcd_init();
+
     ui_init();
     auto_backlight_init();
+    battery_monitor_init();
     state_init();
 
     // Initialize SLEEP driver, no callbacks are used
