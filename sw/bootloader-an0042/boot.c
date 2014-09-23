@@ -153,6 +153,12 @@ void BOOT_boot(void)
   CMU->LFCLKSEL     = _CMU_LFCLKSEL_RESETVALUE;
   CMU->LFACLKEN0    = _CMU_LFACLKEN0_RESETVALUE;
 
+  /*
+   * Disable SysTick timer (bits TICKINT and ENABLE in SysTick.CTRL -- see
+   * EFM32 Cortex-M3 Reference Manual)
+   */
+  SysTick->CTRL &= ~0x3;
+
   /* Set new vector table pointer */
   SCB->VTOR = (uint32_t)BOOTLOADER_SIZE;
 

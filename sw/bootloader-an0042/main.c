@@ -145,8 +145,8 @@ int main(void)
   int j;
 
 #if !defined( SIMULATE_SWDCLK_PIN_HI )
-  /* Listen button BR and enter bootloader mode if pressed */
-  while (GPIO_PinInGet(gpioPortA, 8))
+  /* Listen button TL and enter bootloader mode if pressed */
+  while (GPIO_PinInGet(gpioPortC, 7))
   {
     USB_PUTS( "SWDCLK is low\r\n" );
 
