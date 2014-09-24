@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "plot_widget.h"
+#include "path_widget.h"
 //#include "../bitmaps/bitmaps.h"
 
 
@@ -254,14 +255,17 @@ void home_screen_create()
 	ui_init_widget (&digital_watch);
         //ui_init_widget (&pls_viewer);
         ui_init_widget (&hist_plot);
+        ui_init_widget (&path_widget);
 
-	ui_add_widget(&digital_watch);
+	//ui_add_widget(&digital_watch);
 	//ui_add_widget(&pls_viewer);
-	ui_add_widget (&hist_plot);
+	//ui_add_widget (&hist_plot);
+        ui_add_widget (&path_widget);
 
-	ui_add_child(&home_screen, &digital_watch);
+	//ui_add_child(&home_screen, &digital_watch);
 	//ui_add_child(&home_screen, &pls_viewer);
-        ui_add_child (&home_screen, &hist_plot);
+        //ui_add_child (&home_screen, &hist_plot);
+        ui_add_child (&home_screen, &path_widget);
 	ui_add_widget(&home_screen);
 
 	ui_init_widget (&status_bar);
