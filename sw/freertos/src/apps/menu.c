@@ -41,6 +41,10 @@ static int menu_size = 0;
 static menu_list *menu_stack[8] = { &main_menu, NULL, };
 static menu_list **current_menu = &menu_stack[0];
 
+// init function proto
+static void menu_ui_init();
+
+
 static void menu_screen_redraw(struct ui_widget *w)
 {
     int i;
@@ -88,18 +92,24 @@ static void menu_screen_event(struct ui_widget *w, const struct event *evt)
 
                 if(selected_item >= MAX_ENTRIES)
                     offset = selected_item - MAX_ENTRIES + 1;
-
-                w->flags |= WF_DIRTY;
+            } else {
+                selected_item = 0;
+                offset = 0;
             }
+
+            w->flags |= WF_DIRTY;
         } else if(evt->data.button == BUT_BL) {
             if(selected_item > 0) {
                 --selected_item;
 
                 if(selected_item < offset)
                     offset = selected_item;
-
-                w->flags |= WF_DIRTY;
+            } else {
+                selected_item = menu_size - 1;
+                offset = selected_item - MAX_ENTRIES + 1;
             }
+
+            w->flags |= WF_DIRTY;
         }
     }
 }
