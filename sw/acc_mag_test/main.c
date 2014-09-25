@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Grzegorz Daniluk <grzegorz.daniluk@cern.ch>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
