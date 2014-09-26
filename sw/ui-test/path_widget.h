@@ -4,12 +4,18 @@
 
 extern struct ui_widget path_widget;
 
+typedef struct coord{
+        int32_t lat;
+        int32_t lon;
+        int32_t alt;
+}coord;
+
 typedef struct path{
-        int32_t* d;      // pointer on data array
+        struct coord *d; // pointer on data array
         uint16_t d_size; // data array size
         uint8_t x_size;  // X plot size (pixel)
         uint8_t y_size;  // Y plot size (pixel)
-        char* title;     // pointer on plot title string
+        char *title;     // pointer on plot title string
         uint8_t frame;   // draw frame around plot
         uint8_t line;    // draw lines between data points
 }path;

@@ -1,47 +1,59 @@
 #include "path_widget.h"
 
 
-void find_path_min_max(int32_t* d, uint16_t d_size, int32_t* min, int32_t* max)
+void find_path_min_max(struct coord *d, uint16_t d_size, struct coord *min, struct coord *max)
 {
         uint16_t i;
         uint8_t j;
 
-        for(j=0; j<2; j++){
-                min[j] = d[0][j];
-                max[j] = d[0][j];
-        }
+        min->lat = d[0].lat;
+        max->lat = d[0].lat;
+
+        min->lon = d[0].lon;
+        max->lon = d[0].lon;
+
+        min->alt = d[0].alt;
+        max->alt = d_size;
 
         for(i=0; i<d_size; i++){
-                for(j=0; j<2; j++){
-                        if(d[i][j] < min[j])
-                                min[j] = d[i][j];
-                        if(d[i][j] > max[j])
-                                max[j] = d[i][j];
-                }
+                if(d[i].lat < min->lat)
+                        min->lat = d[i].lat;
+                if(d[i].lat > max->lat)
+                        max->lat = d[i].lat;
         }
+
+        DBG("find_min_max: d_size=%d\n",d_size);
+
 }
 
 
-void draw_path(struct surface* surf, path* p)
+void draw_path(struct surface *surf, path *p)
 {
         uint8_t i;
-        int32_t min[2];
-        int32_t max[2];
+        struct coord min;
+        struct coord max;
+        struct coord *p_min;
+        struct coord *p_max;
         uint8_t x_scale, y_scale, x_win;
         int8_t y_pos, y_pos_next;
         char buf[20];
 
+        p_min = &min;
+        p_max = &max;
 
         for(i=0; i<p->d_size; i++)
         {
-                DBG("data: %8d, %8d\n",p->d[i][0], p->d[i][1]);
+                DBG("data: %8d, %8d, %8d\n",p->d[i].lat, p->d[i].lon, p->d[i].alt);
         }
 
+        DBG("draw_path: d_size=%d, i=%d\n",p->d_size, i);
+
+
         // Find data min/max
-        find_min_max(p->d, p->d_size, &min[0], &max[0]);
-        for(i=0; i<2; i++){
-                DBG("%d: min: %d\nmax: %d\nmax-min: %d\n",i , min[i], max[i],(max[i] - min[i]));
-        }
+        find_min_max(p->d, p->d_size, p_min, p_max);
+        DBG("lat: min: %8d, max: %8d, max-min: %8d\n", min.lat, max.lat, (max.lat - min.lat));
+        DBG("lon: min: %8d, max: %8d, max-min: %8d\n", min.lon, max.lon, (max.lon - min.lon));
+        DBG("alt: min: %8d, max: %8d, max-min: %8d\n", min.alt, max.alt, (max.alt - min.alt));
 
         /*
         // Compute x scaling factors
@@ -112,7 +124,7 @@ static void path_event(struct ui_widget *w, struct ui_event event)
 static void path_redraw(struct ui_widget *w)
 {
         #define D_SIZE 50
-        int32_t data[D_SIZE][2];
+        coord data[D_SIZE];
         uint16_t i;
         char title[20];
         float x;
@@ -129,14 +141,14 @@ static void path_redraw(struct ui_widget *w)
         for(i=0; i<D_SIZE; i++)
         {
                 x+=100;
-                data[i][0] = x*i;
-                data[i][1] = 100+(i*x-50);
-                //DBG("data: %8d, %8d\n",data[i][0], data[i][1]);
+                data[i].lat = x*i;
+                data[i].lon = 100+(i*x-50);
+                data[i].alt = 10+i;
+                //DBG("data: %8d, %8d, %8d\n",data[i].lat, data[i].lon, data[i].alt);
         }
-        a+=0.8;
 
         // Draw plot
-        p.d = &data[0][0];
+        p.d = &data[0];
         p.d_size = D_SIZE;
         p.x_size = 127;
         p.y_size = 100;
