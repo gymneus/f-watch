@@ -133,7 +133,7 @@ INCLUDEPATHS += \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common/emlib/inc \
 -I../common/drivers \
--I../common/glib \
+-I../common/gfx \
 -I../common
 
 ####################################################################
@@ -142,9 +142,12 @@ INCLUDEPATHS += \
 
 C_SRC += \
 ../common/Device/EnergyMicro/EFM32GG/Source/system_efm32gg.c \
+../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
+../common/drivers/lcd_dma.c \
 ../common/emlib/src/em_assert.c \
 ../common/emlib/src/em_cmu.c \
+../common/emlib/src/em_dma.c \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
 ../common/emlib/src/em_i2c.c \
@@ -152,17 +155,18 @@ C_SRC += \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_rtc.c \
 ../common/emlib/src/em_usart.c \
+../common/emlib/src/em_timer.c \
 ../common/gfx/graphics.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
-../common/udelay.c \
 ../common/delay.c \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/altimeter.c \
-main.c
+main.c \
+#../common/udelay.c \
 #../common/drivers/display.c \
 #../common/drivers/displayls013b7dh03.c \
 #../common/drivers/displaypalemlib.c \
