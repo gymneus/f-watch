@@ -38,6 +38,8 @@
 extern xSemaphoreHandle lcd_sem;
 #endif /* FREERTOS */
 
+//#define LCD_NODMA
+
 // Dimensions
 #define LCD_HEIGHT          128
 #define LCD_WIDTH           128

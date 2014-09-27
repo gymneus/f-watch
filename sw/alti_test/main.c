@@ -28,6 +28,7 @@
 #include <math.h>
 #include <delay.h>
 #include <i2cdrv.h>
+#include <em_chip.h>
 #include <em_device.h>
 #include <em_cmu.h>
 #include <em_gpio.h>
@@ -166,6 +167,12 @@ int main(void)
         /* Setup SysTick Timer for 1 msec interrupts */
         if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
+        // Just in case something goes wrong
+        Delay(200);
+
+        // Chip errata
+        CHIP_Init();
+
         CMU_ClockEnable(cmuClock_HFPER, true);
         CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -174,6 +181,7 @@ int main(void)
         GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 
         lcd_init();
+        lcd_clear();
 
         I2CDRV_Init(&i2cInit);
 
@@ -239,10 +247,9 @@ int main(void)
                 //sprintf(str, "err: 0x%02x", err);
                 //text(&font_helv11, 5, 50, str);
                 lcd_update();
-                //Delay(2000);
+                Delay(1000);
                 //box(5, 10, 128, 50, 0);
                 lcd_clear();
-
         }
 
 
