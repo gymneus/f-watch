@@ -30,6 +30,7 @@
 
 #include <drivers/rtc.h>
 
+#include <em_device.h>
 #include <em_gpio.h>
 #include <em_burtc.h>
 
@@ -103,3 +104,7 @@ void BURTC_IRQHandler(void)
     portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
 
+void HardFault_Handler(void)
+{
+    SCB->AIRCR = 0x05FA0004;
+}
