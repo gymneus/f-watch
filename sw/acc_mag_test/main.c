@@ -180,7 +180,7 @@ int main(void)
 				if(!but) {
 					text(&font_helv17, 10, 70, "go!");
 					lcd_update();
-					lsm303_mag_calibrate(&mag_max, &mag_min);
+					/*lsm303_mag_calibrate(&mag_max, &mag_min);*/
 					calibrated = 1;
 				}
 //#endif

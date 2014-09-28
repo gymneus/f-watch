@@ -127,7 +127,6 @@ C_SRC += \
 ../common/emlib/src/em_emu.c \
 ../common/emlib/src/em_gpio.c \
 ../common/emlib/src/em_system.c \
-../common/udelay.c \
 ../common/freewatch/freewatch_utils.c \
 blink.c
 
