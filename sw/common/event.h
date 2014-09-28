@@ -34,8 +34,8 @@ enum event_type {
     BUTTON_PRESSED,
     SENSOR,
     RTC_TICK,
-    GPS_FIX_LOST,
-    GPS_FIX_ACQ
+    GPS_FRAME_RDY,
+    GPS_PARSE_RDY
 };
 
 /**

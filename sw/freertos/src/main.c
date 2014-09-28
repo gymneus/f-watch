@@ -64,6 +64,12 @@ int main(void)
 
     startMain(&menu);
 
+    /* Create background task for GPS */
+    if (xTaskCreate(gpsbkgrnd.main, (const signed char *)gpsbkgrnd.name,
+        APP_STACK_SIZE, NULL, BKGRND_APP_PRIORITY, NULL) != pdPASS) {
+        // TODO oops..
+    }
+
     // Start FreeRTOS Scheduler
     vTaskStartScheduler();
 

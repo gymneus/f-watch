@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Theodor Stana <theodor.stana@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,21 +20,38 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-/**
- * List of applications.
- */
+#include <event.h>
+#include <drivers/gps/gps.h>
 
-#ifndef APP_LIST_H
-#define APP_LIST_H
+#include <em_gpio.h>
 
 #include "application.h"
 
-extern application menu;
-extern application clock;
-extern application example;
-extern application gpscoord;
-extern application reset;
-extern application gpsbkgrnd;
+#define dbg()                       \
+    int i;                          \
+    GPIO_PinOutSet(gpioPortE, 11);  \
+    for (i = 0; i < 1000000; i++)   \
+        ;                           \
+    GPIO_PinOutClear(gpioPortE, 11);
 
-#endif /* APP_LIST_H */
+void gpsbkgrnd_main(void *params)
+{
+    (void)params;
 
+    struct event evt;
+
+    while (1) {
+        if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
+            if (evt.type == GPS_FRAME_RDY) {
+                gps_parse_nmea();
+                evt.type = GPS_PARSE_RDY;
+                xQueueSendToBack(appQueue, &evt, 0);
+            }
+        }
+    }
+}
+
+application gpsbkgrnd = {
+    .main = gpsbkgrnd_main,
+    .name = "GPS background"
+};

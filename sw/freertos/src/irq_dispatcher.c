@@ -33,6 +33,7 @@
 #include <em_device.h>
 #include <em_gpio.h>
 #include <em_burtc.h>
+#include <em_leuart.h>
 
 static portBASE_TYPE gpio_irq_dispatcher(uint32_t flags)
 {
@@ -107,4 +108,28 @@ void BURTC_IRQHandler(void)
 void HardFault_Handler(void)
 {
     SCB->AIRCR = 0x05FA0004;
+}
+
+#define RXBUFSIZE 128
+static char rxbuf[RXBUFSIZE];
+static volatile int idx = 0;
+
+void LEUART0_IRQHandler(void)
+{
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+
+    // Fill the event data
+    struct event evt;
+    evt.type = GPS_FRAME_RDY;
+
+    if (LEUART0->IF & LEUART_IF_RXDATAV) {
+        rxbuf[idx++] = LEUART_Rx(LEUART0);
+        if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
+            rxbuf[idx] = '\0';
+            idx = 0;
+            xQueueSendFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
+        }
+    }
+
+    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }

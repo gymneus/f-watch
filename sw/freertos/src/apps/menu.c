@@ -172,7 +172,7 @@ void menu_main(void* params) {
     menu_size = get_menu_size(*current_menu);
 
     // run clock as the the initial application
-    gpscoord.main(NULL);
+    clock.main(NULL);
     menu_ui_init();
 
     // Once it is deactivated - display the menu

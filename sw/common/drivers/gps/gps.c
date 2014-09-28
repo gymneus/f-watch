@@ -54,11 +54,13 @@
 
 #define RXBUFSIZE 128
 static char rxbuf[RXBUFSIZE];
-volatile int idx = 0;
+static volatile int idx = 0;
+static volatile int frame_rdy = 0;
 
-static nmeaINFO gps_info;
-static nmeaPARSER gps_parser;
+static nmeaINFO info;
+static nmeaPARSER parser;
 
+__attribute__((__weak__))
 void LEUART0_IRQHandler()
 {
         if (LEUART0->IF & LEUART_IF_RXDATAV) {
@@ -66,9 +68,7 @@ void LEUART0_IRQHandler()
                 if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
                         rxbuf[idx] = '\0';
                         idx = 0;
-                        nmea_parse(&gps_parser, rxbuf, strlen(rxbuf),
-                                        &gps_info);
-                        usbdbg_puts(rxbuf);
+                        frame_rdy = 1;
                 }
         }
 }
@@ -118,8 +118,8 @@ void gps_init()
         LEUART_Enable(LEUART0, leuartEnable);
 
         /* NMEA parser & info structure init */
-        nmea_zero_INFO(&gps_info);
-        nmea_parser_init(&gps_parser);
+        nmea_zero_INFO(&info);
+        nmea_parser_init(&parser);
 }
 
 void gps_on_off_pulse()
@@ -139,6 +139,61 @@ void gps_on_off_pulse()
 void gps_reset(int val)
 {
         val ? GPIO_PinOutClear(gpioPortF, 5) : GPIO_PinOutSet(gpioPortF, 5);
+}
+
+void gps_parse_nmea()
+{
+    // TODO: check return of nmea_parse
+    nmea_parse(&parser, rxbuf, strlen(rxbuf), &info);
+    usbdbg_puts(rxbuf);
+}
+
+int gps_fixed()
+{
+        return info.sig;
+}
+
+void gps_get_utc(struct gps_utc *utc)
+{
+        utc->yr  = 1900 + info.utc.year;
+        utc->mon = 1 + info.utc.mon;
+        utc->day = info.utc.day;
+        utc->hr  = info.utc.hour;
+        utc->min = info.utc.min;
+        utc->sec = info.utc.sec;
+}
+
+void gps_get_coord(struct gps_coord *coord, int format)
+{
+        if (format == 0) {
+                /* Raw [deg][min].[sec/60] */
+                coord->lat = info.lat;
+                coord->lon = info.lon;
+        } else if (format == 1) {
+                /* [deg][min].[sec] */
+                coord->lat = (int)info.lat + 0.6 * (
+                        info.lat - (int)info.lat);
+                coord->lon = (int)info.lon + 0.6 * (
+                        info.lon - (int)info.lon);
+        } else if (format == 2) {
+                /* [deg].[min/60] */
+                float tmp;
+                tmp = info.lat/100;
+                coord->lat = (int)tmp + (tmp - (int)tmp) / 0.6;
+                tmp = info.lon/100;
+                coord->lon = (int)tmp + (tmp - (int)tmp) / 0.6;
+        }
+        coord->elev = info.elv;
+}
+
+void gps_get_speed(double *spd)
+{
+        *spd = info.speed;
+}
+
+void gps_get_direction(double *dir)
+{
+        *dir = info.direction;
 }
 
 int gps_puts(char *s)
@@ -166,53 +221,5 @@ int gps_nmea_crc(const char *nmeastr)
                 chksum ^= (int)buf[i];
 
         return chksum;
-}
-
-int gps_fixed()
-{
-        return gps_info.sig;
-}
-
-void gps_get_utc(struct gps_utc *utc)
-{
-        utc->yr  = 1900 + gps_info.utc.year;
-        utc->mon = 1 + gps_info.utc.mon;
-        utc->day = gps_info.utc.day;
-        utc->hr  = gps_info.utc.hour;
-        utc->min = gps_info.utc.min;
-        utc->sec = gps_info.utc.sec;
-}
-
-void gps_get_coord(struct gps_coord *coord, int format)
-{
-        if (format == 0) {
-                /* Raw [deg][min].[sec/60] */
-                coord->lat = gps_info.lat;
-                coord->lon = gps_info.lon;
-        } else if (format == 1) {
-                /* [deg][min].[sec] */
-                coord->lat = (int)gps_info.lat + 0.6 * (
-                        gps_info.lat - (int)gps_info.lat);
-                coord->lon = (int)gps_info.lon + 0.6 * (
-                        gps_info.lon - (int)gps_info.lon);
-        } else if (format == 2) {
-                /* [deg].[min/60] */
-                float tmp;
-                tmp = gps_info.lat/100;
-                coord->lat = (int)tmp + (tmp - (int)tmp) / 0.6;
-                tmp = gps_info.lon/100;
-                coord->lon = (int)tmp + (tmp - (int)tmp) / 0.6;
-        }
-        coord->elev = gps_info.elv;
-}
-
-void gps_get_speed(double *spd)
-{
-        *spd = gps_info.speed;
-}
-
-void gps_get_direction(double *dir)
-{
-        *dir = gps_info.direction;
 }
 

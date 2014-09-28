@@ -169,6 +169,7 @@ FreeRTOS/Source/croutine.c \
 FreeRTOS/Source/portable/MemMang/heap_1.c \
 FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
 src/apps/widgets/status_bar.c \
+src/apps/gpsbkgrnd.c \
 src/apps/application.c \
 src/apps/clock.c \
 src/apps/example_app.c \
@@ -271,7 +272,7 @@ ifeq ($(filter $(MAKECMDGOALS),all debug release),)
 endif
 
 flash: $(EXE_DIR)/$(PROJECTNAME).bin
-	openocd -s ../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset"
+	openocd -s ../common/openocd -f interface/$(OOCD_IFACE).cfg -f init.cfg -c "program $(EXE_DIR)/$(PROJECTNAME).bin 0 verify reset 0x8000"
 
 # include auto-generated dependency files (explicit rules)
 ifneq (clean,$(findstring clean, $(MAKECMDGOALS)))

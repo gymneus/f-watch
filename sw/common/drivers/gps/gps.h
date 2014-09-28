@@ -60,12 +60,13 @@ struct gps_utc {
 void    gps_init();
 void    gps_on_off_pulse();
 void    gps_reset(int val);
-int     gps_puts(char *s);
-int     gps_nmea_crc(const char *nmeastr);
+void    gps_parse_nmea();
 int     gps_fixed();
 void    gps_get_utc(struct gps_utc *utc);
 void    gps_get_coord(struct gps_coord *coord, int format);
 void    gps_get_speed(double *spd);
 void    gps_get_direction(double *dir);
+int     gps_puts(char *s);
+int     gps_nmea_crc(const char *nmeastr);
 
 #endif // __GPS_H_
