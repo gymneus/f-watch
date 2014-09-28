@@ -68,8 +68,6 @@ void Delay(uint32_t dlyTicks)
  *****************************************************************************/
 int main(void)
 {
-    int i;
-
     /* Setup SysTick Timer for 1 msec interrupts */
     if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1);
 
