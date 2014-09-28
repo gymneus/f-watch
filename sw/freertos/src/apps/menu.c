@@ -177,6 +177,8 @@ void menu_main(void* params) {
                     } else if(evt.data.button == BUT_TR) {
                         // run the selected application or submenu
                         run(&(*current_menu)->entries[selected_item]);
+                    } else {
+                        ui_update(&evt);
                     }
                     break;
 
