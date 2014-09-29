@@ -154,7 +154,7 @@ C_SRC +=  \
 ../common/drivers/max17047.c \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
-../common/drivers/LSM303C/lsm303c.c \
+../common/drivers/lsm303c.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \

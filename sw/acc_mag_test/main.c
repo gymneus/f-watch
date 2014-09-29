@@ -35,7 +35,7 @@
 #include <gfx/graphics.h>
 #include <stdio.h>
 #include <pp-printf.h>
-#include <LSM303C/lsm303c.h>
+#include <lsm303c.h>
 #include <usbdesc.h>
 #include <sincos.h>
 

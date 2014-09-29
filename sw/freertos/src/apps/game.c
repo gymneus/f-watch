@@ -26,7 +26,7 @@
 
 #include "application.h"
 #include "widgets/status_bar.h"
-#include <drivers/LSM303C/lsm303c.h>
+#include <drivers/lsm303c.h>
 #include <sincos.h>
 #include <usbdesc.h>
 
