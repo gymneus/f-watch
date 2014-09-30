@@ -297,32 +297,7 @@ static void commandlineLoop( void )
 
     /* Debug lock */
     case 'l':
-#if defined( BL_DEBUG )
-      /* We check if there is a debug session active in DHCSR. If there is we
-       * abort the locking. This is because we wish to make sure that the debug
-       * lock functionality works without a debugger attatched. */
-      if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) != 0x0)
-      {
-        USB_PUTS( "\r\n\r\n **** WARNING: DEBUG SESSION ACTIVE. NOT LOCKING!  **** \r\n\r\n" );
-        BOOTLDIO_printString( "Debug active.\r\n" );
-      }
-      else
-      {
-        USB_PUTS( "Starting debug lock sequence.\r\n" );
-#endif
-        FLASH_writeWord( DEBUG_LOCK_WORD, 0x0 );
-        if ( *(volatile uint32_t*)DEBUG_LOCK_WORD == 0x0 )
-        {
-          BOOTLDIO_printString( okString );
-        }
-        else
-        {
-          BOOTLDIO_printString( failString );
-        }
-#if defined( BL_DEBUG )
-        USB_PRINTF( "Debug lock word: 0x%x \r\n", *((uint32_t *) DEBUG_LOCK_WORD) );
-      }
-#endif
+      BOOTLDIO_printString("Debug lock not supported\r\n");
       break;
 
     /* Verify content by calculating CRC of entire flash */
