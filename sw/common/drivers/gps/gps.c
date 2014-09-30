@@ -49,11 +49,7 @@
 #include <usbconfig.h>
 #include <usbdbg.h>
 
-
-#define GPS_OK_TO_SEND "$PSRF150,1*3E\r\n"
-
-#define RXBUFSIZE 128
-static char rxbuf[RXBUFSIZE];
+static char rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
 static volatile int frame_rdy = 0;
 
@@ -69,6 +65,7 @@ void LEUART0_IRQHandler()
                         rxbuf[idx] = '\0';
                         idx = 0;
                         frame_rdy = 1;
+//                        gps_parse_nmea(rxbuf);
                 }
         }
 }
@@ -141,11 +138,17 @@ void gps_reset(int val)
         val ? GPIO_PinOutClear(gpioPortF, 5) : GPIO_PinOutSet(gpioPortF, 5);
 }
 
-void gps_parse_nmea()
+int gps_frame_rdy()
+{
+    return frame_rdy;
+}
+
+void gps_parse_nmea(char *buf)
 {
     // TODO: check return of nmea_parse
-    nmea_parse(&parser, rxbuf, strlen(rxbuf), &info);
-    usbdbg_puts(rxbuf);
+    nmea_parse(&parser, buf, strlen(rxbuf), &info);
+    usbdbg_puts(buf);
+    frame_rdy = 0;
 }
 
 int gps_fixed()

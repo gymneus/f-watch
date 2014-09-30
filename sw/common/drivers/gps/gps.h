@@ -39,6 +39,17 @@
 #ifndef __GPS_H_
 #define __GPS_H_
 
+
+/*=============*/
+/* GPS defines */
+/*=============*/
+#define GPS_OK_TO_SEND "$PSRF150,1*3E\r\n"
+
+#define GPS_RXBUF_SIZE 128
+
+/*=================*/
+/* Data structures */
+/*=================*/
 struct gps_coord {
         double lat;
         double lon;
@@ -60,7 +71,8 @@ struct gps_utc {
 void    gps_init();
 void    gps_on_off_pulse();
 void    gps_reset(int val);
-void    gps_parse_nmea();
+int     gps_frame_rdy();
+void    gps_parse_nmea(char *buf);
 int     gps_fixed();
 void    gps_get_utc(struct gps_utc *utc);
 void    gps_get_coord(struct gps_coord *coord, int format);

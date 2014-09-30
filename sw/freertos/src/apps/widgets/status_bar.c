@@ -36,7 +36,7 @@ static int gps_ico_blink = 0;
 
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
-        if (evt->type == GPS_PARSE_RDY) {
+        if (evt->type == RTC_TICK) {
                 w->flags |= WF_DIRTY;
                 if (gps_fixed()) {
                         memcpy(&gps_ico, &gps_receiving,

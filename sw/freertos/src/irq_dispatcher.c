@@ -29,6 +29,7 @@
 #include <event.h>
 
 #include <drivers/rtc.h>
+#include <drivers/gps/gps.h>
 
 #include <em_device.h>
 #include <em_gpio.h>
@@ -110,24 +111,21 @@ void HardFault_Handler(void)
     SCB->AIRCR = 0x05FA0004;
 }
 
-#define RXBUFSIZE 128
-static char rxbuf[RXBUFSIZE];
+volatile char gps_rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
+
+extern xSemaphoreHandle sem_gps;
 
 void LEUART0_IRQHandler(void)
 {
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 
-    // Fill the event data
-    struct event evt;
-    evt.type = GPS_FRAME_RDY;
-
     if (LEUART0->IF & LEUART_IF_RXDATAV) {
-        rxbuf[idx++] = LEUART_Rx(LEUART0);
-        if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
-            rxbuf[idx] = '\0';
+        gps_rxbuf[idx++] = LEUART_Rx(LEUART0);
+        if ((gps_rxbuf[idx-2] == '\r') && (gps_rxbuf[idx-1] == '\n')) {
+            gps_rxbuf[idx] = '\0';
             idx = 0;
-            xQueueSendFromISR(appQueue, &evt, &xHigherPriorityTaskWoken);
+            xSemaphoreGiveFromISR(sem_gps, &xHigherPriorityTaskWoken);
         }
     }
 

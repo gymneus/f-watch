@@ -27,6 +27,8 @@
 
 #include "application.h"
 
+#include <usbdbg.h>
+
 #define dbg()                       \
     int i;                          \
     GPIO_PinOutSet(gpioPortE, 11);  \
@@ -34,19 +36,18 @@
         ;                           \
     GPIO_PinOutClear(gpioPortE, 11);
 
+extern volatile char gps_rxbuf[GPS_RXBUF_SIZE];
+
+extern xSemaphoreHandle sem_gps;
+
 void gpsbkgrnd_main(void *params)
 {
-    (void)params;
-
-    struct event evt;
+    /* suppress compiler warning */
+    (void) params;
 
     while (1) {
-        if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
-            if (evt.type == GPS_FRAME_RDY) {
-                gps_parse_nmea();
-                evt.type = GPS_PARSE_RDY;
-                xQueueSendToBack(appQueue, &evt, 0);
-            }
+        if (xSemaphoreTake(sem_gps, portMAX_DELAY)) {
+            gps_parse_nmea(gps_rxbuf);
         }
     }
 }
