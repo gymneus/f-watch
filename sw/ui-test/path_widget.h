@@ -5,9 +5,9 @@
 extern struct ui_widget path_widget;
 
 typedef struct coord{
-        int32_t lat;
-        int32_t lon;
-        int32_t alt;
+        double lat;
+        double lon;
+        double alt;
 }coord;
 
 typedef struct path{
@@ -19,3 +19,4 @@ typedef struct path{
         uint8_t frame;   // draw frame around plot
         uint8_t line;    // draw lines between data points
 }path;
+
