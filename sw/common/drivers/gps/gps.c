@@ -65,7 +65,7 @@ void LEUART0_IRQHandler()
                         rxbuf[idx] = '\0';
                         idx = 0;
                         gps_set_framerdy(1);
-//                        gps_parse_nmea(rxbuf);
+                        gps_parse_nmea(rxbuf);
                 }
         }
 }
@@ -160,7 +160,7 @@ void gps_parse_nmea(const char *buf)
 {
     // TODO: check return of nmea_parse
     nmea_parse(&parser, buf, strlen(buf), &info);
-    dbg();
+//    dbg();
     usbdbg_puts(buf);
 }
 

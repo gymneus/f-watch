@@ -52,6 +52,8 @@ int main(void)
     rtc_init();
     lcd_init();
     ui_init();
+
+    vSemaphoreCreateBinary(semGps);
     gps_init();
 
     GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
@@ -66,10 +68,9 @@ int main(void)
 
     startMain(&menu);
 
-    vSemaphoreCreateBinary(semGps);
     /* Create background task for GPS */
     if (xTaskCreate(gpsbkgrnd.main, (const signed char *)gpsbkgrnd.name,
-        APP_STACK_SIZE, NULL, APP_PRIORITY, NULL) != pdPASS) {
+        APP_STACK_SIZE, NULL, BKGND_APP_PRIORITY, NULL) != pdPASS) {
         // TODO oops..
     }
 

@@ -113,19 +113,34 @@ void HardFault_Handler(void)
 
 char gps_rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
+static volatile int store = 0;
 
 extern xSemaphoreHandle semGps;
 
 void LEUART0_IRQHandler(void)
 {
+    char c;
     portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 
     if (LEUART0->IF & LEUART_IF_RXDATAV) {
-        gps_rxbuf[idx++] = LEUART_Rx(LEUART0);
-        if ((gps_rxbuf[idx-2] == '\r') && (gps_rxbuf[idx-1] == '\n')) {
-            gps_rxbuf[idx] = '\0';
-            idx = 0;
-            xSemaphoreGiveFromISR(semGps, &xHigherPriorityTaskWoken);
+        c = LEUART_Rx(LEUART0);
+
+        /* Start storing on frame start char and if app allows it */
+        if ((c == '$') && !gps_get_framerdy())
+            store = 1;
+
+        if (store) {
+            gps_rxbuf[idx++] = c;
+
+            /* Signal task that frame is ready */
+            if ((idx > 2) &&
+                    (gps_rxbuf[idx-2] == '\r') && (gps_rxbuf[idx-1] == '\n')) {
+                gps_rxbuf[idx] = '\0';
+                idx = 0;
+                store = 0;
+                gps_set_framerdy(1);
+                xSemaphoreGiveFromISR(semGps, &xHigherPriorityTaskWoken);
+            }
         }
     }
 

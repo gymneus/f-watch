@@ -39,8 +39,9 @@ void gpsbkgrnd_main(void *params)
     (void) params;
 
     while (1) {
-        if (xSemaphoreTake(semGps, portMAX_DELAY)) {
+        if (xSemaphoreTake(semGps, portMAX_DELAY) == pdTRUE) {
             gps_parse_nmea(gps_rxbuf);
+            gps_set_framerdy(0);
         }
     }
 }

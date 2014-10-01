@@ -45,7 +45,7 @@ void debug();
 
 ///> Prioriuty of application task
 #define APP_PRIORITY            (tskIDLE_PRIORITY + 1)
-#define BKGRND_APP_PRIORITY     (tskIDLE_PRIORITY + 2)
+#define BKGND_APP_PRIORITY     (tskIDLE_PRIORITY + 2)
 
 
 ///> Shared application task handle
