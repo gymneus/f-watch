@@ -29,16 +29,9 @@
 
 #include <usbdbg.h>
 
-#define dbg()                       \
-    int i;                          \
-    GPIO_PinOutSet(gpioPortE, 11);  \
-    for (i = 0; i < 1000000; i++)   \
-        ;                           \
-    GPIO_PinOutClear(gpioPortE, 11);
+extern char gps_rxbuf[GPS_RXBUF_SIZE];
 
-extern volatile char gps_rxbuf[GPS_RXBUF_SIZE];
-
-extern xSemaphoreHandle sem_gps;
+extern xSemaphoreHandle semGps;
 
 void gpsbkgrnd_main(void *params)
 {
@@ -46,7 +39,7 @@ void gpsbkgrnd_main(void *params)
     (void) params;
 
     while (1) {
-        if (xSemaphoreTake(sem_gps, portMAX_DELAY)) {
+        if (xSemaphoreTake(semGps, portMAX_DELAY)) {
             gps_parse_nmea(gps_rxbuf);
         }
     }

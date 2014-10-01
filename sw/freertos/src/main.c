@@ -36,7 +36,7 @@
 #include <gfx/ui.h>
 #include <drivers/gps/gps.h>
 
-xSemaphoreHandle sem_gps;
+xSemaphoreHandle semGps;
 
 int main(void)
 {
@@ -66,7 +66,7 @@ int main(void)
 
     startMain(&menu);
 
-    vSemaphoreCreateBinary(sem_gps);
+    vSemaphoreCreateBinary(semGps);
     /* Create background task for GPS */
     if (xTaskCreate(gpsbkgrnd.main, (const signed char *)gpsbkgrnd.name,
         APP_STACK_SIZE, NULL, APP_PRIORITY, NULL) != pdPASS) {

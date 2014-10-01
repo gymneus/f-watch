@@ -111,10 +111,10 @@ void HardFault_Handler(void)
     SCB->AIRCR = 0x05FA0004;
 }
 
-volatile char gps_rxbuf[GPS_RXBUF_SIZE];
+char gps_rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
 
-extern xSemaphoreHandle sem_gps;
+extern xSemaphoreHandle semGps;
 
 void LEUART0_IRQHandler(void)
 {
@@ -125,7 +125,7 @@ void LEUART0_IRQHandler(void)
         if ((gps_rxbuf[idx-2] == '\r') && (gps_rxbuf[idx-1] == '\n')) {
             gps_rxbuf[idx] = '\0';
             idx = 0;
-            xSemaphoreGiveFromISR(sem_gps, &xHigherPriorityTaskWoken);
+            xSemaphoreGiveFromISR(semGps, &xHigherPriorityTaskWoken);
         }
     }
 

@@ -51,7 +51,7 @@
 
 static char rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
-static volatile int frame_rdy = 0;
+static volatile int framerdy = 0;
 
 static nmeaINFO info;
 static nmeaPARSER parser;
@@ -64,7 +64,7 @@ void LEUART0_IRQHandler()
                 if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
                         rxbuf[idx] = '\0';
                         idx = 0;
-                        frame_rdy = 1;
+                        gps_set_framerdy(1);
 //                        gps_parse_nmea(rxbuf);
                 }
         }
@@ -138,17 +138,30 @@ void gps_reset(int val)
         val ? GPIO_PinOutClear(gpioPortF, 5) : GPIO_PinOutSet(gpioPortF, 5);
 }
 
-int gps_frame_rdy()
+int gps_get_framerdy()
 {
-    return frame_rdy;
+    return framerdy;
 }
 
-void gps_parse_nmea(char *buf)
+void gps_set_framerdy(int param)
+{
+    framerdy = param;
+}
+
+static void dbg()
+{
+    int i;
+    GPIO_PinOutSet(gpioPortE, 11);
+    for (i = 0; i < 100000; i++) ;
+    GPIO_PinOutClear(gpioPortE, 11);
+}
+
+void gps_parse_nmea(const char *buf)
 {
     // TODO: check return of nmea_parse
-    nmea_parse(&parser, buf, strlen(rxbuf), &info);
+    nmea_parse(&parser, buf, strlen(buf), &info);
+    dbg();
     usbdbg_puts(buf);
-    frame_rdy = 0;
 }
 
 int gps_fixed()
@@ -199,7 +212,7 @@ void gps_get_direction(double *dir)
         *dir = info.direction;
 }
 
-int gps_puts(char *s)
+int gps_puts(const char *s)
 {
         while (*s++) {
                 if (*s == EOF)
