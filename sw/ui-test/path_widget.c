@@ -53,7 +53,6 @@ void draw_path(struct surface *surf, path *p)
         DBG("lon: min: %f, max: %f, max-min: %f\n", min.lon, max.lon, (max.lon - min.lon));
         DBG("alt: min: %f, max: %f, max-min: %f\n", min.alt, max.alt, (max.alt - min.alt));
 
-
         // Compute x scaling factor (rounded up by adding 1)
         x_scale = (max.lat - min.lat) / p->x_size + 1;
 
@@ -136,13 +135,13 @@ static void path_redraw(struct ui_widget *w)
 
         for(i=1; i<D_SIZE; i++)
         {
-                sign = rand() % 2;
-                if(sign)
+                sign = rand() % 10;
+                if(sign > 2)
                         data[i].lat = data[i-1].lat + rand()/(DIV);
                 else
                         data[i].lat = data[i-1].lat - rand()/(DIV);
-                sign = rand() % 2;
-                if(sign)
+                sign = rand() % 10;
+                if(sign > 2)
                         data[i].lon = data[i-1].lon + rand()/(DIV);
                 else
                         data[i].lon = data[i-1].lon - rand()/(DIV);
