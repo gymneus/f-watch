@@ -54,8 +54,16 @@ int main(void)
     ui_init();
 
     vSemaphoreCreateBinary(semGps);
+    xSemaphoreTake(semGps, 0);
+
     gps_init();
 
+    uint32_t p;
+    p = 1 + (configMAX_SYSCALL_INTERRUPT_PRIORITY >> (8 - __NVIC_PRIO_BITS));
+    NVIC_SetPriority(BURTC_IRQn, p);
+    NVIC_SetPriority(GPIO_ODD_IRQn, p);
+    NVIC_SetPriority(GPIO_EVEN_IRQn, p);
+    NVIC_SetPriority(LEUART0_IRQn, p);
     GPIO_PinModeSet(gpioPortE, 11, gpioModePushPull, 0);
     GPIO_PinModeSet(gpioPortE, 12, gpioModePushPull, 0);
 

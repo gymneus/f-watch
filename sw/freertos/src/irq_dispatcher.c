@@ -117,6 +117,8 @@ static volatile int store = 0;
 
 extern xSemaphoreHandle semGps;
 
+volatile int icnt = 0;
+
 void LEUART0_IRQHandler(void)
 {
     char c;
@@ -135,6 +137,7 @@ void LEUART0_IRQHandler(void)
             /* Signal task that frame is ready */
             if ((idx > 2) &&
                     (gps_rxbuf[idx-2] == '\r') && (gps_rxbuf[idx-1] == '\n')) {
+                icnt++;
                 gps_rxbuf[idx] = '\0';
                 idx = 0;
                 store = 0;
@@ -145,4 +148,9 @@ void LEUART0_IRQHandler(void)
     }
 
     portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+}
+
+void Assert_Handler()
+{
+        ;
 }

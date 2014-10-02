@@ -33,6 +33,8 @@ extern char gps_rxbuf[GPS_RXBUF_SIZE];
 
 extern xSemaphoreHandle semGps;
 
+int gcnt = 0;
+
 void gpsbkgrnd_main(void *params)
 {
     /* suppress compiler warning */
@@ -40,6 +42,7 @@ void gpsbkgrnd_main(void *params)
 
     while (1) {
         if (xSemaphoreTake(semGps, portMAX_DELAY) == pdTRUE) {
+            gcnt++;
             gps_parse_nmea(gps_rxbuf);
             gps_set_framerdy(0);
         }
