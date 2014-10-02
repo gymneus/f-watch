@@ -157,6 +157,9 @@ extern "C" {
 #define configKERNEL_INTERRUPT_PRIORITY           ( 255 ) 
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY      ( 191 ) /* equivalent to 0xa0, or priority 5. */
 
+/* Assert macro */
+#define configASSERT(x)                           if (x == 0) Assert_Handler()
+
 /* Optional functions - most linkers will remove unused functions anyway. */
 #define INCLUDE_vTaskPrioritySet                  ( 1 )
 #define INCLUDE_uxTaskPriorityGet                 ( 1 )

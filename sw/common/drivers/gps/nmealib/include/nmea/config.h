@@ -43,9 +43,11 @@
 
 #if !defined(NDEBUG) && !defined(NMEA_CE)
 #   include <assert.h>
-#   define NMEA_ASSERT(x)   assert(x)
+#   include <FreeRTOS.h>
+#   define NMEA_ASSERT(x)   configASSERT(x)
 #else
-#   define NMEA_ASSERT(x)
+#   include <FreeRTOS.h>
+#   define NMEA_ASSERT(x)   configASSERT(x)
 #endif
 
 #endif /* __NMEA_CONFIG_H__ */
