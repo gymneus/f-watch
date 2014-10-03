@@ -35,6 +35,7 @@ extern application clock_app;
 extern application example;
 extern application compass;
 extern application game;
+extern application gpscoord;
 
 #endif /* APP_LIST_H */
 

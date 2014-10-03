@@ -12,7 +12,7 @@
 DEVICE = EFM32GG330F1024
 PROJECTNAME = freertos
 # Name of interface configuration file used by OpenOCD
-OOCD_IFACE ?= stlink-v2-1
+OOCD_IFACE ?= stlink-v2
 
 OBJ_DIR = build
 EXE_DIR = exe
@@ -121,6 +121,7 @@ INCLUDEPATHS += \
 -I../common/usb/inc \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
+-I../common/nmealib/include
 
 ####################################################################
 # Files                                                            #
@@ -142,6 +143,7 @@ C_SRC +=  \
 ../common/emlib/src/em_system.c \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
+../common/emlib/src/em_leuart.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
@@ -155,6 +157,7 @@ C_SRC +=  \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
 ../common/drivers/lsm303c.c \
+../common/drivers/gps.c \
 ../common/gfx/font_helv11.c \
 ../common/gfx/font_helv17.c \
 ../common/gfx/font_helv17b.c \
@@ -176,6 +179,17 @@ C_SRC +=  \
 ../common/usb/src/em_usbdint.c \
 ../common/usb/src/em_usbtimer.c \
 ../common/usb/usbdesc.c \
+../common/usb/usbdbg.c \
+../common/nmealib/src/context.c \
+../common/nmealib/src/generate.c \
+../common/nmealib/src/generator.c \
+../common/nmealib/src/gmath.c \
+../common/nmealib/src/info.c \
+../common/nmealib/src/parse.c \
+../common/nmealib/src/parser.c \
+../common/nmealib/src/sentence.c \
+../common/nmealib/src/time.c \
+../common/nmealib/src/tok.c \
 FreeRTOS/Source/timers.c \
 FreeRTOS/Source/tasks.c \
 FreeRTOS/Source/queue.c \
@@ -193,6 +207,7 @@ src/apps/example_app.c \
 src/apps/compass.c \
 src/apps/game.c \
 src/apps/menu.c \
+src/apps/gpscoord.c \
 src/apps/menu_struct.c \
 src/main.c \
 src/battery_task.c \

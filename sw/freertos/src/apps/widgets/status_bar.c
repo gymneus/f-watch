@@ -30,6 +30,9 @@
 #include <event.h>
 
 #include <math.h>
+#include <string.h>
+
+#include <drivers/gps.h>
 
 static const unsigned int BATTERY_POS = 111;
 static const unsigned int BATTERY_BARS = 10;
@@ -37,14 +40,34 @@ static const unsigned int BATTERY_BARS = 10;
 static unsigned percentage;
 static bool charging;
 
+static struct rle_bitmap gps_ico;
+static int gps_ico_blink = 0;
+
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
-    if(evt->type == BATTERY_STATUS) {
-        if(abs(percentage - evt->data.battery.percentage) > 5 || charging != evt->data.battery.charging) {
-            percentage = evt->data.battery.percentage;
-            charging = evt->data.battery.charging;
+    switch(evt->type) {
+        case RTC_TICK:
+            if (gps_fixed()) {
+                memcpy(&gps_ico, &gps_receiving,
+                        sizeof(struct rle_bitmap));
+            } else {
+                gps_ico_blink ^= 1;
+                if (gps_ico_blink) {
+                    memcpy(&gps_ico, &gps_searching,
+                        sizeof(struct rle_bitmap));
+                } else {
+                    memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+                }
+            }
             w->flags |= WF_DIRTY;
-        }
+            break;
+        case BATTERY_STATUS:
+            if(abs(percentage - evt->data.battery.percentage) > 5 ||
+                    charging != evt->data.battery.charging) {
+                percentage = evt->data.battery.percentage;
+                charging = evt->data.battery.charging;
+                w->flags |= WF_DIRTY;
+            }
     }
 }
 
@@ -56,6 +79,8 @@ static void status_bar_redraw(struct ui_widget *w)
 
     /*gfx_round_box(&w->dc, 30, -10, 127 - 30, 10, 9, COLOR_BLACK);*/
     /*gfx_centered_text(&w->dc, &font_helv11, 0, "Home", 1);*/
+
+    gfx_draw_bitmap(&w->dc, 0, 0, &gps_ico);
 
     if(charging) {
         gfx_draw_bitmap(&w->dc, BATTERY_POS, 0, &battery_charging);

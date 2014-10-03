@@ -52,6 +52,7 @@ menu_list main_menu = {
        { APP,       &example_icon,      { .app = &example } },
        { APP,       &comp_ico,          { .app = &compass } },
        { APP,       &game_ico,          { .app = &game} },
+       { APP,       &gps_receiving,     { .app = &gpscoord} },
        { SUBMENU,   &settings_icon,     { .submenu = &settings_menu } },
        { END,       NULL,               { NULL } }
     }

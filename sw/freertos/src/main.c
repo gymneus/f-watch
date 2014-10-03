@@ -61,6 +61,7 @@ int main(void)
     vibra_init();
     rtc_init();
     lcd_init();
+    gps_init();
 
     ui_init();
     auto_backlight_init();
