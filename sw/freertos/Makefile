@@ -12,7 +12,7 @@
 DEVICE = EFM32GG330F1024
 PROJECTNAME = freertos
 # Name of interface configuration file used by OpenOCD
-OOCD_IFACE ?= stlink-v2
+OOCD_IFACE ?= stlink-v2-1
 
 OBJ_DIR = build
 EXE_DIR = exe
@@ -104,7 +104,7 @@ override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=corte
 # NOTE: The -Wl,--gc-sections flag may interfere with debugging using gdb.
 #
 override LDFLAGS += -Xlinker -Map=$(LST_DIR)/$(PROJECTNAME).map -mcpu=cortex-m3 \
--mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg.ld \
+-mthumb -T../common/Device/EnergyMicro/EFM32GG/Source/GCC/efm32gg_bootld.ld \
  -Wl,--gc-sections
 
 LIBS = -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
@@ -207,8 +207,9 @@ src/apps/example_app.c \
 src/apps/compass.c \
 src/apps/game.c \
 src/apps/menu.c \
-src/apps/gpscoord.c \
 src/apps/menu_struct.c \
+src/apps/gpscoord.c \
+src/apps/reset.c \
 src/main.c \
 src/battery_task.c \
 src/blight_task.c \

@@ -36,6 +36,7 @@ extern application example;
 extern application compass;
 extern application game;
 extern application gpscoord;
+extern application reset;
 
 #endif /* APP_LIST_H */
 
