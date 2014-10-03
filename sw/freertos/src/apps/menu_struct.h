@@ -36,12 +36,22 @@
 enum entry_type {
     APP,
     SUBMENU,
+    SETTING,
     END         // sentinel, should be put as the last entry
 };
+
+typedef struct setting {
+    char name[16];
+    uint32_t val;
+    uint32_t valmod;
+} setting_t;
 
 /**
  * @brief Structure that represents a single
  * entry - either application or submenu.
+ * Menus and submenus are defined in menu_struct.c
+ * Applications are defined in app_list.h and in their respective files
+ * Settings are defined in settings/settings.h
  */
 typedef struct menu_entry_t {
     enum entry_type type;
@@ -51,6 +61,7 @@ typedef struct menu_entry_t {
     union {
         application *app;
         struct menu_list_t *submenu;
+        setting_t *setting;
     } data;
 } menu_entry;
 

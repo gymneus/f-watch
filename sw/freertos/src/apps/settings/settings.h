@@ -28,9 +28,12 @@
 #define SETTINGS_H
 
 #include "application.h"
+#include "menu_struct.h"
 
 extern application set_time;
 extern application set_date;
+
+void setting_change(setting_t *setting);
 
 #endif /* SETTINGS_H */
 

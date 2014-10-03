@@ -79,6 +79,10 @@ static void menu_screen_redraw(struct ui_widget *w)
 
             gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
                      i * LINE_HEIGHT, l->name, i != selected_item);
+        } else if (ent->type == SETTING) {
+            setting_t *s = ent->data.setting;
+            gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
+                     i * LINE_HEIGHT, s->name, i != selected_item);
         }
     }
 }
@@ -151,6 +155,8 @@ static void run(menu_entry *entry) {
         *(current_menu + 1) = entry->data.submenu;
         ++current_menu;
         menu_size = get_menu_size(*current_menu);
+    } else if (entry->type == SETTING) {
+        setting_change(entry->data.setting);
     }
 
     menu_ui_init();

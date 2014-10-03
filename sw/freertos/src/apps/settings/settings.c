@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Maciej Suminski <maciej.suminski@cern.ch>
  * @author Theodor Stana <theodor.stana@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -21,43 +20,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-/**
- * User application data structures and routines.
- */
+#include "settings.h"
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#include <stdio.h>
+#include <string.h>
 
-#include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
+void setting_change(setting_t *setting)
+{
+    uint32_t v = setting->val;
+    char s[16];
 
-///> Shared application task handle
-extern xTaskHandle appTask;
+    v++;
+    v %= setting->valmod;
 
-///> Shared application event queue
-extern xQueueHandle appQueue;
+    sprintf(s, ": %d", v);
 
-/**
- * @brief An application entry, used by the menu application.
- */
-typedef struct {
-    ///> Application name
-    const char* name;
-
-    /**
-     * @brief Main application routine.
-     * @params Optional parameters, dependendent on application.
-     */
-    void (*main)(void* params);
-} application;
-
-/**
- * @brief Initializes the application task and event queue.
- * After that runs one as the main application.
- * @param app is the application to be run as the main one.
- */
-void startMain(application* app);
-
-#endif /* APPLICATION_H */
-
+    setting->val = v;
+    strcat(setting->name, s);
+}
