@@ -29,7 +29,7 @@
 #include <drivers/lsm303c.h>
 #include <bitmaps.h>
 #include <sincos.h>
-#include <usbdesc.h>
+#include <usbdbg.h>
 
 #define COMP_R 50.0
 #define COMP_X0 64
@@ -114,7 +114,6 @@ void compass_main(void *params)
 
 	/*lsm303 init, we need both ACC & MAG for tilt/roll compensation*/
 	lsm303_init();
-	USBD_Init(&initstruct);
 
 	ui_clear();
 	ui_init_widget(&compass_screen);
@@ -175,7 +174,7 @@ void compass_main(void *params)
 				pitch = -small_atan(acc.x, small_sqrt(acc.y*acc.y + acc.z*acc.z));
 				roll = small_atan(acc.y, small_sqrt(acc.x*acc.x + acc.z*acc.z));
 				sprintf(buf, "p: %d, r: %d\n\r", pitch, roll);
-				USBD_Write(USBDESC_EP_DATA_OUT, (void*)buf, strlen(buf), NULL);
+                usbdbg_puts(buf);
 				/* work with compass readout, first revert it because magnetic south is north */
 				mag.x *= -1;
 				mag.y *= -1;

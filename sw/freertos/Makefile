@@ -178,7 +178,6 @@ C_SRC +=  \
 ../common/usb/src/em_usbdep.c \
 ../common/usb/src/em_usbdint.c \
 ../common/usb/src/em_usbtimer.c \
-../common/usb/usbdesc.c \
 ../common/usb/usbdbg.c \
 ../common/nmealib/src/context.c \
 ../common/nmealib/src/generate.c \

@@ -28,7 +28,7 @@
 #include "widgets/status_bar.h"
 #include <drivers/lsm303c.h>
 #include <sincos.h>
-#include <usbdesc.h>
+#include <usbdbg.h>
 
 #define S_WIN_X0 5
 #define S_WIN_Y0 25
@@ -100,7 +100,6 @@ void game_main(void *params)
 	int dir = 0, fact;
 
 	lsm303_init();
-	USBD_Init(&initstruct);
 	buzzer_set_freq(4000);
 	ball_x = 64;
 	ball_y = 64;

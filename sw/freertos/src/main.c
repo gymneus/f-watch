@@ -36,6 +36,9 @@
 #include <drivers/lcd.h>
 #include <drivers/rtc.h>
 #include <drivers/vibra.h>
+#include <drivers/gps.h>
+
+#include <usbdbg.h>
 
 #include <gfx/ui.h>
 #include <apps/app_list.h>
@@ -62,6 +65,8 @@ int main(void)
     rtc_init();
     lcd_init();
     gps_init();
+
+    usbdbg_init();
 
     ui_init();
     auto_backlight_init();

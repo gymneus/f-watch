@@ -165,9 +165,9 @@ void gpscoord_main(void *params)
                 }
                 break;
             case RTC_TICK:
-                    ui_update(&evt);
+                ui_update(&evt);
             default:
-                    break;
+                break;
             }
         }
     }

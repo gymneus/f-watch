@@ -46,7 +46,6 @@
 #include <drivers/gps.h>
 #include <nmea/nmea.h>
 
-#include <usbconfig.h>
 #include <usbdbg.h>
 
 static char rxbuf[GPS_RXBUF_SIZE];
@@ -73,10 +72,6 @@ void LEUART0_IRQHandler()
 void gps_init()
 {
     int i;
-
-#if defined(GPS_DBG)
-    usbdbg_init();
-#endif
 
     /* Init GPS control pins & delay before ON_OFF pulse */
     USB->ROUTE &= ~(USB_ROUTE_VBUSENPEN);
@@ -149,14 +144,6 @@ int gps_get_framerdy()
 void gps_set_framerdy(int param)
 {
     framerdy = param;
-}
-
-static void dbg()
-{
-    int i;
-    GPIO_PinOutSet(gpioPortE, 11);
-    for (i = 0; i < 100000; i++) ;
-    GPIO_PinOutClear(gpioPortE, 11);
 }
 
 void gps_parse_nmea(const char *buf)
