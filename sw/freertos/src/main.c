@@ -58,6 +58,8 @@ int main(void)
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
     I2CDRV_Init(&i2cInit);
 
+    usbdbg_init();
+
     backlight_init();
     buttons_init();
     buzzer_init();
@@ -65,8 +67,6 @@ int main(void)
     rtc_init();
     lcd_init();
     gps_init();
-
-    usbdbg_init();
 
     ui_init();
     auto_backlight_init();
