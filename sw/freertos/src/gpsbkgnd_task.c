@@ -30,20 +30,24 @@
 
 #include <usbdbg.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "application.h"
+#include "clock.h"
 
 #define GPSBKGND_TIMER_PERIOD (1000 / portTICK_RATE_MS)
 
 static xTimerHandle timerGps;
 
-static int firstrun;
+static int firstrun, firstfix;
 static int cgpson, pgpson;
 
 static void gpsbkgnd_task(void *params)
 {
     (void) params;
     struct event e;
+    struct tm time;
+    struct gps_utc gpstime;
 
     /* Previous and current state of GPS on setting at timer tick */
     pgpson = cgpson;
@@ -64,6 +68,33 @@ static void gpsbkgnd_task(void *params)
         return;
     }
 
+    char b[64];
+
+    /* Set time from GPS at first fix or midday */
+    if (setting_gps_sets_time.val && gps_fixed()) {
+        time = clock_get_time();
+
+        sprintf(b, "BEF: %d-%d-%d %d:%d:%d\r\n",
+                        time.tm_year, time.tm_mon, time.tm_wday,
+                        time.tm_hour, time.tm_min, time.tm_sec);
+        usbdbg_puts(b);
+
+        if (firstfix ||
+                ((time.tm_hour == 12) && (time.tm_min == 00))) {
+            gps_get_utc(&gpstime);
+
+            time.tm_year = gpstime.yr;
+            time.tm_mon = gpstime.mon;
+            time.tm_wday = gpstime.day;
+            time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
+            time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+
+            clock_set_time(&time);
+        }
+
+        if (firstfix) firstfix = 0;
+    }
+
     e.type = GPS_TICK;
     xQueueSendToBack(appQueue, (void *)&e, 0);
 }
@@ -71,7 +102,7 @@ static void gpsbkgnd_task(void *params)
 void gpsbkgnd_init()
 {
     firstrun = 1;
-
+    firstfix = 1;
     timerGps = xTimerCreate((signed char *)"timerGps",
                                 GPSBKGND_TIMER_PERIOD, pdTRUE,
                                 (void *)0, gpsbkgnd_task);

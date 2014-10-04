@@ -199,6 +199,7 @@ FreeRTOS/Source/portable/GCC/ARM_CM3/port.c \
 src/apps/settings/set_date.c \
 src/apps/settings/set_time.c \
 src/apps/settings/settings.c \
+src/apps/settings/set_gmt_ofs.c \
 src/apps/widgets/spinbox.c \
 src/apps/widgets/status_bar.c \
 src/apps/application.c \
