@@ -165,8 +165,8 @@ int gps_fixed()
 
 void gps_get_utc(struct gps_utc *utc)
 {
-    utc->yr  = 1900 + info.utc.year;
-    utc->mon = 1 + info.utc.mon;
+    utc->yr  = info.utc.year;
+    utc->mon = info.utc.mon;
     utc->day = info.utc.day;
     utc->hr  = info.utc.hour;
     utc->min = info.utc.min;

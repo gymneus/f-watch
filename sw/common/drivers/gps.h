@@ -43,7 +43,7 @@
 /*=============*/
 /* GPS defines */
 /*=============*/
-#define GPS_DBG         1
+//#define GPS_DBG         1
 
 #define GPS_OK_TO_SEND  "$PSRF150,1*3E\r\n"
 
