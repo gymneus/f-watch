@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2014 Julian Lewis
- * @author Maciej Suminski <maciej.suminski@cern.ch>
  * @author Theodor Stana <theodor.stana@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -21,35 +20,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-/**
- * List of settings subapps.
- */
-
-#ifndef SETTINGS_H
-#define SETTINGS_H
-
 #include "application.h"
 
 #include <time.h>
+#include <drivers/gps.h>
 
-typedef struct setting {
-    char name[16];
-    int val;
-    int nrvals;
-} setting_t;
+#include "clock.h"
+#include "settings.h"
 
-extern application set_time;
-extern application set_date;
-extern application set_gmt_ofs;
-extern application set_time_fr_gps;
+#include <usbdbg.h>
 
-void setting_change(setting_t *setting);
+void set_time_fr_gps_main(void *params)
+{
+    struct tm time;
+    struct gps_utc gpstime;
+    char b[32];
 
-extern setting_t setting_gps_on;
-extern setting_t setting_coord_style;
-extern struct tm setting_gmt_ofs;
-extern setting_t setting_gps_sets_time;
+    if (gps_fixed()) {
+        gps_get_utc(&gpstime);
+        sprintf(b, "BEF: %d-%d-%d %d:%d:%d\r\n",
+                        gpstime.yr, gpstime.mon, gpstime.day,
+                        gpstime.hr, gpstime.min, gpstime.sec);
+        usbdbg_puts(b);
 
-#endif /* SETTINGS_H */
+        time.tm_year = gpstime.yr;
+        time.tm_mon = gpstime.mon;
+        time.tm_wday = gpstime.day;
+        time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
+        time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
 
+        clock_set_time(&time);
+    }
+}
 
+application set_time_fr_gps = {
+    .name = "Set time fr GPS",      // this will be shown in menu
+    .main = set_time_fr_gps_main
+};

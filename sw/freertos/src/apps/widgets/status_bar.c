@@ -2,6 +2,7 @@
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
  * @author Tomasz Wlostowski <tomasz.wlostowski@cern.ch>
+ * @author Theodor Stana <theodor.stana@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,8 +45,6 @@ static bool charging;
 
 static struct rle_bitmap gps_ico;
 static int gps_ico_blink = 0;
-
-static int cgpson, pgpson;
 
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {

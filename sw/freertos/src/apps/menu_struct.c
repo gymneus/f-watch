@@ -47,6 +47,7 @@ menu_list settings_menu = {
         { SETTING,  NULL,               { .setting = &setting_coord_style } },
         { SETTING,  NULL,               { .setting = &setting_gps_sets_time } },
         { APP,      &gps_receiving,     { .app = &set_gmt_ofs } },
+        { APP,      &clock_icon,        { .app = &set_time_fr_gps } },
         { END,      NULL,               { NULL } }
     }
 };
