@@ -34,6 +34,8 @@
 
 #include <drivers/gps.h>
 
+#include "../settings/settings.h"
+
 static const unsigned int BATTERY_POS = 111;
 static const unsigned int BATTERY_BARS = 10;
 
@@ -46,7 +48,8 @@ static int gps_ico_blink = 0;
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
     switch(evt->type) {
-        case RTC_TICK:
+    case RTC_TICK:
+        if (setting_gps_on.val) {
             if (gps_fixed()) {
                 memcpy(&gps_ico, &gps_receiving,
                         sizeof(struct rle_bitmap));
@@ -60,14 +63,17 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
                 }
             }
             w->flags |= WF_DIRTY;
-            break;
-        case BATTERY_STATUS:
-            if(abs(percentage - evt->data.battery.percentage) > 5 ||
-                    charging != evt->data.battery.charging) {
-                percentage = evt->data.battery.percentage;
-                charging = evt->data.battery.charging;
-                w->flags |= WF_DIRTY;
-            }
+        }
+
+        // fall-through
+
+    case BATTERY_STATUS:
+        if(abs(percentage - evt->data.battery.percentage) > 5 ||
+                charging != evt->data.battery.charging) {
+            percentage = evt->data.battery.percentage;
+            charging = evt->data.battery.charging;
+            w->flags |= WF_DIRTY;
+        }
     }
 }
 
