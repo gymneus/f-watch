@@ -36,8 +36,10 @@
 
 #include "application.h"
 
+#include "settings/settings.h"
+
 static struct gps_coord coord;
-static int coord_format = 1;
+static int coord_format;
 static int gpsscreen = 0;
 
 static void gps_redraw(struct ui_widget *w)
@@ -49,6 +51,8 @@ static void gps_redraw(struct ui_widget *w)
     float londeg;
     float lonmin;
     float lonsec;
+
+    coord_format = setting_coord_style.val;
 
     if (gps_fixed())
         gps_get_coord(&coord, coord_format);

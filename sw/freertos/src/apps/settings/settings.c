@@ -25,6 +25,9 @@
 #include <stdio.h>
 #include <string.h>
 
+setting_t setting_gps_on = { "GPS on", 0, 2 };
+setting_t setting_coord_style = {"Coord style", 1, 3};
+
 void setting_change(setting_t *setting)
 {
     uint32_t v = setting->val;
@@ -36,5 +39,4 @@ void setting_change(setting_t *setting)
     sprintf(s, ": %d", v);
 
     setting->val = v;
-    strcat(setting->name, s);
 }

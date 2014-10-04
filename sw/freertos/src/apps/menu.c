@@ -28,6 +28,9 @@
 #include "app_list.h"
 #include "menu_struct.h"
 #include "widgets/status_bar.h"
+#include "settings/settings.h"
+
+#include <stdio.h>
 
 static int selected_item = 0;
 static int offset = 0;
@@ -80,9 +83,13 @@ static void menu_screen_redraw(struct ui_widget *w)
             gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
                      i * LINE_HEIGHT, l->name, i != selected_item);
         } else if (ent->type == SETTING) {
-            setting_t *s = ent->data.setting;
+            char s[16];
+            setting_t *set = ent->data.setting;
+            sprintf(s, "%s: %d", set->name, set->val);
+//            strcat(s, ": ")
+//            strcat(s, set->val);
             gfx_text(&w->dc, &font_helv17, LEFT_MARGIN,
-                     i * LINE_HEIGHT, s->name, i != selected_item);
+                     i * LINE_HEIGHT, s, i != selected_item);
         }
     }
 }

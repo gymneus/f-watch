@@ -26,6 +26,7 @@
 
 #include "menu_struct.h"
 #include "app_list.h"
+#include "settings/settings.h"
 
 int get_menu_size(const menu_list *menu) {
     int len = 0;
@@ -40,9 +41,11 @@ int get_menu_size(const menu_list *menu) {
 menu_list settings_menu = {
     "Settings",
     {
-        { APP, &clock_icon,         { .app = &set_time } },
-        { APP, &date_icon,          { .app = &set_date } },
-        { END, NULL,                { NULL } }
+        { APP,      &clock_icon,        { .app = &set_time } },
+        { APP,      &date_icon,         { .app = &set_date } },
+        { SETTING,  NULL,               { .setting = &setting_gps_on } },
+        { SETTING,  NULL,               { .setting = &setting_coord_style } },
+        { END,      NULL,               { NULL } }
     }
 };
 

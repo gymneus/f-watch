@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2014 Julian Lewis
  * @author Maciej Suminski <maciej.suminski@cern.ch>
+ * @author Theodor Stana <theodor.stana@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,6 +35,9 @@ extern application set_time;
 extern application set_date;
 
 void setting_change(setting_t *setting);
+
+extern setting_t setting_gps_on;
+extern setting_t setting_coord_style;
 
 #endif /* SETTINGS_H */
 
