@@ -29,7 +29,12 @@
 #define SETTINGS_H
 
 #include "application.h"
-#include "menu_struct.h"
+
+typedef struct setting {
+    char name[16];
+    int val;
+    int nrvals;
+} setting_t;
 
 extern application set_time;
 extern application set_date;

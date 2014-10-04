@@ -30,11 +30,11 @@ setting_t setting_coord_style = {"Coord style", 1, 3};
 
 void setting_change(setting_t *setting)
 {
-    uint32_t v = setting->val;
+    int v = setting->val;
     char s[16];
 
     v++;
-    v %= setting->valmod;
+    v %= setting->nrvals;
 
     sprintf(s, ": %d", v);
 

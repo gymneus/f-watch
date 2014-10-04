@@ -29,6 +29,7 @@
 
 #include "application.h"
 #include "bitmaps.h"
+#include "settings/settings.h"
 
 /**
  * @brief Type of menu entry.
@@ -39,12 +40,6 @@ enum entry_type {
     SETTING,
     END         // sentinel, should be put as the last entry
 };
-
-typedef struct setting {
-    char name[16];
-    uint32_t val;
-    uint32_t valmod;
-} setting_t;
 
 /**
  * @brief Structure that represents a single
