@@ -54,7 +54,7 @@ static struct ui_widget set_time_screen = {
 #define SPINBOX_NUMBER 4
 enum SPINBOX { H1 = 0, H2, M1, M2 };
 
-static const char const *hours1 = "012";
+static const char const *hours1 = "01";
 static const char const *minutes1 = "012345";
 
 static const char **char_sets[SPINBOX_NUMBER] = {

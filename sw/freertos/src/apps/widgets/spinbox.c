@@ -26,6 +26,8 @@
 
 #include "spinbox.h"
 
+#include <string.h>
+
 // Default character sets.
 const char *char_digits = "0123456789\x0";
 const char *char_letters = "abcdefghijklmnopqrstuvwxyz\0";
@@ -38,13 +40,17 @@ static void spinbox_event(struct ui_widget *w, const struct event *evt)
         if(evt->data.button == BUT_BR) {
             if(s->chars[s->value_idx + 1] != 0) {
                 ++s->value_idx;
-                w->flags |= WF_DIRTY;
+            } else {
+                s->value_idx = 0;
             }
+            w->flags |= WF_DIRTY;
         } else if(evt->data.button == BUT_BL) {
             if(s->value_idx > 0) {
                 --s->value_idx;
-                w->flags |= WF_DIRTY;
+            } else {
+                s->value_idx = strlen(s->chars) - 1;
             }
+            w->flags |= WF_DIRTY;
         }
     }
 }
