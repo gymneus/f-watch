@@ -69,7 +69,7 @@ void LEUART0_IRQHandler()
     }
 }
 
-void gps_init()
+void gps_init(int pulse_onoff)
 {
     int i;
 
@@ -78,9 +78,12 @@ void gps_init()
     GPIO_PinModeSet(gpioPortF, 5, gpioModePushPull, 1);
     GPIO_PinModeSet(gpioPortA, 1, gpioModeInput, 0);
     GPIO_PinModeSet(gpioPortE, 13, gpioModePushPull, 0);
-    for (i = 0; i < 100000; i++)
+
+    if (pulse_onoff) {
+        for (i = 0; i < 100000; i++)
             ;
-    gps_on_off_pulse();
+        gps_on_off_pulse();
+    }
 
     /* LEUART0 config */
     LEUART_Init_TypeDef init = LEUART_INIT_DEFAULT;

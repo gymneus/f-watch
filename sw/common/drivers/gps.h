@@ -43,7 +43,7 @@
 /*=============*/
 /* GPS defines */
 /*=============*/
-#define GPS_DBG         1 
+#define GPS_DBG         1
 
 #define GPS_OK_TO_SEND  "$PSRF150,1*3E\r\n"
 
@@ -70,7 +70,7 @@ struct gps_utc {
 /*=====================*/
 /* Function prototypes */
 /*=====================*/
-void    gps_init();
+void    gps_init(int pulse_onoff);
 void    gps_on_off_pulse();
 void    gps_reset(int val);
 int     gps_get_framerdy();

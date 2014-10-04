@@ -110,7 +110,7 @@ static void gps_redraw(struct ui_widget *w)
 
 static void gps_event(struct ui_widget *w, const struct event *evt)
 {
-    if (evt->type == RTC_TICK)
+    if (evt->type == GPS_TICK)
         w->flags |= WF_DIRTY;
 }
 
@@ -168,7 +168,7 @@ void gpscoord_main(void *params)
                     gpsscreen %= 2;
                 }
                 break;
-            case RTC_TICK:
+            case GPS_TICK:
                 ui_update(&evt);
             default:
                 break;

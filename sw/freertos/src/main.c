@@ -45,6 +45,7 @@
 #include "battery_task.h"
 #include "blight_task.h"
 #include "state.h"
+#include "gpsbkgnd_task.h"
 
 int main(void)
 {
@@ -52,6 +53,7 @@ int main(void)
     CHIP_Init();
 
     // Enable clocks
+    //CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
@@ -66,12 +68,13 @@ int main(void)
     vibra_init();
     rtc_init();
     lcd_init();
-    gps_init();
+    gps_init(setting_gps_on.val);
 
     ui_init();
     auto_backlight_init();
     battery_monitor_init();
     state_init();
+    gpsbkgnd_init();
 
     // Initialize SLEEP driver, no callbacks are used
     SLEEP_Init(NULL, NULL);

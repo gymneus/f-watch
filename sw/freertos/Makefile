@@ -213,6 +213,7 @@ src/apps/reset.c \
 src/main.c \
 src/battery_task.c \
 src/blight_task.c \
+src/gpsbkgnd_task.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c \
 src/state.c

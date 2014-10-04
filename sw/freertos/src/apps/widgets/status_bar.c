@@ -45,26 +45,30 @@ static bool charging;
 static struct rle_bitmap gps_ico;
 static int gps_ico_blink = 0;
 
+static int cgpson, pgpson;
+
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
     switch(evt->type) {
-    case RTC_TICK:
-        if (setting_gps_on.val) {
-            if (gps_fixed()) {
-                memcpy(&gps_ico, &gps_receiving,
-                        sizeof(struct rle_bitmap));
+    case GPS_TICK:
+        if (gps_fixed()) {
+            memcpy(&gps_ico, &gps_receiving,
+                    sizeof(struct rle_bitmap));
+        } else {
+            gps_ico_blink ^= 1;
+            if (gps_ico_blink) {
+                memcpy(&gps_ico, &gps_searching,
+                    sizeof(struct rle_bitmap));
             } else {
-                gps_ico_blink ^= 1;
-                if (gps_ico_blink) {
-                    memcpy(&gps_ico, &gps_searching,
-                        sizeof(struct rle_bitmap));
-                } else {
-                    memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
-                }
+                memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
             }
-            w->flags |= WF_DIRTY;
         }
+        w->flags |= WF_DIRTY;
+        break;
 
+    case GPS_OFF:
+        memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+        w->flags |= WF_DIRTY;
         // fall-through
 
     case BATTERY_STATUS:

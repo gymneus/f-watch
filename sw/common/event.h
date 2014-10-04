@@ -37,7 +37,9 @@ enum event_type {
     BUTTON_PRESSED,
     SENSOR_INT,
     RTC_TICK,
-    BATTERY_STATUS
+    BATTERY_STATUS,
+    GPS_TICK,
+    GPS_OFF
 };
 
 /**
