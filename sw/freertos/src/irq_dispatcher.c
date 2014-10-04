@@ -142,3 +142,7 @@ void BURTC_IRQHandler(void)
     portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
 }
 
+void HardFault_Handler()
+{
+    SCB->AIRCR = 0x05FA0004;
+}
