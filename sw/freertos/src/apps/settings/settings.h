@@ -30,8 +30,6 @@
 
 #include "application.h"
 
-#include <time.h>
-
 typedef struct setting {
     char name[16];
     int val;
@@ -43,12 +41,15 @@ extern application set_date;
 extern application set_gmt_ofs;
 extern application set_time_fr_gps;
 
-void setting_change(setting_t *setting);
-
 extern setting_t setting_gps_on;
 extern setting_t setting_coord_style;
-extern struct tm setting_gmt_ofs;
+extern setting_t setting_gmt_ofs_hr;
+extern setting_t setting_gmt_ofs_min;
 extern setting_t setting_gps_sets_time;
+
+void setting_change(setting_t *setting);
+void setting_apply(setting_t *setting, int val);
+int  setting_get(setting_t *setting);
 
 #endif /* SETTINGS_H */
 

@@ -54,7 +54,7 @@ static void gpsbkgnd_task(void *params)
 
     /* Previous and current state of GPS on setting at timer tick */
     pgpson = cgpson;
-    cgpson = setting_gps_on.val;
+    cgpson = setting_get(&setting_gps_on);
 
     /* Pulse GPS ON_OFF pin if setting changed */
     if ((pgpson != cgpson) && !firstrun)
@@ -72,7 +72,7 @@ static void gpsbkgnd_task(void *params)
     }
 
     /* Set time from GPS at first fix or midday */
-    if (setting_gps_sets_time.val && gps_fixed()) {
+    if (setting_get(&setting_gps_sets_time) && gps_fixed()) {
         time = clock_get_time();
 
         if (firstfix ||
@@ -82,9 +82,10 @@ static void gpsbkgnd_task(void *params)
             time.tm_year = gpstime.yr;
             time.tm_mon = gpstime.mon;
             time.tm_mday = gpstime.day;
-            time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
-            time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+            time.tm_hour = gpstime.hr + setting_get(&setting_gmt_ofs_hr);
+            time.tm_min = gpstime.min + setting_get(&setting_gmt_ofs_min);
             time.tm_sec = gpstime.sec;
+            time.tm_isdst = 0;
 
             clock_set_time(&time);
         }

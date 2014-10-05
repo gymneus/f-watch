@@ -29,7 +29,6 @@
 #include "widgets/status_bar.h"
 #include "widgets/spinbox.h"
 #include "settings/settings.h"
-#include <time.h>
 
 static const int DIST_X = 24;
 static const int POS_X = 10;
@@ -98,30 +97,34 @@ static bool is_valid(void)
 // Sets the hour from spinboxes to GMT offset variable
 static void save(void)
 {
-    struct tm time = setting_gmt_ofs;
+    int hr  = setting_get(&setting_gmt_ofs_hr);
+    int min = setting_get(&setting_gmt_ofs_min);
 
-    time.tm_hour = sb_digit(H1) * 10 + sb_digit(H2);
-    time.tm_min = sb_digit(M1) * 10 + sb_digit(M2);
+    hr  = sb_digit(H1) * 10 + sb_digit(H2);
+    min = sb_digit(M1) * 10 + sb_digit(M2);
 
     if (sb_sign() == '-')
-        time.tm_hour *= -1;
+        hr *= -1;
 
-    setting_gmt_ofs = time;
+    /* setting_apply makes sure no interrupts occur while applying */
+    setting_apply(&setting_gmt_ofs_hr, hr);
+    setting_apply(&setting_gmt_ofs_min, min);
 }
 
 // Sets the spinboxes to the current hour
 static void load(void)
 {
-    struct tm time = setting_gmt_ofs;
+    int hr  = setting_get(&setting_gmt_ofs_hr);
+    int min = setting_get(&setting_gmt_ofs_min);
 
-    if (time.tm_hour < 0) {
-        time.tm_hour *= -1;
+    if (hr < 0) {
+        hr *= -1;
         spinbox_set_value(&sb_time[S], '-');
     }
-    spinbox_set_value(&sb_time[H1], (time.tm_hour / 10) + '0');
-    spinbox_set_value(&sb_time[H2], (time.tm_hour % 10) + '0');
-    spinbox_set_value(&sb_time[M1], (time.tm_min / 10) + '0');
-    spinbox_set_value(&sb_time[M2], (time.tm_min % 10) + '0');
+    spinbox_set_value(&sb_time[H1], (hr / 10) + '0');
+    spinbox_set_value(&sb_time[H2], (hr % 10) + '0');
+    spinbox_set_value(&sb_time[M1], (min / 10) + '0');
+    spinbox_set_value(&sb_time[M2], (min % 10) + '0');
 }
 
 void set_gmt_ofs_main(void* params) {

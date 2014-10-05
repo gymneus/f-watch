@@ -42,8 +42,8 @@ void set_time_fr_gps_main(void *params)
         time.tm_year = gpstime.yr;
         time.tm_mon = gpstime.mon;
         time.tm_mday = gpstime.day;
-        time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
-        time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+        time.tm_hour = gpstime.hr + setting_get(&setting_gmt_ofs_hr);
+        time.tm_min = gpstime.min + setting_get(&setting_gmt_ofs_min);
         time.tm_sec = gpstime.sec;
         time.tm_isdst = 0;
 

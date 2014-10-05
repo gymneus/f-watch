@@ -25,10 +25,15 @@
 #include <stdio.h>
 #include <string.h>
 
-setting_t setting_gps_on        = { "GPS on",           1, 2 };
-setting_t setting_coord_style   = { "Coord style",      1, 3 };
-struct tm setting_gmt_ofs = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-setting_t setting_gps_sets_time = { "GPS sets time",    1, 2 };
+#include <task.h>
+
+setting_t setting_gps_on        = { "GPS on",               1, 2 };
+setting_t setting_coord_style   = { "Coord style",          1, 3 };
+setting_t setting_gps_sets_time = { "GPS sets time",        1, 2 };
+
+/* Settings with nrvals == 0 do not wrap around, they are set externally */
+setting_t setting_gmt_ofs_hr    = { "GMT offset hours"  ,   0, 0 };
+setting_t setting_gmt_ofs_min   = { "GMT offset minutes",   0, 0 };
 
 void setting_change(setting_t *setting)
 {
@@ -40,5 +45,17 @@ void setting_change(setting_t *setting)
 
     sprintf(s, ": %d", v);
 
-    setting->val = v;
+    setting_apply(setting, v);
+}
+
+void setting_apply(setting_t *setting, int val)
+{
+    taskENTER_CRITICAL();
+    setting->val = val;
+    taskEXIT_CRITICAL();
+}
+
+int setting_get(setting_t *setting)
+{
+    return setting->val;
 }
