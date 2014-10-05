@@ -144,6 +144,7 @@ C_SRC +=  \
 ../common/emlib/src/em_timer.c \
 ../common/emlib/src/em_usart.c \
 ../common/emlib/src/em_leuart.c \
+../common/emlib/src/em_msc.c \
 ../common/emdrv/sleep/src/sleep.c \
 ../common/drivers/dmactrl.c \
 ../common/drivers/lcd.c \
@@ -172,6 +173,7 @@ C_SRC +=  \
 ../common/gfx/gfx.c \
 ../common/gfx/ui.c \
 ../common/sincos.c \
+../common/eeprom_emulation.c \
 ../common/usb/src/em_usbd.c \
 ../common/usb/src/em_usbdch9.c \
 ../common/usb/src/em_usbhal.c \

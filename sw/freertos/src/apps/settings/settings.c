@@ -27,31 +27,77 @@
 
 #include <task.h>
 
-setting_t setting_gps_on        = { "GPS on",               1, 2 };
-setting_t setting_coord_style   = { "Coord style",          1, 3 };
-setting_t setting_gps_sets_time = { "GPS sets time",        1, 2 };
+#include <eeprom_emulation.h>
+
+setting_t setting_gps_on        = { "GPS on",           1, 2, 0 };
+setting_t setting_coord_style   = { "Coord style",      1, 3, 0 };
+setting_t setting_gps_sets_time = { "GPS sets time",    1, 2, 0 };
 
 /* Settings with nrvals == 0 do not wrap around, they are set externally */
-setting_t setting_gmt_ofs_hr    = { "GMT offset hours"  ,   0, 0 };
-setting_t setting_gmt_ofs_min   = { "GMT offset minutes",   0, 0 };
+setting_t setting_gmt_ofs_hr    = { "GMT ofs hrs",      0, 0, 0 };
+setting_t setting_gmt_ofs_min   = { "GMT ofs mins",     0, 0, 0 };
+
+static EE_Variable_TypeDef gps_on, coord_style, gps_sets_time,
+                            gmt_ofs_hr, gmt_ofs_min;
+
+void setting_init()
+{
+    /* Start adding virtual addresses to allocated variables */
+    EE_DeclareVariable(&gps_on);
+    EE_DeclareVariable(&coord_style);
+    EE_DeclareVariable(&gps_sets_time);
+    EE_DeclareVariable(&gmt_ofs_hr);
+    EE_DeclareVariable(&gmt_ofs_min);
+
+    /*
+     * Place these virtual addresses to the RAM-stored structs, so we can pass
+     * them to setting_apply() when called
+     */
+    setting_gps_on.fladdr = gps_on.virtualAddress;
+    setting_coord_style.fladdr = coord_style.virtualAddress;
+    setting_gps_sets_time.fladdr = gps_sets_time.virtualAddress;
+    setting_gmt_ofs_hr.fladdr = gmt_ofs_hr.virtualAddress;
+    setting_gmt_ofs_min.fladdr = gmt_ofs_min.virtualAddress;
+
+    /*
+     * EE_Init() fails if the virtual addresses are not found in the flash. If
+     * it fails, we write the default setting values. Otherwise, we apply the
+     * settings in the flash to the setting values in RAM
+     */
+    if (!EE_Init(2)) {
+        EE_Format(2);
+        EE_Write(&gps_on, setting_gps_on.val);
+        EE_Write(&coord_style, setting_coord_style.val);
+        EE_Write(&gps_sets_time, setting_gps_sets_time.val);
+        EE_Write(&gmt_ofs_hr, setting_gmt_ofs_hr.val);
+        EE_Write(&gmt_ofs_min, setting_gmt_ofs_min.val);
+    } else {
+        EE_Read(&gps_on, &setting_gps_on.val);
+        EE_Read(&coord_style, &setting_coord_style.val);
+        EE_Read(&gps_sets_time, &setting_gps_sets_time.val);
+        EE_Read(&gmt_ofs_hr, &setting_gmt_ofs_hr.val);
+        EE_Read(&gmt_ofs_min, &setting_gmt_ofs_min.val);
+    }
+}
 
 void setting_change(setting_t *setting)
 {
     int v = setting->val;
-    char s[16];
 
     v++;
     v %= setting->nrvals;
-
-    sprintf(s, ": %d", v);
 
     setting_apply(setting, v);
 }
 
 void setting_apply(setting_t *setting, int val)
 {
+    EE_Variable_TypeDef eevar;
+    eevar.virtualAddress = setting->fladdr;
+
     taskENTER_CRITICAL();
     setting->val = val;
+    EE_Write(&eevar, val);
     taskEXIT_CRITICAL();
 }
 

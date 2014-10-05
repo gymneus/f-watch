@@ -27,6 +27,7 @@
 #include <em_chip.h>
 #include <em_gpio.h>
 #include <em_cmu.h>
+#include <em_msc.h>
 #include <sleep.h>
 
 #include <drivers/i2cdrv.h>
@@ -40,6 +41,7 @@
 
 #include <gfx/ui.h>
 #include <apps/app_list.h>
+#include "settings/settings.h"
 #include "battery_task.h"
 #include "blight_task.h"
 #include "state.h"
@@ -55,12 +57,15 @@ int main(void)
     CHIP_Init();
 
     // Enable clocks
-    //CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+    CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
     I2CDRV_Init(&i2cInit);
+
+	MSC_Init();
+	setting_init();
 
 #ifdef DEBUG
     usbdbg_init();

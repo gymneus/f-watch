@@ -30,10 +30,13 @@
 
 #include "application.h"
 
+#include <stdint.h>
+
 typedef struct setting {
     char name[16];
-    int val;
-    int nrvals;
+    uint16_t val;		// uint16_t to comply to eeprom_emulation code
+    uint16_t nrvals;
+	uint16_t fladdr;
 } setting_t;
 
 extern application set_time;
@@ -47,6 +50,7 @@ extern setting_t setting_gmt_ofs_hr;
 extern setting_t setting_gmt_ofs_min;
 extern setting_t setting_gps_sets_time;
 
+void setting_init();
 void setting_change(setting_t *setting);
 void setting_apply(setting_t *setting, int val);
 int  setting_get(setting_t *setting);
