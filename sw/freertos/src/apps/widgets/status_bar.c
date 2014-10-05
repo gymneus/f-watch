@@ -68,7 +68,7 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
     case GPS_OFF:
         memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
-        // fall-through
+        break;
 
     case BATTERY_STATUS:
         if(abs(percentage - evt->data.battery.percentage) > 5 ||
@@ -77,6 +77,7 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
             charging = evt->data.battery.charging;
             w->flags |= WF_DIRTY;
         }
+        break;
     }
 }
 
