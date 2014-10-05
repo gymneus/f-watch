@@ -25,8 +25,8 @@
  */
 
 #include "application.h"
-#include "widgets/status_bar.h"
 #include <drivers/lsm303c.h>
+#include <gfx/ui.h>
 #include <bitmaps.h>
 #include <sincos.h>
 
@@ -125,10 +125,6 @@ void compass_main(void *params)
 	ui_add_child(&compass_screen, &compass_widget);
 	ui_add_widget(&compass_screen);
 
-	/*TODO: comment this out ?*/
-	ui_init_widget(&status_bar);
-	ui_add_widget(&status_bar);
-
 	/*draw screen for the first time*/
 	ui_update(NULL);
 
@@ -206,7 +202,6 @@ void compass_main(void *params)
 			}
 			ui_update(&evt);
 		}
-
 	}
 }
 
