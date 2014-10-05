@@ -135,7 +135,8 @@ void compass_main(void *params)
 			case BUTTON_PRESSED:
 				if(evt.data.button == BUT_TR)
 					return;
-				if(evt.data.button == BUT_BR) {
+
+				/*if(evt.data.button == BUT_BR) {
 					c_min.x = 0x7fff;
 					c_min.y = 0x7fff;
 					c_min.z = 0x7fff;
@@ -150,7 +151,7 @@ void compass_main(void *params)
 				}
 				if(evt.data.button == BUT_TL && calib==2) {
 					calib = 0;
-				}
+				}*/
 			}
 		}
 		else {
