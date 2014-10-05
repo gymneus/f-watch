@@ -66,7 +66,7 @@ static void digital_watch_event(struct ui_widget *w, const struct event *evt) {
 struct ui_widget digital_watch = {
     digital_watch_redraw,
     digital_watch_event,
-    { 0, 35, 127, 35 + 53 },
+    { 0, 35, 127, 35 + 58 },
     0,
     WF_ACTIVE | WF_VISIBLE
 };
