@@ -88,6 +88,7 @@ static void gpsbkgnd_task(void *params)
             time.tm_wday = gpstime.day;
             time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
             time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+            time.tm_sec = gpstime.sec;
 
             clock_set_time(&time);
         }

@@ -38,7 +38,7 @@ void set_time_fr_gps_main(void *params)
 
     if (gps_fixed()) {
         gps_get_utc(&gpstime);
-        sprintf(b, "BEF: %d-%d-%d %d:%d:%d\r\n",
+        sprintf(b, "GPS: %d-%d-%d %d:%d:%d\r\n",
                         gpstime.yr, gpstime.mon, gpstime.day,
                         gpstime.hr, gpstime.min, gpstime.sec);
         usbdbg_puts(b);
@@ -53,6 +53,8 @@ void set_time_fr_gps_main(void *params)
         time.tm_wday = gpstime.day;
         time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
         time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+        time.tm_sec = gpstime.sec;
+        time.tm_isdst = 0;
 
         sprintf(b, "AFT: %d-%d-%d %d:%d:%d\r\n",
                         time.tm_year, time.tm_mon, time.tm_wday,
