@@ -27,7 +27,7 @@
 
 setting_t setting_gps_on        = { "GPS on",           1, 2 };
 setting_t setting_coord_style   = { "Coord style",      1, 3 };
-struct tm setting_gmt_ofs;
+struct tm setting_gmt_ofs = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 setting_t setting_gps_sets_time = { "GPS sets time",    1, 2 };
 
 void setting_change(setting_t *setting)

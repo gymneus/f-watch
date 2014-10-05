@@ -32,14 +32,14 @@
 #include <time.h>
 
 static const int DIST_X = 24;
-static const int POS_X = 20;
+static const int POS_X = 10;
 static const int POS_Y = 30;
 static const int SIZE_X = 16;
 static const int SIZE_Y = 38;
 
 static void set_time_redraw(struct ui_widget *w)
 {
-    gfx_centered_text(&w->dc, &font_helv38b, POS_Y, ":", 1);
+    gfx_text(&w->dc, &font_helv38b, POS_X + 3 * DIST_X - 9, POS_Y, ":", 1);
 }
 
 static struct ui_widget set_time_screen = {
@@ -51,13 +51,15 @@ static struct ui_widget set_time_screen = {
     NULL
 };
 
-#define SPINBOX_NUMBER 4
-enum SPINBOX { H1 = 0, H2, M1, M2 };
+#define SPINBOX_NUMBER 5
+enum SPINBOX { S = 0, H1, H2, M1, M2 };
 
+static const char const *sign = "+-";
 static const char const *hours1 = "01";
 static const char const *minutes1 = "012345";
 
 static const char **char_sets[SPINBOX_NUMBER] = {
+    &sign,
     &hours1, &char_digits,           // character set for hours
     &minutes1, &char_digits         // character set for minutes
 };
@@ -74,19 +76,35 @@ static inline char sb_digit(int idx)
     return spinbox_get_value(&sb_time[idx]) - '0';
 }
 
+static inline char sb_sign()
+{
+    return spinbox_get_value(&sb_time[S]);
+}
+
 // Checks if spinboxes contain correct values
 static bool is_valid(void)
 {
-    return (sb_digit(H1) < 1 && sb_digit(M1) < 6);
+    bool r = true;
+    if (sb_sign() == '-') {
+        if ((sb_digit(H1) == 1) && (sb_digit(H2) >= 3))
+            r = false;
+    } else if (sb_sign() == '+') {
+        if ((sb_digit(H1) == 1) && (sb_digit(H2) >= 5))
+            r = false;
+    }
+    return r;
 }
 
 // Sets the hour from spinboxes to GMT offset variable
 static void save(void)
 {
-    struct tm time;
+    struct tm time = setting_gmt_ofs;
 
     time.tm_hour = sb_digit(H1) * 10 + sb_digit(H2);
     time.tm_min = sb_digit(M1) * 10 + sb_digit(M2);
+
+    if (sb_sign() == '-')
+        time.tm_hour *= -1;
 
     setting_gmt_ofs = time;
 }
@@ -96,6 +114,10 @@ static void load(void)
 {
     struct tm time = setting_gmt_ofs;
 
+    if (time.tm_hour < 0) {
+        time.tm_hour *= -1;
+        spinbox_set_value(&sb_time[S], '-');
+    }
     spinbox_set_value(&sb_time[H1], (time.tm_hour / 10) + '0');
     spinbox_set_value(&sb_time[H2], (time.tm_hour % 10) + '0');
     spinbox_set_value(&sb_time[M1], (time.tm_min / 10) + '0');
@@ -116,8 +138,8 @@ void set_gmt_ofs_main(void* params) {
                            POS_X + i * DIST_X + SIZE_X, POS_Y + SIZE_Y};
         spinbox_init_widget(&sb_time[i], pos, *char_sets[i]);
     }
-    sb_index = H1;
-    spinbox_set_active(&sb_time[H1], true);
+    sb_index = S;
+    spinbox_set_active(&sb_time[S], true);
 
     ui_init_widget(&set_time_screen);
 
@@ -155,8 +177,8 @@ void set_gmt_ofs_main(void* params) {
                     } else {
                         // the set hour is invalid, start from the beginning
                         spinbox_set_active(&sb_time[sb_index], false);
-                        sb_index = H1;
-                        spinbox_set_active(&sb_time[H1], true);
+                        sb_index = S;
+                        spinbox_set_active(&sb_time[S], true);
                     }
                 }
 

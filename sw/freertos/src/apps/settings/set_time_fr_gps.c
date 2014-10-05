@@ -43,11 +43,21 @@ void set_time_fr_gps_main(void *params)
                         gpstime.hr, gpstime.min, gpstime.sec);
         usbdbg_puts(b);
 
+        sprintf(b, "OFS: %d-%d-%d %d:%d:%d\r\n",
+            setting_gmt_ofs.tm_year, setting_gmt_ofs.tm_mon, setting_gmt_ofs.tm_wday,
+            setting_gmt_ofs.tm_hour, setting_gmt_ofs.tm_min, setting_gmt_ofs.tm_sec);
+        usbdbg_puts(b);
+
         time.tm_year = gpstime.yr;
         time.tm_mon = gpstime.mon;
         time.tm_wday = gpstime.day;
         time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
         time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
+
+        sprintf(b, "AFT: %d-%d-%d %d:%d:%d\r\n",
+                        time.tm_year, time.tm_mon, time.tm_wday,
+                        time.tm_hour, time.tm_min, time.tm_sec);
+        usbdbg_puts(b);
 
         clock_set_time(&time);
     }
