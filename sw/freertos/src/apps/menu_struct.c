@@ -38,16 +38,24 @@ int get_menu_size(const menu_list *menu) {
     return len;
 }
 
+menu_list gps_settings_menu = {
+    "GPS settings",
+    {
+        { SETTING,  NULL,               { .setting = &setting_gps_on } },
+        { SETTING,  NULL,               { .setting = &setting_coord_style } },
+        { SETTING,  NULL,               { .setting = &setting_gps_sets_time } },
+        { APP,      &clock_icon,        { .app = &set_gmt_ofs } },
+        { APP,      &clock_icon,        { .app = &set_time_fr_gps } },
+        { END,      NULL,               { NULL } }
+    }
+};
+
 menu_list settings_menu = {
     "Settings",
     {
         { APP,      &clock_icon,        { .app = &set_time } },
         { APP,      &date_icon,         { .app = &set_date } },
-        { SETTING,  NULL,               { .setting = &setting_gps_on } },
-        { SETTING,  NULL,               { .setting = &setting_coord_style } },
-        { SETTING,  NULL,               { .setting = &setting_gps_sets_time } },
-        { APP,      &gps_receiving,     { .app = &set_gmt_ofs } },
-        { APP,      &clock_icon,        { .app = &set_time_fr_gps } },
+        { SUBMENU,  &gps_receiving,     { .submenu = &gps_settings_menu } },
         { END,      NULL,               { NULL } }
     }
 };
