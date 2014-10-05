@@ -198,7 +198,9 @@ void set_date_main(void* params) {
                 ui_update(&evt);
                 break;
 
-            default:    // suppress warnings
+            /* Update UI on any event, so the status bar is updated */
+            default:
+                ui_update(&evt);
                 break;
             }
         }
