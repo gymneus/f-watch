@@ -38,14 +38,16 @@
 #include <drivers/vibra.h>
 #include <drivers/gps.h>
 
-#include <usbdbg.h>
-
 #include <gfx/ui.h>
 #include <apps/app_list.h>
 #include "battery_task.h"
 #include "blight_task.h"
 #include "state.h"
 #include "gpsbkgnd_task.h"
+
+#ifdef DEBUG
+#include <usbdbg.h>
+#endif
 
 int main(void)
 {
@@ -60,7 +62,9 @@ int main(void)
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
     I2CDRV_Init(&i2cInit);
 
+#ifdef DEBUG
     usbdbg_init();
+#endif
 
     backlight_init();
     buttons_init();

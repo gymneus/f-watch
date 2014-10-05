@@ -35,7 +35,6 @@
  * TODO: -
  *==============================================================================
  */
-#include <stdio.h>
 #include <string.h>
 
 #include <em_device.h>
@@ -46,7 +45,9 @@
 #include <drivers/gps.h>
 #include <nmea/nmea.h>
 
+#ifdef DEBUG
 #include <usbdbg.h>
+#endif
 
 static char rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
@@ -153,7 +154,11 @@ void gps_parse_nmea(const char *buf)
 {
     // TODO: check return of nmea_parse
     nmea_parse(&parser, buf, strlen(buf), &info);
-#if defined(GPS_DBG)
+#ifdef DEBUG
+    /*
+     * NOTE: usbdbg_init() should be called EXTERNALLY, BEFORE gps_init() is
+     * called
+     * */
     usbdbg_puts(buf);
 #endif
 }

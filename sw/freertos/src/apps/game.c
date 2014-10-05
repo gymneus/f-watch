@@ -28,7 +28,6 @@
 #include "widgets/status_bar.h"
 #include <drivers/lsm303c.h>
 #include <sincos.h>
-#include <usbdbg.h>
 
 #define S_WIN_X0 5
 #define S_WIN_Y0 25

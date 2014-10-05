@@ -28,9 +28,12 @@
 #include <drivers/gps.h>
 #include <event.h>
 
+#include <time.h>
+
+#ifdef DEBUG
 #include <usbdbg.h>
 #include <stdio.h>
-#include <time.h>
+#endif
 
 #include "application.h"
 #include "clock.h"
