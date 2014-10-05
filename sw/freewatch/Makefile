@@ -166,8 +166,7 @@ C_SRC += \
 ../common/gfx/font_helv17b.c \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
-../common/pp_printf/vsprintf-xint.c \
-../common/udelay.c \
+../common/pp_printf/vsprintf-xint.c
 main.c
 #../common/drivers/display.c \
 #../common/drivers/displayls013b7dh03.c \

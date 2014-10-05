@@ -134,6 +134,7 @@ INCLUDEPATHS += \
 -I../common/emlib/inc \
 -I../common/drivers \
 -I../common/gfx \
+-I../common/usb \
 -I../common/usb/inc \
 -I../common \
 -I../common/reptile/fatfs/inc \
@@ -165,18 +166,18 @@ C_SRC += \
 ../common/gfx/font_helv17b.c \
 ../common/gfx/font_xm4x5.c \
 ../common/gfx/font_xm4x6.c \
-../common/delay.c \
 ../common/reptile/fatfs/src/diskio.c \
 ../common/reptile/fatfs/src/ff.c \
 ../common/drivers/microsd.c \
-../common/drivers/msdd.c \
 ../common/usb/src/em_usbd.c \
 ../common/usb/src/em_usbdch9.c \
 ../common/usb/src/em_usbhal.c \
 ../common/usb/src/em_usbdep.c \
 ../common/usb/src/em_usbdint.c \
 ../common/usb/src/em_usbtimer.c \
-msddmedia.c \
+../common/usb/msdd.c \
+../common/delay.c \
+../common/msddmedia.c \
 main.c
 
 s_SRC += 

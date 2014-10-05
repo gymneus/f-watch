@@ -117,11 +117,13 @@ INCLUDEPATHS += \
 -I../common/CMSIS/Include \
 -I../common/Device/EnergyMicro/EFM32GG/Include \
 -I../common \
+-I../common/drivers \
 -I../common/usb \
 -I../common/usb/inc \
 -I../common/emlib/inc \
 -I../common/emdrv/sleep/inc \
--I../common/nmealib/include
+-I../common/nmealib/include \
+-I../common/reptile/fatfs/inc
 
 ####################################################################
 # Files                                                            #
@@ -155,6 +157,7 @@ C_SRC +=  \
 ../common/drivers/i2cdrv.c \
 ../common/drivers/light_sensor.c \
 ../common/drivers/max17047.c \
+../common/drivers/microsd.c \
 ../common/drivers/rtc.c \
 ../common/drivers/vibra.c \
 ../common/drivers/lsm303c.c \
@@ -172,6 +175,8 @@ C_SRC +=  \
 ../common/gfx/font_xm5x8.c \
 ../common/gfx/gfx.c \
 ../common/gfx/ui.c \
+../common/reptile/fatfs/src/diskio.c \
+../common/reptile/fatfs/src/ff.c \
 ../common/sincos.c \
 ../common/eeprom_emulation.c \
 ../common/usb/src/em_usbd.c \
@@ -181,6 +186,8 @@ C_SRC +=  \
 ../common/usb/src/em_usbdint.c \
 ../common/usb/src/em_usbtimer.c \
 ../common/usb/usbdbg.c \
+../common/usb/msddmedia.c \
+../common/usb/msdd.c \
 ../common/nmealib/src/context.c \
 ../common/nmealib/src/generate.c \
 ../common/nmealib/src/generator.c \
@@ -214,6 +221,7 @@ src/apps/menu.c \
 src/apps/menu_struct.c \
 src/apps/gpscoord.c \
 src/apps/reset.c \
+src/apps/usb_mass_storage.c \
 src/main.c \
 src/battery_task.c \
 src/blight_task.c \

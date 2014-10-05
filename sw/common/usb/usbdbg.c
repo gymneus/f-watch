@@ -112,6 +112,7 @@ void usbdbg_init()
  *****************************************************************************/
 int usbdbg_puts(const char *s)
 {
+#ifdef DEBUG
         int cnt = 0;
         static char __attribute__((aligned(4))) buf[USBDBG_BULK_EP_SIZE];
 
@@ -130,6 +131,7 @@ int usbdbg_puts(const char *s)
 
         /* Call USB stack function we're so desperately trying to hide */
         USBD_Write(USBDBG_EP_DATA_OUT, (void *)buf, strlen(buf), NULL);
+#endif /* DEBUG */
 
         return 1;
 }

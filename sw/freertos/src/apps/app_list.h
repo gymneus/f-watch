@@ -37,6 +37,7 @@ extern application compass;
 extern application game;
 extern application gpscoord;
 extern application reset;
+extern application usb_ms;
 
 #endif /* APP_LIST_H */
 

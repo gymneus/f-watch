@@ -46,6 +46,9 @@
 #include "blight_task.h"
 #include "state.h"
 #include "gpsbkgnd_task.h"
+#include "msdd.h"
+#include "msddmedia.h"
+#include "usbconfig.h"
 
 #ifdef DEBUG
 #include <usbdbg.h>
@@ -58,14 +61,15 @@ int main(void)
 
     // Enable clocks
     CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+    CMU_OscillatorEnable(cmuOsc_LFXO, true, false);
     CMU_ClockEnable(cmuClock_HFPER, true);
     CMU_ClockEnable(cmuClock_GPIO, true);
 
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
     I2CDRV_Init(&i2cInit);
 
-	MSC_Init();
-	setting_init();
+    MSC_Init();
+    setting_init();
 
 #ifdef DEBUG
     usbdbg_init();
