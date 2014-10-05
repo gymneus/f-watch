@@ -80,12 +80,12 @@ static void gpsbkgnd_task(void *params)
 //        usbdbg_puts(b);
 
         if (firstfix ||
-                ((time.tm_hour == 12) && (time.tm_min == 00))) {
+                ((time.tm_hour == 12) && (time.tm_min == 0))) {
             gps_get_utc(&gpstime);
 
             time.tm_year = gpstime.yr;
             time.tm_mon = gpstime.mon;
-            time.tm_wday = gpstime.day;
+            time.tm_mday = gpstime.day;
             time.tm_hour = gpstime.hr + setting_gmt_ofs.tm_hour;
             time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
             time.tm_sec = gpstime.sec;
