@@ -28,9 +28,6 @@
 #include "clock.h"
 #include "settings.h"
 
-#include <usbdbg.h>
-#include <stdio.h>
-
 void set_time_fr_gps_main(void *params)
 {
     /* Avoid compiler warning */
@@ -38,19 +35,9 @@ void set_time_fr_gps_main(void *params)
 
     struct tm time;
     struct gps_utc gpstime;
-    char b[32];
 
     if (gps_fixed()) {
         gps_get_utc(&gpstime);
-        sprintf(b, "GPS: %d-%d-%d %d:%d:%d\r\n",
-                        gpstime.yr, gpstime.mon, gpstime.day,
-                        gpstime.hr, gpstime.min, gpstime.sec);
-        usbdbg_puts(b);
-
-        sprintf(b, "OFS: %d-%d-%d %d:%d:%d\r\n",
-            setting_gmt_ofs.tm_year, setting_gmt_ofs.tm_mon, setting_gmt_ofs.tm_mday,
-            setting_gmt_ofs.tm_hour, setting_gmt_ofs.tm_min, setting_gmt_ofs.tm_sec);
-        usbdbg_puts(b);
 
         time.tm_year = gpstime.yr;
         time.tm_mon = gpstime.mon;
@@ -59,11 +46,6 @@ void set_time_fr_gps_main(void *params)
         time.tm_min = gpstime.min + setting_gmt_ofs.tm_min;
         time.tm_sec = gpstime.sec;
         time.tm_isdst = 0;
-
-        sprintf(b, "AFT: %d-%d-%d %d:%d:%d\r\n",
-                        time.tm_year, time.tm_mon, time.tm_mday,
-                        time.tm_hour, time.tm_min, time.tm_sec);
-        usbdbg_puts(b);
 
         clock_set_time(&time);
     }

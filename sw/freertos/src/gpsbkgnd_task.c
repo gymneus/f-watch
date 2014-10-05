@@ -68,16 +68,9 @@ static void gpsbkgnd_task(void *params)
         return;
     }
 
-    char b[64];
-
     /* Set time from GPS at first fix or midday */
     if (setting_gps_sets_time.val && gps_fixed()) {
         time = clock_get_time();
-
-//        sprintf(b, "BEF: %d-%d-%d %d:%d:%d\r\n",
-//                        time.tm_year, time.tm_mon, time.tm_wday,
-//                        time.tm_hour, time.tm_min, time.tm_sec);
-//        usbdbg_puts(b);
 
         if (firstfix ||
                 ((time.tm_hour == 12) && (time.tm_min == 0))) {
