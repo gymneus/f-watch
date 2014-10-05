@@ -1,0 +1,8 @@
+Make a binary blob (bootloader + application) for direct download to EFM32
+flash. The script asks for the binary and the application bitstreams and
+produces a blob with the following memory map:
+
+0x0000  bootloader
+0x8000  application
+
+NOTE: only supports .bin files for now.
