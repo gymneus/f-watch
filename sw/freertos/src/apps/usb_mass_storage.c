@@ -83,7 +83,7 @@ void usb_ms_main(void* params) {
         if(xQueueReceive(appQueue, &evt, 1)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
-                if(evt.data.button == BUT_TL) {
+                if(evt.data.button == BUT_TR) {
                     USBD_Stop();
                     return;             // go back to the main menu
                 }
