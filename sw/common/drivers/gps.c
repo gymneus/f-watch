@@ -159,7 +159,7 @@ void gps_parse_nmea(const char *buf)
     /*
      * NOTE: usbdbg_init() should be called EXTERNALLY, BEFORE gps_init() is
      * called
-     * */
+     */
     usbdbg_puts(buf);
 #endif
 }

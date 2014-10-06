@@ -85,7 +85,7 @@ int main(void)
     vibra_init();
     rtc_init();
     lcd_init();
-    gps_init(setting_gps_on.val);
+    gps_init(setting_get(&setting_gps_on));
 
     ui_init();
     auto_backlight_init();
