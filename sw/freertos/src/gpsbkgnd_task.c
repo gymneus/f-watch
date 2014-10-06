@@ -33,7 +33,6 @@
 
 #ifdef DEBUG
 #include <usbdbg.h>
-#include <stdio.h>
 #endif
 
 #include "application.h"
@@ -43,6 +42,9 @@
 #include <microsd.h>
 #include <diskio.h>
 
+#include <stdio.h>
+#include <string.h>
+
 #define GPSBKGND_TIMER_PERIOD (1000 / portTICK_RATE_MS)
 
 static xTimerHandle timerGps;
@@ -50,8 +52,7 @@ extern xSemaphoreHandle mutexSdCardAccess;
 
 static int firstrun, firstfix;
 static int cgpson, pgpson;
-
-static int runcnt = 0;
+static int ctrack, ptrack;
 
 static FIL f;
 static FATFS fatfs;
@@ -68,7 +69,7 @@ static void gpsbkgnd_task(void *params)
     struct tm time;
     struct gps_utc gpstime;
 
-    /* Previous and current state of GPS on setting at timer tick */
+    /* Previous and current state of settings */
     pgpson = cgpson;
     cgpson = setting_get(&setting_gps_on);
 
@@ -108,30 +109,33 @@ static void gpsbkgnd_task(void *params)
     }
 
     /* Track GPS position if setting tells us to */
-    if (setting_get(&setting_tracking) &&
-            xSemaphoreTake(mutexSdCardAccess, 0) ) {
+    ptrack = ctrack;
+    ctrack = setting_get(&setting_tracking);
+    if (ctrack) {
 
-        if (firstrun) {
+        /* Init stuff, open file & take semaphore so that only we write to SD */
+        if (firstrun || !ptrack) {
+            xSemaphoreTake(mutexSdCardAccess, 0);
             MICROSD_Init();
             disk_initialize(0);
             f_mount(0, &fatfs);
-            f_open(&f, "hello", FA_CREATE_ALWAYS | FA_WRITE);
+            f_open(&f, "yellow", FA_CREATE_ALWAYS | FA_WRITE);
             f_lseek(&f, 0);
-            int i;
-            for (i = 0; i < 10000; i++)
-                ;
         }
 
-        char buf[32];
-        int len;
-        UINT read;
-        sprintf(buf, "hello, world!\n");
-        len = strlen(buf);
-        f_write(&f, buf, len, &read);
-        if (++runcnt == 4) {
-            xSemaphoreGive(mutexSdCardAccess);
-            f_close(&f);
+        /* Write to file if gps is fixed */
+        if (gps_fixed()) {
+            f_printf(&f, "%d\n", gps_fixed());
         }
+
+    } else if (!ctrack && ptrack) {
+        /*
+         * Turned off tracking setting => close file, deinit microsd driver and
+         * give mutex so that the USB mass storage device can take it
+         */
+        f_close(&f);
+        MICROSD_Deinit();
+        xSemaphoreGive(mutexSdCardAccess);
     }
 
     if (firstrun)

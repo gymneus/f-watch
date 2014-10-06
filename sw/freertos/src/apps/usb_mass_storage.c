@@ -32,7 +32,12 @@
 #include "msddmedia.h"
 #include "em_usb.h"
 
+#include <semphr.h>
+
 static bool init_ok;
+static int mutexours = 0;
+
+extern xSemaphoreHandle mutexSdCardAccess;
 
 static void usb_ms_redraw(struct ui_widget *w)
 {
@@ -40,11 +45,13 @@ static void usb_ms_redraw(struct ui_widget *w)
 
     gfx_centered_text(&w->dc, &font_helv17b, 30, "USB mass storage", 1);
 
-    if(init_ok) {
+    if (mutexours && init_ok) {
         gfx_centered_text(&w->dc, &font_helv17b, 30 + 18, "enabled", 1);
 
         gfx_centered_text(&w->dc, &font_helv11, 80, "unmount the device", 1);
         gfx_centered_text(&w->dc, &font_helv11, 80 + 12, "before unplugging", 1);
+    } else if (!mutexours) {
+        gfx_centered_text(&w->dc, &font_helv17b, 80, "media in use", 1);
     } else {
         gfx_centered_text(&w->dc, &font_helv17b, 80, "media error", 1);
     }
@@ -71,20 +78,27 @@ void usb_ms_main(void* params) {
     ui_init_widget(&status_bar);
     ui_add_widget(&status_bar);
 
-    init_ok = MSDDMEDIA_Init();
+    if (xSemaphoreTake(mutexSdCardAccess, 0)) {
+        mutexours = 1;
+        init_ok = MSDDMEDIA_Init();
+        if(init_ok) {
+            MSDD_Init(-1, -1);
+        }
+    }
 
     ui_update(NULL);
 
-    if(init_ok) {
-        MSDD_Init(-1, -1);
-    }
 
     while(1) {
         if(xQueueReceive(appQueue, &evt, 1)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
                 if(evt.data.button == BUT_TR) {
-                    USBD_Stop();
+                    if (mutexours) {
+                        mutexours = 0;
+                        USBD_Stop();
+                        xSemaphoreGive(mutexSdCardAccess);
+                    }
                     return;             // go back to the main menu
                 }
                 break;
@@ -94,9 +108,7 @@ void usb_ms_main(void* params) {
                 ui_update(&evt);
                 break;
             }
-        }
-        else
-        {
+        } else if (mutexours) {
             MSDD_Handler();
         }
     }
