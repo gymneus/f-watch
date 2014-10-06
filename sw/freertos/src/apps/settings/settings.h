@@ -49,6 +49,7 @@ extern setting_t setting_coord_style;
 extern setting_t setting_gmt_ofs_hr;
 extern setting_t setting_gmt_ofs_min;
 extern setting_t setting_gps_sets_time;
+extern setting_t setting_tracking;
 
 void setting_init();
 void setting_change(setting_t *setting);

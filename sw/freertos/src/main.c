@@ -54,6 +54,8 @@
 #include <usbdbg.h>
 #endif
 
+xSemaphoreHandle mutexSdCardAccess;
+
 int main(void)
 {
     // Chip errata
@@ -67,6 +69,8 @@ int main(void)
 
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
     I2CDRV_Init(&i2cInit);
+
+    mutexSdCardAccess = xSemaphoreCreateMutex();
 
     MSC_Init();
     setting_init();

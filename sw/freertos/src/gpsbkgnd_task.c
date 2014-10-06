@@ -22,6 +22,7 @@
 
 #include <FreeRTOS.h>
 #include <timers.h>
+#include <semphr.h>
 
 #include "settings/settings.h"
 
@@ -38,12 +39,27 @@
 #include "application.h"
 #include "clock.h"
 
+#include <ff.h>
+#include <microsd.h>
+#include <diskio.h>
+
 #define GPSBKGND_TIMER_PERIOD (1000 / portTICK_RATE_MS)
 
 static xTimerHandle timerGps;
+extern xSemaphoreHandle mutexSdCardAccess;
 
 static int firstrun, firstfix;
 static int cgpson, pgpson;
+
+static int runcnt = 0;
+
+static FIL f;
+static FATFS fatfs;
+
+DWORD get_fattime(void)
+{
+  return (28 << 25) | (2 << 21) | (1 << 16);
+}
 
 static void gpsbkgnd_task(void *params)
 {
@@ -59,8 +75,6 @@ static void gpsbkgnd_task(void *params)
     /* Pulse GPS ON_OFF pin if setting changed */
     if ((pgpson != cgpson) && !firstrun)
         gps_on_off_pulse();
-    if (firstrun)
-        firstrun = 0;
 
     if (!cgpson) {
         /* Turn off status bar icon if GPS turns off */
@@ -92,6 +106,36 @@ static void gpsbkgnd_task(void *params)
 
         if (firstfix) firstfix = 0;
     }
+
+    /* Track GPS position if setting tells us to */
+    if (setting_get(&setting_tracking) &&
+            xSemaphoreTake(mutexSdCardAccess, 0) ) {
+
+        if (firstrun) {
+            MICROSD_Init();
+            disk_initialize(0);
+            f_mount(0, &fatfs);
+            f_open(&f, "hello", FA_CREATE_ALWAYS | FA_WRITE);
+            f_lseek(&f, 0);
+            int i;
+            for (i = 0; i < 10000; i++)
+                ;
+        }
+
+        char buf[32];
+        int len;
+        UINT read;
+        sprintf(buf, "hello, world!\n");
+        len = strlen(buf);
+        f_write(&f, buf, len, &read);
+        if (++runcnt == 4) {
+            xSemaphoreGive(mutexSdCardAccess);
+            f_close(&f);
+        }
+    }
+
+    if (firstrun)
+        firstrun = 0;
 
     e.type = GPS_TICK;
     xQueueSendToBack(appQueue, (void *)&e, 0);
