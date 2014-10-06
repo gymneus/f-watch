@@ -261,7 +261,7 @@ all:      debug
 debug:    CFLAGS += -DDEBUG -O0 -g -DDEBUG_EFM
 debug:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release:  CFLAGS += -DNDEBUG -O3
+release:  CFLAGS += -DNDEBUG -O1
 release:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files
