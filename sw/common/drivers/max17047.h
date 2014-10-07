@@ -243,7 +243,7 @@ uint16_t max17047_get_time_left(void);
  */
 static inline bool max17047_is_charging(void)
 {
-    return (max17047_get_current() > 0);
+    return (max17047_get_current() >= 0);
 }
 
 #endif /*__MAX17047_H_ */
