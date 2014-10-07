@@ -54,6 +54,7 @@ static int firstrun, firstfix;
 static int gpson, pgpson;
 static int track, ptrack;
 static int open = 0;
+static int mutexours = 0;
 
 static FIL f;
 static FATFS fatfs;
@@ -71,8 +72,10 @@ static void gpsbkgnd_task(void *params)
     struct gps_utc gpstime;
     struct gps_coord gpscoord;
     char buf[80];
+    char fname[64];
+    UINT dummy;
 
-    /* Previous and current state of settings */
+    /* Previous and current state of GPS ON setting */
     pgpson = gpson;
     gpson = setting_get(&setting_gps_on);
 
@@ -116,32 +119,49 @@ static void gpsbkgnd_task(void *params)
     track = setting_get(&setting_tracking);
     if (track) {
 
-        /* Init stuff & take semaphore so that only we write to SD */
-        if (firstrun || !ptrack) {
-            xSemaphoreTake(mutexSdCardAccess, 0);
-            MICROSD_Init();
-            disk_initialize(0);
-            f_mount(0, &fatfs);
-            f_open(&f, "blah", FA_CREATE_ALWAYS | FA_WRITE);
-            f_lseek(&f, 0);
-            open = 1;
+        /*
+         * On first run or tracking setting change, init stuff & take semaphore
+         * so that only we write to SD; also retry getting the mutex if we
+         * couldn't on the previous run.
+         */
+        if (firstrun || !ptrack || !mutexours) {
+            if (xSemaphoreTake(mutexSdCardAccess, 0)) {
+                mutexours = 1;
+                MICROSD_Init();
+                disk_initialize(0);
+                f_mount(0, &fatfs);
+                open = 1;
+            }
         }
 
-        /* Write to file if gps is fixed */
-        if (gps_fixed()) {
-//            if (open) {
-//                open = 0;
-//                gps_get_utc(&gpstime);
-//                sprintf(buf, "track_%d-%d-%d_%dh%dm", 1900 + gpstime.yr,
-//                                1 + gpstime.mon, gpstime.day,
-//                                gpstime.hr + setting_get(&setting_gmt_ofs_hr),
-//                                gpstime.min + setting_get(&setting_gmt_ofs_min));
-//                f_open(&f, buf, FA_CREATE_ALWAYS | FA_WRITE);
-//                f_lseek(&f, 0);
-//            }
-            gps_get_coord(&gpscoord, 2);
-            sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
-            f_write(&f, buf, strlen(buf), NULL);
+        /* Write to file if gps is fixed and mutex tells us we can write to SD */
+        if (gps_fixed() && mutexours) {
+            if (open) {
+                /*
+                 * We open the file here so that we can give it a name according
+                 * to current time
+                 */
+                gps_get_utc(&gpstime);
+                sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
+                                1900 + gpstime.yr, 1 + gpstime.mon, gpstime.day,
+                                gpstime.hr + setting_get(&setting_gmt_ofs_hr),
+                                gpstime.min + setting_get(&setting_gmt_ofs_min),
+                                gpstime.sec);
+                open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
+                if (!open)
+                    f_lseek(&f, 0);
+            } else {
+                /*
+                 * When we've opened (f_open() returns 0 on success), start
+                 * putting coords into file
+                 */
+                gps_get_coord(&gpscoord, 2);
+                sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
+                usbdbg_puts(buf);
+                FRESULT r = f_write(&f, buf, strlen(buf), &dummy);
+                sprintf(buf, "r=%d\r\n", r);
+                usbdbg_puts(buf);
+            }
         }
 
     } else if (!track && ptrack) {
@@ -151,13 +171,14 @@ static void gpsbkgnd_task(void *params)
          */
         f_close(&f);
         MICROSD_Deinit();
-        open = 1;
+        mutexours = 0;
         xSemaphoreGive(mutexSdCardAccess);
     }
 
     if (firstrun)
         firstrun = 0;
 
+    /* Tickle tasks waiting for the GPS */
     e.type = GPS_TICK;
     xQueueSendToBack(appQueue, (void *)&e, 0);
 }

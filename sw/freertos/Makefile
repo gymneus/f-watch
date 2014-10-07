@@ -177,6 +177,7 @@ C_SRC +=  \
 ../common/gfx/ui.c \
 ../common/reptile/fatfs/src/diskio.c \
 ../common/reptile/fatfs/src/ff.c \
+../common/reptile/fatfs/src/option/ccsbcs.c \
 ../common/sincos.c \
 ../common/eeprom_emulation.c \
 ../common/usb/src/em_usbd.c \
@@ -261,7 +262,7 @@ all:      debug
 debug:    CFLAGS += -DDEBUG -O0 -g -DDEBUG_EFM
 debug:    $(EXE_DIR)/$(PROJECTNAME).bin
 
-release:  CFLAGS += -DNDEBUG -O1
+release:  CFLAGS += -DNDEBUG -O0
 release:  $(EXE_DIR)/$(PROJECTNAME).bin
 
 # Create objects from C SRC files
