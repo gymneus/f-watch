@@ -68,6 +68,8 @@ static void gpsbkgnd_task(void *params)
     struct event e;
     struct tm time;
     struct gps_utc gpstime;
+    struct gps_coord gpscoord;
+    char buf[80];
 
     /* Previous and current state of settings */
     pgpson = cgpson;
@@ -125,13 +127,15 @@ static void gpsbkgnd_task(void *params)
 
         /* Write to file if gps is fixed */
         if (gps_fixed()) {
-            f_printf(&f, "%d\n", gps_fixed());
+            gps_get_coord(&gpscoord, 2);
+            sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
+            f_write(&f, buf, strlen(buf), NULL);
         }
 
     } else if (!ctrack && ptrack) {
         /*
          * Turned off tracking setting => close file, deinit microsd driver and
-         * give mutex so that the USB mass storage device can take it
+         * give mutex so that other tasks can use the SD card
          */
         f_close(&f);
         MICROSD_Deinit();
