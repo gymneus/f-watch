@@ -41,7 +41,7 @@
 
 static int x_lcd, y_lcd;
 static float sina, cosa;
-static int calib;
+static int calib = 0;
 lsm303_smpl iron;
 
 static void compass_redraw(struct ui_widget *w)
@@ -132,7 +132,7 @@ void compass_main(void *params)
 
 	/*main loop*/
 	while(1) {
-		if(xQueueReceive(appQueue, &evt, 100 / portTICK_RATE_MS)) {
+		if(xQueueReceive(appQueue, &evt, 50 / portTICK_RATE_MS)) {
 			switch(evt.type) {
 			case BUTTON_PRESSED:
 				if(evt.data.button == BUT_TR)
