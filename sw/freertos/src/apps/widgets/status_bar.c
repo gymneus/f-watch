@@ -30,7 +30,7 @@
 #include <bitmaps.h>
 #include <event.h>
 
-#include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <drivers/gps.h>
@@ -59,14 +59,14 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
                 memcpy(&gps_ico, &gps_searching,
                     sizeof(struct rle_bitmap));
             } else {
-                memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+                memset(&gps_ico, 0, sizeof(struct rle_bitmap));
             }
         }
         w->flags |= WF_DIRTY;
         break;
 
     case GPS_OFF:
-        memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
+        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
         break;
 

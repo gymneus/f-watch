@@ -91,7 +91,7 @@
 #define 	LSM303_ZREF_H   0x3F /* ACC only */
 
 typedef struct {
-	int16_t x, y, z
+	int16_t x, y, z;
 } lsm303_smpl;
 
 /* Accelerometer config */
@@ -100,7 +100,7 @@ typedef struct {
 #define LSM303_ACC_ST_NEG  0x08
 #define LSM303_ACC_REBOOT	0x80
 #define LSM303_FIFO_EN     0x80
-typedef enum { 
+typedef enum {
 	LSM303_ACC_ODR_PDOWN   = 0x00,
 	LSM303_ACC_ODR_10_Hz 	= 0x10,
 	LSM303_ACC_ODR_50_Hz 	= 0x20,
@@ -198,7 +198,7 @@ int lsm303_enableaxis(int dev, int mask);
 int lsm303_fifo_mode(int dev, LSM303_FMODE_t mode, int en);
 int lsm303_get_sample(int dev, lsm303_smpl *smpl);
 lsm303_smpl lsm303_calib_iron(lsm303_smpl *max, lsm303_smpl *min);
-int compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y);
+void compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y);
 
 int spi_read(uint8_t dev, uint8_t adr, uint8_t *dat);
 

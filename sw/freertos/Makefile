@@ -95,8 +95,8 @@ DEPFLAGS = -MMD -MP -MF $(@:.o=.d)
 #
 override CFLAGS += -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb \
 -mfix-cortex-m3-ldrd -ffunction-sections \
--fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 \
--DFREERTOS $(DEPFLAGS)
+-fdata-sections -fomit-frame-pointer -DGCC_ARMCM3 -DFREERTOS $(DEPFLAGS) \
+-Wno-missing-field-initializers -Wno-unused-function -Wno-switch
 
 override ASMFLAGS += -x assembler-with-cpp -D$(DEVICE) -Wall -Wextra -mcpu=cortex-m3 -mthumb
 

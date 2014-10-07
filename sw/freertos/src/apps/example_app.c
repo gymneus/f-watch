@@ -31,6 +31,7 @@
 #include "drivers/vibra.h"
 
 #include <string.h>     // for strcpy
+#include <stdio.h>      // for sprintf
 
 static char message[32] = "hello world";
 

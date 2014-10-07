@@ -279,7 +279,7 @@ void gfx_draw_bitmap_rotate(struct surface *surf, int x0, int y0,
     const struct rle_bitmap *b, int xr, int yr, int angle, float sina, float cosa)
 {
     int x = 0, y = 0, xt, yt;
-    uint8_t *d = b->data;
+    const uint8_t *d = b->data;
 
     /*calculate sin/cos of angle only once*/
 		if(sina>1 || sina<-1) sina = small_sin(angle);

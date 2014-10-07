@@ -215,7 +215,7 @@ void gps_get_direction(double *dir)
 int gps_puts(const char *s)
 {
     while (*s++) {
-        if (*s == EOF)
+        if (*s == 0)
             return EOF;
         LEUART_Tx(LEUART0, *s);
     }

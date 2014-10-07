@@ -48,6 +48,7 @@ static struct ui_widget reset_screen = {
 
 void reset_main(void *params)
 {
+        (void) params;      // suppress warnings
         struct event evt;
 
         /* Init UI */

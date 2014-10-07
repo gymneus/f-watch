@@ -439,7 +439,7 @@ lsm303_smpl lsm303_calib_iron(lsm303_smpl *max, lsm303_smpl *min)
 
 #define LCD_W 100
 #define LCD_0 60
-int compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y)
+void compass_xy(lsm303_smpl *max, lsm303_smpl *min, int *x, int *y)
 {
 	lsm303_smpl val;
 

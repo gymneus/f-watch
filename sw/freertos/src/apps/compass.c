@@ -29,6 +29,7 @@
 #include <gfx/ui.h>
 #include <bitmaps.h>
 #include <sincos.h>
+#include <stdio.h>
 
 #ifdef DEBUG
 #include <usbdbg.h>
@@ -45,7 +46,7 @@ lsm303_smpl iron;
 
 static void compass_redraw(struct ui_widget *w)
 {
-	static int angle, ff;
+	static int angle;
 	int arr_h, arr_w, cir_h, cir_w;
 	char buf[20];
 
@@ -85,6 +86,7 @@ static void compass_redraw(struct ui_widget *w)
 
 static void compass_event(struct ui_widget *w, const struct event *evt)
 {
+	(void) evt;     // suppress warnings
 	w->flags |= WF_DIRTY;
 }
 
@@ -111,7 +113,7 @@ void compass_main(void *params)
 	lsm303_smpl acc, mag;
 	lsm303_smpl c_max, c_min;
 	int pitch, roll, xh, yh, th, x_comp, y_comp;
-	unsigned int x2, y2, z2;
+	/*unsigned int x2, y2, z2;*/
 	float xy_mean;
 	char buf[50];
 
@@ -168,9 +170,9 @@ void compass_main(void *params)
 			}
 			if(!calib) {
 				/* calculate pitch and roll from accelerometer */
-				x2 = acc.x * acc.x;
-				y2 = acc.y * acc.y;
-				z2 = acc.z * acc.z;
+				/*x2 = acc.x * acc.x;*/
+				/*y2 = acc.y * acc.y;*/
+				/*z2 = acc.z * acc.z;*/
 				pitch = -small_atan(acc.x, small_sqrt(acc.y*acc.y + acc.z*acc.z));
 				roll = small_atan(acc.y, small_sqrt(acc.x*acc.x + acc.z*acc.z));
 				sprintf(buf, "p: %d, r: %d\n\r", pitch, roll);

@@ -27,7 +27,10 @@
 #include "application.h"
 #include "widgets/status_bar.h"
 #include <drivers/lsm303c.h>
+#include <drivers/buzzer.h>
+#include <drivers/vibra.h>
 #include <sincos.h>
+#include <stdio.h>
 
 #define S_WIN_X0 5
 #define S_WIN_Y0 25
@@ -44,7 +47,7 @@
 unsigned int win_x0, win_y0, win_x1, win_y1;
 unsigned int score, highscore;
 int mode;
-int ball_x, ball_y;
+unsigned int ball_x, ball_y;
 
 static void game_redraw(struct ui_widget *w)
 {
@@ -69,6 +72,7 @@ static void game_redraw(struct ui_widget *w)
 
 static void game_event(struct ui_widget *w, const struct event *evt)
 {
+	(void) evt;     // suppress warnings
 	w->flags |= WF_DIRTY;
 }
 
@@ -94,9 +98,8 @@ void game_main(void *params)
 	struct event evt;
 	lsm303_smpl acc;
 	int fakap = 0;
-	char buf[30];
 	int old_x, old_y;
-	int dir = 0, fact;
+	int fact;
 
 	lsm303_init();
 	buzzer_set_freq(4000);

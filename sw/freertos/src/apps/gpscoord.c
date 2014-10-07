@@ -136,7 +136,6 @@ void gpscoord_main(void *params)
     (void) params;
 
     struct event evt;
-    int i = 0;
 
     /* Init UI */
     ui_clear();
