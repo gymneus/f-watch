@@ -30,6 +30,7 @@
 #include <em_cmu.h>
 #include <em_gpio.h>
 #include <em_timer.h>
+#include <sleep.h>
 
 void buzzer_init(void)
 {
@@ -82,12 +83,14 @@ void buzzer_init(void)
 
 void buzzer_enable(void)
 {
+    SLEEP_SleepBlockBegin(sleepEM2);
     TIMER_Enable(TIMER2, true);
 }
 
 void buzzer_disable(void)
 {
     TIMER_Enable(TIMER2, false);
+    SLEEP_SleepBlockEnd(sleepEM2);
 }
 
 void buzzer_set_freq(int frequency)

@@ -27,6 +27,7 @@
 #include "em_ebi.h"
 #include "em_cmu.h"
 #include "em_usart.h"
+#include "sleep.h"
 #include "dmactrl.h"
 #include "lcd.h"
 #include "lcd_dma.h"
@@ -62,6 +63,7 @@ static void lcd_dma_tx_complete(unsigned int channel, bool primary, void *user)
     dma_transfer_active = false;
 
 #ifdef FREERTOS
+    SLEEP_SleepBlockEnd(sleepEM2);
     xSemaphoreGive(lcd_sem);
 #endif /* FREERTOS */
 }
@@ -126,6 +128,7 @@ void lcd_dma_send_frame(void)
 #endif /* else FREERTOS */
 
     dma_transfer_active = true;
+    SLEEP_SleepBlockBegin(sleepEM2);
     DMA_ActivateScatterGather(DMA_CHANNEL, true, dma_cfg_block, DMA_TRANSFERS);
 
     // semaphore is given back in the DMA transfer finished interrupt

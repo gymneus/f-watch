@@ -33,7 +33,7 @@
 #include "blight_task.h"
 
 ///> Number of ticks when the watch is considered active since active_reset()
-#define ACTIVE_STATE_TICKS  10000
+#define ACTIVE_STATE_TICKS  (10000 / portTICK_RATE_MS)
 
 enum watch_state current_state = IDLE;
 static xTimerHandle timer_handle;
@@ -87,7 +87,6 @@ static void state_handler(enum watch_state state)
         case IDLE:
             auto_backlight_enable(false);
             backlight_set_level(0);
-            // TODO switch frequency? goto sleep?
             break;
     }
 

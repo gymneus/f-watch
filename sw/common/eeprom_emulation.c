@@ -464,7 +464,7 @@ bool EE_Init(uint32_t numberOfPages)
   else
   {
     /* Transfer variables from active to receiving page. */
-    EE_TransferPage(NULL, NULL);
+    EE_TransferPage(NULL, 0);
   }
 
   /* Initialization completed successfully */

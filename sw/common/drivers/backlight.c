@@ -31,6 +31,8 @@
 #include <em_gpio.h>
 #include <em_timer.h>
 
+#include "sleep.h"
+
 static int backlight_level;
 
 void backlight_init(void)
@@ -101,10 +103,13 @@ void backlight_set_level(int level)
     if(level <= 0) {
         TIMER_Enable(TIMER1, false);
         level = 0;  // in case level is negative
+        SLEEP_SleepBlockEnd(sleepEM2);
     } else {
         // Reenable the timer, if it was turned off previously
-        if(backlight_level == 0)
+        if(backlight_level == 0) {
+            SLEEP_SleepBlockBegin(sleepEM2);
             TIMER_Enable(TIMER1, true);
+        }
 
         if(level > BL_MAX_LEVEL)
             level = BL_MAX_LEVEL;
