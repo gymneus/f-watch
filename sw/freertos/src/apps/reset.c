@@ -60,7 +60,7 @@ void reset_main(void *params)
         ui_update(NULL);
 
         while(1) {
-                if (xQueueReceive(appQueue, &evt, 0)) {
+                if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
                         switch (evt.type) {
                         case BUTTON_PRESSED:
                                 if (evt.data.button == BUT_TR)

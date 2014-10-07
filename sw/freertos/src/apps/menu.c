@@ -195,7 +195,7 @@ void menu_main(void* params) {
 
     // Once it is deactivated - display the menu
     while(1) {
-        if(xQueueReceive(appQueue, &evt, 0)) {
+        if(xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
             switch(evt.type) {
                 case BUTTON_PRESSED:
                     if(evt.data.button == BUT_TL) {

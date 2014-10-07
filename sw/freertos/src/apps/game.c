@@ -126,7 +126,7 @@ void game_main(void *params)
 
 	/*main loop*/
 	while(1) {
-		if(xQueueReceive(appQueue, &evt, 0)) {
+		if(xQueueReceive(appQueue, &evt, 30 / portTICK_RATE_MS)) {
 			switch(evt.type) {
 			case BUTTON_PRESSED:
 				if(evt.data.button == BUT_TR) {
@@ -173,7 +173,7 @@ void game_main(void *params)
 			win_y1 = S_WIN_Y1;
 			vibra_enable();
 			buzzer_enable();
-			vTaskDelay(100);
+			vTaskDelay(300 / portTICK_RATE_MS);
 			vibra_disable();
 			buzzer_disable();
 		} else {

@@ -140,7 +140,7 @@ void set_time_main(void* params) {
 
     // event loop
     while(1) {
-        if(xQueueReceive(appQueue, &evt, 0)) {
+        if(xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
                 if(evt.data.button == BUT_TL) {

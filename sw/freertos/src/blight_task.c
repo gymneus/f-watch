@@ -35,7 +35,7 @@
 #include <drivers/light_sensor.h>
 
 ///> Number of ticks between backlight adjustments
-#define BLIGHT_TASK_PERIOD 3000
+#define BLIGHT_TASK_PERIOD (5000 / portTICK_RATE_MS)
 
 ///> Entry that stores an appropriate backlight level value
 ///> depending on the light sensor readings.

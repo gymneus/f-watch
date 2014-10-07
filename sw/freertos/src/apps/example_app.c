@@ -69,14 +69,14 @@ static void widget_event(struct ui_widget *w, const struct event *evt)
 
         // short vibration
         vibra_enable();
-        vTaskDelay(100);
+        vTaskDelay(400 / portTICK_RATE_MS);
         vibra_disable();
         break;
 
     case RTC_TICK:
         // tick-tock with a buzzer
         buzzer_enable();
-        vTaskDelay(100);
+        vTaskDelay(400 / portTICK_RATE_MS);
         buzzer_disable();
         // ok, we do not need redrawing
         w->flags &= ~WF_DIRTY;
@@ -137,7 +137,7 @@ void example_main(void* params) {
         // "0" in the line below, if you set it to a positive value then
         // you may have a block of code that is executed when no event arrives
         // for details, see below (else block)
-        if(xQueueReceive(appQueue, &evt, 0)) {
+        if(xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
             switch(evt.type) {
             // decide which events are relevant and should be handled
             // you may save some cycles if you list them here instead of

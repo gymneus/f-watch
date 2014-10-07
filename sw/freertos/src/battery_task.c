@@ -36,7 +36,7 @@
 #include <stdbool.h>
 
 ///> Number of ticks between battery status polling
-#define BATTERY_TASK_PERIOD 4000
+#define BATTERY_TASK_PERIOD (4000 / portTICK_RATE_MS)
 
 ///> Timer handle
 static xTimerHandle timer_handle;

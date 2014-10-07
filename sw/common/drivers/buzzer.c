@@ -31,8 +31,6 @@
 #include <em_gpio.h>
 #include <em_timer.h>
 
-#define BUZZER_PWM_FREQ 10000
-
 void buzzer_init(void)
 {
     // Configure buzzer pin as push/pull output
