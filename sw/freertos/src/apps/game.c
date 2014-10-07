@@ -44,10 +44,10 @@
 #define MODE_NORM 0
 #define MODE_HIGH 1
 
-unsigned int win_x0, win_y0, win_x1, win_y1;
-unsigned int score, highscore;
+int win_x0, win_y0, win_x1, win_y1;
+int score, highscore;
 int mode;
-unsigned int ball_x, ball_y;
+int ball_x, ball_y;
 
 static void game_redraw(struct ui_widget *w)
 {
