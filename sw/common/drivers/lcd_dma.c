@@ -119,7 +119,7 @@ void lcd_dma_init(void)
 void lcd_dma_send_frame(void)
 {
 #ifdef FREERTOS
-    if(xSemaphoreTake(lcd_sem, LCD_SEM_TICKS) != pdTRUE)
+    if(xSemaphoreTake(lcd_sem, portMAX_DELAY) != pdTRUE)
         return;
 #else
     while(dma_transfer_active);

@@ -33,12 +33,13 @@
 #ifdef FREERTOS
 #include <FreeRTOS.h>
 #include <semphr.h>
-///> How long should we wait for the semaphore
-#define LCD_SEM_TICKS 100
 extern xSemaphoreHandle lcd_sem;
 #endif /* FREERTOS */
 
-//#define LCD_NODMA
+// DMA is broken when EM2 or deeper is enabled
+#if configSLEEP_MODE > 1
+#define LCD_NODMA
+#endif
 
 // Dimensions
 #define LCD_HEIGHT          128

@@ -218,7 +218,7 @@ void lcd_clear(void)
     uint16_t x, y;
 
 #ifdef FREERTOS
-    if(xSemaphoreTake(lcd_sem, LCD_SEM_TICKS) != pdTRUE)
+    if(xSemaphoreTake(lcd_sem, portMAX_DELAY) != pdTRUE)
         return;
 #endif /* FREERTOS */
 
