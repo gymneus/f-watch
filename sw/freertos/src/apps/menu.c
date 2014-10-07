@@ -29,6 +29,7 @@
 #include "menu_struct.h"
 #include "widgets/status_bar.h"
 #include "settings/settings.h"
+#include "battery_task.h"
 
 #include <stdio.h>
 
@@ -187,6 +188,7 @@ void menu_main(void* params) {
     (void)(params);  // suppress unused parameter warning
     struct event evt;
 
+    battery_update();
     menu_size = get_menu_size(*current_menu);
 
     // run clock as the the initial application

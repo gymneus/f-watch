@@ -53,7 +53,7 @@ static void battery_monitor_task(void *params)
     unsigned percentage = max17047_get_charge();
 
     // Send an event if measurements are different
-    if(charging != cur_charging || percentage != cur_percentage) {
+    if(!params || charging != cur_charging || percentage != cur_percentage) {
         evt.type = BATTERY_STATUS;
         evt.data.battery.percentage = percentage;
         evt.data.battery.charging = charging;
@@ -61,6 +61,11 @@ static void battery_monitor_task(void *params)
         cur_charging = charging;
         xQueueSendToBack(appQueue, &evt, 0);
     }
+}
+
+void battery_update(void)
+{
+    battery_monitor_task(NULL);
 }
 
 void battery_monitor_init(void)

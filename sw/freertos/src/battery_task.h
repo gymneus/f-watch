@@ -32,4 +32,9 @@
  */
 void battery_monitor_init(void);
 
+/**
+ * Forces a battery status update event.
+ */
+void battery_update(void);
+
 #endif /* BATTERY_TASK_H */
