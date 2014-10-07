@@ -90,7 +90,7 @@ void usb_ms_main(void* params) {
 
 
     while(1) {
-        if(xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
+        if(xQueueReceive(appQueue, &evt, 0)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
                 if(evt.data.button == BUT_TR) {
