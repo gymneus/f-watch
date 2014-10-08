@@ -39,7 +39,9 @@ enum event_type {
     RTC_TICK,
     BATTERY_STATUS,
     GPS_TICK,
-    GPS_OFF
+    GPS_OFF,
+    TRACK_ON,
+    TRACK_OFF
 };
 
 /**

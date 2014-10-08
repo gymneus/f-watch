@@ -32,6 +32,12 @@
 #include <task.h>
 #include <queue.h>
 
+///> Shared application stack size
+#define APP_STACK_SIZE  (configMINIMAL_STACK_SIZE)
+
+///> Prioriuty of application task
+#define APP_PRIORITY    (tskIDLE_PRIORITY + 1)
+
 ///> Shared application task handle
 extern xTaskHandle appTask;
 

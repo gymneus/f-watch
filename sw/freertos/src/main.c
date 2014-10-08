@@ -41,7 +41,8 @@
 #include <drivers/gps.h>
 
 #include <gfx/ui.h>
-#include <apps/app_list.h>
+#include "apps/app_list.h"
+#include "apps/application.h"
 #include "settings/settings.h"
 #include "battery_task.h"
 #include "blight_task.h"
@@ -56,6 +57,9 @@
 #endif
 
 xSemaphoreHandle mutexSdCardAccess;
+
+extern void gpstrack_task(void *);
+xTaskHandle taskGpsTrack;
 
 int main(void)
 {
@@ -87,6 +91,10 @@ int main(void)
     rtc_init();
     lcd_init();
     gps_init(setting_get(&setting_gps_on));
+
+    xTaskCreate(gpstrack_task, "GPS tracking task", APP_STACK_SIZE,
+        NULL, APP_PRIORITY, &taskGpsTrack);
+    vTaskSuspend(taskGpsTrack);
 
     ui_init();
     auto_backlight_init();

@@ -50,6 +50,8 @@ static int firstrun, firstfix;
 static int gpson, pgpson;
 static int track, ptrack;
 
+extern xTaskHandle taskGpsTrack;
+
 static void gpsbkgnd_task(void *params)
 {
     (void) params;
@@ -96,6 +98,24 @@ static void gpsbkgnd_task(void *params)
         if (firstfix) firstfix = 0;
     }
 
+    /*
+     * Tickle GPS tracking task and status bar in case of tracking setting
+     * change
+     */
+    ptrack = track;
+    track = setting_get(&setting_tracking);
+    if (track) {
+        if (!ptrack || firstrun) {
+            vTaskResume(taskGpsTrack);
+            e.type = TRACK_ON;
+            xQueueSendToBack(appQueue, &e, 0);
+        }
+    } else if (ptrack) {
+        e.type = TRACK_OFF;
+        xQueueSendToBack(appQueue, &e, 0);
+    }
+
+    /* Make sure we don't have more than one first run */
     if (firstrun)
         firstrun = 0;
 

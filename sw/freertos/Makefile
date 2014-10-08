@@ -223,13 +223,14 @@ src/apps/menu_struct.c \
 src/apps/gpscoord.c \
 src/apps/reset.c \
 src/apps/usb_mass_storage.c \
-src/main.c \
 src/battery_task.c \
 src/blight_task.c \
 src/gpsbkgnd_task.c \
+src/gpstrack_task.c \
 src/irq_dispatcher.c \
 src/low_power_tick_management.c \
-src/state.c
+src/state.c \
+src/main.c
 
 s_SRC +=
 

@@ -36,7 +36,7 @@ setting_t setting_gps_sets_time = { "GPS sets time",    1, 2, 0 };
 /* Settings with nrvals == 0 do not wrap around, they are set externally */
 setting_t setting_gmt_ofs_hr    = { "GMT ofs hrs",      0, 0, 0 };
 setting_t setting_gmt_ofs_min   = { "GMT ofs mins",     0, 0, 0 };
-setting_t setting_tracking      = { "Tracking",         1, 2, 0 };
+setting_t setting_tracking      = { "Tracking",         0, 2, 0 };
 
 static EE_Variable_TypeDef gps_on, coord_style, gps_sets_time,
                             gmt_ofs_hr, gmt_ofs_min, tracking;
