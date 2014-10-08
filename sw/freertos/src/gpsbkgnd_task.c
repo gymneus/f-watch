@@ -38,10 +38,6 @@
 #include "application.h"
 #include "clock.h"
 
-#include <ff.h>
-#include <microsd.h>
-#include <diskio.h>
-
 #include <stdio.h>
 #include <string.h>
 
@@ -53,16 +49,6 @@ extern xSemaphoreHandle mutexSdCardAccess;
 static int firstrun, firstfix;
 static int gpson, pgpson;
 static int track, ptrack;
-static int open = 0;
-static int mutexours = 0;
-
-static FIL f;
-static FATFS fatfs;
-
-DWORD get_fattime(void)
-{
-  return (28 << 25) | (2 << 21) | (1 << 16);
-}
 
 static void gpsbkgnd_task(void *params)
 {
@@ -70,10 +56,6 @@ static void gpsbkgnd_task(void *params)
     struct event e;
     struct tm time;
     struct gps_utc gpstime;
-    struct gps_coord gpscoord;
-    char buf[80];
-    char fname[64];
-    UINT dummy;
 
     /* Previous and current state of GPS ON setting */
     pgpson = gpson;
@@ -112,62 +94,6 @@ static void gpsbkgnd_task(void *params)
         }
 
         if (firstfix) firstfix = 0;
-    }
-
-    /* Track GPS position if setting tells us to */
-    ptrack = track;
-    track = setting_get(&setting_tracking);
-    if (track) {
-
-        /*
-         * On first run or tracking setting change, init stuff & take semaphore
-         * so that only we write to SD; also retry getting the mutex if we
-         * couldn't on the previous run.
-         */
-        if (firstrun || !ptrack || !mutexours) {
-            if (xSemaphoreTake(mutexSdCardAccess, 0)) {
-                mutexours = 1;
-                MICROSD_Init();
-                disk_initialize(0);
-                f_mount(0, &fatfs);
-                open = 1;
-            }
-        }
-
-        /* Write to file if gps is fixed and mutex tells us we can write to SD */
-        if (gps_fixed() && mutexours) {
-            if (open) {
-                /*
-                 * We open the file here so that we can give it a name according
-                 * to current time
-                 */
-                gps_get_utc(&gpstime);
-                sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
-                                1900 + gpstime.yr, 1 + gpstime.mon, gpstime.day,
-                                gpstime.hr + setting_get(&setting_gmt_ofs_hr),
-                                gpstime.min + setting_get(&setting_gmt_ofs_min),
-                                gpstime.sec);
-                open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
-            } else {
-                /*
-                 * When we've opened (f_open() returns 0 on success), start
-                 * putting coords into file
-                 */
-                gps_get_coord(&gpscoord, 2);
-                sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
-                f_write(&f, buf, strlen(buf), &dummy);
-            }
-        }
-
-    } else if (!track && ptrack) {
-        /*
-         * Turned off tracking setting => close file, deinit microsd driver and
-         * give mutex so that other tasks can use the SD card
-         */
-        f_close(&f);
-        MICROSD_Deinit();
-        mutexours = 0;
-        xSemaphoreGive(mutexSdCardAccess);
     }
 
     if (firstrun)
