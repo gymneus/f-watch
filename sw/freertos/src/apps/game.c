@@ -129,7 +129,8 @@ void game_main(void *params)
 		if(xQueueReceive(appQueue, &evt, 30 / portTICK_RATE_MS)) {
 			switch(evt.type) {
 			case BUTTON_PRESSED:
-				if(evt.data.button == BUT_TR) {
+                if (evt.data.button == BUT_TR ||
+                    evt.data.button == BUT_TL) {
 					vibra_disable();
 					buzzer_disable();
 					return;

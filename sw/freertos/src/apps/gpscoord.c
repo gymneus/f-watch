@@ -157,16 +157,17 @@ void gpscoord_main(void *params)
         if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
             switch (evt.type) {
             case BUTTON_PRESSED:
-                if (evt.data.button == BUT_TR)
+                if (evt.data.button == BUT_TR ||
+                    evt.data.button == BUT_TL)
                     return;
-                else if (evt.data.button == BUT_BR) {
-                    /*
-                     * Toggle between coordinate and
-                     * elevation screens
-                     */
-                    gpsscreen += 1;
-                    gpsscreen %= 2;
-                }
+//                else if (evt.data.button == BUT_BR) {
+//                    /*
+//                     * Toggle between coordinate and
+//                     * elevation screens
+//                     */
+//                    gpsscreen += 1;
+//                    gpsscreen %= 2;
+//                }
                 /* fall through */
 
             case GPS_TICK:

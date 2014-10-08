@@ -108,7 +108,8 @@ void clock_main(void* params) {
         if(xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
             switch(evt.type) {
             case BUTTON_PRESSED:
-                if(evt.data.button == BUT_TR)
+                if (evt.data.button == BUT_TR ||
+                    evt.data.button == BUT_TL)
                     return;             // go back to the main menu
                 // no break; fall through
 

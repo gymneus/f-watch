@@ -33,49 +33,50 @@
 
 static void reset_redraw(struct ui_widget *w)
 {
-        gfx_text(&w->dc, &font_helv22b, 10, 50, "Bottom right", 0);
-        gfx_text(&w->dc, &font_helv22b, 20, 70, "to reset", 0);
+    gfx_text(&w->dc, &font_helv22b, 10, 50, "Bottom right", 0);
+    gfx_text(&w->dc, &font_helv22b, 20, 70, "to reset", 0);
 }
 
 
 static struct ui_widget reset_screen = {
-        reset_redraw,
-        NULL,
-        {0, 0, 127, 127},
-        0,
-        WF_ACTIVE | WF_VISIBLE
+    reset_redraw,
+    NULL,
+    {0, 0, 127, 127},
+    0,
+    WF_ACTIVE | WF_VISIBLE
 };
 
 void reset_main(void *params)
 {
-        (void) params;      // suppress warnings
-        struct event evt;
+    (void) params;      // suppress warnings
+    struct event evt;
 
-        /* Init UI */
-        ui_clear();
-        ui_init_widget(&reset_screen);
-        ui_add_widget(&reset_screen);
-        ui_init_widget(&status_bar);
-        ui_add_widget(&status_bar);
-        ui_update(NULL);
+    /* Init UI */
+    ui_clear();
+    ui_init_widget(&reset_screen);
+    ui_add_widget(&reset_screen);
+    ui_init_widget(&status_bar);
+    ui_add_widget(&status_bar);
+    ui_update(NULL);
 
-        while(1) {
-                if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
-                        switch (evt.type) {
-                        case BUTTON_PRESSED:
-                                if (evt.data.button == BUT_TR)
-                                        return;
-                                /* Reset on bottom right and bottom left buttons
-                                 * pressed */
-                                if (evt.data.button == BUT_BR)
-	                                SCB->AIRCR = 0x05FA0004;
-                                break;
-                        }
-                }
+    while(1) {
+        if (xQueueReceive(appQueue, &evt, portMAX_DELAY)) {
+            switch (evt.type) {
+            case BUTTON_PRESSED:
+                if (evt.data.button == BUT_TR ||
+                    evt.data.button == BUT_TL)
+                        return;
+                    /* Reset on bottom right and bottom left buttons
+                     * pressed */
+                    if (evt.data.button == BUT_BR)
+                        SCB->AIRCR = 0x05FA0004;
+                    break;
+            }
         }
+    }
 }
 
 application reset = {
-        .name = "Reset",
-        .main = reset_main
+    .name = "Reset",
+    .main = reset_main
 };

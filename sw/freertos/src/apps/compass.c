@@ -135,7 +135,8 @@ void compass_main(void *params)
 		if(xQueueReceive(appQueue, &evt, 50 / portTICK_RATE_MS)) {
 			switch(evt.type) {
 			case BUTTON_PRESSED:
-				if(evt.data.button == BUT_TR)
+                if (evt.data.button == BUT_TR ||
+                    evt.data.button == BUT_TL)
 					return;
 
 				/*if(evt.data.button == BUT_BR) {
