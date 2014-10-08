@@ -117,7 +117,11 @@ static void save(void)
 
     time.tm_mday = sb_digit(D1) * 10 + sb_digit(D2);
     time.tm_mon = sb_digit(M1) * 10 + sb_digit(M2) - 1;
-    time.tm_year = sb_digit(Y1) * 10 + sb_digit(Y2) + 100;
+    time.tm_year = sb_digit(Y1) * 10 + sb_digit(Y2);
+
+    // year ending with a number lower than 70 should be 20xx
+    if(time.tm_year < 70)
+        time.tm_year += 100;
 
     clock_set_time(&time);
 }
