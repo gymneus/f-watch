@@ -1,40 +1,25 @@
 /*
- *==============================================================================
- * CERN (BE-CO-HT)
- * Source file for Antenova M10478 GPS module
- *==============================================================================
+ * Copyright (C) 2014 Julian Lewis
+ * @author Theodor Stana <theodor.stana@gmail.com>
  *
- * author: Theodor Stana (t.stana@cern.ch)
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
  *
- * date of creation: 2014-08-24
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * version: 1.0
- *
- * description:
- *
- * dependencies:
- *
- * references:
- *
- *==============================================================================
- * GNU LESSER GENERAL PUBLIC LICENSE
- *==============================================================================
- * This source file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version. This source is distributed in the hope that it
- * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details. You should have
- * received a copy of the GNU Lesser General Public License along with this
- * source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
- *==============================================================================
- * last changes:
- *    2014-08-24   Theodor Stana     t.stana@cern.ch     File created
- *==============================================================================
- * TODO: -
- *==============================================================================
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, you may find one here:
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * or you may search the http://www.gnu.org website for the version 2 license,
+ * or you may write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
+
 #include <stdio.h>
 #include <string.h>
 
