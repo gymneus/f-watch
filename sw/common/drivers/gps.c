@@ -20,6 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
+/**
+ * @brief Antenova M10478 GPS module driver
+ */
 #include <stdio.h>
 #include <string.h>
 
@@ -37,7 +40,7 @@
 
 static char rxbuf[GPS_RXBUF_SIZE];
 static volatile int idx = 0;
-static volatile int framerdy = 0;
+static volatile int irq_sync = 0;
 
 static nmeaINFO info;
 static nmeaPARSER parser;
@@ -50,12 +53,17 @@ void LEUART0_IRQHandler()
         if ((rxbuf[idx-2] == '\r') && (rxbuf[idx-1] == '\n')) {
             rxbuf[idx] = '\0';
             idx = 0;
-            gps_set_framerdy(1);
+            gps_set_irq_sync(1);
             gps_parse_nmea(rxbuf);
         }
     }
 }
 
+/**
+ * @brief GPS initialization routine
+ * @param[in] pulse_onoff
+ *      Pulse the M10478 ON_OFF pin to turn it on at startup.
+ */
 void gps_init(int pulse_onoff)
 {
     int i;
@@ -105,6 +113,10 @@ void gps_init(int pulse_onoff)
     nmea_parser_init(&parser);
 }
 
+/**
+ * @brief
+ *      Pulse M10478 ON_OFF pin to turn it on and off
+ */
 void gps_on_off_pulse()
 {
     int i;
@@ -121,21 +133,54 @@ void gps_on_off_pulse()
         ;
 }
 
+/**
+ * @brief
+ *      Set state of the GPS reset pin.
+ * @param[in] val
+ *      Value to set at reset pin
+ *      '0' to assert the reset
+ *      '1' to de-assert the reset
+ */
 void gps_reset(int val)
 {
     val ? GPIO_PinOutClear(gpioPortF, 5) : GPIO_PinOutSet(gpioPortF, 5);
 }
 
-int gps_get_framerdy()
+/**
+ * @brief
+ *      Get the the state of synchronization with the GPS ISR
+ * @return
+ *      '1' when the ISR has set the synchronization variable, signaling the
+ *      external code that a frame has been parsed
+ *      '0' when the application should wait for a frame to be received
+ */
+int gps_get_irq_sync()
 {
-    return framerdy;
+    return irq_sync;
 }
 
-void gps_set_framerdy(int param)
+/**
+ * @brief
+ *      Set the state of IRQ synchronization mechanism. An ISR should use this
+ *      function with parameter '1' to signal external code that a frame has
+ *      been received and is ready for parsing.
+ * @param[in] param
+ *      '1' to be set by the ISR to signal external code that a frame has been
+ *      received
+ *      '0' to be set by the external code to signal the ISR that it may
+ *      continue receiving frames
+ */
+void gps_set_irq_sync(int param)
 {
-    framerdy = param;
+    irq_sync = param;
 }
 
+/**
+ * @brief
+ *      Parse an NMEA frame received from the GPS receiver.
+ * @param[in] buf
+ *      Buffer containing NMEA data to be processed
+ */
 void gps_parse_nmea(const char *buf)
 {
     // TODO: check return of nmea_parse
@@ -149,11 +194,27 @@ void gps_parse_nmea(const char *buf)
 #endif
 }
 
+/**
+ * @brief
+ *      Return the fix state of the GPS receiverj
+ * @return
+ *      0 when the GPS is not fixed
+ *      1 when we have fix
+ *      2 differential GPS
+ *      3 sensitive
+ */
 int gps_fixed()
 {
     return info.sig;
 }
 
+/**
+ * @brief
+ *      Get the UTC time from GPS
+ * @param[out] utc
+ *      Pointer to UTC structure to change. The GPS UTC time is applied to this
+ *      structure.
+ */
 void gps_get_utc(struct gps_utc *utc)
 {
     utc->yr  = info.utc.year;
@@ -164,6 +225,19 @@ void gps_get_utc(struct gps_utc *utc)
     utc->sec = info.utc.sec;
 }
 
+/**
+ * @brief
+ *      Get the GPS coordinates of the receiver
+ * @param[out] coord
+ *      Pointer to coordinate structure to change. The GPS coordinates are
+ *      a set of double values applied as fields of this structure, according
+ *      to the format parameter.
+ * @param[in] format
+ *      Format in which the coordinate structure should be presented.
+ *      0 [deg][min].[sec/60]
+ *      1 [deg][min].[sec]
+ *      2 [deg].[min/60]
+ */
 void gps_get_coord(struct gps_coord *coord, int format)
 {
     if (format == 0) {
@@ -187,17 +261,37 @@ void gps_get_coord(struct gps_coord *coord, int format)
     coord->elev = info.elv;
 }
 
+/**
+ * @brief
+ *      Get the speed of the GPS receiver
+ * @param[out] spd
+ *      Pointer to double value to apply the speed to.
+ */
 void gps_get_speed(double *spd)
 {
     *spd = info.speed;
 }
 
+/**
+ * @brief
+ *      Get the direction of the GPS receiver
+ * @param[out] dir
+ *      Pointer to double value to apply the direction to.
+ */
 void gps_get_direction(double *dir)
 {
     *dir = info.direction;
 }
 
-int gps_puts(const char *s)
+/**
+ * @brief
+ *      Send a string to the GPS receiver
+ * @param[in] s
+ *      Character string to send to GPS
+ * @return
+ *      EOF when the terminator char ('\0') is received
+ */
+static int gps_puts(const char *s)
 {
     while (*s++) {
         if (*s == 0)
@@ -208,7 +302,7 @@ int gps_puts(const char *s)
     return 1;
 }
 
-int gps_nmea_crc(const char *nmeastr)
+static int gps_nmea_crc(const char *nmeastr)
 {
     int     chksum = 0;
     int     i = 0;
