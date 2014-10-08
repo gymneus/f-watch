@@ -29,8 +29,8 @@
 #include <string.h>
 
 // Default character sets.
-const char *char_digits = "0123456789\x0";
-const char *char_letters = "abcdefghijklmnopqrstuvwxyz\0";
+const char *char_digits = "0123456789";
+const char *char_letters = "abcdefghijklmnopqrstuvwxyz";
 
 static void spinbox_event(struct ui_widget *w, const struct event *evt)
 {

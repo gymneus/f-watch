@@ -76,7 +76,9 @@ static inline char sb_digit(int idx)
 // Checks if spinboxes contain correct values
 static bool is_valid(void)
 {
-    return (sb_digit(H1) < 3 && sb_digit(H2) < 5 && sb_digit(M1) < 6);
+    int hour = sb_digit(H1) * 10 + sb_digit(H2);
+    int min = sb_digit(M1) * 10 + sb_digit(M2);
+    return (hour >= 0 && hour <= 23 && min >= 0 && min <= 59);
 }
 
 // Sets the hour from spinboxes to clock
