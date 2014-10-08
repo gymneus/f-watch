@@ -148,8 +148,6 @@ static void gpsbkgnd_task(void *params)
                                 gpstime.min + setting_get(&setting_gmt_ofs_min),
                                 gpstime.sec);
                 open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
-                if (!open)
-                    f_lseek(&f, 0);
             } else {
                 /*
                  * When we've opened (f_open() returns 0 on success), start
@@ -157,10 +155,7 @@ static void gpsbkgnd_task(void *params)
                  */
                 gps_get_coord(&gpscoord, 2);
                 sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
-                usbdbg_puts(buf);
-                FRESULT r = f_write(&f, buf, strlen(buf), &dummy);
-                sprintf(buf, "r=%d\r\n", r);
-                usbdbg_puts(buf);
+                f_write(&f, buf, strlen(buf), &dummy);
             }
         }
 
@@ -180,7 +175,7 @@ static void gpsbkgnd_task(void *params)
 
     /* Tickle tasks waiting for the GPS */
     e.type = GPS_TICK;
-    xQueueSendToBack(appQueue, (void *)&e, 0);
+    xQueueSendToBack(appQueue, &e, 0);
 }
 
 void gpsbkgnd_init()
