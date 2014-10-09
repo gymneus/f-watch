@@ -99,6 +99,10 @@ $CMP RES
 D Resistor
 $ENDCMP
 #
+$CMP SST25WF040B
+D 4 Mbit 1.8V SPI Serial Flash
+$ENDCMP
+#
 $CMP TPS780180300
 D 150mA, Low-Dropout Regulator, Ultralow-Power, IQ 500nA with Pin-Selectable, Dual-Level Output Voltage
 K LDO, low iq

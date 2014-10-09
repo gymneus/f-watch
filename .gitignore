@@ -3,6 +3,12 @@
 .*
 *.o
 .*.swp
+*.fcstd1
+*.kicad_pcb-bak
+*.bak
+*.bck
+*.png
+*.zip
 
 # Directories
 *exe/
