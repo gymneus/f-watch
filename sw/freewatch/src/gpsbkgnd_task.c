@@ -41,17 +41,47 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <microsd.h>
+#include <diskio.h>
+#include <ff.h>
+
 #define GPSBKGND_TIMER_PERIOD (1000 / portTICK_RATE_MS)
 
 static xTimerHandle timerGps;
 extern xSemaphoreHandle mutexSdCardAccess;
+static int mutexours = 0;
 
 static int firstrun, firstfix;
 static int gpson, pgpson;
 static int track, ptrack;
 
-static void gps_set_time();
-static void gps_track();
+static FIL f;
+static FATFS fatfs;
+static int open = 1;
+
+/* This function is needed by the FATFS library */
+DWORD get_fattime(void)
+{
+  return (28 << 25) | (2 << 21) | (1 << 16);
+}
+
+/* Local function prototypes */
+static void gpsbkgnd_task(void *params);
+
+static void update_time();
+static void store_track();
+static void track_on();
+static void track_off();
+
+void gpsbkgnd_init()
+{
+    firstrun = 1;
+    firstfix = 1;
+    timerGps = xTimerCreate((signed char *)"timerGps",
+                                GPSBKGND_TIMER_PERIOD, pdTRUE,
+                                (void *)0, gpsbkgnd_task);
+    xTimerStart(timerGps, 0);
+}
 
 static void gpsbkgnd_task(void *params)
 {
@@ -75,10 +105,27 @@ static void gpsbkgnd_task(void *params)
         return;
     }
 
+    /* Turn on tracking icon based on setting */
+    ptrack = track;
+    track = setting_get(&setting_tracking);
+    if (track) {
+        if (!ptrack || firstrun) {
+            track_on();
+//            e.type = GPS_TRACK_ON;
+//            xQueueSendToBack(appQueue, &e, 0);
+        }
+    } else if (ptrack) {
+        track_off();
+//        e.type = GPS_TRACK_OFF;
+//        xQueueSendToBack(appQueue, &e, 0);
+    }
+
     /* Set time and track according to setting */
     if (gps_fixed()) {
         if (setting_get(&setting_gps_sets_time))
-            gps_set_time();
+            update_time();
+        if (track)
+            store_track();
     }
 
     if (firstrun)
@@ -89,17 +136,7 @@ static void gpsbkgnd_task(void *params)
     xQueueSendToBack(appQueue, &e, 0);
 }
 
-void gpsbkgnd_init()
-{
-    firstrun = 1;
-    firstfix = 1;
-    timerGps = xTimerCreate((signed char *)"timerGps",
-                                GPSBKGND_TIMER_PERIOD, pdTRUE,
-                                (void *)0, gpsbkgnd_task);
-    xTimerStart(timerGps, 0);
-}
-
-static void gps_set_time()
+static void update_time()
 {
     struct tm time;
     struct gps_utc gpstime;
@@ -123,3 +160,65 @@ static void gps_set_time()
 
     if (firstfix) firstfix = 0;
 }
+
+static void store_track()
+{
+    struct gps_utc gpstime;
+    struct gps_coord gpscoord;
+    char buf[80];
+    char fname[64];
+    UINT dummy;
+
+    /*
+     * Re-attempt to get mutex and open if we couldn't when tracking
+     * started
+     */
+    if (!mutexours) {
+        track_on();
+    } else {
+        if (open) {
+            /*
+             * We open the file here so that we can give it a name according
+             * to current time
+             */
+            gps_get_utc(&gpstime);
+            sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
+                            1900 + gpstime.yr, 1 + gpstime.mon,
+                            gpstime.day,
+                            gpstime.hr + setting_get(&setting_gmt_ofs_hr),
+                            gpstime.min + setting_get(&setting_gmt_ofs_min),
+                            gpstime.sec);
+            open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
+        } else {
+            /*
+             * When we've opened (f_open() returns 0 on success), start
+             * putting coords into file
+             */
+            gps_get_coord(&gpscoord, 2);
+            sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
+            usbdbg_puts(buf);
+            f_write(&f, buf, strlen(buf), &dummy);
+        }
+    }
+}
+
+static void track_on()
+{
+    if (xSemaphoreTake(mutexSdCardAccess, 0)) {
+        mutexours = 1;
+        MICROSD_Init();
+        disk_initialize(0);
+        f_mount(0, &fatfs);
+        open = 1;
+    }
+}
+
+static void track_off()
+{
+    f_close(&f);
+    MICROSD_Deinit();
+    xSemaphoreGive(mutexSdCardAccess);
+    mutexours = 0;
+    open = 1;
+}
+
