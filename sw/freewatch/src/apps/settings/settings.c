@@ -36,7 +36,7 @@ setting_t setting_gps_sets_time = { "GPS sets time",    1, 2, 0 };
 /* Settings with nrvals == 0 do not wrap around, they are set externally */
 setting_t setting_gmt_ofs_hr    = { "GMT ofs hrs",      0, 0, 0 };
 setting_t setting_gmt_ofs_min   = { "GMT ofs mins",     0, 0, 0 };
-setting_t setting_tracking      = { "Tracking",         1, 2, 0 };
+setting_t setting_tracking      = { "Tracking",         0, 2, 0 };
 
 static EE_Variable_TypeDef gps_on, coord_style, gps_sets_time,
                             gmt_ofs_hr, gmt_ofs_min, tracking;
@@ -60,6 +60,7 @@ void setting_init()
     setting_gps_sets_time.fladdr = gps_sets_time.virtualAddress;
     setting_gmt_ofs_hr.fladdr = gmt_ofs_hr.virtualAddress;
     setting_gmt_ofs_min.fladdr = gmt_ofs_min.virtualAddress;
+    setting_tracking.fladdr = tracking.virtualAddress;
 
     /*
      * EE_Init() fails if the virtual addresses are not found in the flash. If
@@ -73,12 +74,14 @@ void setting_init()
         EE_Write(&gps_sets_time, setting_gps_sets_time.val);
         EE_Write(&gmt_ofs_hr, setting_gmt_ofs_hr.val);
         EE_Write(&gmt_ofs_min, setting_gmt_ofs_min.val);
+        EE_Write(&tracking, setting_tracking.val);
     } else {
         EE_Read(&gps_on, &setting_gps_on.val);
         EE_Read(&coord_style, &setting_coord_style.val);
         EE_Read(&gps_sets_time, &setting_gps_sets_time.val);
         EE_Read(&gmt_ofs_hr, &setting_gmt_ofs_hr.val);
         EE_Read(&gmt_ofs_min, &setting_gmt_ofs_min.val);
+        EE_Read(&tracking, setting_tracking.val);
     }
 }
 
