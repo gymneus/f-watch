@@ -83,6 +83,8 @@ void gpsbkgnd_init()
     xTimerStart(timerGps, 0);
 }
 
+static int nr=0;
+
 static void gpsbkgnd_task(void *params)
 {
     (void) params;
@@ -120,13 +122,35 @@ static void gpsbkgnd_task(void *params)
 //        xQueueSendToBack(appQueue, &e, 0);
     }
 
-    /* Set time and track according to setting */
-    if (gps_fixed()) {
-        if (setting_get(&setting_gps_sets_time))
-            update_time();
-        if (track)
-            store_track();
-    }
+//    /* Set time and track according to setting */
+//    if (gps_fixed()) {
+//        if (setting_get(&setting_gps_sets_time))
+//            update_time();
+//        if (track)
+//            store_track();
+//    }
+
+    //UINT dummy;
+    //char buf[16];
+    //char fname[64];
+    //if (nr == 0) {
+    //    track_on();
+    //}
+    //if (nr < 10) {
+    //    if (!mutexours) track_on();
+    //    sprintf(buf, "%d\n", nr);
+    //    usbdbg_puts(buf);
+    //    if (open) {
+    //        sprintf(fname, "track");
+    //        open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
+    //    } else {
+    //        f_write(&f, buf, strlen(buf), &dummy);
+    //    }
+    //}
+    //if (nr == 10){
+    //    track_off();
+    //}
+    //nr++;
 
     if (firstrun)
         firstrun = 0;
@@ -196,7 +220,6 @@ static void store_track()
              */
             gps_get_coord(&gpscoord, 2);
             sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
-            usbdbg_puts(buf);
             f_write(&f, buf, strlen(buf), &dummy);
         }
     }
@@ -205,6 +228,7 @@ static void store_track()
 static void track_on()
 {
     if (xSemaphoreTake(mutexSdCardAccess, 0)) {
+        usbdbg_puts("take\r\n");
         mutexours = 1;
         MICROSD_Init();
         disk_initialize(0);
@@ -215,6 +239,7 @@ static void track_on()
 
 static void track_off()
 {
+    usbdbg_puts("give\r\n");
     f_close(&f);
     MICROSD_Deinit();
     xSemaphoreGive(mutexSdCardAccess);
