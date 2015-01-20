@@ -37,6 +37,8 @@
 
 #include "../settings/settings.h"
 
+static const unsigned int GPS_POS = 0;
+static const unsigned int TRACK_POS = 36;
 static const unsigned int BATTERY_POS = 111;
 static const unsigned int BATTERY_BARS = 10;
 
@@ -45,6 +47,8 @@ static bool charging;
 
 static struct rle_bitmap gps_ico;
 static int gps_ico_blink = 0;
+
+static struct rle_bitmap track_ico;
 
 static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
@@ -62,11 +66,24 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
                 memset(&gps_ico, 0, sizeof(struct rle_bitmap));
             }
         }
+        if (setting_get(&setting_tracking))
+            memset(&track_ico, &tracking, sizeof(struct rle_bitmap));
+        else
+            memset(&track_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
         break;
 
-    case GPS_OFF:
-        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
+//    case GPS_OFF:
+//        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
+//        w->flags |= WF_DIRTY;
+//        break;
+//
+//    case GPS_TRACK_ON:
+//        w->flags |= WF_DIRTY;
+//        break;
+
+    case GPS_TRACK_OFF:
+        memset(&track_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
         break;
 
@@ -90,7 +107,8 @@ static void status_bar_redraw(struct ui_widget *w)
     /*gfx_round_box(&w->dc, 30, -10, 127 - 30, 10, 9, COLOR_BLACK);*/
     /*gfx_centered_text(&w->dc, &font_helv11, 0, "Home", 1);*/
 
-    gfx_draw_bitmap(&w->dc, 0, 0, &gps_ico);
+    gfx_draw_bitmap(&w->dc, GPS_POS, 0, &gps_ico);
+    gfx_draw_bitmap(&w->dc, TRACK_POS, 0, &track_ico);
 
     if(charging) {
         gfx_draw_bitmap(&w->dc, BATTERY_POS, 0, &battery_charging);
