@@ -25,9 +25,11 @@
 #include <event.h>
 
 #include <drivers/lcd.h>
+#include <drivers/gps.h>
 #include <gfx/graphics.h>
 #include <gfx/ui.h>
 #include "widgets/status_bar.h"
+#include "settings/settings.h"
 
 #include "application.h"
 
@@ -66,11 +68,19 @@ void reset_main(void *params)
                 if (evt.data.button == BUT_TR ||
                     evt.data.button == BUT_TL)
                         return;
-                    /* Reset on bottom right and bottom left buttons
-                     * pressed */
-                    if (evt.data.button == BUT_BR)
-                        SCB->AIRCR = 0x05FA0004;
-                    break;
+                /* Reset on bottom right and bottom left buttons
+                 * pressed */
+                if (evt.data.button == BUT_BR)
+                    SCB->AIRCR = 0x05FA0004;
+                    // Turn GPS off if setting is ON, to prepare it for
+                    // the turn-on pulse on reset
+                    if (setting_get(&setting_gps_on)) {
+                        int i;
+                        gps_on_off_pulse();
+                        for (i = 0; i < 1000000; i++)
+                            ;
+                    }
+                break;
             }
         }
     }
