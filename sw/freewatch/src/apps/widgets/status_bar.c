@@ -66,26 +66,26 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
                 memset(&gps_ico, 0, sizeof(struct rle_bitmap));
             }
         }
-        if (setting_get(&setting_tracking))
-            memset(&track_ico, &tracking, sizeof(struct rle_bitmap));
-        else
-            memset(&track_ico, 0, sizeof(struct rle_bitmap));
+//        if (setting_get(&setting_tracking))
+//            memset(&track_ico, &tracking, sizeof(struct rle_bitmap));
+//        else
+//            memset(&track_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
         break;
 
-//    case GPS_OFF:
-//        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
-//        w->flags |= WF_DIRTY;
-//        break;
-//
+    case GPS_OFF:
+        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
+        w->flags |= WF_DIRTY;
+        break;
+
 //    case GPS_TRACK_ON:
 //        w->flags |= WF_DIRTY;
 //        break;
-
-    case GPS_TRACK_OFF:
-        memset(&track_ico, 0, sizeof(struct rle_bitmap));
-        w->flags |= WF_DIRTY;
-        break;
+//
+//    case GPS_TRACK_OFF:
+//        memset(&track_ico, 0, sizeof(struct rle_bitmap));
+//        w->flags |= WF_DIRTY;
+//        break;
 
     case BATTERY_STATUS:
         if(abs(percentage - evt->data.battery.percentage) > 5 ||
