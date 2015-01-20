@@ -52,8 +52,6 @@ extern xSemaphoreHandle mutexSdCardAccess;
 static int mutexours = 0;
 
 static int firstrun, firstfix;
-static int gpson, pgpson;
-static int track, ptrack;
 
 static FIL f;
 static FATFS fatfs;
@@ -90,22 +88,16 @@ static void gpsbkgnd_task(void *params)
 {
     (void) params;
     struct event e;
+    static int gpson, pgpson;
+    static int track, ptrack;
 
     /* Previous and current state of GPS ON setting */
     pgpson = gpson;
     gpson = setting_get(&setting_gps_on);
 
     /* Pulse GPS ON_OFF pin if setting changed */
-    if ((pgpson != gpson) && !firstrun)
+    if ((pgpson != gpson) && !firstrun) {
         gps_on_off_pulse();
-
-    if (!gpson) {
-        /* Turn off status bar icon if GPS turns off */
-        if (pgpson) {
-            e.type = GPS_OFF;
-            xQueueSendToBack(appQueue, (void *)&e, 0);
-        }
-        return;
     }
 
     /*

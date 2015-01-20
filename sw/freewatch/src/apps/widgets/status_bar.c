@@ -54,27 +54,26 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
     switch(evt->type) {
     case GPS_TICK:
-        if (gps_fixed()) {
-            memcpy(&gps_ico, &gps_receiving,
-                    sizeof(struct rle_bitmap));
-        } else {
-            gps_ico_blink ^= 1;
-            if (gps_ico_blink) {
-                memcpy(&gps_ico, &gps_searching,
-                    sizeof(struct rle_bitmap));
+        if (setting_get(&setting_gps_on)) {
+            if (gps_fixed()) {
+                memcpy(&gps_ico, &gps_receiving,
+                        sizeof(struct rle_bitmap));
             } else {
-                memset(&gps_ico, 0, sizeof(struct rle_bitmap));
+                gps_ico_blink ^= 1;
+                if (gps_ico_blink) {
+                    memcpy(&gps_ico, &gps_searching,
+                        sizeof(struct rle_bitmap));
+                } else {
+                    memset(&gps_ico, 0, sizeof(struct rle_bitmap));
+                }
             }
+        } else {
+            memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
         }
 //        if (setting_get(&setting_tracking))
 //            memset(&track_ico, &tracking, sizeof(struct rle_bitmap));
 //        else
 //            memset(&track_ico, 0, sizeof(struct rle_bitmap));
-        w->flags |= WF_DIRTY;
-        break;
-
-    case GPS_OFF:
-        memset(&gps_ico, 0, sizeof(struct rle_bitmap));
         w->flags |= WF_DIRTY;
         break;
 
