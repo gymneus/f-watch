@@ -69,9 +69,12 @@ DWORD get_fattime(void)
 static void gpsbkgnd_task(void *params);
 
 static void update_time();
+
+static void take_storage();
+static void give_storage();
+
 static void store_track();
-static void track_on();
-static void track_off();
+void stringify(struct gps_coord *, char *, char *);
 
 void gpsbkgnd_init()
 {
@@ -82,8 +85,6 @@ void gpsbkgnd_init()
                                 (void *)0, gpsbkgnd_task);
     xTimerStart(timerGps, 0);
 }
-
-static int nr=0;
 
 static void gpsbkgnd_task(void *params)
 {
@@ -107,50 +108,34 @@ static void gpsbkgnd_task(void *params)
         return;
     }
 
-    /* Turn on tracking icon based on setting */
+    /*
+     * Tracking actions based on previous and current value of setting
+     * - ON to OFF -- take control of storage so we can store and inform other
+     *                tasks that tracking has turned on
+     * - OFF to ON -- give control of storage so other tasks can store to it
+     *                and inform other tasks that tracking has been turned off
+     */
     ptrack = track;
     track = setting_get(&setting_tracking);
     if (track) {
         if (!ptrack || firstrun) {
-            track_on();
+            take_storage();
 //            e.type = GPS_TRACK_ON;
 //            xQueueSendToBack(appQueue, &e, 0);
         }
     } else if (ptrack) {
-        track_off();
+        give_storage();
 //        e.type = GPS_TRACK_OFF;
 //        xQueueSendToBack(appQueue, &e, 0);
     }
 
-//    /* Set time and track according to setting */
-//    if (gps_fixed()) {
-//        if (setting_get(&setting_gps_sets_time))
-//            update_time();
-//        if (track)
-//            store_track();
-//    }
-
-    //UINT dummy;
-    //char buf[16];
-    //char fname[64];
-    //if (nr == 0) {
-    //    track_on();
-    //}
-    //if (nr < 10) {
-    //    if (!mutexours) track_on();
-    //    sprintf(buf, "%d\n", nr);
-    //    usbdbg_puts(buf);
-    //    if (open) {
-    //        sprintf(fname, "track");
-    //        open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
-    //    } else {
-    //        f_write(&f, buf, strlen(buf), &dummy);
-    //    }
-    //}
-    //if (nr == 10){
-    //    track_off();
-    //}
-    //nr++;
+    /* Set time and track according to setting */
+    if (gps_fixed()) {
+        if (setting_get(&setting_gps_sets_time))
+            update_time();
+        if (track)
+            store_track();
+    }
 
     if (firstrun)
         firstrun = 0;
@@ -185,50 +170,9 @@ static void update_time()
     if (firstfix) firstfix = 0;
 }
 
-static void store_track()
-{
-    struct gps_utc gpstime;
-    struct gps_coord gpscoord;
-    char buf[80];
-    char fname[64];
-    UINT dummy;
-
-    /*
-     * Re-attempt to get mutex and open if we couldn't when tracking
-     * started
-     */
-    if (!mutexours) {
-        track_on();
-    } else {
-        if (open) {
-            /*
-             * We open the file here so that we can give it a name according
-             * to current time
-             */
-            gps_get_utc(&gpstime);
-            sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
-                            1900 + gpstime.yr, 1 + gpstime.mon,
-                            gpstime.day,
-                            gpstime.hr + setting_get(&setting_gmt_ofs_hr),
-                            gpstime.min + setting_get(&setting_gmt_ofs_min),
-                            gpstime.sec);
-            open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
-        } else {
-            /*
-             * When we've opened (f_open() returns 0 on success), start
-             * putting coords into file
-             */
-            gps_get_coord(&gpscoord, 2);
-            sprintf(buf, "%3.7f,%3.7f\n", gpscoord.lat, gpscoord.lon);
-            f_write(&f, buf, strlen(buf), &dummy);
-        }
-    }
-}
-
-static void track_on()
+static void take_storage()
 {
     if (xSemaphoreTake(mutexSdCardAccess, 0)) {
-        usbdbg_puts("take\r\n");
         mutexours = 1;
         MICROSD_Init();
         disk_initialize(0);
@@ -237,13 +181,132 @@ static void track_on()
     }
 }
 
-static void track_off()
+static void give_storage()
 {
-    usbdbg_puts("give\r\n");
     f_close(&f);
     MICROSD_Deinit();
     xSemaphoreGive(mutexSdCardAccess);
     mutexours = 0;
     open = 1;
+}
+
+static void store_track()
+{
+    struct tm time;
+
+    struct gps_coord gpscoord;
+    char lats[16], lons[16];
+
+    char buf[128];
+    char fname[64];
+    UINT dummy;
+
+    /*
+     * Re-attempt to get mutex and open if we couldn't when tracking
+     * started
+     */
+    if (!mutexours) {
+        take_storage();
+    } else {
+        if (open) {
+            /*
+             * We open the file here so that we can give it a name according
+             * to current time
+             */
+            time = clock_get_time();
+            sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
+                            time.tm_year, time.tm_mon, time.tm_mday,
+                            time.tm_hour, time.tm_min, time.tm_sec);
+            open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
+        } else {
+            /*
+             * When we've opened (f_open() returns 0 on success), start
+             * putting coords into file. We try to massage the float coordinates
+             * into strings before printing to file, rather than sprintf-ing to
+             * the file directly, as the latter tends to hard-fault the CPU.
+             */
+            gps_get_coord(&gpscoord, 2);
+
+            stringify(&gpscoord, lats, lons);
+
+            strcpy(buf, lats);
+            strcat(buf,",");
+            strcat(buf, lons);
+            strcat(buf, "\n");
+
+            f_write(&f, buf, strlen(buf), &dummy);
+        }
+    }
+}
+
+void stringify(struct gps_coord *c, char *lats, char *lons)
+{
+    int lat, lon, shift;
+    char tmp1[16], tmp2[16];
+
+    /*
+     * Convert latitude and longitude to ints, then to strings;
+     * use 7 digits after decimal point for coordinates
+     */
+    lat = c->lat * 10000000;
+    strcpy(lats, "");
+    if (lat < 0) {
+        *lats++ = '-';
+        lat *= -1;
+    }
+    shift = lat;
+    while (lat) {
+        lats++;
+        lat /= 10;
+    }
+    *lats = '\0';
+    while(shift) {
+        *--lats = '0' + (shift % 10);
+        shift /= 10;
+    }
+
+    lon = c->lon * 10000000;
+    strcpy(lons, "");
+    if (lon < 0) {
+        *lons++ = '-';
+        lon *= -1;
+    }
+    shift = lon;
+    while (lon) {
+        lons++;
+        lon /= 10;
+    }
+    *lons = '\0';
+    while(shift) {
+        *--lons = '0' + (shift % 10);
+        shift /= 10;
+    }
+
+    /*
+     * Avoid crashes at global position 0/0, or add the decimal points at the
+     * appropriate positions in the strings
+     */
+    if ((strlen(lats) == 0) && (strlen(lons) == 0)) {
+        strcpy(lats, "0.0000000");
+        strcpy(lons, "0.0000000");
+    } else {
+        strncpy(tmp1, lats, strlen(lats)-7);
+        strcpy(tmp1+strlen(lats)-7, "\0");
+        strncpy(tmp2, lats+(strlen(lats)-7), 7);
+        strcpy(tmp2+7, "\0");
+
+        strcpy(lats, tmp1);
+        strcat(lats, ".");
+        strcat(lats, tmp2);
+
+        strncpy(tmp1, lons, strlen(lons)-7);
+        strcpy(tmp1+strlen(lons)-7, "\0");
+        strncpy(tmp2, lons+(strlen(lons)-7), 7);
+        strcpy(tmp2+7, "\0");
+
+        strcpy(lons, tmp1);
+        strcat(lons, ".");
+        strcat(lons, tmp2);
+    }
 }
 
