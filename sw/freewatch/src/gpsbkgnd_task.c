@@ -102,23 +102,15 @@ static void gpsbkgnd_task(void *params)
 
     /*
      * Tracking actions based on previous and current value of setting
-     * - ON to OFF -- take control of storage so we can store and inform other
-     *                tasks that tracking has turned on
+     * - ON to OFF -- take control of storage so we can store
      * - OFF to ON -- give control of storage so other tasks can store to it
-     *                and inform other tasks that tracking has been turned off
      */
     ptrack = track;
     track = setting_get(&setting_tracking);
-    if (track) {
-        if (!ptrack || firstrun) {
-            take_storage();
-//            e.type = GPS_TRACK_ON;
-//            xQueueSendToBack(appQueue, &e, 0);
-        }
+    if ((track) && (!ptrack || firstrun)) {
+        take_storage();
     } else if (ptrack) {
         give_storage();
-//        e.type = GPS_TRACK_OFF;
-//        xQueueSendToBack(appQueue, &e, 0);
     }
 
     /* Set time and track according to setting */

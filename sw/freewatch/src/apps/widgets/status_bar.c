@@ -38,7 +38,7 @@
 #include "../settings/settings.h"
 
 static const unsigned int GPS_POS = 0;
-static const unsigned int TRACK_POS = 36;
+static const unsigned int TRACK_POS = 16;
 static const unsigned int BATTERY_POS = 111;
 static const unsigned int BATTERY_BARS = 10;
 
@@ -70,21 +70,15 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
         } else {
             memcpy(&gps_ico, 0, sizeof(struct rle_bitmap));
         }
-//        if (setting_get(&setting_tracking))
-//            memset(&track_ico, &tracking, sizeof(struct rle_bitmap));
-//        else
-//            memset(&track_ico, 0, sizeof(struct rle_bitmap));
-        w->flags |= WF_DIRTY;
-        break;
 
-//    case GPS_TRACK_ON:
-//        w->flags |= WF_DIRTY;
-//        break;
-//
-//    case GPS_TRACK_OFF:
-//        memset(&track_ico, 0, sizeof(struct rle_bitmap));
-//        w->flags |= WF_DIRTY;
-//        break;
+        if (setting_get(&setting_tracking))
+            memcpy(&track_ico, &tracking, sizeof(struct rle_bitmap));
+        else
+            memset(&track_ico, 0, sizeof(struct rle_bitmap));
+
+        w->flags |= WF_DIRTY;
+
+        break;
 
     case BATTERY_STATUS:
         if(abs(percentage - evt->data.battery.percentage) > 5 ||
