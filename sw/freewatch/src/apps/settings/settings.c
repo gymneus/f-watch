@@ -81,7 +81,7 @@ void setting_init()
         EE_Read(&gps_sets_time, &setting_gps_sets_time.val);
         EE_Read(&gmt_ofs_hr, &setting_gmt_ofs_hr.val);
         EE_Read(&gmt_ofs_min, &setting_gmt_ofs_min.val);
-        EE_Read(&tracking, setting_tracking.val);
+        EE_Read(&tracking, &setting_tracking.val);
     }
 }
 
