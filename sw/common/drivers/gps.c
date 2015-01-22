@@ -45,6 +45,8 @@ static volatile int irq_sync = 0;
 static nmeaINFO info;
 static nmeaPARSER parser;
 
+static int fixed;
+
 __attribute__((__weak__))
 void LEUART0_IRQHandler()
 {
@@ -111,6 +113,9 @@ void gps_init(int pulse_onoff)
     /* NMEA parser & info structure init */
     nmea_zero_INFO(&info);
     nmea_parser_init(&parser);
+
+    /* We shouldn't have fix after init */
+    fixed = 0;
 }
 
 /**
@@ -131,6 +136,9 @@ void gps_on_off_pulse()
     /* Delay to make sure GPS module sees this as a pulse */
     for (i = 0; i < 100000; i++)
         ;
+
+    /* Turn on and off should mean we lost fix */
+    fixed = 0;
 }
 
 /**
@@ -144,6 +152,7 @@ void gps_on_off_pulse()
 void gps_reset(int val)
 {
     val ? GPIO_PinOutClear(gpioPortF, 5) : GPIO_PinOutSet(gpioPortF, 5);
+    fixed = 0;
 }
 
 /**
@@ -185,6 +194,14 @@ void gps_parse_nmea(const char *buf)
 {
     // TODO: check return of nmea_parse
     nmea_parse(&parser, buf, strlen(buf), &info);
+
+    fixed = info.sig;
+
+    /* On turn-off string from GPS module, set fixed to zero */
+    if (strcmp(buf, "$PSRF150,0*3F\r\n") == 0) {
+        fixed = 0;
+    }
+
 #ifdef DEBUG
     /*
      * NOTE: usbdbg_init() should be called EXTERNALLY, BEFORE gps_init() is
@@ -196,7 +213,7 @@ void gps_parse_nmea(const char *buf)
 
 /**
  * @brief
- *      Return the fix state of the GPS receiverj
+ *      Return the fix state of the GPS receiver
  * @return
  *      0 when the GPS is not fixed
  *      1 when we have fix
@@ -205,7 +222,7 @@ void gps_parse_nmea(const char *buf)
  */
 int gps_fixed()
 {
-    return info.sig;
+    return fixed;
 }
 
 /**
