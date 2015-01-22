@@ -107,8 +107,9 @@ static void gpsbkgnd_task(void *params)
      */
     ptrack = track;
     track = setting_get(&setting_tracking);
-    if ((track) && (!ptrack || firstrun)) {
-        take_storage();
+    if (track) {
+        if (!ptrack || firstrun)
+            take_storage();
     } else if (ptrack) {
         give_storage();
     }
@@ -117,8 +118,9 @@ static void gpsbkgnd_task(void *params)
     if (gps_fixed()) {
         if (setting_get(&setting_gps_sets_time))
             update_time();
-        if (track)
+        if (track) {
             store_track();
+        }
     }
 
     if (firstrun)
@@ -199,7 +201,7 @@ static void store_track()
              */
             time = clock_get_time();
             sprintf(fname, "track_%d-%02d-%02d_%02dh%02dm%02ds.txt",
-                            time.tm_year, time.tm_mon, time.tm_mday,
+                            1900 + time.tm_year, 1 + time.tm_mon, time.tm_mday,
                             time.tm_hour, time.tm_min, time.tm_sec);
             open = f_open(&f, fname, FA_CREATE_ALWAYS | FA_WRITE);
         } else {
