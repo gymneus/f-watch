@@ -143,6 +143,18 @@ void gps_on_off_pulse()
 
 /**
  * @brief
+ *      Get state of the GPS WAKUP pin.
+ * @return
+ *      '1' when the GPS is on (WAKUP = 1)
+ *      '0' when the GPS is off (WAKUP = 0)
+ */
+int gps_on()
+{
+    return GPIO_PinInGet(gpioPortA, 1);
+}
+
+/**
+ * @brief
  *      Set state of the GPS reset pin.
  * @param[in] val
  *      Value to set at reset pin

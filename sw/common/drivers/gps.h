@@ -59,6 +59,7 @@ struct gps_utc {
 /*=====================*/
 void    gps_init(int pulse_onoff);
 void    gps_on_off_pulse();
+int     gps_on();
 void    gps_reset(int val);
 int     gps_get_irq_sync();
 void    gps_set_irq_sync();

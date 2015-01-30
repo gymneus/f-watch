@@ -54,7 +54,7 @@ static void status_bar_event(struct ui_widget *w, const struct event *evt)
 {
     switch(evt->type) {
     case GPS_TICK:
-        if (setting_get(&setting_gps_on)) {
+        if (gps_on()) {
             if (gps_fixed()) {
                 memcpy(&gps_ico, &gps_receiving,
                         sizeof(struct rle_bitmap));
