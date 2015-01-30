@@ -3002,3 +3002,39 @@ static const uint8_t tracking_data[] = {
         0x80};
 const struct rle_bitmap tracking = { 15, 15, tracking_data };
 
+static const uint8_t reset_icon_data[] = {
+        0x04,
+        0x80,
+        0x0c,
+        0x80,
+        0x0c,
+        0x87,
+        0x07,
+        0x80,
+        0x05,
+        0x80,
+        0x07,
+        0x80,
+        0x05,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0d,
+        0x80,
+        0x0c,
+        0x80,
+        0x05,
+        0x87,
+        0x12};
+const struct rle_bitmap reset_icon = { 15, 15, reset_icon_data };
+

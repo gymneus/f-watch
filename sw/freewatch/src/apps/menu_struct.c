@@ -72,7 +72,7 @@ menu_list main_menu = {
 #ifndef DEBUG
        { APP,       &usb_ms_icon,       { .app = &usb_ms } },
 #endif /* DEBUG */
-       { APP,       NULL,               { .app = &reset} },
+       { APP,       &reset_icon,        { .app = &reset} },
        { END,       NULL,               { NULL } }
     }
 };
