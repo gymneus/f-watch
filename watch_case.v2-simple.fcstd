@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>f*watch - /mec/case_model/watch_case.v2-simple.fcstd - Changes - Open Hardware Repository</title>
+<meta name="description" content="ChiliProject" />
+<meta name="keywords" content="issue,bug,tracker" />
+<meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="zOFUF56/+V1AgKXvr1C+KzKlmLoYzHDgqY6+3ow4aPQ="/>
+<link rel='shortcut icon' href='/favicon.ico?1405312613' />
+<link href="/themes/ohwr-theme/stylesheets/application.css?1404713280" media="all" rel="stylesheet" type="text/css" />
+
+<script src="/javascripts/prototype.js?1405312613" type="text/javascript"></script>
+<script src="/javascripts/effects.js?1405312613" type="text/javascript"></script>
+<script src="/javascripts/dragdrop.js?1405312613" type="text/javascript"></script>
+<script src="/javascripts/controls.js?1405312613" type="text/javascript"></script>
+<script src="/javascripts/application.js?1405312613" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+Event.observe(window, 'load', function(){ new WarnLeavingUnsaved('The current page contains unsaved text that will be lost if you leave this page.'); });
+//]]>
+</script>
+<script src="/themes/ohwr-theme/javascripts/theme.js?1404713280" type="text/javascript"></script>
+<!--[if IE 6]>
+    <style type="text/css">
+      * html body{ width: expression( document.documentElement.clientWidth < 900 ? '900px' : '100%' ); }
+      body {behavior: url(/stylesheets/csshover.htc?1405312613);}
+    </style>
+<![endif]-->
+
+<!-- page specific tags -->
+
+  <link href="/plugin_assets/redmine_checkout/stylesheets/checkout.css?1405313230" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/plugin_assets/redmine_checkout/javascripts/checkout.js?1405313230" type="text/javascript"></script>
+  <script src="/plugin_assets/redmine_checkout/javascripts/ZeroClipboard.js?1405313230" type="text/javascript"></script>
+
+  <script src="/javascripts/repository_navigation.js?1405312613" type="text/javascript"></script>
+</head>
+<body class="theme-Ohwr-theme controller-repositories action-changes environment-production">
+<div id="wrapper">
+<div id="wrapper2">
+<div id="top-menu">
+    <div id="account">
+        <ul><li><a href="/login" class="login">Sign in</a></li>
+<li><a href="/account/register" class="register">Register</a></li></ul>    </div>
+    
+    <ul><li><a href="/" class="home">Home</a></li>
+<li><a href="/projects" class="projects">Projects</a></li>
+<li><a href="/licenses" class="licenses">Licenses</a></li>
+<li><a href="/companies" class="companies">Companies</a></li>
+<li><a href="http://www.ohwr.org/projects/ohr-support/wiki" class="help">Help</a></li></ul></div>
+
+<div id="header">
+    
+    <div id="quick-search">
+        <form action="/search/index/f-watch" method="get">
+        <input name="changesets" type="hidden" value="1" />
+        <label for='q'>
+          <a href="/search/index/f-watch" accesskey="4">Search</a>:
+        </label>
+        <input accesskey="f" class="small" id="q" name="q" size="20" type="text" />
+        </form>
+        
+    </div>
+    
+
+    <h1>f*watch</h1>
+
+    
+    <div id="main-menu">
+        <ul><li><a href="/projects/f-watch" class="overview">Overview</a></li>
+<li><a href="/projects/f-watch/wiki" class="wiki">Wiki</a></li>
+<li><a href="/projects/f-watch/activity" class="activity">Activity</a></li>
+<li><a href="/mailing_list/show?project_id=f-watch" class="mailing-list">Mailing List</a></li>
+<li><a href="/projects/f-watch/roadmap?completed=1" class="roadmap">Roadmap</a></li>
+<li><a href="/projects/f-watch/issues" class="issues">Issues</a></li>
+<li><a href="/projects/f-watch/news" class="news">News</a></li>
+<li><a href="/projects/f-watch/documents" class="documents">Documents</a></li>
+<li><a href="/projects/f-watch/files" class="files">Files</a></li>
+<li><a href="/projects/f-watch/repository" class="repository selected">Repository</a></li></ul>
+    </div>
+    
+</div>
+
+<div class="nosidebar" id="main">
+    <div id="sidebar">
+        
+        
+    </div>
+
+    <div id="content">
+				
+        <div class="repository-info">
+  
+  <div class="wiki bottomline"><p>The data contained in this repository can be downloaded to your computer using one of several clients.<br />Please see the documentation of your version control software client for more information.</p>
+
+
+	<p>Please select the desired protocol below to get the URL.</p></div>
+  
+  
+  <div id="checkout_box">
+    <ul id="checkout_protocols">
+          <li>
+        <a class="selected" id="checkout_protocol_git" data-permission="read+write" href="git@ohwr.org:f-watch.git">Git</a>
+      </li>
+          <li>
+        <a  id="checkout_protocol_git read only" data-permission="read-only" href="git://ohwr.org/f-watch.git">Git Read Only</a>
+      </li>
+        </ul>
+    <input id="checkout_url" name="checkout_url" readonly="readonly" type="text" value="git@ohwr.org:f-watch.git" />
+
+    <div id="clipboard_container" title="Copy to clipboard" style="display: none;">
+       <div id="clipboard_button"><img alt="Paste" src="/plugin_assets/redmine_checkout/images/paste.png?1405313230" /></div>
+    </div>
+        <p>This URL has <span id="checkout_access">Read+Write</span> access.</p>
+  
+    <script type="text/javascript">
+//<![CDATA[
+
+      var checkout_access   = $H({'checkout_protocol_git': 'Read+Write', 'checkout_protocol_git read only': 'Read-Only'});
+      var checkout_commands = $H({'checkout_protocol_git': 'git@ohwr.org:f-watch.git', 'checkout_protocol_git read only': 'git://ohwr.org/f-watch.git'});
+ZeroClipboard.setMoviePath( '/plugin_assets/redmine_checkout/images/ZeroClipboard.swf?1405313230' );
+    
+//]]>
+</script>
+  </div>
+  
+</div>
+<div style="clear: left"></div>
+
+
+
+<div class="contextual">
+  
+
+<a href="/projects/f-watch/repository/statistics" class="icon icon-stats">Statistics</a>
+
+<form action="/projects/f-watch/repository/changes/mec/case_model/watch_case.v2-simple.fcstd?rev=" id="revision_selector" method="get">  <!-- Branches Dropdown -->
+      | Branch:
+    <select id="branch" name="branch"><option value=""></option>
+<option value="fede-sw-dev">fede-sw-dev</option>
+<option value="greg-sw-dev">greg-sw-dev</option>
+<option value="greg-sw-dev-rebased">greg-sw-dev-rebased</option>
+<option value="maciej_mec">maciej_mec</option>
+<option value="maciej_mec_dev" selected="selected">maciej_mec_dev</option>
+<option value="master">master</option>
+<option value="mcattin_hw_dev">mcattin_hw_dev</option>
+<option value="mcattin_mec_dev">mcattin_mec_dev</option>
+<option value="mcattin_sw_dev">mcattin_sw_dev</option>
+<option value="mcattin_sw_usbmsd">mcattin_sw_usbmsd</option>
+<option value="proposed_master">proposed_master</option>
+<option value="test-projects">test-projects</option>
+<option value="thedi-gps-tracking">thedi-gps-tracking</option>
+<option value="thedi-sw-dev">thedi-sw-dev</option>
+<option value="tom-pcb">tom-pcb</option>
+<option value="tom_hw_dev">tom_hw_dev</option>
+<option value="tom_sw_dev">tom_sw_dev</option>
+<option value="xpiroux_sw_dev">xpiroux_sw_dev</option></select>
+  
+      | Tag:
+    <select id="tag" name="tag"><option value=""></option>
+<option value="pcb_v1">pcb_v1</option>
+<option value="usbled">usbled</option></select>
+  
+  | Revision:
+  <input id="rev" name="rev" size="8" type="text" value="maciej_mec_dev" />
+</form>
+</div>
+
+<h2>
+  <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/show">root</a>
+
+    / <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/show/mec">mec</a>
+
+    / <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/show/mec/case_model">case_model</a>
+
+
+    / <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/changes/mec/case_model/watch_case.v2-simple.fcstd">watch_case.v2-simple.fcstd</a>
+
+
+@ maciej_mec_dev
+
+
+</h2>
+
+<p>
+
+<p>
+History |
+
+    <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/entry/mec/case_model/watch_case.v2-simple.fcstd">View</a> |
+
+
+    <a href="/projects/f-watch/repository/revisions/maciej_mec_dev/annotate/mec/case_model/watch_case.v2-simple.fcstd">Annotate</a> |
+
+<a href="/projects/f-watch/repository/revisions/maciej_mec_dev/raw/mec/case_model/watch_case.v2-simple.fcstd">Download</a>
+(651.7 kB)
+</p>
+
+
+</p>
+
+
+
+<form action="/projects/f-watch/repository/diff/mec/case_model/watch_case.v2-simple.fcstd" method="get">
+<table class="list changesets">
+<thead><tr>
+<th>#</th>
+<th></th>
+<th></th>
+<th>Date</th>
+<th>Author</th>
+<th>Comment</th>
+</tr></thead>
+<tbody>
+
+
+
+<tr class="changeset odd">
+<td class="id"><a href="/projects/f-watch/repository/revisions/5289a738ac0fbd924b8b4ce9d557efed9cf184bb" title="Revision 5289a738">5289a738</a></td>
+<td class="checkbox"><input checked="checked" id="cb-1" name="rev" onclick="$(&#39;cbto-2&#39;).checked=true;" type="radio" value="5289a738ac0fbd924b8b4ce9d557efed9cf184bb" /></td>
+<td class="checkbox"></td>
+<td class="committed_on">2014-07-28 00:17</td>
+<td class="author">Maciej Lipinski</td>
+<td class="comments"><p>updated all the files per Matthieu comments regarding additional screws and USB pocket</p></td>
+</tr>
+
+
+<tr class="changeset even">
+<td class="id"><a href="/projects/f-watch/repository/revisions/b37fa8e5a3cdda7331ab8206ad68020e28eb3a3c" title="Revision b37fa8e5">b37fa8e5</a></td>
+<td class="checkbox"></td>
+<td class="checkbox"><input checked="checked" id="cbto-2" name="rev_to" onclick="if ($(&#39;cb-2&#39;).checked==true) {$(&#39;cb-1&#39;).checked=true;}" type="radio" value="b37fa8e5a3cdda7331ab8206ad68020e28eb3a3c" /></td>
+<td class="committed_on">2014-07-25 01:26</td>
+<td class="author">Maciej Lipinski</td>
+<td class="comments"><p>model with simple copies of case components</p></td>
+</tr>
+
+
+</tbody>
+</table>
+<input type="submit" value="View differences" />
+</form>
+
+
+
+        
+				<div style="clear:both;"></div>
+    </div>
+</div>
+
+<div id="ajax-indicator" style="display:none;"><span>Loading...</span></div>
+
+<div id="footer">
+  <div class="bgl"><div class="bgr">
+    Powered by <a href="https://www.chiliproject.org/">ChiliProject</a>
+  </div></div>
+</div>
+</div>
+</div>
+<!-- Piwik -->
+<script type="text/javascript" src="http://piwik.ohwr.org/piwik.js"></script>
+<script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker("http://piwik.ohwr.org/piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.ohwr.org/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","a682afbce1","790800","cl4LRBQNCloGF0lFVUFeFlkSDRRfBhZJVFhQXwJVFQ==",0,951,new Date().getTime(),"","","","",""]);</script></body>
+</html>
